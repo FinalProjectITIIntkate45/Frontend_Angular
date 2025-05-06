@@ -1,0 +1,38 @@
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="row w-100">
+        <div class="col-md-6 p-0">
+            <div class="d-flex justify-content-center align-items-center h-100 bg-warning">
+                <img id="character" src="images/Log_img.jpg" alt="Character" class="w-100 h-100 object-fit-cover">
+            </div>
+        </div>
+        <div class="col-md-6 bg-primary text-white d-flex flex-column justify-content-center align-items-center p-5">
+            <h2 class="text-center text-warning mb-4">Login</h2>
+            <form (ngSubmit)="login()">
+                <div class="mb-3">
+                    <label for="email" class="form-label">E-Mail</label>
+                    <input type="email" id="email" class="form-control" [(ngModel)]="email" name="email"
+                        placeholder="Enter your email" required>
+                </div>
+                <div class="mb-3 position-relative">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" id="password" class="form-control" [(ngModel)]="password" name="password"
+                        placeholder="Enter your password" required>
+                    <span class="password-toggle position-absolute top-50 end-0 translate-middle-y pe-3"
+                        (click)="togglePassword()">
+                        <i id="eye-icon" class="fas fa-eye"></i>
+                    </span>
+                </div>
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="rememberMe">
+                    <label class="form-check-label" for="rememberMe">Remember me</label>
+                </div>
+                <button type="submit" class="btn btn-light w-100 mb-3">Log In</button>
+                <div id="loginMessage" class="text-center text-light"></div>
+                <div class="text-center">
+                    <a href="ForgetPassword.html" class="text-light">Forgotten password?</a><br>
+                    <a [routerLink]="['/register']" class="text-warning">Create new account</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

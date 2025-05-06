@@ -1,0 +1,58 @@
+/* src/app/user-footer/user-footer.component.css */
+.user-footer {
+    background-color: #023059; /* Deep navy blue for the footer background */
+    color: #F7F7F8; /* Light gray for text */
+    padding: 2rem 1rem;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+  }
+  
+  .footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  
+  .footer-section {
+    flex: 1;
+    min-width: 200px;
+    text-align: center;
+  }
+  
+  .footer-section.copyright p {
+    margin: 0;
+    font-size: 0.9rem;
+  }
+  
+  .footer-section.footer-links a {
+    color: #EFB036; /* Vibrant yellow for links */
+    text-decoration: none;
+    margin: 0 0.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .footer-section.footer-links a:hover {
+    text-decoration: underline;
+    color: #F7F7F8; /* Light gray on hover */
+  }
+  
+  .footer-section.social-media .social-icon {
+    color: #9197B3; /* Muted purple-gray for social icons */
+    text-decoration: none;
+    margin: 0 0.5rem;
+    font-size: 1rem;
+    display: inline-block;
+    padding: 0.5rem;
+    border: 1px solid #9197B3;
+    border-radius: 50%;
+  }
+  
+  .footer-section.social-media .social-icon:hover {
+    color: #EFB036; /* Vibrant yellow on hover */
+    border-color: #EFB036;
+  }
