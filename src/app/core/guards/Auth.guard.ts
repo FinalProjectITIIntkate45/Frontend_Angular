@@ -11,7 +11,7 @@ export const authGuard: CanActivateFn = (route, state) => {
   if (_AuthService.isLoggedUser()) {
     return true;
   } else {
-    alert('Sorry You Must login Frist');
+    alert('Sorry You Must login First');
     router.navigate(['/login', state.url]);
     return false;
   }
