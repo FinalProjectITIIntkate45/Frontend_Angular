@@ -17,29 +17,30 @@ export class AuthService {
   isLoggedUser(): boolean {
     return localStorage.getItem('Access_Token') !== null;
   }
-
   getToken(): string {
-    return localStorage.getItem('Access_Token') ?? '';
+    return localStorage.getItem('Access_Token') ?? ""
   }
 
   userLogin(token: string): void {
     localStorage.setItem('Access_Token', token);
     this.isLoggedUserSubject.next(true);
   }
+  userLogout() {
+    localStorage.removeItem('Access_Token')
+    this.isLoggedUserSubject.next(false)
+  }
+  getUserRole(): string {
+    const token = this.getToken();
+    if (!token) return '';
 
-  logout(): void {
-    localStorage.removeItem('Access_Token');
-    this.isLoggedUserSubject.next(false);
-    this.http.post(`${this.apiUrl}/Account/Logout`, {}).subscribe(() => {
-      // Handle logout logic (e.g., redirect to login page)
-    });
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload.role || '';
+    } catch (error) {
+      console.error('Invalid token format', error);
+      return '';
+    }
   }
 
-  getProfile(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/Account/GetProfile`);
-  }
 
-  getIsLoggedUser(): Observable<boolean> {
-    return this.isLoggedUserSubject.asObservable();
-  }
 }

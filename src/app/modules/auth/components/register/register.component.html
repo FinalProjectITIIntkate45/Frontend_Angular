@@ -2,7 +2,7 @@
     <div class="row w-75 shadow rounded overflow-hidden">
         <!-- Left Column (Image) -->
         <div class="col-md-6 d-none d-md-block p-0">
-            <img src="assets/register-side.jpg" alt="Register" class="img-fluid h-100 w-100 object-fit-cover">
+            <img src="src\assets\register-side.jpg" alt="Register" class="img-fluid h-100 w-100 object-fit-cover">
         </div>
 
         <!-- Right Column (Form) -->
@@ -28,6 +28,10 @@
                         required placeholder="Enter your password" />
                 </div>
 
+                <select [(ngModel)]="model.role" name="role" required>
+                    <option value="">Select Role</option>
+                    <option *ngFor="let r of roles" [value]="r">{{ r }}</option>
+                </select>
                 <button type="submit" class="btn btn-primary w-100">Register</button>
             </form>
 
