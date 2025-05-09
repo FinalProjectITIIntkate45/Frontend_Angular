@@ -1,18 +1,18 @@
-import { AuthService } from '../services/Auth.service';
-import { Router, type CanActivateFn } from '@angular/router';
-
 import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { AuthService } from '../services/Auth.service';
 
 export const authGuard: CanActivateFn = (route, state) => {
-  console.log(state.url);
-
-  const _AuthService = inject(AuthService);
+  const authService = inject(AuthService);
   const router = inject(Router);
-  if (_AuthService.isLoggedUser()) {
+
+  console.log('Attempted URL:', state.url);
+
+  if (authService.isLoggedUser()) {
     return true;
   } else {
-    alert('Sorry You Must login Frist');
-    router.navigate(['/login', state.url]);
+    alert('Sorry You Must login First');
+    router.navigate(['/auth/login'], { queryParams: { returnUrl: state.url } });
     return false;
   }
 };
