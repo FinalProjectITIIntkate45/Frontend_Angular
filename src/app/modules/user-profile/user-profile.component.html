@@ -1,0 +1,13 @@
+<div class="container">
+  <div class="aside">
+    <app-sidebar (sectionChange)="onSectionChange($event)"></app-sidebar>
+  </div>
+  <main class="main-content">
+    <nav class="top-nav">
+      <app-top-navigation></app-top-navigation>
+    </nav>
+    <div class="dynamic-section-content">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>

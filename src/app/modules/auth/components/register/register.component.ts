@@ -1,22 +1,54 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AccountService } from '../../services/account.service';
+import { UserRegisterViewModel } from '../../models/user-register.model';
 
 @Component({
+  standalone: false,
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
-  standalone: false,
 })
 export class RegisterComponent {
-  username = '';
-  email = '';
-  password = '';
+  model: UserRegisterViewModel = {
+    userName: '',
+    email: '',
+    phoneNumber: '',
+    password: '',
+    confirmPassword: '',
+    role: '', // We'll set a default or fetch from API
+  };
 
-  constructor(private router: Router) {}
+  roles: string[] = [];
+  errorMessage: string = '';
+
+  constructor(private accountService: AccountService, private router: Router) {}
+
+  ngOnInit() {
+    this.accountService.getRoles().subscribe({
+      next: (res) => {
+        this.roles = res.data;
+      },
+      error: (err) => {
+        console.error('Failed to load roles:', err);
+      },
+    });
+  }
 
   register() {
-    // Normally you'd call a registration API here
-    alert('User registered (simulate)');
-    this.router.navigate(['/login']);
+    this.accountService.register(this.model).subscribe({
+      next: (res) => {
+        if (res.success) {
+          alert('Registration successful!');
+          this.router.navigate(['/login']);
+        } else {
+          this.errorMessage = res.message;
+        }
+      },
+      error: (err) => {
+        console.error(err);
+        this.errorMessage = err.error?.message || 'Registration failed.';
+      },
+    });
   }
 }

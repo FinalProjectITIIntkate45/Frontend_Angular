@@ -1,0 +1,129 @@
+<div class="profile-header">
+  <h1>PROFILE</h1>
+  <p>Welcome back to your profile! Here's your activity summary.</p>
+</div>
+
+<div class="profile-content">
+  <div class="profile-left">
+    <div class="stats-cards">
+      <div class="stat-card">
+        <div class="card-icon cpu">
+          <i class="fas fa-wallet"></i>
+        </div>
+        <div class="card-content">
+          <h3>Your Wallet</h3>
+          <p>Balance: <strong>{{ profile?.balancePoints }} points</strong></p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="card-icon gpu">
+          <i class="fas fa-shopping-bag"></i>
+        </div>
+        <div class="card-content">
+          <h3>Recent Orders</h3>
+          <p>You have <strong>{{ ordersCount }}</strong> pending orders</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="card-icon motherboard">
+          <i class="fas fa-medal"></i>
+        </div>
+        <div class="card-content">
+          <h3>Loyalty Level</h3>
+          <p>{{ profile?.loyaltyLevel || 'Silver Member' }}</p>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="card-icon ram">
+          <i class="fas fa-recycle"></i>
+        </div>
+        <div class="card-content">
+          <h3>Recycling</h3>
+          <p>You earned <strong>{{ recyclingPoints }}</strong> points this month</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="browsing-history">
+      <div class="section-header">
+        <h2>BROWSING HISTORY</h2>
+        <p>Recently viewed products</p>
+      </div>
+
+      <div class="history-items">
+        <div class="history-item" *ngFor="let item of browsingHistory">
+          <div class="item-icon">
+            <i [class]="item.icon"></i>
+          </div>
+          <div class="item-details">
+            <h4>{{ item.name }}</h4>
+            <p>{{ item.category }}</p>
+          </div>
+          <button class="details-btn">Details</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="profile-right">
+    <div class="user-card">
+      <div class="user-avatar">
+        <img [src]="profile?.profileImg || 'assets/images/default-avatar.png'" alt="User Avatar">
+      </div>
+      <h2>{{ profile?.userName }}</h2>
+      <p>{{ profile?.email }}</p>
+
+      <div class="user-stats">
+        <div class="stat">
+          <div class="stat-value">{{ stats.browsedItems }}</div>
+          <div class="stat-label">Browsed Items</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">{{ stats.orders }}</div>
+          <div class="stat-label">Orders</div>
+        </div>
+      </div>
+
+      <div class="user-stats">
+        <div class="stat">
+          <div class="stat-value">{{ stats.favorites }}</div>
+          <div class="stat-label">Favorites</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">{{ stats.reviews }}</div>
+          <div class="stat-label">Reviews</div>
+        </div>
+      </div>
+
+      <div class="rank-info">
+        <h3>Your Rank</h3>
+        <p>Compared to other users</p>
+        <div class="progress-bar">
+          <div class="progress" [style.width]="rankProgress + '%'">{{ rankProgress }}%</div>
+        </div>
+      </div>
+
+      <div class="level-info">
+        <h3>Your Loyalty Level</h3>
+        <p>{{ profile?.loyaltyLevel || 'Silver Member' }} - Next level: Gold</p>
+        <div class="progress-bar">
+          <div class="progress" [style.width]="loyaltyProgress + '%'">{{ loyaltyProgress }}%</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cart-reminder">
+      <div class="reminder-icon">
+        <i class="fas fa-shopping-cart"></i>
+      </div>
+      <div class="reminder-text">
+        <h3>You have items in your cart</h3>
+        <p>Complete your purchase to earn points!</p>
+        <button class="view-cart-btn">View Cart <i class="fas fa-arrow-right"></i></button>
+      </div>
+    </div>
+  </div>
+</div>
