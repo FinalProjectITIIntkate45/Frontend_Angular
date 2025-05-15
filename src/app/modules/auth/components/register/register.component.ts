@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { AccountService } from '../../services/account.service';
 import { UserRegisterViewModel } from '../../models/user-register.model';
+import { Router } from '@angular/router';
 
 @Component({
   standalone: false,
