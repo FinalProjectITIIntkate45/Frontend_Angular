@@ -1,0 +1,58 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="General-card p-4">
+
+  <div class="mb-3">
+    <label>Product Name</label>
+    <input formControlName="name" class="General-custom-input" placeholder="Enter name" />
+  </div>
+
+  <div class="mb-3">
+    <label>Description</label>
+    <textarea formControlName="description" class="General-custom-input" rows="3"></textarea>
+  </div>
+
+  <div class="mb-3">
+    <label>Stock</label>
+    <input type="number" formControlName="stock" class="General-custom-input" />
+  </div>
+
+  <div class="mb-3">
+    <label>Base Price</label>
+    <input type="number" formControlName="basePrice" class="General-custom-input" />
+  </div>
+
+  <div class="mb-3">
+    <label>Points</label>
+    <input type="number" formControlName="points" class="General-custom-input" />
+  </div>
+
+  <div class="mb-3">
+    <label>Select Category</label>
+    <select formControlName="categoryId" class="General-custom-input"
+            (change)="onCategoryChange($event.target.value)">
+      <option [value]="null" disabled selected>Select...</option>
+      <option *ngFor="let cat of categories" [value]="cat.id">{{ cat.name }}</option>
+    </select>
+  </div>
+
+  <div class="mb-3 form-check">
+    <input type="checkbox" class="form-check-input" formControlName="isSpecialOffer" id="offer">
+    <label class="form-check-label" for="offer">Special Offer</label>
+  </div>
+
+  <!-- Dynamic Attributes -->
+  <div *ngFor="let attr of attributes" class="mb-3">
+    <label>{{ attr.name }}</label>
+    <input class="General-custom-input" [formControlName]="'attr_' + attr.id" />
+  </div>
+
+  <div class="mb-3">
+    <label>Product Images</label>
+    <input type="file" (change)="onFileChange($event)" class="General-custom-input" multiple />
+  </div>
+
+  <div class="text-end">
+    <button type="submit" class="General-hover-btn" [disabled]="form.invalid">
+      {{ isEditMode ? 'Update Product' : 'Create Product' }}
+    </button>
+  </div>
+</form>

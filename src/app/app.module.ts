@@ -9,26 +9,36 @@ import { AuthInterceptor } from './core/interceptors/AuthInterceptor';
 import { LoaderInterceptor } from './core/interceptors/loaderInterceptor';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { CookieService } from 'ngx-cookie-service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations:[
     AppComponent,
-    
+
   ],
   imports: [
     BrowserModule, // Required for running the app in the browser
     CommonModule,
     AppRoutingModule, // Handles routing
     FormsModule, // For template-driven forms
-    ReactiveFormsModule
+    ReactiveFormsModule ,
+    BrowserAnimationsModule, // مهم جدًا
+    ToastrModule.forRoot({
+      positionClass: 'toast-bottom-right',
+      timeOut: 3000,
+      closeButton: true,
+      progressBar: true
+    }),
   ],
+
 
   providers: [
     provideHttpClient(
       withFetch(),
       withInterceptors([AuthInterceptor,LoaderInterceptor])
     ),
-    CookieService,     
+    CookieService,
   ],
   bootstrap:[AppComponent]
   // Removed bootstrap array as AppComponent is a standalone component
