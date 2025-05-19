@@ -144,9 +144,7 @@ export class ProductFormPageComponent implements OnInit {
     formData.append('points', this.form.get('points')?.value);
     formData.append('categoryId', this.form.get('categoryId')?.value);
     formData.append('isSpecialOffer', this.form.get('isSpecialOffer')?.value);
-    formData.append('increaseRate', this.form.get('increaseRate')?.value ?? '');
     formData.append('discountPercentage', this.form.get('discountPercentage')?.value ?? '');
-
     const productAttrVms = this.attributes.map(attr => ({
       attributeId: attr.id,
       value: this.form.get(`attr_${attr.id}`)?.value
@@ -164,7 +162,7 @@ export class ProductFormPageComponent implements OnInit {
     action.subscribe({
       next: () => {
         alert(this.isEditMode ? 'Product updated successfully' : 'Product created successfully');
-        this.router.navigate(['/vendor/products']);
+        this.router.navigate(['/provider/products']);
       },
       error: err => console.error('Failed to save product', err)
     });

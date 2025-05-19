@@ -38,7 +38,7 @@ export class ProductListPageComponent implements OnInit {
     // Navigate or open edit modal here
   }
   viewProductDetails(id: number): void {
-  this.router.navigate(['/vendor/products/details', id]);
+  this.router.navigate(['/provider/products/details', id]);
 }
 
   deleteProduct(id: number): void {
