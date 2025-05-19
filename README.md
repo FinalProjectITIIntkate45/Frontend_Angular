@@ -59,10 +59,10 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
 
 
-# 📁 Project Structure: `my-angular-app`
+# 📁 Project Structure: `PointPay`
 
 ```text
-my-angular-app/
+PointPay/
 ├── src/
 │   ├── app/                           # Main application source code
 │   │   ├── core/                      # Singleton services and global utilities
