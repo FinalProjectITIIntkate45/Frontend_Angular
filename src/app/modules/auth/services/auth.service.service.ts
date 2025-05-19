@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
+import {
+  LoginRequest,
+  LoginResponse,
+  AuthState,
+} from '../../../core/models/auth.models';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
-import { AuthState, LoginResponse } from '../models/auth.models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   private readonly TOKEN_KEY = 'auth_token';
-  private readonly ROLE_KEY = 'role';
-  private readonly USERNAME_KEY = 'userName';
-
   private authState = new BehaviorSubject<AuthState>({
     isAuthenticated: false,
     user: null,
@@ -22,7 +23,7 @@ export class AuthService {
   }
 
   private initializeAuth() {
-    const token = this.getToken();
+    const token = this.cookieService.get(this.TOKEN_KEY);
     if (token) {
       const user = this.parseJwt(token);
       this.authState.next({
@@ -40,14 +41,14 @@ export class AuthService {
     return this.authState.asObservable();
   }
 
-  setUserData(response: LoginResponse): void {
+  userLogin(response: LoginResponse): void {
+    // Set cookie with token
     this.cookieService.set(this.TOKEN_KEY, response.token, {
       secure: true,
       sameSite: 'Strict',
     });
-    this.cookieService.set(this.ROLE_KEY, response.role);
-    this.cookieService.set(this.USERNAME_KEY, response.userName);
 
+    // Update auth state
     this.authState.next({
       isAuthenticated: true,
       user: {
@@ -65,28 +66,12 @@ export class AuthService {
     }
   }
 
-  getToken(): string | null {
-    return this.cookieService.get(this.TOKEN_KEY) || null;
-  }
-
-  isLoggedUser(): boolean {
-    return !!this.getToken();
-  }
-
-  getUserRole(): string {
-    return this.cookieService.get(this.ROLE_KEY) || '';
-  }
-
   logout(): void {
     this.cookieService.delete(this.TOKEN_KEY);
-    this.cookieService.delete(this.ROLE_KEY);
-    this.cookieService.delete(this.USERNAME_KEY);
-
     this.authState.next({
       isAuthenticated: false,
       user: null,
     });
-
     this.router.navigate(['/account/login']);
   }
 

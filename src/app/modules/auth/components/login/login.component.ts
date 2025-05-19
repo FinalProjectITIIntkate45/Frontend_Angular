@@ -1,6 +1,12 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../core/services/Auth.service';
+import { AccountService } from '../../services/account.service';
+
+interface LoginModel {
+  email: string;
+  password: string;
+}
 
 @Component({
   selector: 'app-login',
@@ -9,29 +15,54 @@ import { AuthService } from '../../../../core/services/Auth.service';
   standalone: false,
 })
 export class LoginComponent {
-  email: string = '';
-  password: string = '';
+  model: LoginModel = {
+    email: '',
+    password: '',
+  };
+  errorMessage: string = '';
+  loading: boolean = false;
+  showPassword: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private accountService: AccountService,
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
-  login() {
-    // Simulated successful login
-    const fakeToken = 'fake-jwt-token';
-    this.authService.userLogin(fakeToken);
-    this.router.navigate(['/']); // Or navigate to returnUrl if you want
-  }
   togglePassword() {
-    const passwordField = document.getElementById(
+    this.showPassword = !this.showPassword;
+    const passwordInput = document.getElementById(
       'password'
     ) as HTMLInputElement;
-    const eyeIcon = document.getElementById('eye-icon') as HTMLElement;
+    const eyeIcon = document.getElementById('eye-icon');
 
-    if (passwordField.type === 'password') {
-      passwordField.type = 'text';
-      eyeIcon.classList.add('fa-eye-slash');
-    } else {
-      passwordField.type = 'password';
-      eyeIcon.classList.remove('fa-eye-slash');
+    if (passwordInput) {
+      passwordInput.type = this.showPassword ? 'text' : 'password';
     }
+
+    if (eyeIcon) {
+      eyeIcon.className = this.showPassword ? 'fas fa-eye-slash' : 'fas fa-eye';
+    }
+  }
+
+  login() {
+    this.loading = true;
+    this.errorMessage = '';
+
+    this.accountService.login(this.model).subscribe({
+      next: (response: any) => {
+        this.authService.setUserData(response);
+        const role = this.authService.getUserRole();
+        if (role === 'Provider') {
+          this.router.navigate(['/provider']);
+        } else {
+          this.router.navigate(['/client']);
+        }
+      },
+      error: (error) => {
+        this.errorMessage = error.error?.message || 'Login failed';
+        this.loading = false;
+      },
+    });
   }
 }

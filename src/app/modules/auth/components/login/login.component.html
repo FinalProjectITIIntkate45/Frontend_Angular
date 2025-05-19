@@ -7,30 +7,42 @@
         </div>
         <div class="col-md-6 bg-primary text-white d-flex flex-column justify-content-center align-items-center p-5">
             <h2 class="text-center text-warning mb-4">Login</h2>
-            <form (ngSubmit)="login()">
+
+            <div *ngIf="errorMessage" class="alert alert-danger w-100 mb-3">
+                {{ errorMessage }}
+            </div>
+
+            <form (ngSubmit)="login()" #loginForm="ngForm" class="w-100">
                 <div class="mb-3">
                     <label for="email" class="form-label">E-Mail</label>
-                    <input type="email" id="email" class="form-control" [(ngModel)]="email" name="email"
-                        placeholder="Enter your email" required>
+                    <input type="email" id="email" class="form-control" [(ngModel)]="model.email" name="email" required
+                        email #emailInput="ngModel" [ngClass]="{'is-invalid': emailInput.invalid && emailInput.touched}"
+                        placeholder="Enter your email">
+                    <div class="invalid-feedback" *ngIf="emailInput.invalid && emailInput.touched">
+                        Please enter a valid email address
+                    </div>
                 </div>
+
                 <div class="mb-3 position-relative">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" id="password" class="form-control" [(ngModel)]="password" name="password"
-                        placeholder="Enter your password" required>
+                    <input [type]="showPassword ? 'text' : 'password'" id="password" class="form-control"
+                        [(ngModel)]="model.password" name="password" required #passwordInput="ngModel"
+                        [ngClass]="{'is-invalid': passwordInput.invalid && passwordInput.touched}"
+                        placeholder="Enter your password">
                     <span class="password-toggle position-absolute top-50 end-0 translate-middle-y pe-3"
                         (click)="togglePassword()">
                         <i id="eye-icon" class="fas fa-eye"></i>
                     </span>
                 </div>
-                <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="rememberMe">
-                    <label class="form-check-label" for="rememberMe">Remember me</label>
-                </div>
-                <button type="submit" class="btn btn-light w-100 mb-3">Log In</button>
-                <div id="loginMessage" class="text-center text-light"></div>
+
+                <button type="submit" class="btn btn-warning w-100 mb-3" [disabled]="loginForm.invalid || loading">
+                    {{ loading ? 'Logging in...' : 'Login' }}
+                </button>
+
                 <div class="text-center">
-                    <a href="ForgetPassword.html" class="text-light">Forgotten password?</a><br>
-                    <a [routerLink]="['/register']" class="text-warning">Create new account</a>
+                    <a routerLink="/account/forgot-password" class="text-light">Forgot password?</a>
+                    <br>
+                    <a routerLink="/account/register" class="text-warning">Create new account</a>
                 </div>
             </form>
         </div>
