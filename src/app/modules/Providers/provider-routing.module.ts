@@ -11,20 +11,20 @@ const routes: Routes = [
   {
     path: 'products/add',
     component: ProductFormPageComponent,
-    data: { mode: 'add', expectedRoles: ['Provider'] },
-    canActivate: [authGuard],
+    // data: { mode: 'add', expectedRoles: ['Provider'] },
+    // canActivate: [authGuard],
   },
   {
     path: 'products/edit/:id',
     component: ProductFormPageComponent,
-    data: { mode: 'edit', expectedRoles: ['Provider'] },
-    canActivate: [authGuard],
+    // data: { mode: 'edit', expectedRoles: ['Provider'] },
+    // canActivate: [authGuard],
   },
   {
     path: 'products/details/:id',
     component: ProductDetailsPageComponent,
-    data: { expectedRoles: ['Provider'] },
-    canActivate: [authGuard]
+    // data: { expectedRoles: ['Provider'] },
+    // canActivate: [authGuard]
   }
 
 

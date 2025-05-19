@@ -46,6 +46,6 @@ export class ProductDetailsPageComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/vendor/products']); // ✅ زر الرجوع
+    this.router.navigate(['/provider/products']); // ✅ زر الرجوع
   }
 }
