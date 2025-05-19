@@ -3,9 +3,9 @@ import { AuthService } from '../../../../core/services/Auth.service';
 
 @Component({
   selector: 'app-sidebar',
-  standalone:false,
+  standalone: false,
   templateUrl: './sidebar.component.html',
-  styleUrls: []
+  styleUrls: [],
 })
 export class SidebarComponent {
   @Output() sectionChange = new EventEmitter<string>();
@@ -19,6 +19,6 @@ export class SidebarComponent {
   }
 
   logout() {
-    this.authService.userLogout();
+    this.authService.logout();
   }
 }

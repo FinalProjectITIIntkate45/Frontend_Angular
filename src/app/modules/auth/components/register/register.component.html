@@ -24,8 +24,8 @@
 
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" id="password" name="password" class="form-control" [(ngModel)]="model.password"
-                        required placeholder="Enter your password" />
+                    <input type="password" id="password" name="password" class="form-control"
+                        [(ngModel)]="model.password" required placeholder="Enter your password" />
                 </div>
 
                 <select [(ngModel)]="model.role" name="role" required>
@@ -36,7 +36,7 @@
             </form>
 
             <div class="text-center mt-3">
-                <a routerLink="/login">Already have an account? Login</a>
+                <a routerLink="/account/login">Already have an account? Login</a>
             </div>
         </div>
     </div>

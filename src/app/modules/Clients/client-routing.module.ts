@@ -10,6 +10,8 @@ import { DonationsSectionComponent } from './components/donations-section/donati
 import { WishlistSectionComponent } from './components/wishlist-section/wishlist-section.component'; // تصحيح الاسم
 import { SettingsSectionComponent } from './components/settings-section/settings-section.component'; // تصحيح الاسم
 import { AchievementsSectionComponent } from './components/achievements-section/achievements-section.component';
+import { ProductSearchComponent } from './components/product-search/product-search.component';
+import { ProductDetailsComponent } from './components/product-details/product-details.component';
 
 const routes: Routes = [
   {
@@ -28,6 +30,8 @@ const routes: Routes = [
       { path: 'settings', component: SettingsSectionComponent },
     ],
   },
+  { path: 'products', component: ProductSearchComponent },
+  { path: 'products/:id', component: ProductDetailsComponent },
 ];
 
 @NgModule({

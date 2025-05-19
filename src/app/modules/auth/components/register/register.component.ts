@@ -1,53 +1,64 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AccountService } from '../../services/account.service';
 import { UserRegisterViewModel } from '../../models/user-register.model';
 import { Router } from '@angular/router';
 
 @Component({
-  standalone: false,
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.css'],
+  standalone: false,
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
   model: UserRegisterViewModel = {
     userName: '',
     email: '',
     phoneNumber: '',
     password: '',
     confirmPassword: '',
-    role: '', // We'll set a default or fetch from API
+    role: '',
   };
 
   roles: string[] = [];
+  loading: boolean = false;
   errorMessage: string = '';
 
   constructor(private accountService: AccountService, private router: Router) {}
 
   ngOnInit() {
+    this.loadRoles();
+  }
+
+  private loadRoles() {
     this.accountService.getRoles().subscribe({
-      next: (res) => {
-        this.roles = res.data;
+      next: (roles) => {
+        this.roles = roles.filter((role) => role !== 'Admin'); // Exclude Admin role from registration
       },
-      error: (err) => {
-        console.error('Failed to load roles:', err);
+      error: (error) => {
+        console.error('Failed to load roles:', error);
+        this.errorMessage = 'Failed to load available roles';
       },
     });
   }
 
   register() {
+    if (this.model.password !== this.model.confirmPassword) {
+      this.errorMessage = 'Passwords do not match';
+      return;
+    }
+
+    this.loading = true;
+    this.errorMessage = '';
+
     this.accountService.register(this.model).subscribe({
-      next: (res) => {
-        if (res.success) {
-          alert('Registration successful!');
-          this.router.navigate(['/login']);
-        } else {
-          this.errorMessage = res.message;
-        }
+      next: (response) => {
+        this.router.navigate(['/account/login'], {
+          queryParams: { registered: 'true' },
+        });
       },
-      error: (err) => {
-        console.error(err);
-        this.errorMessage = err.error?.message || 'Registration failed.';
+      error: (error) => {
+        this.errorMessage = error.error?.message || 'Registration failed';
+        this.loading = false;
       },
     });
   }
