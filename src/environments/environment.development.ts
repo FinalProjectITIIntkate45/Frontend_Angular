@@ -1,6 +1,6 @@
 export const environment = {
-  production: true,
+  production: false,
   // apiUrl: 'https://api.pointpay.com.ng/api/v1'
   mvcUrl: 'http://localhost:5277/',
-  apiUrl: 'http://localhost:5037//api',
+  apiUrl: 'http://localhost:5037/api',
 };

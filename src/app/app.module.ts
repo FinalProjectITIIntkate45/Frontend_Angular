@@ -17,42 +17,29 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
-<<<<<<< HEAD
   declarations: [AppComponent],
-=======
-  declarations:[
-    AppComponent,
-
-  ],
->>>>>>> d9bf3feb5dddd515a28e552535b5ca98709470d7
   imports: [
-    BrowserModule, // Required for running the app in the browser
+    BrowserModule,
     CommonModule,
-    AppRoutingModule, // Handles routing
-    FormsModule, // For template-driven forms
-<<<<<<< HEAD
+    AppRoutingModule,
+    FormsModule,
     ReactiveFormsModule,
-=======
-    ReactiveFormsModule ,
-    BrowserAnimationsModule, // مهم جدًا
+    BrowserAnimationsModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right',
       timeOut: 3000,
       closeButton: true,
-      progressBar: true
+      progressBar: true,
     }),
->>>>>>> d9bf3feb5dddd515a28e552535b5ca98709470d7
   ],
-
-
   providers: [
     provideHttpClient(
       withFetch(),
       withInterceptors([AuthInterceptor, LoaderInterceptor])
     ),
     CookieService,
+    provideAnimationsAsync(),
   ],
   bootstrap: [AppComponent],
-  // Removed bootstrap array as AppComponent is a standalone component
 })
 export class AppModule {}

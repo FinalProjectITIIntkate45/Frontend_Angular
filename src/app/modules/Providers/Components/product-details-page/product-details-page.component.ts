@@ -23,28 +23,27 @@ export class ProductDetailsPageComponent implements OnInit {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.productService.getById(+id).subscribe(p => {
+      this.productService.getById(+id).subscribe((p) => {
         this.product = p;
         this.isLoading = false;
       });
     }
   }
 
- deleteProduct(): void {
-  if (confirm('Are you sure you want to delete this product?')) {
-    this.productService.deleteProduct(this.product.id).subscribe({
-      next: () => {
-        this.toastr .success('Product deleted successfully ✅');
-        this.router.navigate(['/vendor/products']);
-      },
-      error: err => {
-        console.error('Failed to delete product', err);
-        this.toastr.error('Failed to delete product ❌');
-      }
-    });
+  deleteProduct(): void {
+    if (confirm('Are you sure you want to delete this product?')) {
+      this.productService.deleteProduct(this.product.id).subscribe({
+        next: () => {
+          this.toastr.success('Product deleted successfully ✅');
+          this.router.navigate(['/vendor/products']);
+        },
+        error: (err) => {
+          console.error('Failed to delete product', err);
+          this.toastr.error('Failed to delete product ❌');
+        },
+      });
+    }
   }
-}
-
 
   goBack(): void {
     this.router.navigate(['/vendor/products']); // ✅ زر الرجوع

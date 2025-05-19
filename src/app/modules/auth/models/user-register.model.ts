@@ -4,5 +4,13 @@ export interface UserRegisterViewModel {
   phoneNumber: string;
   password: string;
   confirmPassword: string;
-  role: string;
+  role: 'Client' | 'Provider';
+}
+
+export interface UserRegisterRequest {
+  userName: string;
+  email: string;
+  phoneNumber: string;
+  password: string;
+  role: 'Client' | 'Provider';
 }

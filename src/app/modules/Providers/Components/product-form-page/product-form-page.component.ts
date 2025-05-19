@@ -12,7 +12,8 @@ import { ProductAttribute } from '../../../../core/models/product-attribute.mode
 @Component({
   selector: 'app-product-form-page',
   templateUrl: './product-form-page.component.html',
-  styleUrls: ['./product-form-page.component.scss']
+  styleUrls: ['./product-form-page.component.css'],
+  standalone: false,
 })
 export class ProductFormPageComponent implements OnInit {
   form!: FormGroup;
@@ -32,7 +33,7 @@ export class ProductFormPageComponent implements OnInit {
     private productService: ProductService,
     private route: ActivatedRoute,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -45,10 +46,10 @@ export class ProductFormPageComponent implements OnInit {
       isSpecialOffer: [false],
       increaseRate: [],
       discountPercentage: [],
-      attachments: [null]
+      attachments: [null],
     });
 
-    this.route.paramMap.subscribe(params => {
+    this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
       if (id) {
         this.isEditMode = true;
@@ -61,33 +62,53 @@ export class ProductFormPageComponent implements OnInit {
   }
 
   loadCategories(): void {
-    this.categoryService.getAllCategories().subscribe(cats => {
+    this.categoryService.getAllCategories().subscribe((cats) => {
       this.categories = cats;
     });
   }
 
-  onCategoryChange(categoryId: number, existingValues: ProductAttribute[] = []): void {
-    this.attributeService.getAttributesByCategory(categoryId).subscribe(attrs => {
-      this.attributes = attrs;
+  onCategoryChange(
+    event: Event | number,
+    existingValues: ProductAttribute[] = []
+  ): void {
+    let categoryId: number;
 
-      attrs.forEach(attr => {
-        const controlName = `attr_${attr.id}`;
-        if (!this.form.contains(controlName)) {
-          this.form.addControl(controlName, this.fb.control('', Validators.required));
-        }
+    if (event instanceof Event) {
+      const select = event.target as HTMLSelectElement;
+      categoryId = Number(select.value);
+    } else {
+      categoryId = event;
+    }
 
-        // إذا كنا في وضع التعديل ووجدنا قيمة سابقة لها نفس الاسم
-        const matched = existingValues.find(val => val.name === attr.name);
-        if (matched) {
-          this.form.get(controlName)?.setValue(matched.value);
-        }
-      });
-    });
+    if (categoryId) {
+      this.attributeService
+        .getAttributesByCategory(categoryId)
+        .subscribe((attrs) => {
+          this.attributes = attrs;
+
+          attrs.forEach((attr) => {
+            const controlName = `attr_${attr.id}`;
+            if (!this.form.contains(controlName)) {
+              this.form.addControl(
+                controlName,
+                this.fb.control('', Validators.required)
+              );
+            }
+
+            const matched = existingValues.find(
+              (val) => val.name === attr.name
+            );
+            if (matched) {
+              this.form.get(controlName)?.setValue(matched.value);
+            }
+          });
+        });
+    }
   }
 
   loadProductData(id: number): void {
     this.isLoading = true;
-    this.productService.getById(id).subscribe(product => {
+    this.productService.getById(id).subscribe((product) => {
       this.isLoading = false;
 
       this.form.patchValue({
@@ -100,7 +121,6 @@ export class ProductFormPageComponent implements OnInit {
         isSpecialOffer: product.isSpecialOffer,
       });
 
-
       // تحميل خصائص الكاتيجوري مع تعبئة القيم الموجودة
       this.onCategoryChange(product.categoryId, product.attributes ?? []);
     });
@@ -112,7 +132,7 @@ export class ProductFormPageComponent implements OnInit {
       this.attachments = Array.from(files);
 
       this.imagePreviews = [];
-      this.attachments.forEach(file => {
+      this.attachments.forEach((file) => {
         const reader = new FileReader();
         reader.onload = (e: any) => {
           this.imagePreviews.push(e.target.result);
@@ -145,15 +165,18 @@ export class ProductFormPageComponent implements OnInit {
     formData.append('categoryId', this.form.get('categoryId')?.value);
     formData.append('isSpecialOffer', this.form.get('isSpecialOffer')?.value);
     formData.append('increaseRate', this.form.get('increaseRate')?.value ?? '');
-    formData.append('discountPercentage', this.form.get('discountPercentage')?.value ?? '');
+    formData.append(
+      'discountPercentage',
+      this.form.get('discountPercentage')?.value ?? ''
+    );
 
-    const productAttrVms = this.attributes.map(attr => ({
+    const productAttrVms = this.attributes.map((attr) => ({
       attributeId: attr.id,
-      value: this.form.get(`attr_${attr.id}`)?.value
+      value: this.form.get(`attr_${attr.id}`)?.value,
     }));
     formData.append('productAttrVms', JSON.stringify(productAttrVms));
 
-    this.attachments.forEach(file => {
+    this.attachments.forEach((file) => {
       formData.append('attachments', file);
     });
 
@@ -163,10 +186,14 @@ export class ProductFormPageComponent implements OnInit {
 
     action.subscribe({
       next: () => {
-        alert(this.isEditMode ? 'Product updated successfully' : 'Product created successfully');
+        alert(
+          this.isEditMode
+            ? 'Product updated successfully'
+            : 'Product created successfully'
+        );
         this.router.navigate(['/vendor/products']);
       },
-      error: err => console.error('Failed to save product', err)
+      error: (err) => console.error('Failed to save product', err),
     });
   }
 }

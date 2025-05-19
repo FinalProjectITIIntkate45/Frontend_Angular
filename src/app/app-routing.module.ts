@@ -6,7 +6,7 @@ import { ProviderLayoutComponent } from './modules/Providers/Components/provider
 import { authGuard } from './core/guards/Auth.guard';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '', redirectTo: 'account/register', pathMatch: 'full' },
   {
     path: 'account',
     loadChildren: () =>

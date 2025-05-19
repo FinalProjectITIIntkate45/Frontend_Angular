@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { AccountService } from '../../services/account.service';
-import { UserRegisterViewModel } from '../../models/user-register.model';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AccountService } from '../../services/account.service';
+import {
+  UserRegisterViewModel,
+  UserRegisterRequest,
+} from '../../models/user-register.model';
 
 @Component({
   selector: 'app-register',
@@ -9,55 +12,100 @@ import { Router } from '@angular/router';
   styleUrls: ['./register.component.css'],
   standalone: false,
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent {
   model: UserRegisterViewModel = {
     userName: '',
     email: '',
     phoneNumber: '',
     password: '',
     confirmPassword: '',
-    role: '',
+    role: 'Client',
   };
 
-  roles: string[] = [];
   loading: boolean = false;
   errorMessage: string = '';
+  showPassword: boolean = false;
 
   constructor(private accountService: AccountService, private router: Router) {}
 
-  ngOnInit() {
-    this.loadRoles();
+  setRole(role: 'Client' | 'Provider') {
+    this.model.role = role;
   }
 
-  private loadRoles() {
-    this.accountService.getRoles().subscribe({
-      next: (roles) => {
-        this.roles = roles.filter((role) => role !== 'Admin'); // Exclude Admin role from registration
-      },
-      error: (error) => {
-        console.error('Failed to load roles:', error);
-        this.errorMessage = 'Failed to load available roles';
-      },
-    });
+  togglePassword() {
+    this.showPassword = !this.showPassword;
+  }
+
+  validatePasswords(): boolean {
+    return (
+      this.model.password !== '' &&
+      this.model.confirmPassword !== '' &&
+      this.model.password === this.model.confirmPassword &&
+      this.model.password.length >= 6
+    );
+  }
+
+  validateForm(): boolean {
+    if (!this.model.userName || !this.model.email || !this.model.phoneNumber) {
+      this.errorMessage = 'Please fill in all required fields';
+      return false;
+    }
+
+    if (!this.validatePasswords()) {
+      this.errorMessage =
+        'Password and Confirm Password must match and be at least 6 characters';
+      return false;
+    }
+
+    return true;
   }
 
   register() {
-    if (this.model.password !== this.model.confirmPassword) {
-      this.errorMessage = 'Passwords do not match';
+    this.errorMessage = '';
+
+    if (!this.validateForm()) {
       return;
     }
 
     this.loading = true;
-    this.errorMessage = '';
 
-    this.accountService.register(this.model).subscribe({
-      next: (response) => {
+    // Map view model to API request model
+    const registerRequest: UserRegisterRequest = {
+      userName: this.model.userName.trim(),
+      email: this.model.email.trim().toLowerCase(),
+      phoneNumber: this.model.phoneNumber.trim(),
+      password: this.model.password,
+      role: this.model.role,
+    };
+
+    console.log('Sending registration request:', {
+      ...registerRequest,
+      password: '[HIDDEN]',
+    });
+
+    this.accountService.register(registerRequest).subscribe({
+      next: () => {
+        console.log('Registration successful');
         this.router.navigate(['/account/login'], {
           queryParams: { registered: 'true' },
         });
       },
       error: (error) => {
-        this.errorMessage = error.error?.message || 'Registration failed';
+        console.error('Registration error:', error);
+        if (error.status === 400) {
+          this.errorMessage =
+            error.error?.message ||
+            error.error?.errors?.join(', ') ||
+            'Invalid registration data';
+        } else if (error.status === 0) {
+          this.errorMessage =
+            'Unable to connect to the server. Please try again later.';
+        } else {
+          this.errorMessage = 'Registration failed. Please try again.';
+        }
+        this.loading = false;
+      },
+      complete: () => {
         this.loading = false;
       },
     });
