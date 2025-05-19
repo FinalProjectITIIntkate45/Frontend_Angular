@@ -35,7 +35,7 @@ export class ProductDetailsPageComponent implements OnInit {
       this.productService.deleteProduct(this.product.id).subscribe({
         next: () => {
           this.toastr.success('Product deleted successfully ✅');
-          this.router.navigate(['/vendor/products']);
+          this.router.navigate(['/provider/products']);
         },
         error: (err) => {
           console.error('Failed to delete product', err);
