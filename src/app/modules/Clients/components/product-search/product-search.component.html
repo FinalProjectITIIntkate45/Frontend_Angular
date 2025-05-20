@@ -1,0 +1,60 @@
+<div class="product-search-container">
+  <div class="filters-section">
+    <h3>Filters</h3>
+    <div class="filter-group">
+      <label>Category:</label>
+      <select [(ngModel)]="filter.category" (change)="searchProducts()">
+        <option value="">All Categories</option>
+        <option *ngFor="let cat of categories" [value]="cat">{{cat}}</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>Price Range:</label>
+      <div class="range-inputs">
+        <input type="number" [(ngModel)]="filter.minPrice" placeholder="Min">
+        <input type="number" [(ngModel)]="filter.maxPrice" placeholder="Max">
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <label>Points Range:</label>
+      <div class="range-inputs">
+        <input type="number" [(ngModel)]="filter.minPoints" placeholder="Min">
+        <input type="number" [(ngModel)]="filter.maxPoints" placeholder="Max">
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <label>Sort By:</label>
+      <select [(ngModel)]="filter.sortBy" (change)="searchProducts()">
+        <option value="price_asc">Price: Low to High</option>
+        <option value="price_desc">Price: High to Low</option>
+        <option value="points_desc">Most Points</option>
+        <option value="rating_desc">Highest Rated</option>
+      </select>
+    </div>
+
+    <button (click)="searchProducts()" class="apply-btn">Apply Filters</button>
+    <button (click)="clearFilters()" class="clear-btn">Clear Filters</button>
+  </div>
+
+  <div class="products-grid">
+    <div *ngIf="loading" class="loading">Loading products...</div>
+    <div *ngIf="error" class="error">{{error}}</div>
+
+    <div *ngFor="let product of products" class="product-card" [routerLink]="['/client/products', product.id]">
+      <img [src]="product.imageUrl" [alt]="product.name">
+      <div class="product-info">
+        <h3>{{product.name}}</h3>
+        <p class="price">${{product.price}}</p>
+        <p class="points">{{product.points}} points</p>
+        <p class="shop">{{product.shopName}}</p>
+        <div class="rating">
+          <span class="stars">★★★★★</span>
+          <span class="rating-value">{{product.rating}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

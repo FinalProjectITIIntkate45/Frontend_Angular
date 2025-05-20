@@ -1,46 +1,101 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
+import { AuthState, LoginResponse } from '../models/auth.models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = environment.apiUrl;
-  private isLoggedUserSubject: BehaviorSubject<boolean>;
+  [x: string]: any;
+  private readonly TOKEN_KEY = 'auth_token';
+  private readonly ROLE_KEY = 'role';
+  private readonly USERNAME_KEY = 'userName';
 
-  constructor(private http: HttpClient) {
-    this.isLoggedUserSubject = new BehaviorSubject<boolean>(this.isLoggedUser());
+  private authState = new BehaviorSubject<AuthState>({
+    isAuthenticated: false,
+    user: null,
+  });
+
+  constructor(private cookieService: CookieService, private router: Router) {
+    this.initializeAuth();
   }
 
-  isLoggedUser(): boolean {
-    return localStorage.getItem('Access_Token') !== null;
-  }
-  getToken(): string {
-    return localStorage.getItem('Access_Token') ?? ""
-  }
-
-  userLogin(token: string): void {
-    localStorage.setItem('Access_Token', token);
-    this.isLoggedUserSubject.next(true);
-  }
-  userLogout() {
-    localStorage.removeItem('Access_Token')
-    this.isLoggedUserSubject.next(false)
-  }
-  getUserRole(): string {
+  private initializeAuth() {
     const token = this.getToken();
-    if (!token) return '';
-
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      return payload.role || '';
-    } catch (error) {
-      console.error('Invalid token format', error);
-      return '';
+    if (token) {
+      const user = this.parseJwt(token);
+      this.authState.next({
+        isAuthenticated: true,
+        user: {
+          userName: user.name,
+          email: user.email,
+          role: user.role,
+        },
+      });
     }
   }
 
+  getAuthState(): Observable<AuthState> {
+    return this.authState.asObservable();
+  }
 
+  setUserData(response: LoginResponse): void {
+    this.cookieService.set(this.TOKEN_KEY, response.token, {
+      secure: true,
+      sameSite: 'Strict',
+    });
+    this.cookieService.set(this.ROLE_KEY, response.role);
+    this.cookieService.set(this.USERNAME_KEY, response.userName);
+
+    this.authState.next({
+      isAuthenticated: true,
+      user: {
+        userName: response.userName,
+        email: response.email,
+        role: response.role,
+      },
+    });
+
+    // Navigate based on role
+    if (response.role === 'Provider') {
+      this.router.navigate(['/provider']);
+    } else {
+      this.router.navigate(['/client']);
+    }
+  }
+
+  getToken(): string | null {
+    return this.cookieService.get(this.TOKEN_KEY) || null;
+  }
+
+  isLoggedUser(): boolean {
+    return !!this.getToken();
+  }
+
+  getUserRole(): string {
+    return this.cookieService.get(this.ROLE_KEY) || '';
+  }
+
+  logout(): void {
+    this.cookieService.delete(this.TOKEN_KEY);
+    this.cookieService.delete(this.ROLE_KEY);
+    this.cookieService.delete(this.USERNAME_KEY);
+
+    this.authState.next({
+      isAuthenticated: false,
+      user: null,
+    });
+
+    this.router.navigate(['/account/login']);
+  }
+
+  private parseJwt(token: string) {
+    try {
+      return JSON.parse(atob(token.split('.')[1]));
+    } catch (e) {
+      return null;
+    }
+  }
 }
