@@ -60,7 +60,7 @@ body {
   font-weight: 600;
 }
 
-.wishlist-icon {
+/* .wishlist-icon {
   position: absolute;
   top:.validators.required10px;
   right: 10px;
@@ -74,7 +74,7 @@ body {
   color: #ff4d4d;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   cursor: pointer;
-}
+} */
 
 .product-details {
   padding: 1rem;

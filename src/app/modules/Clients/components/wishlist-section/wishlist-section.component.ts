@@ -56,15 +56,12 @@ export class WishlistSectionComponent implements OnInit {
   }
 
   addToBag(productId: number) {
-    // هنا يمكنك إضافة وظيفة لإضافة المنتج إلى السلة
     console.log(`Added product ${productId} to bag`);
-    // يمكنك استدعاء خدمة أخرى لإضافة المنتج إلى السلة إذا كانت متوفرة
   }
 
   submitSpecialRequest() {
     if (this.specialRequestForm.valid) {
       console.log('Special Request Submitted:', this.specialRequestForm.value);
-      // يمكنك هنا إضافة طلب HTTP لإرسال الطلب الخاص إلى الـ API إذا كان لديك نقطة نهاية لهذا الغرض
       this.specialRequestForm.reset();
     } else {
       this.errorMessage = 'Please fill all required fields';

@@ -26,7 +26,7 @@ const routes: Routes = [
     component: ProductDetailsPageComponent,
     // data: { expectedRoles: ['Provider'] },
     // canActivate: [authGuard]
-  }
+  },
 { path: 'add-shop', component: AddShopComponent },
   { path: 'edit-shop/:id', component: EditShopComponent }
 
