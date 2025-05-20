@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { UserProfileComponent } from './user-profile.component';
 import { ProfileSectionComponent } from './components/profile-section/profile-section.component';
 import { WalletSectionComponent } from './components/wallet-section/wallet-section.component';
@@ -12,6 +13,7 @@ import { WishlistSectionComponent } from './components/wishlist-section/wishlist
 import { AchievementsSectionComponent } from './components/Achievements-section/achievements-section.component';
 import { SettingsSectionComponent } from './components/settings-section/settings-section.component';
 import { SharedModule } from '../../shared/shared.module';
+import { WishlistComponent } from '../../wishlist/wishlist.component';
 import { UserProfileRoutingModule } from './route/user-profile-routing.module';
 
 @NgModule({
@@ -26,12 +28,14 @@ import { UserProfileRoutingModule } from './route/user-profile-routing.module';
     WishlistSectionComponent,
     AchievementsSectionComponent,
     SettingsSectionComponent,
+    WishlistComponent
   ],
   imports: [
     CommonModule,
     RouterModule,
     SharedModule,
     UserProfileRoutingModule,
+    FormsModule,
   ],
   exports: [UserProfileComponent],
 })
