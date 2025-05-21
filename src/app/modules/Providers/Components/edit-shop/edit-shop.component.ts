@@ -8,7 +8,8 @@ import { AuthService } from '../../../../core/services/Auth.service';
 @Component({
   selector: 'app-edit-shop',
   templateUrl: './edit-shop.component.html',
-  styleUrls: ['./edit-shop.component.css']
+  styleUrls: ['./edit-shop.component.css'],
+  standalone: false,
 })
 export class EditShopComponent implements OnInit {
   shopForm: FormGroup;
@@ -26,7 +27,7 @@ export class EditShopComponent implements OnInit {
       description: ['', Validators.required],
       address: ['', Validators.required],
       contactDetails: ['', Validators.required],
-      logo: [null]
+      logo: [null],
     });
     this.shopId = +this.route.snapshot.paramMap.get('id')!;
   }
@@ -37,8 +38,8 @@ export class EditShopComponent implements OnInit {
 
   loadShopDetails() {
     this.shopService.getShopById(this.shopId).subscribe({
-      next: (shop: { [key: string]: any; }) => this.shopForm.patchValue(shop),
-      error: (_err: any) => this.errorMessage = 'Failed to load shop details'
+      next: (shop: { [key: string]: any }) => this.shopForm.patchValue(shop),
+      error: (_err: any) => (this.errorMessage = 'Failed to load shop details'),
     });
   }
 
@@ -52,12 +53,12 @@ export class EditShopComponent implements OnInit {
         address: formValue.address,
         contactDetails: formValue.contactDetails,
         logo: formValue.logo,
-        providerId: this.authService['getUserId']() 
+        providerId: this.authService['getUserId'](),
       };
 
       this.shopService.updateShop(model).subscribe({
-        next: (msg: string) => this.errorMessage = msg,
-        error: (err: any) => this.errorMessage = 'Failed to update shop'
+        next: (msg: string) => (this.errorMessage = msg),
+        error: (err: any) => (this.errorMessage = 'Failed to update shop'),
       });
     } else {
       this.errorMessage = 'Please fill all required fields';
