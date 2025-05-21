@@ -29,7 +29,7 @@ export class AuthService {
       this.authState.next({
         isAuthenticated: true,
         user: {
-          userName: user.name,
+          userName: user.userName,
           email: user.email,
           role: user.role,
         },
@@ -47,23 +47,16 @@ export class AuthService {
       sameSite: 'Strict',
     });
     this.cookieService.set(this.ROLE_KEY, response.role);
-    this.cookieService.set(this.USERNAME_KEY, response.userName);
+    this.cookieService.set(this.USERNAME_KEY, response.username);
 
     this.authState.next({
       isAuthenticated: true,
       user: {
-        userName: response.userName,
+        userName: response.username,
         email: response.email,
         role: response.role,
       },
     });
-
-    // Navigate based on role
-    if (response.role === 'Provider') {
-      this.router.navigate(['/provider']);
-    } else {
-      this.router.navigate(['/client']);
-    }
   }
 
   getToken(): string | null {

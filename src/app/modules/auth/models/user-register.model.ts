@@ -3,7 +3,7 @@ export interface UserRegisterViewModel {
   email: string;
   phoneNumber: string;
   password: string;
-  confirmPassword: string;
+  PasswordConfirmed: string;
   role: 'Client' | 'Provider';
 }
 
@@ -12,5 +12,6 @@ export interface UserRegisterRequest {
   email: string;
   phoneNumber: string;
   password: string;
+  PasswordConfirmed: string;
   role: 'Client' | 'Provider';
 }

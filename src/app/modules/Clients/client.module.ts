@@ -7,7 +7,6 @@ import { DrdersSectionComponent } from './components/orders-section/orders-secti
 import { PointsSectionComponent } from './components/points-section/points-section.component';
 import { RecyclingSectionComponent } from './components/recycling-section/recycling-section.component';
 import { DonationsSectionComponent } from './components/donations-section/donations-section.component';
-import { WishlistSectionComponent } from './components/wishlist-section/wishlist-section.component';
 import { SettingsSectionComponent } from './components/settings-section/settings-section.component';
 import { SharedModule } from '../../shared/shared.module';
 import { ClientRoutingModule } from './client-routing.module';
@@ -18,15 +17,16 @@ import {
   withInterceptors,
 } from '@angular/common/http';
 import { ClientLayoutComponent } from './components/client-layout/client-layout.component';
-import { UserFooterComponent } from './components/user-footer/user-footer.component';
 import { UserNavComponent } from './components/user-nav/user-nav.component';
 import { TopNavigationComponent } from './components/top-navigation/top-navigation.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { AuthInterceptor } from '../../core/interceptors/AuthInterceptor';
 import { LoaderInterceptor } from '../../core/interceptors/loaderInterceptor';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProductSearchComponent } from './components/product-search/product-search.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
+import { WishlistSectionComponent } from './components/wishlist-section/wishlist-section.component';
+import { UserFooterComponent } from './components/user-footer/user-footer.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +46,13 @@ import { ProductDetailsComponent } from './components/product-details/product-de
     ProductSearchComponent,
     ProductDetailsComponent,
   ],
-  imports: [CommonModule, SharedModule, ClientRoutingModule, FormsModule,WishlistSectionComponent,UserFooterComponent],
+  imports: [
+    CommonModule,
+    SharedModule,
+    ClientRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
   providers: [
     provideHttpClient(
       withFetch(),

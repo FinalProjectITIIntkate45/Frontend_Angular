@@ -6,7 +6,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-wishlist-section',
   templateUrl: './wishlist-section.component.html',
-  styleUrls: ['./wishlist-section.component.css']
+  styleUrls: ['./wishlist-section.component.css'],
+  standalone: false,
 })
 export class WishlistSectionComponent implements OnInit {
   wishlistItems: WishlistItem[] = [];
@@ -20,7 +21,7 @@ export class WishlistSectionComponent implements OnInit {
     this.specialRequestForm = this.fb.group({
       productName: ['', Validators.required],
       productDescription: ['', Validators.required],
-      priceRange: ['', Validators.required]
+      priceRange: ['', Validators.required],
     });
   }
 
@@ -30,8 +31,8 @@ export class WishlistSectionComponent implements OnInit {
 
   loadWishlist() {
     this.wishlistService.getWishlist().subscribe({
-      next: (data) => this.wishlistItems = data,
-      error: (err) => this.errorMessage = 'Failed to load wishlist'
+      next: (data) => (this.wishlistItems = data),
+      error: (err) => (this.errorMessage = 'Failed to load wishlist'),
     });
   }
 
@@ -41,7 +42,7 @@ export class WishlistSectionComponent implements OnInit {
         this.errorMessage = msg;
         this.loadWishlist();
       },
-      error: (err) => this.errorMessage = 'Failed to delete product'
+      error: (err) => (this.errorMessage = 'Failed to delete product'),
     });
   }
 
@@ -51,7 +52,7 @@ export class WishlistSectionComponent implements OnInit {
         this.errorMessage = msg;
         this.loadWishlist();
       },
-      error: (err) => this.errorMessage = 'Failed to clear wishlist'
+      error: (err) => (this.errorMessage = 'Failed to clear wishlist'),
     });
   }
 
