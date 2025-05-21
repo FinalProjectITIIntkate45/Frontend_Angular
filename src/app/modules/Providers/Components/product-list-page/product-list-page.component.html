@@ -1,0 +1,17 @@
+<div class="container py-4">
+  <div class="row">
+    <div
+      class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4"
+      *ngFor="let product of products"
+    >
+      <app-product-card
+        [product]="product"
+        (onEdit)="editProduct(product)"
+        (onDelete)="deleteProduct(product.id)"
+        (onView)="viewProductDetails(product.id)">
+
+        >
+      </app-product-card>
+    </div>
+  </div>
+</div>

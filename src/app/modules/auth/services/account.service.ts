@@ -1,30 +1,28 @@
 // src/app/services/account.service.ts
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { UserRegisterViewModel } from '../models/user-register.model';
-import { Observable } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, catchError, throwError } from 'rxjs';
+import { environment } from '../../../../environments/environment.development';
+import { LoginRequest, LoginResponse } from '../../../core/models/auth.models';
+import { UserRegisterRequest } from '../models/user-register.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AccountService {
-  private readonly apiUrl = 'https://localhost:7109/api/Account'; // Change if port differs
+  private http = inject(HttpClient);
+  private readonly apiUrl = `${environment.apiUrl}/Account`;
 
-  constructor(private http: HttpClient) {}
-
-  register(user: UserRegisterViewModel): Observable<any> {
-    return this.http.post(`${this.apiUrl}/Register`, user);
+  register(user: UserRegisterRequest): Observable<any> {
+    return this.http.post(`${this.apiUrl}/Register`, user).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('API Error:', error);
+        return throwError(() => error);
+      })
+    );
   }
 
-  login(data: { method: string; password: string }): Observable<any> {
-    return this.http.post(`${this.apiUrl}/Login`, data);
-  }
-
-  getRoles(): Observable<any> {
-    return this.http.get(`${this.apiUrl}/GetRoles`);
-  }
-
-  logout(): Observable<any> {
-    return this.http.post(`${this.apiUrl}/Logout`, {});
+  login(credentials: LoginRequest): Observable<LoginResponse> {
+    return this.http.post<LoginResponse>(`${this.apiUrl}/Login`, credentials);
   }
 }

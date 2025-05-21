@@ -12,7 +12,11 @@ import { SettingsSectionComponent } from './components/settings-section/settings
 import { SharedModule } from '../../shared/shared.module';
 import { ClientRoutingModule } from './client-routing.module';
 import { AchievementsSectionComponent } from './components/achievements-section/achievements-section.component';
-import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withFetch,
+  withInterceptors,
+} from '@angular/common/http';
 import { ClientLayoutComponent } from './components/client-layout/client-layout.component';
 import { UserFooterComponent } from './components/user-footer/user-footer.component';
 import { UserNavComponent } from './components/user-nav/user-nav.component';
@@ -20,8 +24,9 @@ import { TopNavigationComponent } from './components/top-navigation/top-navigati
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { AuthInterceptor } from '../../core/interceptors/AuthInterceptor';
 import { LoaderInterceptor } from '../../core/interceptors/loaderInterceptor';
-import { BrowserModule } from '@angular/platform-browser';
-
+import { FormsModule } from '@angular/forms';
+import { ProductSearchComponent } from './components/product-search/product-search.component';
+import { ProductDetailsComponent } from './components/product-details/product-details.component';
 
 @NgModule({
   declarations: [
@@ -40,21 +45,15 @@ import { BrowserModule } from '@angular/platform-browser';
     ClientLayoutComponent,
     UserFooterComponent,
     UserNavComponent,
-    
-    
-
+    ProductSearchComponent,
+    ProductDetailsComponent,
   ],
-  imports: [
-    CommonModule,
-    SharedModule,
-    ClientRoutingModule,
-    BrowserModule
-  ],
-  providers:[
+  imports: [CommonModule, SharedModule, ClientRoutingModule, FormsModule],
+  providers: [
     provideHttpClient(
       withFetch(),
-      withInterceptors([AuthInterceptor,LoaderInterceptor])
+      withInterceptors([AuthInterceptor, LoaderInterceptor])
     ),
-  ]
+  ],
 })
 export class ClientModule {}
