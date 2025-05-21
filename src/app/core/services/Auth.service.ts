@@ -8,6 +8,7 @@ import { AuthState, LoginResponse } from '../models/auth.models';
   providedIn: 'root',
 })
 export class AuthService {
+  [x: string]: any;
   private readonly TOKEN_KEY = 'auth_token';
   private readonly ROLE_KEY = 'role';
   private readonly USERNAME_KEY = 'userName';

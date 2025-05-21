@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../../../../core/services/product.service';
 import { Product } from '../../../../core/models/product.model';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-product-details-page',
@@ -10,14 +9,15 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./product-details-page.component.css'],
 })
 export class ProductDetailsPageComponent implements OnInit {
+  [x: string]: any;
   product!: Product;
   isLoading = true;
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router, // ✅ أضفناها
+    private router: Router,
     private productService: ProductService,
-    private toastr: ToastrService
+
   ) {}
 
   ngOnInit(): void {
@@ -34,18 +34,18 @@ export class ProductDetailsPageComponent implements OnInit {
     if (confirm('Are you sure you want to delete this product?')) {
       this.productService.deleteProduct(this.product.id).subscribe({
         next: () => {
-          this.toastr.success('Product deleted successfully ✅');
+          this['toastr'].success('Product deleted successfully ');
           this.router.navigate(['/provider/products']);
         },
         error: (err) => {
           console.error('Failed to delete product', err);
-          this.toastr.error('Failed to delete product ❌');
+          this['toastr'].error('Failed to delete product ');
         },
       });
     }
   }
 
   goBack(): void {
-    this.router.navigate(['/provider/products']); // ✅ زر الرجوع
+    this.router.navigate(['/provider/products']);
   }
 }

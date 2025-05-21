@@ -15,10 +15,12 @@ import { ProviderLayoutComponent } from './Components/provider-layout/provider-l
 import { AuthInterceptor } from '../../core/interceptors/AuthInterceptor';
 import { LoaderInterceptor } from '../../core/interceptors/loaderInterceptor';
 import { ProductFormPageComponent } from './Components/product-form-page/product-form-page.component';
+import { EditShopComponent } from './Components/edit-shop/edit-shop.component';
 
 @NgModule({
   declarations: [
     AddShopComponent,
+    EditShopComponent,
     ProviderSidebarComponent,
     ProviderLayoutComponent,
     ProductFormPageComponent,
