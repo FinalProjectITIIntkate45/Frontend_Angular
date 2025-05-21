@@ -10,6 +10,7 @@ import { DonationsSectionComponent } from './components/donations-section/donati
 import { WishlistSectionComponent } from './components/wishlist-section/wishlist-section.component'; // تصحيح الاسم
 import { SettingsSectionComponent } from './components/settings-section/settings-section.component'; // تصحيح الاسم
 import { AchievementsSectionComponent } from './components/achievements-section/achievements-section.component';
+import { CartComponent } from './components/cart/cart.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,7 @@ const routes: Routes = [
       { path: 'wishlist', component: WishlistSectionComponent },
       { path: 'achievements', component: AchievementsSectionComponent },
       { path: 'settings', component: SettingsSectionComponent },
+      { path: 'Card', component: CartComponent },
     ],
   },
 ];

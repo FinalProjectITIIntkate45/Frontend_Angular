@@ -20,6 +20,8 @@ import { TopNavigationComponent } from './components/top-navigation/top-navigati
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { AuthInterceptor } from '../../core/interceptors/AuthInterceptor';
 import { LoaderInterceptor } from '../../core/interceptors/loaderInterceptor';
+import { BrowserModule } from '@angular/platform-browser';
+
 
 @NgModule({
   declarations: [
@@ -38,11 +40,15 @@ import { LoaderInterceptor } from '../../core/interceptors/loaderInterceptor';
     ClientLayoutComponent,
     UserFooterComponent,
     UserNavComponent,
+    
+    
+
   ],
   imports: [
     CommonModule,
     SharedModule,
     ClientRoutingModule,
+    BrowserModule
   ],
   providers:[
     provideHttpClient(
