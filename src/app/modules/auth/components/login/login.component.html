@@ -14,22 +14,23 @@
 
             <form (ngSubmit)="login()" #loginForm="ngForm" class="w-100">
                 <div class="mb-3">
-                    <label for="email" class="form-label">E-Mail</label>
-                    <input type="email" id="email" class="form-control" [(ngModel)]="model.email" name="email" required
-                        email #emailInput="ngModel" [ngClass]="{'is-invalid': emailInput.invalid && emailInput.touched}"
-                        placeholder="Enter your email">
-                    <div class="invalid-feedback" *ngIf="emailInput.invalid && emailInput.touched">
-                        Please enter a valid email address
+                    <label for="Method" class="form-label">E-Mail</label>
+                    <input type="Method" id="Method" class="form-control" [(ngModel)]="model.Method" name="Method"
+                        required Method #MethodInput="ngModel"
+                        [ngClass]="{'is-invalid': MethodInput.invalid && MethodInput.touched}"
+                        placeholder="Enter your Method">
+                    <div class="invalid-feedback" *ngIf="MethodInput.invalid && MethodInput.touched">
+                        Please enter a valid Method address
                     </div>
                 </div>
 
                 <div class="mb-3 position-relative">
-                    <label for="password" class="form-label">Password</label>
-                    <input [type]="showPassword ? 'text' : 'password'" id="password" class="form-control"
-                        [(ngModel)]="model.password" name="password" required #passwordInput="ngModel"
-                        [ngClass]="{'is-invalid': passwordInput.invalid && passwordInput.touched}"
-                        placeholder="Enter your password">
-                    <span class="password-toggle position-absolute top-50 end-0 translate-middle-y pe-3"
+                    <label for="Password" class="form-label">Password</label>
+                    <input [type]="showPassword ? 'text' : 'Password'" id="Password" class="form-control"
+                        [(ngModel)]="model.Password" name="Password" required #PasswordInput="ngModel"
+                        [ngClass]="{'is-invalid': PasswordInput.invalid && PasswordInput.touched}"
+                        placeholder="Enter your Password">
+                    <span class="Password-toggle position-absolute top-50 end-0 translate-middle-y pe-3"
                         (click)="togglePassword()">
                         <i id="eye-icon" class="fas fa-eye"></i>
                     </span>
@@ -40,7 +41,7 @@
                 </button>
 
                 <div class="text-center">
-                    <a routerLink="/account/forgot-password" class="text-light">Forgot password?</a>
+                    <a routerLink="/account/forgot-Password" class="text-light">Forgot Password?</a>
                     <br>
                     <a routerLink="/account/register" class="text-warning">Create new account</a>
                 </div>

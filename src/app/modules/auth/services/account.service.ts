@@ -5,6 +5,7 @@ import { Observable, catchError, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
 import { LoginRequest, LoginResponse } from '../../../core/models/auth.models';
 import { UserRegisterRequest } from '../models/user-register.model';
+import { APIResponse } from '../../../core/models/APIResponse';
 
 @Injectable({
   providedIn: 'root',
@@ -22,7 +23,10 @@ export class AccountService {
     );
   }
 
-  login(credentials: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.apiUrl}/Login`, credentials);
+  login(credentials: LoginRequest): Observable<APIResponse<LoginResponse>> {
+    return this.http.post<APIResponse<LoginResponse>>(
+      `${this.apiUrl}/Login`,
+      credentials
+    );
   }
 }

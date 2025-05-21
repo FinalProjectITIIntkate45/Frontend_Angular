@@ -18,7 +18,7 @@ export class RegisterComponent {
     email: '',
     phoneNumber: '',
     password: '',
-    confirmPassword: '',
+    PasswordConfirmed: '',
     role: 'Client',
   };
 
@@ -39,8 +39,8 @@ export class RegisterComponent {
   validatePasswords(): boolean {
     return (
       this.model.password !== '' &&
-      this.model.confirmPassword !== '' &&
-      this.model.password === this.model.confirmPassword &&
+      this.model.PasswordConfirmed !== '' &&
+      this.model.password === this.model.PasswordConfirmed &&
       this.model.password.length >= 6
     );
   }
@@ -75,6 +75,7 @@ export class RegisterComponent {
       email: this.model.email.trim().toLowerCase(),
       phoneNumber: this.model.phoneNumber.trim(),
       password: this.model.password,
+      PasswordConfirmed: this.model.PasswordConfirmed,
       role: this.model.role,
     };
 

@@ -63,13 +63,13 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="confirmPassword" class="form-label">Confirm Password</label>
-                    <input type="password" id="confirmPassword" name="confirmPassword" class="form-control"
-                        [(ngModel)]="model.confirmPassword" #confirmPassword="ngModel" required
-                        [ngClass]="{'is-invalid': (confirmPassword.dirty || confirmPassword.touched) && !validatePasswords()}"
+                    <label for="PasswordConfirmed" class="form-label">Confirm Password</label>
+                    <input type="password" id="PasswordConfirmed" name="PasswordConfirmed" class="form-control"
+                        [(ngModel)]="model.PasswordConfirmed" #PasswordConfirmed="ngModel" required
+                        [ngClass]="{'is-invalid': (PasswordConfirmed.dirty || PasswordConfirmed.touched) && !validatePasswords()}"
                         placeholder="Confirm your password" />
                     <div class="invalid-feedback"
-                        *ngIf="(confirmPassword.dirty || confirmPassword.touched) && !validatePasswords()">
+                        *ngIf="(PasswordConfirmed.dirty || PasswordConfirmed.touched) && !validatePasswords()">
                         Passwords must match and be at least 6 characters
                     </div>
                 </div>
