@@ -39,16 +39,14 @@ import { ProductDetailsComponent } from './components/product-details/product-de
     PointsSectionComponent,
     RecyclingSectionComponent,
     DonationsSectionComponent,
-    WishlistSectionComponent,
     AchievementsSectionComponent,
     SettingsSectionComponent,
     ClientLayoutComponent,
-    UserFooterComponent,
     UserNavComponent,
     ProductSearchComponent,
     ProductDetailsComponent,
   ],
-  imports: [CommonModule, SharedModule, ClientRoutingModule, FormsModule],
+  imports: [CommonModule, SharedModule, ClientRoutingModule, FormsModule,WishlistSectionComponent,UserFooterComponent],
   providers: [
     provideHttpClient(
       withFetch(),
