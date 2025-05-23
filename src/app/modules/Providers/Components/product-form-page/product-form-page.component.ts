@@ -1,19 +1,26 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Category } from '../../../../core/models/category.model';
 import { CategoryAttribute } from '../../../../core/models/category-attribute.model';
 import { CategoryService } from '../../../../core/services/category.service';
 import { AttributeService } from '../../../../core/services/attribute.service';
 import { ProductService } from '../../../../core/services/product.service';
-import { Product } from '../../../../core/models/product.model';
 import { ProductAttribute } from '../../../../core/models/product-attribute.model';
+import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
+  standalone: true,
   selector: 'app-product-form-page',
   templateUrl: './product-form-page.component.html',
   styleUrls: ['./product-form-page.component.css'],
-  standalone: false,
+  imports: [CommonModule, ReactiveFormsModule],
 })
 export class ProductFormPageComponent implements OnInit {
   form!: FormGroup;
@@ -22,9 +29,10 @@ export class ProductFormPageComponent implements OnInit {
   attachments: File[] = [];
   imagePreviews: string[] = [];
 
-  isEditMode: boolean = false;
+  isEditMode = false;
   productId!: number;
-  isLoading: boolean = false;
+  isLoading = false;
+  stepIndex = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -32,87 +40,152 @@ export class ProductFormPageComponent implements OnInit {
     private attributeService: AttributeService,
     private productService: ProductService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
-  ngOnInit(): void {
-    this.form = this.fb.group({
-      name: ['', Validators.required],
-      description: ['', Validators.required],
-      stock: [1, Validators.required],
-      basePrice: [1, Validators.required],
-      points: [1, Validators.required],
-      categoryId: [null, Validators.required],
-      isSpecialOffer: [false],
-      increaseRate: [],
-      discountPercentage: [],
-      attachments: [null],
-    });
+ngOnInit(): void {
+  const savedDraft = localStorage.getItem('productDraft');
 
-    this.route.paramMap.subscribe((params) => {
-      const id = params.get('id');
-      if (id) {
-        this.isEditMode = true;
-        this.productId = +id;
-        this.loadProductData(this.productId);
-      }
-    });
+  this.form = this.fb.group({
+    name: ['', Validators.required],
+    description: ['', Validators.required],
+    stock: [1, Validators.required],
+    basePrice: [1, Validators.required],
+    points: [1, Validators.required],
+    categoryId: [null, Validators.required],
+    isSpecialOffer: [false],
+    increaseRate: [],
+    discountPercentage: [],
+    attachments: [null],
+  });
 
-    this.loadCategories();
+  // ✅ Apply draft if available
+  if (savedDraft) {
+    this.form.patchValue(JSON.parse(savedDraft));
+    this.toastr.info('Draft loaded automatically');
   }
 
-  loadCategories(): void {
-  this.categoryService.getAllCategories().subscribe((cats) => {
-    this.categories = cats;
-    console.log('📦 Categories loaded:', cats); // ✅ تأكد إنها بترجع
+  // ✅ Auto save draft
+  this.form.valueChanges.subscribe(() => {
+    localStorage.setItem('productDraft', JSON.stringify(this.form.getRawValue()));
   });
+
+  // ✅ Watch for category change
+  this.form.get('categoryId')?.valueChanges.subscribe((newCategoryId) => {
+    if (!this.isEditMode) {
+      this.onCategoryChange(newCategoryId);
+    }
+  });
+
+  // ✅ Edit mode setup
+  this.route.paramMap.subscribe((params) => {
+    const id = params.get('id');
+    if (id) {
+      this.isEditMode = true;
+      this.productId = +id;
+      this.loadProductData(this.productId);
+    }
+  });
+
+  this.loadCategories();
 }
 
 
-  onCategoryChange(
-    event: Event | number,
-    existingValues: ProductAttribute[] = []
-  ): void {
-    let categoryId: number;
+  loadCategories(): void {
+    this.categoryService.getAllCategories().subscribe((cats) => {
+      this.categories = cats;
 
-    if (event instanceof Event) {
-      const select = event.target as HTMLSelectElement;
-      categoryId = Number(select.value);
-    } else {
-      categoryId = event;
-    }
-
-    if (categoryId) {
-      this.attributeService
-        .getAttributesByCategory(categoryId)
-        .subscribe((attrs) => {
-          this.attributes = attrs;
-
-          attrs.forEach((attr) => {
-            const controlName = `attr_${attr.id}`;
-            if (!this.form.contains(controlName)) {
-              this.form.addControl(
-                controlName,
-                this.fb.control('', Validators.required)
-              );
-            }
-
-            const matched = existingValues.find(
-              (val) => val.name === attr.name
-            );
-            if (matched) {
-              this.form.get(controlName)?.setValue(matched.value);
-            }
-          });
-        });
-    }
+      if (this.categories.length > 0 && !this.isEditMode) {
+        const defaultCategoryId = this.categories[0].Id;
+        this.onCategoryChange(defaultCategoryId);
+      }
+    });
   }
+
+  // onCategoryChange(event: Event | number, existingValues: ProductAttribute[] = []): void {
+  //   let categoryId: number;
+
+  //   if (event instanceof Event) {
+  //     const select = event.target as HTMLSelectElement;
+  //     categoryId = Number(select.value);
+  //   } else {
+  //     categoryId = event;
+  //   }
+
+  //   if (!categoryId || isNaN(categoryId)) return;
+
+  //   this.attributes.forEach((attr) => {
+  //     const controlName = `attr_${attr.id}`;
+  //     if (this.form.contains(controlName)) {
+  //       this.form.removeControl(controlName);
+  //     }
+  //   });
+
+  //   this.attributeService.getAttributesByCategory(categoryId).subscribe((attrs) => {
+  //     this.attributes = attrs;
+
+  //     attrs.forEach((attr) => {
+  //       const controlName = `attr_${attr.id}`;
+  //       this.form.addControl(controlName, this.fb.control('', Validators.required));
+
+  //       const matched = existingValues.find((val) => val.name === attr.name);
+  //       if (matched) {
+  //         this.form.get(controlName)?.setValue(matched.value);
+  //       }
+  //     });
+  //   });
+  // }
+onCategoryChange(event: Event | number, existingValues: ProductAttribute[] = []): void {
+  let categoryId: number;
+
+  if (event instanceof Event) {
+    const select = event.target as HTMLSelectElement;
+    categoryId = Number(select.value);
+  } else {
+    categoryId = event;
+  }
+
+  if (!categoryId || isNaN(categoryId)) return;
+
+  console.log('🔁 Changing category to:', categoryId);
+
+  // 🧹 Remove old attribute controls
+  this.attributes.forEach(attr => {
+    const controlName = `attr_${attr.Id}`;
+    if (this.form.contains(controlName)) {
+      this.form.removeControl(controlName);
+    }
+  });
+
+  // 🧠 Fetch new attributes
+  this.attributeService.getAttributesByCategory(categoryId).subscribe({
+    next: attrs => {
+      console.log('✅ Loaded new attributes:', attrs);
+      this.attributes = attrs || [];
+
+      this.attributes.forEach(attr => {
+        const controlName = `attr_${attr.Id}`;
+        this.form.addControl(controlName, this.fb.control('', Validators.required));
+
+        const matched = existingValues.find(val => val.name === attr.Name);
+        if (matched) {
+          this.form.get(controlName)?.setValue(matched.value);
+        }
+      });
+    },
+    error: err => {
+      console.error('❌ Failed to load attributes:', err);
+      this.attributes = [];
+    }
+  });
+}
+
 
   loadProductData(id: number): void {
     this.isLoading = true;
     this.productService.getById(id).subscribe((product) => {
       this.isLoading = false;
-
       this.form.patchValue({
         name: product.name,
         description: product.description,
@@ -122,8 +195,6 @@ export class ProductFormPageComponent implements OnInit {
         categoryId: product.categoryId,
         isSpecialOffer: product.isSpecialOffer,
       });
-
-      // تحميل خصائص الكاتيجوري مع تعبئة القيم الموجودة
       this.onCategoryChange(product.categoryId, product.attributes ?? []);
     });
   }
@@ -132,13 +203,11 @@ export class ProductFormPageComponent implements OnInit {
     const files = event.target.files;
     if (files.length > 0) {
       this.attachments = Array.from(files);
-
       this.imagePreviews = [];
+
       this.attachments.forEach((file) => {
         const reader = new FileReader();
-        reader.onload = (e: any) => {
-          this.imagePreviews.push(e.target.result);
-        };
+        reader.onload = (e: any) => this.imagePreviews.push(e.target.result);
         reader.readAsDataURL(file);
       });
     }
@@ -154,11 +223,39 @@ export class ProductFormPageComponent implements OnInit {
     this.attributes = [];
     this.attachments = [];
     this.imagePreviews = [];
+    this.stepIndex = 0;
+    localStorage.removeItem('productDraft');
+  }
+
+  nextStep(): void {
+    if (this.stepIndex < 2) this.stepIndex++;
+  }
+
+  prevStep(): void {
+    if (this.stepIndex > 0) this.stepIndex--;
+  }
+
+  canProceed(step: number): boolean {
+    if (step === 0) {
+      return (
+        !!this.form.get('name')?.valid &&
+        !!this.form.get('description')?.valid &&
+        !!this.form.get('stock')?.valid &&
+        !!this.form.get('basePrice')?.valid &&
+        !!this.form.get('points')?.valid
+      );
+    }
+    if (step === 1) {
+      return !!this.form.get('categoryId')?.valid;
+    }
+    return true;
   }
 
   onSubmit(): void {
-    const formData = new FormData();
+    if (this.form.invalid) return;
+    this.isLoading = true;
 
+    const formData = new FormData();
     formData.append('name', this.form.get('name')?.value);
     formData.append('description', this.form.get('description')?.value);
     formData.append('stock', this.form.get('stock')?.value);
@@ -173,8 +270,8 @@ export class ProductFormPageComponent implements OnInit {
     );
 
     const productAttrVms = this.attributes.map((attr) => ({
-      attributeId: attr.id,
-      value: this.form.get(`attr_${attr.id}`)?.value,
+      attributeId: attr.Id,
+      value: this.form.get(`attr_${attr.Id}`)?.value,
     }));
     formData.append('productAttrVms', JSON.stringify(productAttrVms));
 
@@ -188,14 +285,19 @@ export class ProductFormPageComponent implements OnInit {
 
     action.subscribe({
       next: () => {
-        alert(
+        this.toastr.success(
           this.isEditMode
             ? 'Product updated successfully'
             : 'Product created successfully'
         );
+        localStorage.removeItem('productDraft');
         this.router.navigate(['/Provider/products']);
       },
-      error: (err) => console.error('Failed to save product', err),
+      error: (err) => {
+        this.toastr.error('Failed to save product');
+        console.error('Failed to save product', err);
+        this.isLoading = false;
+      },
     });
   }
 }

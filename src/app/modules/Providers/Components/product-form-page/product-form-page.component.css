@@ -26,3 +26,6 @@
   background: #ccc;
   cursor: not-allowed;
 }
+.position-absolute.z-3 {
+  z-index: 1050;
+}

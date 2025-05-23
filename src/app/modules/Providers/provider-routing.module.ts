@@ -1,23 +1,24 @@
-import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
-import { AddShopComponent } from "./Components/add-shop/add-shop.component";
-import { ProductFormPageComponent } from "./Components/product-form-page/product-form-page.component";
-import { authGuard } from "../../core/guards/Auth.guard";
-import { ProductDetailsPageComponent } from "./Components/product-details-page/product-details-page.component";
-import { EditShopComponent } from "./Components/edit-shop/edit-shop.component";
-import { Subscription } from "rxjs";
-import { ProductListPageComponent } from "./Components/product-list-page/product-list-page.component";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { AddShopComponent } from './Components/add-shop/add-shop.component';
+import { ProductFormPageComponent } from './Components/product-form-page/product-form-page.component';
+import { authGuard } from '../../core/guards/Auth.guard';
+import { ProductDetailsPageComponent } from './Components/product-details-page/product-details-page.component';
+import { EditShopComponent } from './Components/edit-shop/edit-shop.component';
+import { Subscription } from 'rxjs';
+import { ProductListPageComponent } from './Components/product-list-page/product-list-page.component';
 
 const routes: Routes = [
   { path: 'add-shop', component: AddShopComponent },
   { path: 'suscrption', component: Subscription },
 
   //   { path: 'add-product', component:  },
-  { path: 'products', component:ProductListPageComponent  },
+  { path: 'products', component: ProductListPageComponent },
+  // provider-routing.module.ts
   {
     path: 'products/add',
     component: ProductFormPageComponent,
-    // data: { mode: 'add', expectedRoles: ['Provider'] },
+    // data: { expectedRoles: ['Provider'] },
     // canActivate: [authGuard],
   },
   {
@@ -33,13 +34,12 @@ const routes: Routes = [
     // canActivate: [authGuard]
   },
 
-{ path: 'add-shop', component: AddShopComponent },
-  { path: 'edit-shop/:id', component: EditShopComponent }
-
+  { path: 'add-shop', component: AddShopComponent },
+  { path: 'edit-shop/:id', component: EditShopComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class ProviderRoutingModule { }
+export class ProviderRoutingModule {}

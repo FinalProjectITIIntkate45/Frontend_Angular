@@ -24,7 +24,7 @@ import { EditShopComponent } from './Components/edit-shop/edit-shop.component';
     EditShopComponent,
     ProviderSidebarComponent,
     ProviderLayoutComponent,
-    ProductFormPageComponent,
+    // ProductFormPageComponent,
     // ProductDetailsPageComponent,
 
   ],
@@ -33,6 +33,7 @@ import { EditShopComponent } from './Components/edit-shop/edit-shop.component';
     FormsModule,
     ReactiveFormsModule,
     ProviderRoutingModule,
+    ProductFormPageComponent
   ],
   providers: [
     provideHttpClient(
