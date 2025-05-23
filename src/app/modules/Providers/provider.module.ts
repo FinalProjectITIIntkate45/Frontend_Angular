@@ -35,11 +35,6 @@ import { EditShopComponent } from './Components/edit-shop/edit-shop.component';
     ProviderRoutingModule,
     ProductFormPageComponent
   ],
-  providers: [
-    provideHttpClient(
-      withFetch(),
-      withInterceptors([AuthInterceptor, LoaderInterceptor])
-    ),
-  ],
+  
 })
 export class ProdiverModule {}

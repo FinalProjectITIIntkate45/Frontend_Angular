@@ -12,7 +12,7 @@ export const routes: Routes = [
     path: 'user-profile',
     canActivate: [authGuard],
     loadChildren: () =>
-      import('./modules/user-profile/user-profile.module').then((m) => m.UserProfileModule),
+      import('./modules/Clients/components/user-profile/user-profile.component').then((m) => m.UserProfileComponent),
   },
- 
+
 ];
