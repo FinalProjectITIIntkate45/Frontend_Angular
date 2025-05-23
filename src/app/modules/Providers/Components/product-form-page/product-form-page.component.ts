@@ -191,7 +191,7 @@ export class ProductFormPageComponent implements OnInit {
             ? 'Product updated successfully'
             : 'Product created successfully'
         );
-        this.router.navigate(['/vendor/products']);
+        this.router.navigate(['/Provider/products']);
       },
       error: (err) => console.error('Failed to save product', err),
     });
