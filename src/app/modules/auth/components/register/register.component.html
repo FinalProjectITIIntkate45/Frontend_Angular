@@ -1,0 +1,108 @@
+<div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center bg-light">
+    <div class="row w-75 shadow rounded overflow-hidden">
+        <!-- Left Column (Image) -->
+        <div class="col-md-6 d-none d-md-block p-0">
+            <img src="assets/register-side.jpg" alt="Register" class="img-fluid h-100 w-100 object-fit-cover">
+        </div>
+
+        <!-- Right Column (Form) -->
+        <div class="col-md-6 bg-white p-5">
+            <h3 class="mb-4 text-center">Create an Account</h3>
+
+            <div *ngIf="errorMessage" class="alert alert-danger">
+                {{ errorMessage }}
+            </div>
+
+            <form (ngSubmit)="register()" #registerForm="ngForm">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Full Name</label>
+                    <input type="text" id="username" name="username" class="form-control" [(ngModel)]="model.userName"
+                        #userName="ngModel" required minlength="3"
+                        [ngClass]="{'is-invalid': userName.invalid && userName.touched}"
+                        placeholder="Enter your full name" />
+                    <div class="invalid-feedback" *ngIf="userName.invalid && userName.touched">
+                        Please enter a valid name (minimum 3 characters)
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email address</label>
+                    <input type="email" id="email" name="email" class="form-control" [(ngModel)]="model.email"
+                        #email="ngModel" required email [ngClass]="{'is-invalid': email.invalid && email.touched}"
+                        placeholder="Enter your email" />
+                    <div class="invalid-feedback" *ngIf="email.invalid && email.touched">
+                        Please enter a valid email address
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Phone Number</label>
+                    <input type="tel" id="phone" name="phone" class="form-control" [(ngModel)]="model.phoneNumber"
+                        #phone="ngModel" required pattern="^01[0-2,5]{1}[0-9]{8}$"
+                        [ngClass]="{'is-invalid': phone.invalid && phone.touched}"
+                        placeholder="Enter your phone number" />
+                    <div class="invalid-feedback" *ngIf="phone.invalid && phone.touched">
+                        Please enter a valid Egyptian phone number
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <div class="input-group">
+                        <input [type]="showPassword ? 'text' : 'password'" id="password" name="password"
+                            class="form-control" [(ngModel)]="model.password" #password="ngModel" required minlength="6"
+                            [ngClass]="{'is-invalid': password.invalid && (password.dirty || password.touched)}"
+                            placeholder="Enter your password" />
+                        <span class="input-group-text" (click)="togglePassword()">
+                            <i [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                        </span>
+                        <div class="invalid-feedback" *ngIf="password.invalid && (password.dirty || password.touched)">
+                            Password must be at least 6 characters long
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="PasswordConfirmed" class="form-label">Confirm Password</label>
+                    <input type="password" id="PasswordConfirmed" name="PasswordConfirmed" class="form-control"
+                        [(ngModel)]="model.PasswordConfirmed" #PasswordConfirmed="ngModel" required
+                        [ngClass]="{'is-invalid': (PasswordConfirmed.dirty || PasswordConfirmed.touched) && !validatePasswords()}"
+                        placeholder="Confirm your password" />
+                    <div class="invalid-feedback"
+                        *ngIf="(PasswordConfirmed.dirty || PasswordConfirmed.touched) && !validatePasswords()">
+                        Passwords must match and be at least 6 characters
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label d-block">Account Type</label>
+                    <div class="btn-group w-100" role="group">
+                        <input type="radio" class="btn-check" name="role" id="clientRole"
+                            [checked]="model.role === 'Client'" (change)="setRole('Client')" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="clientRole">
+                            <i class="fas fa-user me-2"></i>Client
+                        </label>
+
+                        <input type="radio" class="btn-check" name="role" id="providerRole"
+                            [checked]="model.role === 'Provider'" (change)="setRole('Provider')" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="providerRole">
+                            <i class="fas fa-store me-2"></i>Provider
+                        </label>
+                    </div>
+                    <div class="invalid-feedback d-block" *ngIf="errorMessage === 'Please select an account type'">
+                        Please select an account type
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 mb-3"
+                    [disabled]="registerForm.invalid || loading || !validatePasswords()">
+                    {{ loading ? 'Creating Account...' : 'Register' }}
+                </button>
+            </form>
+
+            <div class="text-center mt-3">
+                <a routerLink="/account/login">Already have an account? Login</a>
+            </div>
+        </div>
+    </div>
+</div>

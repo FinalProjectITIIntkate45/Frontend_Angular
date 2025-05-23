@@ -1,0 +1,35 @@
+<div class="product-details-container" *ngIf="product">
+  <div class="product-images">
+    <img [src]="product.imageUrl" [alt]="product.name">
+  </div>
+
+  <div class="product-info">
+    <h1>{{product.name}}</h1>
+    <div class="shop-info">
+      <span>Sold by {{product.shopName}}</span>
+    </div>
+
+    <div class="rating">
+      <span class="stars">★★★★★</span>
+      <span class="rating-value">{{product.rating}}</span>
+    </div>
+
+    <div class="price-points">
+      <div class="price">${{product.price}}</div>
+      <div class="points">Earn {{product.points}} points</div>
+    </div>
+
+    <p class="description">{{product.description}}</p>
+
+    <div class="stock-status" [class.in-stock]="product.stock > 0">
+      {{product.stock > 0 ? 'In Stock' : 'Out of Stock'}}
+    </div>
+
+    <button class="add-to-cart-btn" [disabled]="product.stock === 0">
+      Add to Cart
+    </button>
+  </div>
+</div>
+
+<div *ngIf="loading" class="loading">Loading product details...</div>
+<div *ngIf="error" class="error">{{error}}</div>

@@ -1,0 +1,28 @@
+.General-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.General-custom-input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-top: 4px;
+}
+
+.General-hover-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  background: #007bff;
+  color: white;
+  cursor: pointer;
+}
+
+.General-hover-btn:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
