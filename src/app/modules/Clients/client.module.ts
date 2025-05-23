@@ -45,6 +45,8 @@ import { UserFooterComponent } from './components/user-footer/user-footer.compon
     UserNavComponent,
     ProductSearchComponent,
     ProductDetailsComponent,
+    UserFooterComponent,
+    WishlistSectionComponent,
   ],
   imports: [
     CommonModule,
