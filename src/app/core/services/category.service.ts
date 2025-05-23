@@ -14,9 +14,10 @@ export class CategoryService {
   constructor(private http: HttpClient) {}
 
   getAllCategories(): Observable<Category[]> {
-    return this.http.get<{ data: Category[] }>(`${this.baseUrl}`)
-      .pipe(
-        map(response => response.data)
-      );
-  }
+  return this.http.get<{ Data: Category[] }>(`${this.baseUrl}`)
+    .pipe(
+      map(response => response.Data) // ✅ استخدم "Data" الكبيرة زي ما هو في الـ JSON
+    );
+}
+
 }

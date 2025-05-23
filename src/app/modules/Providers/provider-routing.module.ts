@@ -6,11 +6,14 @@ import { authGuard } from "../../core/guards/Auth.guard";
 import { ProductDetailsPageComponent } from "./Components/product-details-page/product-details-page.component";
 import { EditShopComponent } from "./Components/edit-shop/edit-shop.component";
 import { Subscription } from "rxjs";
+import { ProductListPageComponent } from "./Components/product-list-page/product-list-page.component";
 
 const routes: Routes = [
   { path: 'add-shop', component: AddShopComponent },
   { path: 'suscrption', component: Subscription },
+
   //   { path: 'add-product', component:  },
+  { path: 'products', component:ProductListPageComponent  },
   {
     path: 'products/add',
     component: ProductFormPageComponent,
@@ -29,6 +32,7 @@ const routes: Routes = [
     // data: { expectedRoles: ['Provider'] },
     // canActivate: [authGuard]
   },
+
 { path: 'add-shop', component: AddShopComponent },
   { path: 'edit-shop/:id', component: EditShopComponent }
 

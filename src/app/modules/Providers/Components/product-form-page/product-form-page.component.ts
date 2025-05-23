@@ -62,10 +62,12 @@ export class ProductFormPageComponent implements OnInit {
   }
 
   loadCategories(): void {
-    this.categoryService.getAllCategories().subscribe((cats) => {
-      this.categories = cats;
-    });
-  }
+  this.categoryService.getAllCategories().subscribe((cats) => {
+    this.categories = cats;
+    console.log('📦 Categories loaded:', cats); // ✅ تأكد إنها بترجع
+  });
+}
+
 
   onCategoryChange(
     event: Event | number,
