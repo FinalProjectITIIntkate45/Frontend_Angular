@@ -7,10 +7,11 @@ export const authGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
 
   if (!_AuthService.isLoggedUser()) {
-    alert('Sorry, you must login first');
-    router.navigate(['/login', state.url]);
-    return false;
-  }
+  alert('Sorry, you must login first');
+  router.navigate(['/account/login']);  // هذا هو المسار الصحيح
+  return false;
+}
+
 
   const expectedRoles: string[] = route.data?.['expectedRoles'];
   const userRole = _AuthService.getUserRole(); //   "Admin", "Client", ...
