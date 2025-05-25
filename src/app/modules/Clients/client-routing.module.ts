@@ -15,11 +15,12 @@ import { ProductDetailsComponent } from './components/product-details/product-de
 import { CartComponent } from './components/cart/cart.component';
 
 import { FollowSellerComponent } from './components/follow-seller/follow-seller.component';
+import { ClientModule } from './client.module';
 
 const routes: Routes = [
   {
     path: '',
-    component: UserProfileComponent,
+    component: ClientModule,
     children: [
       { path: '', redirectTo: 'profile', pathMatch: 'full' },
       { path: 'profile', component: ProfileSectionComponent },

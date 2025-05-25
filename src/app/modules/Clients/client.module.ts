@@ -28,6 +28,7 @@ import { ProductDetailsComponent } from './components/product-details/product-de
 import { WishlistSectionComponent } from './components/wishlist-section/wishlist-section.component';
 import { UserFooterComponent } from './components/user-footer/user-footer.component';
 import { FollowSellerService } from './Services/follow.service';
+import { FollowSellerComponent } from './components/follow-seller/follow-seller.component';
 
 
 @NgModule({
@@ -49,6 +50,7 @@ import { FollowSellerService } from './Services/follow.service';
     ProductDetailsComponent,
     UserFooterComponent,
     WishlistSectionComponent,
+    FollowSellerComponent
     
   ],
   imports: [
