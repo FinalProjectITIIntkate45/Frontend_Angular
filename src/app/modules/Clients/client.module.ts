@@ -27,6 +27,8 @@ import { ProductSearchComponent } from './components/product-search/product-sear
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { WishlistSectionComponent } from './components/wishlist-section/wishlist-section.component';
 import { UserFooterComponent } from './components/user-footer/user-footer.component';
+import { FollowSellerService } from './Services/follow.service';
+
 
 @NgModule({
   declarations: [
@@ -47,6 +49,7 @@ import { UserFooterComponent } from './components/user-footer/user-footer.compon
     ProductDetailsComponent,
     UserFooterComponent,
     WishlistSectionComponent,
+    
   ],
   imports: [
     CommonModule,

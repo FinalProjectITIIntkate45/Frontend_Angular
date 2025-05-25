@@ -14,6 +14,8 @@ import { ProductSearchComponent } from './components/product-search/product-sear
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { CartComponent } from './components/cart/cart.component';
 
+import { FollowSellerComponent } from './components/follow-seller/follow-seller.component';
+
 const routes: Routes = [
   {
     path: '',
@@ -31,6 +33,7 @@ const routes: Routes = [
       { path: 'settings', component: SettingsSectionComponent },
       { path: 'wishlist', component: WishlistSectionComponent },
       { path: 'Card', component: CartComponent },
+      { path: 'follow-seller', component: FollowSellerComponent }
     ],
   },
   { path: 'products', component: ProductSearchComponent },
