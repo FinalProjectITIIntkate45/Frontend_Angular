@@ -30,6 +30,8 @@ const routes: Routes = [
     loadChildren: () =>
       import('./modules/Clients/client.module').then((m) => m.ClientModule),
   },
+   { path: '', redirectTo: 'clients/follow-seller', pathMatch: 'full' },
+  { path: 'clients', loadChildren: () => import('./modules/Clients/client.module').then(m => m.ClientModule) }
 ];
 
 @NgModule({
