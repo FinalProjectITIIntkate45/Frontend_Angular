@@ -23,25 +23,31 @@ export class SubScrptionComponent implements OnInit {
     this.selectedPlan = plan;
   }
 
-  submitPlan() {
-    if (!this.selectedPlan) return;
+ submitPlan() {
+  if (!this.selectedPlan) return;
 
-    if (this.selectedPlan === 'VIP') {
-
-      this.router.navigate(['/payment'], { queryParams: { plan: this.selectedPlan } });
-    } else {
-
-      this.subscriptionService.updateSubscription(this.userId, this.selectedPlan).subscribe({
-        next: () => {
-          this.toastr.success('Successfully subscribed to Free plan');
-
-        },
-        error: () => {
-          this.toastr.error('Subscription failed, please try again');
-        }
-      });
-    }
+  if (this.selectedPlan === 'VIP') {
+    this.subscriptionService.startPayment(this.userId, 10000).subscribe({
+      next: (res: any) => {
+        // فيه احتمال تحبي تحتفظي بـ orderId لو هتستخدمينه في الـ backend
+        window.location.href = res.paymentUrl;
+      },
+      error: () => {
+        this.toastr.error('Failed to start VIP payment');
+      }
+    });
+  } else {
+    this.subscriptionService.updateSubscription(this.userId, this.selectedPlan).subscribe({
+      next: () => {
+        this.toastr.success('Successfully subscribed to Free plan');
+      },
+      error: () => {
+        this.toastr.error('Subscription failed, please try again');
+      }
+    });
   }
+}
+
 
   ngOnInit(): void {}
 }

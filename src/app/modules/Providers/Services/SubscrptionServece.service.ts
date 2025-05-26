@@ -16,4 +16,12 @@ export class SubscriptionService {
       type
     });
   }
+
+  startPayment(userId: string, amountCents: number) {
+  return this.http.post('https://your-api/api/payment/start', {
+    userId: userId,
+    amountMoney: amountCents
+  });
+}
+
 }
