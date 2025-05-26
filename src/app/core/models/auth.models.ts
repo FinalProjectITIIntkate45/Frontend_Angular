@@ -16,5 +16,6 @@ export interface AuthState {
     userName: string;
     email: string;
     role: string;
+    subscriptionType?: string;
   } | null;
 }
