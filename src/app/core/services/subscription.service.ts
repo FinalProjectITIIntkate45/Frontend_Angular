@@ -4,7 +4,7 @@ import { environment } from '../../../environments/environment.development';
 import { Observable, map } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SubscriptionService {
   private baseUrl = `${environment.apiUrl}/subscription`;
@@ -12,23 +12,25 @@ export class SubscriptionService {
   constructor(private http: HttpClient) {}
 
   /**
-   * ✅ Get the subscription type of the current user (e.g., Basic, VIP)
+   * ✅ Get the current user's subscription type (e.g., "Basic", "VIP")
    */
-  getSubscriptionType(): Observable<string> {
-    return this.http.get<{ subscriptionType: string }>(`${this.baseUrl}/type`)
-      .pipe(map(res => res.subscriptionType));
+  getSubscriptionType(): Observable<'Basic' | 'VIP'> {
+    return this.http
+      .get<{ subscriptionType: 'Basic' | 'VIP' }>(`${this.baseUrl}/type`)
+      .pipe(map((res) => res.subscriptionType));
   }
 
   /**
-   * ✅ Check if the current user is VIP
+   * ✅ Check if the user has a VIP subscription
    */
   isUserVIP(): Observable<boolean> {
-    return this.http.get<{ isVip: boolean }>(`${this.baseUrl}/is-vip`)
-      .pipe(map(res => res.isVip));
+    return this.http
+      .get<{ isVip: boolean }>(`${this.baseUrl}/is-vip`)
+      .pipe(map((res) => res.isVip));
   }
 
   /**
-   * ✅ (Future) Change subscription type
+   * 🔁 Change the user's subscription type
    */
   updateSubscription(newType: 'Basic' | 'VIP'): Observable<any> {
     return this.http.put(`${this.baseUrl}/update`, { type: newType });
