@@ -53,7 +53,7 @@ export class EditShopComponent implements OnInit {
         address: formValue.address,
         contactDetails: formValue.contactDetails,
         logo: formValue.logo,
-        providerId: this.authService['getUserId'](),
+        providerId: this.authService.getUserId(), // Assuming getUserId() returns the provider's ID
       };
 
       this.shopService.updateShop(model).subscribe({

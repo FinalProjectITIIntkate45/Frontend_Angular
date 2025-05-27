@@ -82,6 +82,14 @@ export class AuthService {
     }
     return 'Basic';
   }
+  getUserId(): string {
+    const token = this.getToken();
+    if (token) {
+      const decoded = this.parseJwt(token);
+      return decoded?.userId || '';
+    }
+    return '';
+  }
 
   logout(): void {
     this.cookieService.delete(this.TOKEN_KEY);
