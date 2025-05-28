@@ -1,0 +1,42 @@
+<!-- src/app/app.component.html -->
+<div class="layout-container">
+  <!-- User Layout -->
+  <div *ngIf="userType === 'user'" class="user-layout">
+    <!-- Sidebar -->
+    <app-user-sidebar></app-user-sidebar>
+
+    <!-- Main Content Area -->
+    <div class="main-area">
+      <!-- Navbar -->
+      <app-user-nav></app-user-nav>
+
+      <!-- Content -->
+      <main class="user-content">
+        <router-outlet></router-outlet>
+      </main>
+
+      <!-- Footer -->
+      <app-user-footer></app-user-footer>
+    </div>
+  </div>
+
+  <!-- Provider Layout -->
+  <div *ngIf="userType === 'provider'" class="provider-layout">
+    <!-- Sidebar -->
+    <app-provider-sidebar></app-provider-sidebar>
+
+    <!-- Main Content Area -->
+    <div class="main-area">
+      <!-- Navbar -->
+      <app-provider-nav></app-provider-nav>
+
+      <!-- Content -->
+      <main class="provider-content">
+        <router-outlet></router-outlet>
+      </main>
+
+      <!-- Footer -->
+      <app-provider-footer></app-provider-footer>
+    </div>
+  </div>
+</div>

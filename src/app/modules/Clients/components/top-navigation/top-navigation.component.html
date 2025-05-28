@@ -1,0 +1,22 @@
+<div class="search-box">
+  <i class="fas fa-search"></i>
+  <input type="text" placeholder="Search products, stores...">
+</div>
+
+<div class="nav-right">
+  <div class="notification">
+    <i class="fas fa-bell"></i>
+    <span class="badge">{{ notificationsCount }}</span>
+  </div>
+  <div class="cart">
+    <i class="fas fa-shopping-cart"></i>
+    <span class="badge">{{ cartItemsCount }}</span>
+  </div>
+  <div class="user-dropdown">
+    <div class="user-info">
+      <img src="assets/images/user-avatar.png" alt="User Avatar">
+      <span>Hello, {{ userName }}</span>
+    </div>
+    <i class="fas fa-chevron-down"></i>
+  </div>
+</div>
