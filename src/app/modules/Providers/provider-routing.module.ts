@@ -9,7 +9,6 @@ import { Subscription } from 'rxjs';
 import { ProductListPageComponent } from './Components/product-list-page/product-list-page.component';
 
 const routes: Routes = [
-  { path: 'add-shop', component: AddShopComponent },
   { path: 'suscrption', component: Subscription },
 
   //   { path: 'add-product', component:  },

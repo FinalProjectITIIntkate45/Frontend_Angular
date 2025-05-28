@@ -18,11 +18,19 @@ export const authGuard: CanActivateFn = (route, state) => {
   }
 
   if (!_AuthService.isLoggedUser()) {
+<<<<<<< HEAD
     router.navigate(['/account/login'], {
       queryParams: { returnUrl: state.url },
     });
     return false;
   }
+=======
+  alert('Sorry, you must login first');
+  router.navigate(['/account/login']);  // هذا هو المسار الصحيح
+  return false;
+}
+
+>>>>>>> d45a1590fe7ac7782b2133eb490410fd9a125cc2
 
   const expectedRoles: string[] = route.data?.['expectedRoles'];
   const userRole = _AuthService.getUserRole();

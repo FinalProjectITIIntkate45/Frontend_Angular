@@ -16,7 +16,7 @@ const routes: Routes = [
     path: 'provider',
     component: ProviderLayoutComponent,
     canActivate: [authGuard],
-    data: { expectedRoles: ['Provider'] },
+    // data: { expectedRoles: ['Provider'] },
     loadChildren: () =>
       import('./modules/Providers/provider.module').then(
         (m) => m.ProdiverModule
@@ -25,9 +25,16 @@ const routes: Routes = [
   {
     path: 'client',
     component: ClientLayoutComponent,
+<<<<<<< HEAD
+=======
+    canActivate: [authGuard],
+    // data: { expectedRoles: ['Client'] },
+>>>>>>> d45a1590fe7ac7782b2133eb490410fd9a125cc2
     loadChildren: () =>
       import('./modules/Clients/client.module').then((m) => m.ClientModule),
   },
+   { path: '', redirectTo: 'clients/follow-seller', pathMatch: 'full' },
+  { path: 'clients', loadChildren: () => import('./modules/Clients/client.module').then(m => m.ClientModule) }
 ];
 
 @NgModule({

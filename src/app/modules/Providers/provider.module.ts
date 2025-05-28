@@ -9,8 +9,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProviderRoutingModule } from './provider-routing.module';
 import { AddShopComponent } from './Components/add-shop/add-shop.component';
 import { ProviderSidebarComponent } from './Components/provider-sidebar/provider-sidebar.component';
-import { TopNavigationComponent } from '../Clients/components/top-navigation/top-navigation.component';
-import { SidebarComponent } from '../Clients/components/sidebar/sidebar.component';
 import { ProviderLayoutComponent } from './Components/provider-layout/provider-layout.component';
 import { AuthInterceptor } from '../../core/interceptors/AuthInterceptor';
 import { LoaderInterceptor } from '../../core/interceptors/loaderInterceptor';
@@ -35,6 +33,11 @@ import { EditShopComponent } from './Components/edit-shop/edit-shop.component';
     ProviderRoutingModule,
     ProductFormPageComponent
   ],
-  
+  providers: [
+    provideHttpClient(withFetch(), withInterceptors([AuthInterceptor, LoaderInterceptor])),
+  ],
+
 })
 export class ProdiverModule {}
+
+

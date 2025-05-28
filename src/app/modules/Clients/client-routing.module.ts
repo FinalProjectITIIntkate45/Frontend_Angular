@@ -14,10 +14,13 @@ import { ProductSearchComponent } from './components/product-search/product-sear
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { CartComponent } from './components/cart/cart.component';
 
+import { FollowSellerComponent } from './components/follow-seller/follow-seller.component';
+import { ClientModule } from './client.module';
+
 const routes: Routes = [
   {
     path: '',
-    component: UserProfileComponent,
+    component: ClientModule,
     children: [
       { path: '', redirectTo: 'profile', pathMatch: 'full' },
       { path: 'profile', component: ProfileSectionComponent },
@@ -31,6 +34,7 @@ const routes: Routes = [
       { path: 'settings', component: SettingsSectionComponent },
       { path: 'wishlist', component: WishlistSectionComponent },
       { path: 'Card', component: CartComponent },
+      { path: 'follow-seller', component: FollowSellerComponent }
     ],
   },
   {

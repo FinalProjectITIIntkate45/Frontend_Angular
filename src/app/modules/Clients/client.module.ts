@@ -26,7 +26,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { WishlistSectionComponent } from './components/wishlist-section/wishlist-section.component';
 import { UserFooterComponent } from './components/user-footer/user-footer.component';
+<<<<<<< HEAD
 import { ProductSearchComponent } from './components/product-search/product-search.component';
+=======
+import { FollowSellerService } from './Services/follow.service';
+import { FollowSellerComponent } from './components/follow-seller/follow-seller.component';
+
+>>>>>>> d45a1590fe7ac7782b2133eb490410fd9a125cc2
 
 @NgModule({
   declarations: [
@@ -47,6 +53,8 @@ import { ProductSearchComponent } from './components/product-search/product-sear
     ProductDetailsComponent,
     UserFooterComponent,
     WishlistSectionComponent,
+    FollowSellerComponent
+    
   ],
   imports: [
     CommonModule,

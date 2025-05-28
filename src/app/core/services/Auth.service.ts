@@ -8,7 +8,6 @@ import { AuthState, LoginResponse } from '../models/auth.models';
   providedIn: 'root',
 })
 export class AuthService {
-  [x: string]: any;
   private readonly TOKEN_KEY = 'auth_token';
   private readonly ROLE_KEY = 'role';
   private readonly USERNAME_KEY = 'userName';
@@ -29,9 +28,10 @@ export class AuthService {
       this.authState.next({
         isAuthenticated: true,
         user: {
-          userName: user.userName,
-          email: user.email,
-          role: user.role,
+          userName: user?.userName,
+          email: user?.email,
+          role: user?.role,
+          subscriptionType: user?.subscriptionType || 'Basic',
         },
       });
     }
@@ -42,6 +42,8 @@ export class AuthService {
   }
 
   setUserData(response: LoginResponse): void {
+    const decoded = this.parseJwt(response.token); // ✅ فك التوكن
+
     this.cookieService.set(this.TOKEN_KEY, response.token, {
       secure: true,
       sameSite: 'Strict',
@@ -55,6 +57,7 @@ export class AuthService {
         userName: response.username,
         email: response.email,
         role: response.role,
+        subscriptionType: decoded?.subscriptionType || 'Basic',
       },
     });
   }
@@ -69,6 +72,24 @@ export class AuthService {
 
   getUserRole(): string {
     return this.cookieService.get(this.ROLE_KEY) || '';
+  }
+
+  getUserSubscriptionType(): string {
+    const token = this.getToken();
+    if (token) {
+      const decoded = this.parseJwt(token);
+      return decoded?.subscriptionType || 'Basic';
+    }
+    return 'Basic';
+  }
+
+  getUserId(): string {
+    const token = this.getToken();
+    if (token) {
+      const decoded = this.parseJwt(token);
+      return decoded?.userId || '';
+    }
+    return '';
   }
 
   logout(): void {

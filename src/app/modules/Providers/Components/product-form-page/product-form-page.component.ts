@@ -15,6 +15,9 @@ import { ProductAttribute } from '../../../../core/models/product-attribute.mode
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 
+import { SubscriptionService } from '../../../../core/services/subscription.service';
+
+
 @Component({
   standalone: true,
   selector: 'app-product-form-page',
@@ -33,6 +36,7 @@ export class ProductFormPageComponent implements OnInit {
   productId!: number;
   isLoading = false;
   stepIndex = 0;
+  subscriptionType: 'Basic' | 'VIP' = 'Basic';
 
   constructor(
     private fb: FormBuilder,
@@ -41,7 +45,8 @@ export class ProductFormPageComponent implements OnInit {
     private productService: ProductService,
     private route: ActivatedRoute,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private subscriptionService: SubscriptionService
   ) {}
 
 ngOnInit(): void {
@@ -59,6 +64,17 @@ ngOnInit(): void {
     discountPercentage: [],
     attachments: [null],
   });
+  this.subscriptionService.getSubscriptionType().subscribe({
+        next: (type) => {
+          this.subscriptionType = type;
+          console.log('🔁 User subscription type:', this.subscriptionType);
+        },
+        error: (err) => {
+          console.error('❌ Failed to load subscription type', err);
+        }
+      });
+
+
 
   // ✅ Apply draft if available
   if (savedDraft) {
@@ -291,7 +307,7 @@ onCategoryChange(event: Event | number, existingValues: ProductAttribute[] = [])
             : 'Product created successfully'
         );
         localStorage.removeItem('productDraft');
-        this.router.navigate(['/Provider/products']);
+        this.router.navigate(['/provider/products']);
       },
       error: (err) => {
         this.toastr.error('Failed to save product');

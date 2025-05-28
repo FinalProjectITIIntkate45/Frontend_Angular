@@ -1,0 +1,22 @@
+<div class="follow-seller-container">
+  <h2>Followed Shops</h2>
+
+  <div *ngIf="followedShops.length > 0; else noShops">
+    <ul>
+      <li *ngFor="let shop of followedShops">
+        <span>🛍️ Shop ID: {{ shop }}</span>
+        <button (click)="unfollow(shop)">Unfollow</button>
+      </li>
+    </ul>
+  </div>
+
+  <ng-template #noShops>
+    <p>You are not following any shops yet.</p>
+  </ng-template>
+
+  <hr />
+
+  <h3>Follow a New Shop</h3>
+  <input type="text" placeholder="Shop ID" [(ngModel)]="newShopId" />
+  <button (click)="follow()">Follow</button>
+</div>

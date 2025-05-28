@@ -47,17 +47,25 @@
   <div *ngIf="stepIndex === 1">
     <div class="mb-3">
       <label>Select Category</label>
-      <select formControlName="categoryId" class="General-custom-input" >
-        <option [ngValue]="null" disabled>Select category...</option> <!-- ❌ بدون selected -->
-        <option *ngFor="let cat of categories" [ngValue]="cat.Id">
-          {{ cat.Name }}
-        </option>
+      <select formControlName="categoryId" class="General-custom-input">
+        <option [ngValue]="null" disabled>Select category...</option>
+        <option *ngFor="let cat of categories" [ngValue]="cat.Id">{{ cat.Name }}</option>
       </select>
+    </div>
 
+    <!-- ✅ VIP-only fields -->
+    <div *ngIf="subscriptionType === 'VIP'" class="mb-3">
+      <label>Increase Rate (%)</label>
+      <input type="number" formControlName="increaseRate" class="General-custom-input" />
+    </div>
+
+    <div *ngIf="subscriptionType === 'VIP'" class="mb-3">
+      <label>Discount Percentage (%)</label>
+      <input type="number" formControlName="discountPercentage" class="General-custom-input" />
     </div>
 
     <div class="form-check mb-3">
-      <input class="form-check-input" type="checkbox" formControlName="isSpecialOffer" id="offer">
+      <input class="form-check-input" type="checkbox" formControlName="isSpecialOffer" id="offer" />
       <label class="form-check-label" for="offer">Special Offer</label>
     </div>
 
@@ -67,6 +75,7 @@
         placeholder="Enter value for {{ attr.Name }}" />
     </div>
   </div>
+
 
   <!-- 🔹 STEP 3: Images + Submit -->
   <div *ngIf="stepIndex === 2">
