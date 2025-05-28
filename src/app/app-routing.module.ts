@@ -6,7 +6,7 @@ import { ProviderLayoutComponent } from './modules/Providers/Components/provider
 import { authGuard } from './core/guards/Auth.guard';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'account/register', pathMatch: 'full' },
+  { path: '', redirectTo: 'client/products', pathMatch: 'full' },
   {
     path: 'account',
     loadChildren: () =>
@@ -25,8 +25,6 @@ const routes: Routes = [
   {
     path: 'client',
     component: ClientLayoutComponent,
-    canActivate: [authGuard],
-    data: { expectedRoles: ['Client'] },
     loadChildren: () =>
       import('./modules/Clients/client.module').then((m) => m.ClientModule),
   },

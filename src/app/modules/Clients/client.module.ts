@@ -23,10 +23,10 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { AuthInterceptor } from '../../core/interceptors/AuthInterceptor';
 import { LoaderInterceptor } from '../../core/interceptors/loaderInterceptor';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ProductSearchComponent } from './components/product-search/product-search.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { WishlistSectionComponent } from './components/wishlist-section/wishlist-section.component';
 import { UserFooterComponent } from './components/user-footer/user-footer.component';
+import { ProductSearchComponent } from './components/product-search/product-search.component';
 
 @NgModule({
   declarations: [

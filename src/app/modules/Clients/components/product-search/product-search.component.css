@@ -29,3 +29,34 @@
 .product-card:hover {
   transform: translateY(-5px);
 }
+
+.strikethrough {
+  text-decoration: line-through;
+  color: #999;
+}
+
+.discount-price {
+  color: #e44d26;
+  margin-left: 8px;
+  font-weight: bold;
+}
+
+.stock {
+  padding: 4px 8px;
+  border-radius: 4px;
+  background-color: #4caf50;
+  color: white;
+  text-align: center;
+  margin-top: 8px;
+}
+
+.out-of-stock {
+  background-color: #f44336;
+}
+
+.price-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 8px 0;
+}
