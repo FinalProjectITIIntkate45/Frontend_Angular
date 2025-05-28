@@ -14,11 +14,7 @@ import { ProductService } from '../../../../core/services/product.service';
 import { ProductAttribute } from '../../../../core/models/product-attribute.model';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
-<<<<<<< HEAD
-
-=======
 import { SubscriptionService } from '../../../../core/services/subscription.service';
->>>>>>> 22911c1fc2da634c172402a88eebba5ea8604e76
 
 
 @Component({
@@ -67,11 +63,7 @@ ngOnInit(): void {
     discountPercentage: [],
     attachments: [null],
   });
-<<<<<<< HEAD
-  this.subscriptionService.getSubscriptionT.subscribe({
-=======
   this.subscriptionService.getSubscriptionType().subscribe({
->>>>>>> 22911c1fc2da634c172402a88eebba5ea8604e76
         next: (type) => {
           this.subscriptionType = type;
           console.log('🔁 User subscription type:', this.subscriptionType);

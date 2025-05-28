@@ -16,7 +16,7 @@ const routes: Routes = [
     path: 'provider',
     component: ProviderLayoutComponent,
     canActivate: [authGuard],
-    data: { expectedRoles: ['Provider'] },
+    // data: { expectedRoles: ['Provider'] },
     loadChildren: () =>
       import('./modules/Providers/provider.module').then(
         (m) => m.ProdiverModule
@@ -26,7 +26,7 @@ const routes: Routes = [
     path: 'client',
     component: ClientLayoutComponent,
     canActivate: [authGuard],
-    data: { expectedRoles: ['Client'] },
+    // data: { expectedRoles: ['Client'] },
     loadChildren: () =>
       import('./modules/Clients/client.module').then((m) => m.ClientModule),
   },
