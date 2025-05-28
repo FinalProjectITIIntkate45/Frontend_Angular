@@ -14,6 +14,12 @@ import { ProductService } from '../../../../core/services/product.service';
 import { ProductAttribute } from '../../../../core/models/product-attribute.model';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
+<<<<<<< HEAD
+
+=======
+import { SubscriptionService } from '../../../../core/services/subscription.service';
+>>>>>>> 22911c1fc2da634c172402a88eebba5ea8604e76
+
 
 @Component({
   standalone: true,
@@ -33,6 +39,7 @@ export class ProductFormPageComponent implements OnInit {
   productId!: number;
   isLoading = false;
   stepIndex = 0;
+  subscriptionType: 'Basic' | 'VIP' = 'Basic';
 
   constructor(
     private fb: FormBuilder,
@@ -41,7 +48,8 @@ export class ProductFormPageComponent implements OnInit {
     private productService: ProductService,
     private route: ActivatedRoute,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private subscriptionService: SubscriptionService
   ) {}
 
 ngOnInit(): void {
@@ -59,6 +67,21 @@ ngOnInit(): void {
     discountPercentage: [],
     attachments: [null],
   });
+<<<<<<< HEAD
+  this.subscriptionService.getSubscriptionT.subscribe({
+=======
+  this.subscriptionService.getSubscriptionType().subscribe({
+>>>>>>> 22911c1fc2da634c172402a88eebba5ea8604e76
+        next: (type) => {
+          this.subscriptionType = type;
+          console.log('🔁 User subscription type:', this.subscriptionType);
+        },
+        error: (err) => {
+          console.error('❌ Failed to load subscription type', err);
+        }
+      });
+
+
 
   // ✅ Apply draft if available
   if (savedDraft) {
