@@ -82,6 +82,7 @@ export class AuthService {
     }
     return 'Basic';
   }
+
   getUserId(): string {
     const token = this.getToken();
     if (token) {
