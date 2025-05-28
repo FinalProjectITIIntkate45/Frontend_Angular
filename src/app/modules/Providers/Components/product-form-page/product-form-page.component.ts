@@ -291,7 +291,7 @@ onCategoryChange(event: Event | number, existingValues: ProductAttribute[] = [])
             : 'Product created successfully'
         );
         localStorage.removeItem('productDraft');
-        this.router.navigate(['/Provider/products']);
+        this.router.navigate(['/provider/products']);
       },
       error: (err) => {
         this.toastr.error('Failed to save product');
