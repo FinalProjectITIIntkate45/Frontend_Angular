@@ -11,7 +11,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  { path: 'suscrption', component: Subscription },
 
   //   { path: 'add-product', component:  },
   { path: 'products', component: ProductListPageComponent },

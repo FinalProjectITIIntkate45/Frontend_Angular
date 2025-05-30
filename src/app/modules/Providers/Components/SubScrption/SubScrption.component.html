@@ -16,10 +16,27 @@
       <div class="card-body text-center">
         <h4 class="card-title text-warning">VIP Plan</h4>
         <p class="card-text">Full access to all features, premium support, and more.</p>
-        <button class="btn btn-warning" (click)="selectPlan('VIP'); submitPlan()">Select VIP</button>
-        </div>
-    </div>
-  </div>
+        <button class="btn btn-warning" (click)="selectPlan('VIP')">Select VIP</button>
 
-  
+        <!-- Payment options shown only when VIP is selected -->
+        <div *ngIf="showPaymentOptions" class="mt-3">
+          <h6>Select Payment Method:</h6>
+          
+          <select [ngModel]="paymentType" (ngModelChange)="paymentType = $event" class="form-select" aria-label="Payment Method Selection">
+            <option value="">-- Choose --</option>
+            <option value="OnlineCard">Online Card</option>
+            <option value="VodafoneCash">Vodafone Cash</option>
+            <option value="MeezaQR">Meeza QR</option>
+          </select>
+
+          <button class="btn btn-success mt-3" (click)="submitPlan()">Continue to Payment</button>
+        </div>
+      </div>
+    </div>    </div>
+
+  @if (statusMessage) {
+    <div class="alert alert-info mt-4 text-center">
+      {{ statusMessage }}
+    </div>
+  }  
 </div>

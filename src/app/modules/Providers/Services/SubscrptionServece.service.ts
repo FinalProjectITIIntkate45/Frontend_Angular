@@ -8,10 +8,15 @@ import { SubscriptionChangeRequest } from '../Models/SubscriptionChangeRequest';
   providedIn: 'root'
 })
 export class SubscriptionService {
-  private baseUrl = `${environment.apiUrl}/subscription`; 
+  private baseUrl = `${environment.apiUrl}/subscription`;
+
   constructor(private http: HttpClient) {}
 
   changeSubscription(request: SubscriptionChangeRequest): Observable<any> {
-    return this.http.put(`${this.baseUrl}/change`, request);
+    return this.http.post(`${this.baseUrl}/start-change`, request);
+  }
+
+  confirmSubscriptionChange(transactionId: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}/confirm-change`, { transactionId });
   }
 }

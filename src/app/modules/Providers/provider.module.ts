@@ -15,6 +15,8 @@ import { LoaderInterceptor } from '../../core/interceptors/loaderInterceptor';
 import { ProductFormPageComponent } from './Components/product-form-page/product-form-page.component';
 import { EditShopComponent } from './Components/edit-shop/edit-shop.component';
 import { SubScrptionComponent } from './Components/SubScrption/SubScrption.component';
+import { Subscription } from 'rxjs';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
@@ -23,6 +25,7 @@ import { SubScrptionComponent } from './Components/SubScrption/SubScrption.compo
     EditShopComponent,
     ProviderSidebarComponent,
     ProviderLayoutComponent,
+    SubScrptionComponent,
     // ProductFormPageComponent,
     // ProductDetailsPageComponent,
     
@@ -33,7 +36,8 @@ import { SubScrptionComponent } from './Components/SubScrption/SubScrption.compo
     FormsModule,
     ReactiveFormsModule,
     ProductFormPageComponent,
-    SubScrptionComponent
+    RouterModule,
+
   ],
   providers: [
     provideHttpClient(withFetch(), withInterceptors([AuthInterceptor, LoaderInterceptor])),

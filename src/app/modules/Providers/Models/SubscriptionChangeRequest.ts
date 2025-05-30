@@ -1,6 +1,6 @@
 export interface SubscriptionChangeRequest {
   type: 'Free' | 'VIP';
-  paymentMethod?: 'OnlineCard' | 'VodafoneCash' | 'MeezaQR';
+  PaymentType?: 'OnlineCard' | 'VodafoneCash' | 'MeezaQR';
   transactionId?: string;
   isPaid: boolean;
 }
