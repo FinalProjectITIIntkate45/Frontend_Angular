@@ -132,6 +132,6 @@ export class ProductSearchComponent implements OnInit {
   }
 
   viewProductDetails(productId: number) {
-    this.router.navigate(['/client/Product', productId]);
+    this.router.navigate(['/client/products', productId]);
   }
 }

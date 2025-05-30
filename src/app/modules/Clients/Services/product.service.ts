@@ -26,6 +26,7 @@ export class ProductService {
   }
 
   getProductById(id: number): Observable<Product> {
+    console.log(`Fetching product with ID: ${id}`);
     return this.http
       .get<APIResponse<Product>>(`${this.baseUrl}/${id}`)
       .pipe(map((response) => response.Data)); // Changed from 'data' to 'Data'

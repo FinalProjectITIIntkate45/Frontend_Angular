@@ -45,16 +45,17 @@
     <div *ngIf="loading" class="loading">Loading products...</div>
     <div *ngIf="error" class="error">{{error}}</div>
 
-    <div *ngFor="let product of filteredProducts" class="product-card" (click)="viewProductDetails(product.Id)">
+    <div *ngFor="let product of filteredProducts" class="product-card">
       <img [src]="product.Images[0]" [alt]="product.Name" *ngIf="product.Images?.length">
       <div class="product-info">
         <h3>{{product.Name}}</h3>
+        <p class="description">{{product.Description | slice:0:100}}...</p>
         <div class="price-container">
           <p class="price">
-            <span [class.strikethrough]="product.DisplayedPriceAfterDiscount">
+            <span [class.strikethrough]="product.DisplayedPriceAfterDiscount < product.DisplayedPrice">
               ${{product.DisplayedPrice}}
             </span>
-            <span class="discount-price" *ngIf="product.DisplayedPriceAfterDiscount">
+            <span class="discount-price" *ngIf="product.DisplayedPriceAfterDiscount < product.DisplayedPrice">
               ${{product.DisplayedPriceAfterDiscount}}
             </span>
           </p>
@@ -64,6 +65,9 @@
         <div class="stock" [class.out-of-stock]="product.Stock === 0">
           {{product.Stock > 0 ? 'In Stock' : 'Out of Stock'}}
         </div>
+        <button class="view-details-btn" (click)="viewProductDetails(product.Id)">
+          View Details
+        </button>
       </div>
     </div>
   </div>

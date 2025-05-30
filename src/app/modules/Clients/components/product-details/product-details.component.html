@@ -1,36 +1,61 @@
-<!-- <div class="product-details-container" *ngIf="product">
-  <div class="product-images">
-    <img [src]="product.images[0]" [alt]="product.name" *ngIf="product.images?.length">
-  </div>
+<div class="product-details-container">
+  <div *ngIf="loading" class="loading">Loading product details...</div>
+  <div *ngIf="error" class="error">{{error}}</div>
 
-  <div class="product-info">
-    <h2>{{product.name}}</h2>
-    <p class="description">{{product.description}}</p>
-
-    <div class="price-section">
-      <div class="price">
-        <span [class.strikethrough]="product.displayedPriceAfterDiscount">
-          ${{product.displayedPrice}}
-        </span>
-        <span class="discount-price" *ngIf="product.displayedPriceAfterDiscount">
-          ${{product.displayedPriceAfterDiscount}}
-        </span>
+  <div class="product-content" *ngIf="product">
+    <div class="product-gallery">
+      <div class="main-image">
+        <img [src]="selectedImage || product.Images[0]" [alt]="product.Name">
       </div>
-      <div class="points">Earn {{product.earnedPoints}} points</div>
-    </div>
-
-    <div class="shop-info">
-      <p class="shop-name">Sold by: {{product.shopName}}</p>
-      <div class="rating" *ngIf="product.rating">
-        <span class="stars">★★★★★</span>
-        <span class="rating-value">{{product.rating}}</span>
+      <!-- *ngIf="product.Images?.length > 1" -->
+      <div class="thumbnail-list">
+        <img *ngFor="let img of product.Images" [src]="img" [alt]="product.Name" (click)="selectedImage = img"
+          [class.active]="selectedImage === img">
       </div>
     </div>
 
-    <div class="stock" [class.out-of-stock]="product.stock === 0">
-      {{product.stock > 0 ? 'In Stock' : 'Out of Stock'}}
+    <div class="product-info">
+      <div class="product-header">
+        <h2>{{product.Name}}</h2>
+        <span class="shop-badge">{{product.ShopName}}</span>
+      </div>
+
+      <div class="price-section">
+        <div class="price-container">
+          <span class="original-price"
+            [class.strikethrough]="product.DisplayedPriceAfterDiscount < product.DisplayedPrice">
+            ${{product.DisplayedPrice}}
+          </span>
+          <span class="discount-price" *ngIf="product.DisplayedPriceAfterDiscount < product.DisplayedPrice">
+            ${{product.DisplayedPriceAfterDiscount}}
+          </span>
+        </div>
+        <div class="points-badge">
+          Earn {{product.EarnedPoints}} points
+        </div>
+      </div>
+
+      <div class="stock-info" [class.out-of-stock]="product.Stock === 0">
+        <i class="material-icons">{{product.Stock > 0 ? 'check_circle' : 'remove_circle'}}</i>
+        <span>{{product.Stock > 0 ? 'In Stock' : 'Out of Stock'}}</span>
+        <span *ngIf="product.Stock > 0">({{product.Stock}} available)</span>
+      </div>
+
+      <div class="description-section">
+        <h3>Description</h3>
+        <p class="description">{{product.Description}}</p>
+      </div>
+
+      <div class="actions">
+        <button class="add-to-cart-btn" *ngIf="product.Stock > 0" (click)="addToCart()">
+          <i class="material-icons">shopping_cart</i>
+          Add to Cart
+        </button>
+        <button class="wishlist-btn">
+          <i class="material-icons">favorite_border</i>
+          Add to Wishlist
+        </button>
+      </div>
     </div>
   </div>
 </div>
-
-<div *ngIf="error" class="error">{{error}}</div> -->
