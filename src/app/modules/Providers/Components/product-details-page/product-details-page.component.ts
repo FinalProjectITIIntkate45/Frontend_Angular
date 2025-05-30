@@ -1,17 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProductService } from '../../../../core/services/product.service';
-import { Product } from '../../../../core/models/product.model';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+import { Product } from '../../../../core/models/product.model';
+import { ProductService } from '../../../../core/services/product.service';
+
 @Component({
   selector: 'app-product-details-page',
-  standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-  ],
+  standalone: false,
   templateUrl: './product-details-page.component.html',
   styleUrls: ['./product-details-page.component.css'],
 })
@@ -37,20 +34,7 @@ export class ProductDetailsPageComponent implements OnInit {
     }
   }
 
-  deleteProduct(): void {
-    if (confirm('Are you sure you want to delete this product?')) {
-      this.productService.deleteProduct(this.product.id).subscribe({
-        next: () => {
-          this['toastr'].success('Product deleted successfully ');
-          this.router.navigate(['/provider/products']);
-        },
-        error: (err) => {
-          console.error('Failed to delete product', err);
-          this['toastr'].error('Failed to delete product ');
-        },
-      });
-    }
-  }
+
 
   goBack(): void {
     this.router.navigate(['/provider/products']);
