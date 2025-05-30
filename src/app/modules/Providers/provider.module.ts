@@ -32,7 +32,6 @@ import { SubScrptionComponent } from './Components/SubScrption/SubScrption.compo
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    ProviderRoutingModule,
     ProductFormPageComponent,
     SubScrptionComponent
   ],
