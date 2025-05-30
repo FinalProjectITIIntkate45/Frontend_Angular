@@ -3,35 +3,59 @@
   <div *ngIf="error" class="error">{{error}}</div>
 
   <div class="product-content" *ngIf="product">
-    <div class="product-images">
-      <img [src]="product.Images[0]" [alt]="product.Name" *ngIf="product.Images?.length">
+    <div class="product-gallery">
+      <div class="main-image">
+        <img [src]="selectedImage || product.Images[0]" [alt]="product.Name">
+      </div>
+      <!-- *ngIf="product.Images?.length > 1" -->
+      <div class="thumbnail-list">
+        <img *ngFor="let img of product.Images" [src]="img" [alt]="product.Name" (click)="selectedImage = img"
+          [class.active]="selectedImage === img">
+      </div>
     </div>
 
     <div class="product-info">
-      <h2>{{product.Name}}</h2>
-      <p class="description">{{product.Description}}</p>
+      <div class="product-header">
+        <h2>{{product.Name}}</h2>
+        <span class="shop-badge">{{product.ShopName}}</span>
+      </div>
 
-      <div class="price-container">
-        <p class="price">
-          <span [class.strikethrough]="product.DisplayedPriceAfterDiscount < product.DisplayedPrice">
+      <div class="price-section">
+        <div class="price-container">
+          <span class="original-price"
+            [class.strikethrough]="product.DisplayedPriceAfterDiscount < product.DisplayedPrice">
             ${{product.DisplayedPrice}}
           </span>
           <span class="discount-price" *ngIf="product.DisplayedPriceAfterDiscount < product.DisplayedPrice">
             ${{product.DisplayedPriceAfterDiscount}}
           </span>
-        </p>
+        </div>
+        <div class="points-badge">
+          Earn {{product.EarnedPoints}} points
+        </div>
       </div>
 
-      <p class="points">Earn {{product.EarnedPoints}} points</p>
-      <p class="shop">Sold by: {{product.ShopName}}</p>
-
-      <div class="stock" [class.out-of-stock]="product.Stock === 0">
-        {{product.Stock > 0 ? 'In Stock' : 'Out of Stock'}}
+      <div class="stock-info" [class.out-of-stock]="product.Stock === 0">
+        <i class="material-icons">{{product.Stock > 0 ? 'check_circle' : 'remove_circle'}}</i>
+        <span>{{product.Stock > 0 ? 'In Stock' : 'Out of Stock'}}</span>
+        <span *ngIf="product.Stock > 0">({{product.Stock}} available)</span>
       </div>
 
-      <button class="add-to-cart-btn" *ngIf="product.Stock > 0">
-        Add to Cart
-      </button>
+      <div class="description-section">
+        <h3>Description</h3>
+        <p class="description">{{product.Description}}</p>
+      </div>
+
+      <div class="actions">
+        <button class="add-to-cart-btn" *ngIf="product.Stock > 0" (click)="addToCart()">
+          <i class="material-icons">shopping_cart</i>
+          Add to Cart
+        </button>
+        <button class="wishlist-btn">
+          <i class="material-icons">favorite_border</i>
+          Add to Wishlist
+        </button>
+      </div>
     </div>
   </div>
 </div>

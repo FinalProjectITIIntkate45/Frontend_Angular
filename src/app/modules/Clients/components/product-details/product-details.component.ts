@@ -13,6 +13,7 @@ export class ProductDetailsComponent implements OnInit {
   product: Product | null = null;
   loading: boolean = false;
   error: string | null = null;
+  selectedImage: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -50,5 +51,10 @@ export class ProductDetailsComponent implements OnInit {
   addToCart() {
     // Implement cart functionality
     console.log('Adding to cart:', this.product?.Name);
+  }
+
+  addToWishlist() {
+    // Implement wishlist functionality
+    console.log('Adding to wishlist:', this.product?.Name);
   }
 }
