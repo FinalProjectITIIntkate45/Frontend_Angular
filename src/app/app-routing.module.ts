@@ -18,15 +18,12 @@ const routes: Routes = [
       import('./modules/auth/auth.module').then((m) => m.AuthModule),
   },
   {
-    path: 'provider',
-    component: ProviderLayoutComponent,
-    canActivate: [authGuard],
-    // data: { expectedRoles: ['Provider'] },
-    loadChildren: () =>
-      import('./modules/Providers/provider.module').then(
-        (m) => m.ProviderModule
-      ),
-  },
+  path: 'provider',
+  canActivate: [authGuard],
+  loadChildren: () =>
+    import('./modules/Providers/provider.module').then((m) => m.ProviderModule),
+}
+,
   {
     path: 'client',
     component: ClientLayoutComponent,

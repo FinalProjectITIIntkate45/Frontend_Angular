@@ -70,9 +70,9 @@
     </div>
 
     <div *ngFor="let attr of attributes" class="mb-3">
-      <label>{{ attr.Name }}</label>
-      <input class="General-custom-input" [formControlName]="'attr_' + attr.Id"
-        placeholder="Enter value for {{ attr.Name }}" />
+      <label>{{ attr.name }}</label>
+      <input class="General-custom-input" [formControlName]="'attr_' + attr.id"
+        placeholder="Enter value for {{ attr.name }}" />
     </div>
   </div>
 
