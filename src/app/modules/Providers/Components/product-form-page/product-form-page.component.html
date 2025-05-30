@@ -1,0 +1,102 @@
+<!-- product-form-page.component.html -->
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="General-card p-4 position-relative">
+
+  <!-- 🔄 Spinner overlay أثناء التحميل -->
+  <div *ngIf="isLoading"
+    class="position-absolute top-0 start-0 w-100 h-100 bg-white bg-opacity-75 d-flex justify-content-center align-items-center z-3">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <!-- 🔹 Stepper Navigation -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <button type="button" class="btn btn-outline-secondary" [disabled]="stepIndex === 0" (click)="prevStep()">⬅
+      Back</button>
+    <span class="fw-bold">Step {{ stepIndex + 1 }} of 3</span>
+    <button type="button" class="btn btn-outline-primary" [disabled]="stepIndex === 2 || !canProceed(stepIndex)"
+      (click)="nextStep()">Next ➡</button>
+  </div>
+
+  <!-- 🔹 STEP 1: Basic Info -->
+  <div *ngIf="stepIndex === 0">
+    <div class="mb-3">
+      <label>Product Name</label>
+      <input formControlName="name" class="General-custom-input" placeholder="Enter product name" />
+    </div>
+    <div class="mb-3">
+      <label>Description</label>
+      <textarea formControlName="description" rows="3" class="General-custom-input"
+        placeholder="Write product description..."></textarea>
+    </div>
+    <div class="mb-3">
+      <label>Stock</label>
+      <input type="number" formControlName="stock" class="General-custom-input" />
+    </div>
+    <div class="mb-3">
+      <label>Base Price</label>
+      <input type="number" formControlName="basePrice" class="General-custom-input" />
+    </div>
+    <div class="mb-3">
+      <label>Reward Points</label>
+      <input type="number" formControlName="points" class="General-custom-input" />
+    </div>
+  </div>
+
+  <!-- 🔹 STEP 2: Category + Attributes -->
+  <div *ngIf="stepIndex === 1">
+    <div class="mb-3">
+      <label>Select Category</label>
+      <select formControlName="categoryId" class="General-custom-input">
+        <option [ngValue]="null" disabled>Select category...</option>
+        <option *ngFor="let cat of categories" [ngValue]="cat.Id">{{ cat.Name }}</option>
+      </select>
+    </div>
+
+    <!-- ✅ VIP-only fields -->
+    <div *ngIf="subscriptionType === 'VIP'" class="mb-3">
+      <label>Increase Rate (%)</label>
+      <input type="number" formControlName="increaseRate" class="General-custom-input" />
+    </div>
+
+    <div *ngIf="subscriptionType === 'VIP'" class="mb-3">
+      <label>Discount Percentage (%)</label>
+      <input type="number" formControlName="discountPercentage" class="General-custom-input" />
+    </div>
+
+    <div class="form-check mb-3">
+      <input class="form-check-input" type="checkbox" formControlName="isSpecialOffer" id="offer" />
+      <label class="form-check-label" for="offer">Special Offer</label>
+    </div>
+
+    <div *ngFor="let attr of attributes" class="mb-3">
+      <label>{{ attr.name }}</label>
+      <input class="General-custom-input" [formControlName]="'attr_' + attr.id"
+        placeholder="Enter value for {{ attr.name }}" />
+    </div>
+  </div>
+
+
+  <!-- 🔹 STEP 3: Images + Submit -->
+  <div *ngIf="stepIndex === 2">
+    <div class="mb-3">
+      <label>Product Images</label>
+      <input type="file" class="General-custom-input" (change)="onFileChange($event)" multiple />
+    </div>
+
+    <div class="row" *ngIf="imagePreviews.length">
+      <div class="col-3 mb-2" *ngFor="let img of imagePreviews; let i = index">
+        <img [src]="img" class="img-fluid rounded shadow-sm" style="height: 100px; object-fit: cover;" />
+        <button type="button" class="btn btn-sm btn-danger mt-1 w-100" (click)="removeImage(i)">Remove</button>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-between mt-4">
+      <button type="button" class="btn btn-outline-secondary" (click)="resetForm()">Reset</button>
+      <button type="submit" class="General-hover-btn" [disabled]="form.invalid || isLoading">
+        {{ isEditMode ? 'Update Product' : 'Create Product' }}
+      </button>
+    </div>
+  </div>
+
+</form>

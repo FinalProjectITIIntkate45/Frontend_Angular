@@ -1,0 +1,28 @@
+<div class="container py-5">
+  <h2 class="mb-4 text-center">Choose Your Subscription</h2>
+
+  <div class="row justify-content-center gap-3">
+    <!-- Free Plan -->
+    <div class="card col-md-5 border-primary">
+      <div class="card-body text-center">
+        <h4 class="card-title text-primary">Free Plan</h4>
+        <p class="card-text">Access to limited features, ideal for testing the platform.</p>
+        <button class="btn btn-outline-primary" (click)="selectPlan('Free')">Select Free</button>
+      </div>
+    </div>
+
+    <!-- VIP Plan -->
+    <div class="card col-md-5 border-warning">
+      <div class="card-body text-center">
+        <h4 class="card-title text-warning">VIP Plan</h4>
+        <p class="card-text">Full access to all features, premium support, and more.</p>
+        <button class="btn btn-warning" (click)="selectPlan('VIP')">Select VIP</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-4 text-center" *ngIf="selectedPlan">
+    <h5>You selected: <span class="fw-bold">{{ selectedPlan }}</span></h5>
+    <button class="btn btn-success mt-2" (click)="submitPlan()">Confirm Subscription</button>
+  </div>
+</div>

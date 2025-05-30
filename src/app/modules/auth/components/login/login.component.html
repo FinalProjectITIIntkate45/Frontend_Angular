@@ -1,0 +1,51 @@
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="row w-100">
+        <div class="col-md-6 p-0">
+            <div class="d-flex justify-content-center align-items-center h-100 bg-warning">
+                <img src="assets/register-side.jpg" alt="Register" class="img-fluid h-100 w-100 object-fit-cover">
+            </div>
+        </div>
+        <div class="col-md-6 bg-primary text-white d-flex flex-column justify-content-center align-items-center p-5">
+            <h2 class="text-center text-warning mb-4">Login</h2>
+
+            <div *ngIf="errorMessage" class="alert alert-danger w-100 mb-3">
+                {{ errorMessage }}
+            </div>
+
+            <form (ngSubmit)="login()" #loginForm="ngForm" class="w-100">
+                <div class="mb-3">
+                    <label for="Method" class="form-label">E-Mail</label>
+                    <input type="Method" id="Method" class="form-control" [(ngModel)]="model.Method" name="Method"
+                        required Method #MethodInput="ngModel"
+                        [ngClass]="{'is-invalid': MethodInput.invalid && MethodInput.touched}"
+                        placeholder="Enter your Method">
+                    <div class="invalid-feedback" *ngIf="MethodInput.invalid && MethodInput.touched">
+                        Please enter a valid Method address
+                    </div>
+                </div>
+
+                <div class="mb-3 position-relative">
+                    <label for="Password" class="form-label">Password</label>
+                    <input [type]="showPassword ? 'text' : 'Password'" id="Password" class="form-control"
+                        [(ngModel)]="model.Password" name="Password" required #PasswordInput="ngModel"
+                        [ngClass]="{'is-invalid': PasswordInput.invalid && PasswordInput.touched}"
+                        placeholder="Enter your Password">
+                    <span class="Password-toggle position-absolute top-50 end-0 translate-middle-y pe-3"
+                        (click)="togglePassword()">
+                        <i id="eye-icon" class="fas fa-eye"></i>
+                    </span>
+                </div>
+
+                <button type="submit" class="btn btn-warning w-100 mb-3" [disabled]="loginForm.invalid || loading">
+                    {{ loading ? 'Logging in...' : 'Login' }}
+                </button>
+
+                <div class="text-center">
+                    <a routerLink="/account/forgot-Password" class="text-light">Forgot Password?</a>
+                    <br>
+                    <a routerLink="/account/register" class="text-warning">Create new account</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

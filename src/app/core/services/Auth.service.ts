@@ -1,0 +1,115 @@
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
+import { AuthState, LoginResponse } from '../models/auth.models';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class AuthService {
+  private readonly TOKEN_KEY = 'auth_token';
+  private readonly ROLE_KEY = 'role';
+  private readonly USERNAME_KEY = 'userName';
+
+  private authState = new BehaviorSubject<AuthState>({
+    isAuthenticated: false,
+    user: null,
+  });
+
+  constructor(private cookieService: CookieService, private router: Router) {
+    this.initializeAuth();
+  }
+
+  private initializeAuth() {
+    const token = this.getToken();
+    if (token) {
+      const user = this.parseJwt(token);
+      this.authState.next({
+        isAuthenticated: true,
+        user: {
+          userName: user?.userName,
+          email: user?.email,
+          role: user?.role,
+          subscriptionType: user?.subscriptionType || 'Basic',
+        },
+      });
+    }
+  }
+
+  getAuthState(): Observable<AuthState> {
+    return this.authState.asObservable();
+  }
+
+  setUserData(response: LoginResponse): void {
+    const decoded = this.parseJwt(response.token); // ✅ فك التوكن
+
+    this.cookieService.set(this.TOKEN_KEY, response.token, {
+      secure: true,
+      sameSite: 'Strict',
+    });
+    this.cookieService.set(this.ROLE_KEY, response.role);
+    this.cookieService.set(this.USERNAME_KEY, response.username);
+
+    this.authState.next({
+      isAuthenticated: true,
+      user: {
+        userName: response.username,
+        email: response.email,
+        role: response.role,
+        subscriptionType: decoded?.subscriptionType || 'Basic',
+      },
+    });
+  }
+
+  getToken(): string | null {
+    return this.cookieService.get(this.TOKEN_KEY) || null;
+  }
+
+  isLoggedUser(): boolean {
+    return !!this.getToken();
+  }
+
+  getUserRole(): string {
+    return this.cookieService.get(this.ROLE_KEY) || '';
+  }
+
+  getUserSubscriptionType(): string {
+    const token = this.getToken();
+    if (token) {
+      const decoded = this.parseJwt(token);
+      return decoded?.subscriptionType || 'Basic';
+    }
+    return 'Basic';
+  }
+
+  getUserId(): string {
+    const token = this.getToken();
+    if (token) {
+      const decoded = this.parseJwt(token);
+      return decoded?.userId || '';
+    }
+    return '';
+  }
+
+  logout(): void {
+    this.cookieService.delete(this.TOKEN_KEY);
+    this.cookieService.delete(this.ROLE_KEY);
+    this.cookieService.delete(this.USERNAME_KEY);
+
+    this.authState.next({
+      isAuthenticated: false,
+      user: null,
+    });
+
+    this.router.navigate(['/account/login']);
+  }
+
+  private parseJwt(token: string) {
+    try {
+      return JSON.parse(atob(token.split('.')[1]));
+    } catch (e) {
+      return null;
+    }
+  }
+}
