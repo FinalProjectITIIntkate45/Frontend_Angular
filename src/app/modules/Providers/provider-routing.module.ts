@@ -7,7 +7,8 @@ import { ProductDetailsPageComponent } from './Components/product-details-page/p
 import { EditShopComponent } from './Components/edit-shop/edit-shop.component';
 import { Subscription } from 'rxjs';
 import { ProductListPageComponent } from './Components/product-list-page/product-list-page.component';
-
+import { SubScrptionComponent } from './Components/SubScrption/SubScrption.component';
+import { CommonModule } from '@angular/common';
 const routes: Routes = [
   { path: 'suscrption', component: Subscription },
 
@@ -35,6 +36,8 @@ const routes: Routes = [
 
   { path: 'add-shop', component: AddShopComponent },
   { path: 'edit-shop/:id', component: EditShopComponent },
+  { path: 'subscription', component: SubScrptionComponent }
+
 ];
 
 @NgModule({

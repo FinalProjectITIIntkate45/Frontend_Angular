@@ -14,6 +14,7 @@ import { AuthInterceptor } from '../../core/interceptors/AuthInterceptor';
 import { LoaderInterceptor } from '../../core/interceptors/loaderInterceptor';
 import { ProductFormPageComponent } from './Components/product-form-page/product-form-page.component';
 import { EditShopComponent } from './Components/edit-shop/edit-shop.component';
+import { SubScrptionComponent } from './Components/SubScrption/SubScrption.component';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { EditShopComponent } from './Components/edit-shop/edit-shop.component';
     ProviderLayoutComponent,
     // ProductFormPageComponent,
     // ProductDetailsPageComponent,
+    
 
   ],
   imports: [
@@ -31,7 +33,8 @@ import { EditShopComponent } from './Components/edit-shop/edit-shop.component';
     FormsModule,
     ReactiveFormsModule,
     ProviderRoutingModule,
-    ProductFormPageComponent
+    ProductFormPageComponent,
+    SubScrptionComponent
   ],
   providers: [
     provideHttpClient(withFetch(), withInterceptors([AuthInterceptor, LoaderInterceptor])),

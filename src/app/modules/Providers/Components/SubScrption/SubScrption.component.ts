@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { SubscriptionService } from '../../Services/SubscrptionServece.service'; // تأكد إن المسار صحيح
+import { SubscriptionService } from '../../Services/SubscrptionServece.service';
 import { ToastrService } from 'ngx-toastr';
-
+import { AccountService } from '../../../auth/services/account.service'; // تأكد من المسار الصحيح
+import { CommonModule } from '@angular/common';
+import { CookieService } from 'ngx-cookie-service';
+import { SubscriptionChangeRequest } from '../../Models/SubscriptionChangeRequest';
 @Component({
   selector: 'app-SubScrption',
   templateUrl: './SubScrption.component.html',
@@ -11,43 +13,91 @@ import { ToastrService } from 'ngx-toastr';
 export class SubScrptionComponent implements OnInit {
 
   selectedPlan: string | null = null;
-  userId: string = '123'; // مؤقتًا، بعدين تجيبه من الـ Login أو AuthService
+  userId: string | null = null;
 
   constructor(
-    private router: Router,
     private subscriptionService: SubscriptionService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private cookieService: CookieService,
   ) {}
+  ngOnInit(): void {
+    this.userId = this.cookieService.get('userId'); 
+  }
 
   selectPlan(plan: string) {
     this.selectedPlan = plan;
   }
 
- submitPlan() {
-  if (!this.selectedPlan) return;
+  submitPlan() {
+  if (!this.selectedPlan ) {
+    this.toastr.warning('Please make sure you Select a plan');
+    return;
+  }
+
+   if ( !this.userId) {
+    this.toastr.warning('Please make sure you are logged in');
+    return;
+  }
 
   if (this.selectedPlan === 'VIP') {
-    this.subscriptionService.startPayment(this.userId, 10000).subscribe({
+    // أول مرة → يبدأ الدفع
+    const req : SubscriptionChangeRequest  = {
+      type: 'VIP',
+      paymentMethod: 'OnlineCard', // تقدر تخليها متغيرة لو عندك اختيارات أكتر
+      isPaid: false
+    };
+
+    this.subscriptionService.changeSubscription(req).subscribe({
       next: (res: any) => {
-        // فيه احتمال تحبي تحتفظي بـ orderId لو هتستخدمينه في الـ backend
-        window.location.href = res.paymentUrl;
+        if (res.data?.paymentUrl) {
+          // افتح صفحة الدفع
+          window.open(res.data.paymentUrl, '_blank');
+
+          // بعد الدفع، اطلب من المستخدم يدخل Transaction ID
+          setTimeout(() => {
+            const transactionId = prompt('بعد الدفع، أدخل Transaction ID:');
+
+            if (transactionId) {
+              const verifyReq : SubscriptionChangeRequest = {
+                type: 'VIP',
+                transactionId,
+                isPaid: true
+              };
+
+              this.subscriptionService.changeSubscription(verifyReq).subscribe({
+                next: () => {
+                  this.toastr.success('تم الاشتراك في VIP بنجاح');
+                },
+                error: () => {
+                  this.toastr.error('لم يتم التحقق من الدفع، حاول مجددًا');
+                }
+              });
+            }
+          }, 2000);
+        } else {
+          this.toastr.error('فشل في إنشاء رابط الدفع');
+        }
       },
       error: () => {
-        this.toastr.error('Failed to start VIP payment');
+        this.toastr.error('حدث خطأ أثناء تنفيذ الاشتراك');
       }
     });
+
   } else {
-    this.subscriptionService.updateSubscription(this.userId, this.selectedPlan).subscribe({
+    // اشتراك مجاني
+    const req : SubscriptionChangeRequest = {
+      type: 'Free',
+      isPaid: true
+    };
+
+    this.subscriptionService.changeSubscription(req).subscribe({
       next: () => {
-        this.toastr.success('Successfully subscribed to Free plan');
+        this.toastr.success('تم الاشتراك بالخطة المجانية');
       },
       error: () => {
-        this.toastr.error('Subscription failed, please try again');
+        this.toastr.error('فشل الاشتراك بالخطة المجانية');
       }
     });
   }
 }
-
-
-  ngOnInit(): void {}
 }
