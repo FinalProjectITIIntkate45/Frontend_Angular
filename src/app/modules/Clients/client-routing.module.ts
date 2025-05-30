@@ -37,8 +37,13 @@ const routes: Routes = [
       { path: 'follow-seller', component: FollowSellerComponent }
     ],
   },
-  { path: 'products', component: ProductSearchComponent },
-  { path: 'products/:id', component: ProductDetailsComponent },
+  {
+    path: 'Product',
+    children: [
+      { path: '', component: ProductSearchComponent },
+      { path: ':id', component: ProductDetailsComponent },
+    ],
+  },
 ];
 
 @NgModule({

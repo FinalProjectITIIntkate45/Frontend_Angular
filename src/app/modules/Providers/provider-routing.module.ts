@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
 import { AddShopComponent } from './Components/add-shop/add-shop.component';
 import { ProductFormPageComponent } from './Components/product-form-page/product-form-page.component';
 import { authGuard } from '../../core/guards/Auth.guard';
@@ -9,6 +8,8 @@ import { Subscription } from 'rxjs';
 import { ProductListPageComponent } from './Components/product-list-page/product-list-page.component';
 import { SubScrptionComponent } from './Components/SubScrption/SubScrption.component';
 import { CommonModule } from '@angular/common';
+import { RouterModule, Routes } from '@angular/router';
+
 const routes: Routes = [
   { path: 'suscrption', component: Subscription },
 
