@@ -11,9 +11,9 @@ import { Product } from '../../Models/Product.model';
   standalone: false,
 })
 export class ProductSearchComponent implements OnInit {
-  allProducts: Product[] = []; // Store all products
-  filteredProducts: Product[] = []; // Store filtered products
-  categories: string[] = []; // Will be populated from unique product categories
+  allProducts: Product[] = [];
+  filteredProducts: Product[] = [];
+  categories: string[] = [];
   loading: boolean = false;
   error: string | null = null;
 
@@ -38,7 +38,9 @@ export class ProductSearchComponent implements OnInit {
 
     this.productService.getProducts().subscribe({
       next: (products) => {
-        this.allProducts = products;
+        console.log('Products loaded:', products);
+        this.allProducts = products || [];
+
         this.extractCategories();
         this.applyFilters();
         this.loading = false;
@@ -52,11 +54,69 @@ export class ProductSearchComponent implements OnInit {
   }
 
   private extractCategories() {
-    this.categories = [...new Set(this.allProducts.map((p) => p.categoryName))];
+    if (!this.allProducts?.length) {
+      this.categories = [];
+      return;
+    }
+    this.categories = [...new Set(this.allProducts.map((p) => p.CategoryName))];
   }
 
-  searchProducts() {
+  searchProducts(): void {
     this.applyFilters();
+  }
+
+  private applyFilters() {
+    if (!this.allProducts?.length) {
+      this.filteredProducts = [];
+      return;
+    }
+
+    let filtered = [...this.allProducts];
+
+    if (this.filter.category) {
+      filtered = filtered.filter(
+        (p) => p.CategoryName === this.filter.category
+      );
+    }
+
+    if (this.filter.minPrice !== null) {
+      filtered = filtered.filter(
+        (p) => p.DisplayedPrice >= this.filter.minPrice!
+      );
+    }
+    if (this.filter.maxPrice !== null) {
+      filtered = filtered.filter(
+        (p) => p.DisplayedPrice <= this.filter.maxPrice!
+      );
+    }
+
+    if (this.filter.minPoints !== null) {
+      filtered = filtered.filter(
+        (p) => p.EarnedPoints >= this.filter.minPoints!
+      );
+    }
+    if (this.filter.maxPoints !== null) {
+      filtered = filtered.filter(
+        (p) => p.EarnedPoints <= this.filter.maxPoints!
+      );
+    }
+
+    switch (this.filter.sortBy) {
+      case 'price_asc':
+        filtered.sort((a, b) => a.DisplayedPrice - b.DisplayedPrice);
+        break;
+      case 'price_desc':
+        filtered.sort((a, b) => b.DisplayedPrice - a.DisplayedPrice);
+        break;
+      case 'points_desc':
+        filtered.sort((a, b) => b.EarnedPoints - a.EarnedPoints);
+        break;
+      // case 'rating_desc':
+      //   filtered.sort((a, b) => (b.Rat || 0) - (a.rating || 0));
+      //   break;
+    }
+
+    this.filteredProducts = filtered;
   }
 
   clearFilters() {
@@ -69,59 +129,6 @@ export class ProductSearchComponent implements OnInit {
       sortBy: 'price_asc',
     };
     this.applyFilters();
-  }
-
-  private applyFilters() {
-    let filtered = [...this.allProducts];
-
-    // Apply category filter
-    if (this.filter.category) {
-      filtered = filtered.filter(
-        (p) => p.categoryName === this.filter.category
-      );
-    }
-
-    // Apply price range filter
-    if (this.filter.minPrice !== null) {
-      filtered = filtered.filter(
-        (p) => p.displayedPrice >= this.filter.minPrice!
-      );
-    }
-    if (this.filter.maxPrice !== null) {
-      filtered = filtered.filter(
-        (p) => p.displayedPrice <= this.filter.maxPrice!
-      );
-    }
-
-    // Apply points range filter
-    if (this.filter.minPoints !== null) {
-      filtered = filtered.filter(
-        (p) => p.earnedPoints >= this.filter.minPoints!
-      );
-    }
-    if (this.filter.maxPoints !== null) {
-      filtered = filtered.filter(
-        (p) => p.earnedPoints <= this.filter.maxPoints!
-      );
-    }
-
-    // Apply sorting
-    switch (this.filter.sortBy) {
-      case 'price_asc':
-        filtered.sort((a, b) => a.displayedPrice - b.displayedPrice);
-        break;
-      case 'price_desc':
-        filtered.sort((a, b) => b.displayedPrice - a.displayedPrice);
-        break;
-      case 'points_desc':
-        filtered.sort((a, b) => b.earnedPoints - a.earnedPoints);
-        break;
-      case 'rating_desc':
-        filtered.sort((a, b) => (b.rating || 0) - (a.rating || 0));
-        break;
-    }
-
-    this.filteredProducts = filtered;
   }
 
   viewProductDetails(productId: number) {

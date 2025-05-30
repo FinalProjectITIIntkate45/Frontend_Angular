@@ -1,17 +1,18 @@
 export interface Product {
-  id: number;
-  name: string;
-  description: string;
-  basePrice: number;
-  displayedPrice: number;
-  displayedPriceAfterDiscount?: number;
-  stock: number;
-  isSpecialOffer: boolean;
-  earnedPoints: number;
-  rating?: number;
-  shopId: number;
-  shopName: string;
-  categoryId: number;
-  categoryName: string;
-  images: string[];
+  Id: number;
+  Name: string;
+  Description: string;
+  Stock: number;
+  BasePrice: number;
+  Points: number;
+  CategoryName: string;
+  ShopName: string;
+  CreatedAt: string;
+  Images: string[];
+  ModificationDate: string;
+  CategoryId: number;
+  DisplayedPrice: number;
+  DisplayedPriceAfterDiscount: number;
+  IsSpecialOffer: boolean;
+  EarnedPoints: number;
 }

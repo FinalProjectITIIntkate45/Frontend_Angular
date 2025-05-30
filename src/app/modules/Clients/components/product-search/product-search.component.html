@@ -45,23 +45,24 @@
     <div *ngIf="loading" class="loading">Loading products...</div>
     <div *ngIf="error" class="error">{{error}}</div>
 
-    <div *ngFor="let product of filteredProducts" class="product-card" (click)="viewProductDetails(product.id)">
-      <img [src]="product.images[0]" [alt]="product.name" *ngIf="product.images?.length">
+    <div *ngFor="let product of filteredProducts" class="product-card" (click)="viewProductDetails(product.Id)">
+      <img [src]="product.Images[0]" [alt]="product.Name" *ngIf="product.Images?.length">
       <div class="product-info">
-        <h3>{{product.name}}</h3>
+        <h3>{{product.Name}}</h3>
         <div class="price-container">
           <p class="price">
-            <span [class.strikethrough]="product.displayedPriceAfterDiscount">
-              ${{product.displayedPrice}}
+            <span [class.strikethrough]="product.DisplayedPriceAfterDiscount">
+              ${{product.DisplayedPrice}}
             </span>
-            <span class="discount-price" *ngIf="product.displayedPriceAfterDiscount">
-              ${{product.displayedPriceAfterDiscount}}
+            <span class="discount-price" *ngIf="product.DisplayedPriceAfterDiscount">
+              ${{product.DisplayedPriceAfterDiscount}}
             </span>
           </p>
         </div>
-        <p class="shop">{{product.shopName}}</p>
-        <div class="stock" [class.out-of-stock]="product.stock === 0">
-          {{product.stock > 0 ? 'In Stock' : 'Out of Stock'}}
+        <p class="points">Earn {{product.EarnedPoints}} points</p>
+        <p class="shop">{{product.ShopName}}</p>
+        <div class="stock" [class.out-of-stock]="product.Stock === 0">
+          {{product.Stock > 0 ? 'In Stock' : 'Out of Stock'}}
         </div>
       </div>
     </div>
