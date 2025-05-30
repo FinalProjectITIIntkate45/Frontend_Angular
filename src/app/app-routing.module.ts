@@ -24,7 +24,7 @@ const routes: Routes = [
     // data: { expectedRoles: ['Provider'] },
     loadChildren: () =>
       import('./modules/Providers/provider.module').then(
-        (m) => m.ProdiverModule
+        (m) => m.ProviderModule
       ),
   },
   {

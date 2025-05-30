@@ -44,6 +44,6 @@ import { RouterModule } from '@angular/router';
   ],
 
 })
-export class ProdiverModule {}
+export class ProviderModule {}
 
 
