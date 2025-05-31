@@ -1,14 +1,24 @@
-<div class="container">
-  <div class="aside">
-    <app-sidebar (sectionChange)="onSectionChange($event)"></app-sidebar>
-  </div>
-  <main class="main-content">
-    <nav class="top-nav">
-      <app-top-navigation></app-top-navigation>
-    </nav>
-    <a routerLink="/user-profile/wishlist">Wishlist</a>
-    <div class="dynamic-section-content">
-      <router-outlet></router-outlet>
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-md-3 col-lg-2 p-0">
+      <app-sidebar (sectionChange)="onSectionChange($event)"></app-sidebar>
     </div>
-  </main>
+    <!-- Main Content -->
+    <main class="col-md-9 col-lg-10 p-0">
+      <!-- Top Navigation -->
+      <nav class="top-nav border-bottom">
+        <app-top-navigation></app-top-navigation>
+      </nav>
+      <!-- Dynamic Content -->
+      <div class="p-4">
+        <a routerLink="/user-profile/wishlist" class="btn btn-link mb-3">Wishlist</a>
+        <div class="dynamic-section-content">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </main>
+  </div>
 </div>
+<!-- Footer -->
+<app-user-footer></app-user-footer>

@@ -72,7 +72,7 @@ export class ProductFormPageComponent implements OnInit {
         console.log('🔁 User subscription type:', this.subscriptionType);
       },
       error: (err) => {
-        console.error('❌ Failed to load subscription type', err);
+        console.error(' Failed to load subscription type', err);
       },
     });
 
@@ -179,10 +179,10 @@ export class ProductFormPageComponent implements OnInit {
       }
     });
 
-    // 🧠 Fetch new attributes
+    //  Fetch new attributes
     this.attributeService.getAttributesByCategory(categoryId).subscribe({
       next: (attrs) => {
-        console.log('✅ Loaded new attributes:', attrs);
+        console.log(' Loaded new attributes:', attrs);
         this.attributes = attrs.map((attr) => {
           const matched = existingValues.find(
             (val) => val.attributeId === attr.Id
@@ -202,7 +202,7 @@ export class ProductFormPageComponent implements OnInit {
         });
       },
       error: (err) => {
-        console.error('❌ Failed to load attributes:', err);
+        console.error(' Failed to load attributes:', err);
         this.attributes = [];
       },
     });

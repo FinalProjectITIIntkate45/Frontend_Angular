@@ -3,7 +3,7 @@ import { AuthService } from '../../../../core/services/Auth.service';
 
 @Component({
   selector: 'app-top-navigation',
-  standalone:false,
+  standalone: false,
   templateUrl: './top-navigation.component.html',
   styleUrls: ['./top-navigation.component.css']
 })
@@ -18,5 +18,6 @@ export class TopNavigationComponent implements OnInit {
     // this.authService.getProfile().subscribe((profile: { userName: string }) => {
     //   this.userName = profile.userName || 'User';
     // });
+    this.userName = 'User'; // قيمة افتراضية لأغراض العرض
   }
 }

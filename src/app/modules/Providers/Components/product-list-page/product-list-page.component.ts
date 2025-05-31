@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+/*import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
@@ -93,3 +93,4 @@ export class ProductListPageComponent implements OnInit {
     }
   }
 }
+*/

@@ -22,14 +22,23 @@ export class EditShopComponent implements OnInit {
     private route: ActivatedRoute,
     private authService: AuthService
   ) {
+    this.shopId = +this.route.snapshot.paramMap.get('id')!;
     this.shopForm = this.fb.group({
       shopName: ['', Validators.required],
       description: ['', Validators.required],
       address: ['', Validators.required],
       contactDetails: ['', Validators.required],
+      city: ['', Validators.required],
+      street: ['', Validators.required],
+      postalCode: [''],
+      latitude: [0, Validators.required],
+      longitude: [0, Validators.required],
+      businessPhone: ['', Validators.required],
+      businessEmail: ['', [Validators.required, Validators.email]],
       logo: [null],
+      images: [null],
+      shopTypeId: [0, Validators.required],
     });
-    this.shopId = +this.route.snapshot.paramMap.get('id')!;
   }
 
   ngOnInit() {
@@ -38,7 +47,7 @@ export class EditShopComponent implements OnInit {
 
   loadShopDetails() {
     this.shopService.getShopById(this.shopId).subscribe({
-      next: (shop: { [key: string]: any }) => this.shopForm.patchValue(shop),
+      next: (shop: ShopEditViewModel) => this.shopForm.patchValue(shop),
       error: (_err: any) => (this.errorMessage = 'Failed to load shop details'),
     });
   }
@@ -53,9 +62,7 @@ export class EditShopComponent implements OnInit {
         address: formValue.address,
         contactDetails: formValue.contactDetails,
         logo: formValue.logo,
-        // providerId: this.authService['getUserId'](),
-
-        providerId: this.authService.getUserId(), // Assuming getUserId() returns the provider's ID
+        providerId: this.authService.getUserId(),
       };
 
       this.shopService.updateShop(model).subscribe({
@@ -67,8 +74,13 @@ export class EditShopComponent implements OnInit {
     }
   }
 
-  onFileChange(event: any) {
-    const file = event.target.files[0];
-    this.shopForm.patchValue({ logo: file });
+  onFileChange(event: any, field: string) {
+    if (field === 'logo') {
+      const file = event.target.files[0];
+      this.shopForm.patchValue({ logo: file });
+    } else if (field === 'images') {
+      const files = Array.from(event.target.files) as File[];
+      this.shopForm.patchValue({ images: files });
+    }
   }
 }

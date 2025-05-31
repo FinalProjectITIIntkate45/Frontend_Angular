@@ -24,7 +24,6 @@ import { ProductListPageComponent } from './Components/product-list-page/product
 import { ProviderLayoutComponent } from './Components/provider-layout/provider-layout.component';
 import { ProviderSidebarComponent } from './Components/provider-sidebar/provider-sidebar.component';
 
-
 @NgModule({
   declarations: [
     ProviderLayoutComponent,
@@ -40,7 +39,7 @@ import { ProviderSidebarComponent } from './Components/provider-sidebar/provider
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    ProviderRoutingModule, // هذا هو الصحيح، وليس RouterModule فقط
+    ProviderRoutingModule,
   ],
   providers: [
     provideHttpClient(withFetch(), withInterceptors([AuthInterceptor, LoaderInterceptor])),
