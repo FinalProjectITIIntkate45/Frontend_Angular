@@ -1,10 +1,13 @@
 // src/app/modules/vendor/services/product.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+
 import { Observable, map } from 'rxjs';
-import { Product } from '../models/product.model';
+
+import { APIResponse } from '../models/APIResponse';
 import { CreateProductRequest } from '../models/create-product-request.model';
 import { EditProductRequest } from '../models/edit-product-request.model';
+import { Product } from '../models/product.model';
 import { environment } from '../../../environments/environment.development';
 
 @Injectable({
@@ -17,16 +20,17 @@ export class ProductService {
 
   // ✅ 1. Get all products
   getAll(): Observable<Product[]> {
-    return this.http
-      .get<{ data: Product[] }>(this.baseUrl)
-      .pipe(map((response) => response.data));
-  }
+  return this.http.get<APIResponse<Product[]>>(this.baseUrl).pipe(
+    map(response => response.Data ?? [])
+  );
+}
+
 
   // ✅ 2. Get product by ID
   getById(id: number): Observable<Product> {
     return this.http
-      .get<{ data: Product }>(`${this.baseUrl}/${id}`)
-      .pipe(map((response) => response.data));
+      .get<APIResponse<Product>>(`${this.baseUrl}/${id}`)
+      .pipe(map((response) => response.Data));
   }
 
   // ✅ 3. Create product (with images + attributes) using FormData

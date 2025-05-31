@@ -19,7 +19,7 @@ const routes: Routes = [
     path: '',
     component: ProviderLayoutComponent,
     children: [
-      { path: 'products', component: ProductDetailsPageComponent },
+      { path: 'products', component: ProductListPageComponent },
       { path: 'products/add', component: ProductFormPageComponent },
       { path: 'products/edit/:id', component: ProductFormPageComponent },
       { path: 'products/details/:id', component: ProductDetailsPageComponent },

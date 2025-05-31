@@ -213,15 +213,15 @@ export class ProductFormPageComponent implements OnInit {
     this.productService.getById(id).subscribe((product) => {
       this.isLoading = false;
       this.form.patchValue({
-        name: product.name,
-        description: product.description,
-        stock: product.stock,
-        basePrice: product.basePrice,
-        points: product.points,
-        categoryId: product.categoryId,
-        isSpecialOffer: product.isSpecialOffer,
+        name: product.Name,
+        description: product.Description,
+        stock: product.Stock,
+        basePrice: product.BasePrice,
+        points: product.Points,
+        categoryId: product.CategoryId,
+        isSpecialOffer: product.IsSpecialOffer,
       });
-      this.onCategoryChange(product.categoryId, product.attributes ?? []);
+      this.onCategoryChange(product.CategoryId, product.Attributes ?? []);
     });
   }
 
