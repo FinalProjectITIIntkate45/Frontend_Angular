@@ -3,20 +3,29 @@
 
   <div *ngIf="followedShops.length > 0; else noShops">
     <ul>
-      <li *ngFor="let shop of followedShops">
-        <span>🛍️ Shop ID: {{ shop }}</span>
-        <button (click)="unfollow(shop)">Unfollow</button>
+      <li *ngFor="let shop of followedShops" class="shop-item">
+        <span class="shop-name">🛍️ Shop ID: {{ shop }}</span>
+        <button class="btn unfollow-btn" (click)="unfollow(shop)">Unfollow</button>
       </li>
     </ul>
   </div>
 
   <ng-template #noShops>
-    <p>You are not following any shops yet.</p>
+    <p class="no-shops-message">You are not following any shops yet.</p>
   </ng-template>
 
   <hr />
 
   <h3>Follow a New Shop</h3>
-  <input type="text" placeholder="Shop ID" [(ngModel)]="newShopId" />
-  <button (click)="follow()">Follow</button>
+  <div class="follow-form">
+    <input
+      type="number"
+      min="1"
+      placeholder="Enter Shop ID"
+      [(ngModel)]="newShopId"
+      (keydown.enter)="follow()"
+      class="shop-input"
+    />
+    <button class="btn follow-btn" (click)="follow()">Follow</button>
+  </div>
 </div>
