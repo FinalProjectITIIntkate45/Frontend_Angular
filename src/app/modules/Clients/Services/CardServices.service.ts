@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';  // Used for handling asynchronous operations
-import { CartItemInterface } from '../models/CartItemInterface';
+import { CartItemInterface } from '../Models/CartItemInterface';
 
 @Injectable({
   providedIn: 'root'

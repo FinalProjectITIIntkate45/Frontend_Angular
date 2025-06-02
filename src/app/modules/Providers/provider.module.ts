@@ -23,6 +23,8 @@ import { ProductFormPageComponent } from './Components/product-form-page/product
 import { ProductListPageComponent } from './Components/product-list-page/product-list-page.component';
 import { ProviderLayoutComponent } from './Components/provider-layout/provider-layout.component';
 import { ProviderSidebarComponent } from './Components/provider-sidebar/provider-sidebar.component';
+import { SafeUrlPipe } from './Services/SafeUrl.pipe';
+
 
 
 @NgModule({
@@ -40,8 +42,9 @@ import { ProviderSidebarComponent } from './Components/provider-sidebar/provider
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    ProviderRoutingModule, // هذا هو الصحيح، وليس RouterModule فقط
-  ],
+    ProviderRoutingModule,
+    SafeUrlPipe,
+],
   providers: [
     provideHttpClient(withFetch(), withInterceptors([AuthInterceptor, LoaderInterceptor])),
   ],
