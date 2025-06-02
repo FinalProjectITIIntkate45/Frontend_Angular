@@ -11,16 +11,17 @@ import { ProductService } from '../../../../core/services/product.service';
   selector: 'app-product-list-page',
   standalone: false,
   templateUrl: './product-list-page.component.html',
-  styleUrls: ['./product-list-page.component.css']
+  styleUrls: ['./product-list-page.component.css'],
 })
 export class ProductListPageComponent implements OnInit {
   products: Product[] = [];
   pagedProducts: Product[] = [];
 
-
   pageSize: number = 6;
   currentPage: number = 1;
   totalPages: number = 1;
+
+  isLoading = false;
 
   constructor(
     private productService: ProductService,
@@ -33,16 +34,20 @@ export class ProductListPageComponent implements OnInit {
   }
 
   loadProducts(): void {
+    this.isLoading = true;
     this.productService.getAll().subscribe({
       next: (res) => {
-        this.products = res;
+        this.products = res || [];
+        console.log('Products loaded:', this.products);
         this.totalPages = Math.ceil(this.products.length / this.pageSize);
         this.updatePagedProducts();
+        this.isLoading = false;
       },
       error: (err) => {
         console.error('Error loading products:', err);
         this.toastr.error('Failed to load products');
-      }
+        this.isLoading = false;
+      },
     });
   }
 
@@ -52,7 +57,6 @@ export class ProductListPageComponent implements OnInit {
     this.pagedProducts = this.products.slice(start, end);
     console.log('Paged Products:', this.pagedProducts);
   }
-
 
   changePage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
@@ -67,29 +71,45 @@ export class ProductListPageComponent implements OnInit {
       .map((_, i) => i + 1);
   }
 
-  viewProductDetails(id: number): void {
-    this.router.navigate(['/provider/products/details', id]);
+  viewProductDetails(id: number | undefined): void {
+  if (!id) {
+    this.toastr.error('Product ID is invalid.');
+    return;
   }
+  this.router.navigate(['/provider/products/details', id]);
+}
 
   editProduct(product: Product): void {
-    this.router.navigate(['/provider/products/edit', product.id]);
+    if (!product || !product.Id) {
+      this.toastr.error('Product is invalid for editing.');
+      return;
+    }
+    this.router.navigate(['/provider/products/edit', product.Id]);
   }
 
-  deleteProduct(id: number): void {
-    if (confirm('Are you sure you want to delete this product?')) {
-      this.productService.deleteProduct(id).subscribe({
-        next: () => {
-          this.toastr.success('Product deleted successfully');
-          // Remove product from list
-          this.products = this.products.filter(p => p.id !== id);
-          this.totalPages = Math.ceil(this.products.length / this.pageSize);
-          this.updatePagedProducts();
-        },
-        error: (err) => {
-          this.toastr.error('Failed to delete product');
-          console.error('Failed to delete product', err);
-        }
-      });
-    }
+  deleteProduct(id: number | undefined): void {
+  if (!id) {
+    this.toastr.error('Product ID is invalid.');
+    return;
+  }
+  if (confirm('Are you sure you want to delete this product?')) {
+    this.productService.deleteProduct(id).subscribe({
+      next: () => {
+        this.toastr.success('Product deleted successfully');
+        // Remove product from list
+        this.products = this.products.filter((p) => p.Id !== id);
+        this.totalPages = Math.ceil(this.products.length / this.pageSize);
+        this.updatePagedProducts();
+      },
+      error: (err) => {
+        this.toastr.error('Failed to delete product');
+        console.error('Failed to delete product', err);
+      },
+    });
+  }
+}
+
+  trackByProductId(index: number, product: Product): number {
+    return product.Id;
   }
 }
