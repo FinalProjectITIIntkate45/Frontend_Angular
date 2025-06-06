@@ -1,10 +1,12 @@
 // src/app/modules/vendor/services/product.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+
 import { Observable, map } from 'rxjs';
-import { Product } from '../models/product.model';
+
 import { CreateProductRequest } from '../models/create-product-request.model';
 import { EditProductRequest } from '../models/edit-product-request.model';
+import { Product } from '../models/product.model';
 import { environment } from '../../../environments/environment.development';
 
 
@@ -44,5 +46,5 @@ export class ProductService {
   deleteProduct(id: number): Observable<any> {
     return this.http.delete(`${this.baseUrl}/${id}`);
   }
-  
+
 }
