@@ -1,17 +1,69 @@
-<div class="container py-4">
-  <div class="row">
-    <div
-      class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4"
-      *ngFor="let product of products"
-    >
-      <app-product-card
-        [product]="product"
-        (onEdit)="editProduct(product)"
-        (onDelete)="deleteProduct(product.id)"
-        (onView)="viewProductDetails(product.id)">
-
-        >
-      </app-product-card>
-    </div>
+<div *ngIf="isLoading" class="text-center my-4">
+  <div class="spinner-border" role="status">
+    <span class="visually-hidden">Loading...</span>
   </div>
 </div>
+
+<table *ngIf="!isLoading" class="table table-hover table-bordered">
+  <thead class="table-primary">
+    <tr>
+      <th>Image</th>
+      <th>Name</th>
+      <th>Category</th>
+      <th>Base Price</th>
+      <th>Stock</th>
+      <th>Description</th>
+      <th>Points</th>
+      <th>Earned Points</th>
+      <th>Special Offer</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let product of pagedProducts; trackBy: trackByProductId">
+      <td>
+        <img
+          *ngIf="product.Images && product.Images.length > 0"
+          [src]="product.Images[0]"
+          alt="{{product.Name}}"
+          style="width: 60px; height: 60px; object-fit: cover; border-radius: 5px;"
+        />
+        <span *ngIf="!product.Images || product.Images.length === 0">No Image</span>
+      </td>
+      <td>{{ product.Name }}</td>
+      <td>{{ product.CategoryName }}</td>
+      <td>{{ product.BasePrice | currency:'EGP' }}</td>
+      <td>{{ product.Stock }}</td>
+      <td>{{ product.Description }}</td>
+      <td>{{ product.Points }}</td>
+      <td>{{ product.EarnedPoints }}</td>
+      <td>{{ product.IsSpecialOffer ? 'Yes' : 'No' }}</td>
+      <td>
+        <div class="d-flex gap-2">
+          <button class="btn btn-info btn-sm" (click)="viewProductDetails(product.Id)">👁 View</button>
+          <button class="btn btn-warning btn-sm" (click)="editProduct(product)">✏️ Edit</button>
+          <button class="btn btn-danger btn-sm" (click)="deleteProduct(product.Id)">🗑 Delete</button>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- Pagination -->
+<nav *ngIf="!isLoading" class="mt-3">
+  <ul class="pagination justify-content-center">
+    <li class="page-item" [class.disabled]="currentPage === 1">
+      <a class="page-link" (click)="changePage(currentPage - 1)">Prev</a>
+    </li>
+    <li
+      class="page-item"
+      *ngFor="let page of totalPagesArray()"
+      [class.active]="page === currentPage"
+    >
+      <a class="page-link" (click)="changePage(page)">{{ page }}</a>
+    </li>
+    <li class="page-item" [class.disabled]="currentPage === totalPages">
+      <a class="page-link" (click)="changePage(currentPage + 1)">Next</a>
+    </li>
+  </ul>
+</nav>

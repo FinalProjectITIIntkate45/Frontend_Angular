@@ -19,8 +19,15 @@ import { ClientModule } from './client.module';
 
 const routes: Routes = [
   {
+    path: 'products', // Changed from 'Products' to lowercase
+    children: [
+      { path: '', component: ProductSearchComponent },
+      { path: ':id', component: ProductDetailsComponent },
+    ],
+  },
+  {
     path: '',
-    component: ClientModule,
+    component: UserProfileComponent, // Changed from ClientModule to UserProfileComponent
     children: [
       { path: '', redirectTo: 'profile', pathMatch: 'full' },
       { path: 'profile', component: ProfileSectionComponent },
@@ -32,13 +39,10 @@ const routes: Routes = [
       { path: 'wishlist', component: WishlistSectionComponent },
       { path: 'achievements', component: AchievementsSectionComponent },
       { path: 'settings', component: SettingsSectionComponent },
-      { path: 'wishlist', component: WishlistSectionComponent },
-      { path: 'Card', component: CartComponent },
-      { path: 'follow-seller', component: FollowSellerComponent }
+      { path: 'cart', component: CartComponent }, // Changed from 'Card' to 'cart'
+      { path: 'follow-seller', component: FollowSellerComponent },
     ],
   },
-  { path: 'products', component: ProductSearchComponent },
-  { path: 'products/:id', component: ProductDetailsComponent },
 ];
 
 @NgModule({

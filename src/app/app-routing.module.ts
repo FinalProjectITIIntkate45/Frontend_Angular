@@ -6,32 +6,39 @@ import { ProviderLayoutComponent } from './modules/Providers/Components/provider
 import { authGuard } from './core/guards/Auth.guard';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'account/register', pathMatch: 'full' },
+  // { path: '', redirectTo: 'client/products', pathMatch: 'full' },
+  {
+    path: '',
+    redirectTo: 'account/login', // Start with login
+    pathMatch: 'full',
+  },
   {
     path: 'account',
     loadChildren: () =>
       import('./modules/auth/auth.module').then((m) => m.AuthModule),
   },
   {
-    path: 'provider',
-    component: ProviderLayoutComponent,
-    canActivate: [authGuard],
-    // data: { expectedRoles: ['Provider'] },
-    loadChildren: () =>
-      import('./modules/Providers/provider.module').then(
-        (m) => m.ProdiverModule
-      ),
-  },
+  path: 'provider',
+  canActivate: [authGuard],
+  loadChildren: () =>
+    import('./modules/Providers/provider.module').then((m) => m.ProviderModule),
+}
+,
   {
     path: 'client',
     component: ClientLayoutComponent,
+
     canActivate: [authGuard],
     // data: { expectedRoles: ['Client'] },
     loadChildren: () =>
       import('./modules/Clients/client.module').then((m) => m.ClientModule),
   },
-   { path: '', redirectTo: 'clients/follow-seller', pathMatch: 'full' },
-  { path: 'clients', loadChildren: () => import('./modules/Clients/client.module').then(m => m.ClientModule) }
+  // { path: '', redirectTo: 'clients/follow-seller', pathMatch: 'full' },
+  // {
+  //   path: 'clients',
+  //   loadChildren: () =>
+  //     import('./modules/Clients/client.module').then((m) => m.ClientModule),
+  // },
 ];
 
 @NgModule({

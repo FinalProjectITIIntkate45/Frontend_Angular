@@ -6,29 +6,31 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Category } from '../../../../core/models/category.model';
-import { CategoryAttribute } from '../../../../core/models/category-attribute.model';
-import { CategoryService } from '../../../../core/services/category.service';
-import { AttributeService } from '../../../../core/services/attribute.service';
-import { ProductService } from '../../../../core/services/product.service';
-import { ProductAttribute } from '../../../../core/models/product-attribute.model';
 import { CommonModule } from '@angular/common';
+
 import { ToastrService } from 'ngx-toastr';
 
+import { AttributeWithValue } from '../../../../core/models/AttributeWithValue';
+import { CategoryAttribute } from '../../../../core/models/category-attribute.model';
+import { Category } from '../../../../core/models/category.model';
+import { ProductAttribute } from '../../../../core/models/product-attribute.model';
+import { AttributeService } from '../../../../core/services/attribute.service';
+import { CategoryService } from '../../../../core/services/category.service';
+import { ProductService } from '../../../../core/services/product.service';
 import { SubscriptionService } from '../../../../core/services/subscription.service';
 
-
 @Component({
-  standalone: true,
+  standalone: false,
   selector: 'app-product-form-page',
   templateUrl: './product-form-page.component.html',
   styleUrls: ['./product-form-page.component.css'],
-  imports: [CommonModule, ReactiveFormsModule],
 })
 export class ProductFormPageComponent implements OnInit {
   form!: FormGroup;
   categories: Category[] = [];
-  attributes: CategoryAttribute[] = [];
+  // attributes: CategoryAttribute[] = [];
+  attributes: AttributeWithValue[] = [];
+
   attachments: File[] = [];
   imagePreviews: string[] = [];
 
@@ -49,64 +51,64 @@ export class ProductFormPageComponent implements OnInit {
     private subscriptionService: SubscriptionService
   ) {}
 
-ngOnInit(): void {
-  const savedDraft = localStorage.getItem('productDraft');
+  ngOnInit(): void {
+    const savedDraft = localStorage.getItem('productDraft');
 
-  this.form = this.fb.group({
-    name: ['', Validators.required],
-    description: ['', Validators.required],
-    stock: [1, Validators.required],
-    basePrice: [1, Validators.required],
-    points: [1, Validators.required],
-    categoryId: [null, Validators.required],
-    isSpecialOffer: [false],
-    increaseRate: [],
-    discountPercentage: [],
-    attachments: [null],
-  });
-  this.subscriptionService.getSubscriptionType().subscribe({
-        next: (type) => {
-          this.subscriptionType = type;
-          console.log('🔁 User subscription type:', this.subscriptionType);
-        },
-        error: (err) => {
-          console.error('❌ Failed to load subscription type', err);
-        }
-      });
+    this.form = this.fb.group({
+      name: ['', Validators.required],
+      description: ['', Validators.required],
+      stock: [1, Validators.required],
+      basePrice: [1, Validators.required],
+      points: [1, Validators.required],
+      categoryId: [null, Validators.required],
+      isSpecialOffer: [false],
+      increaseRate: [],
+      discountPercentage: [],
+      attachments: [null],
+    });
+    this.subscriptionService.getSubscriptionType().subscribe({
+      next: (type) => {
+        this.subscriptionType = type;
+        console.log('🔁 User subscription type:', this.subscriptionType);
+      },
+      error: (err) => {
+        console.error(' Failed to load subscription type', err);
+      },
+    });
 
+    // ✅ Apply draft if available
+    if (savedDraft) {
+      this.form.patchValue(JSON.parse(savedDraft));
+      this.toastr.info('Draft loaded automatically');
+    }
 
+    // ✅ Auto save draft
+    this.form.valueChanges.subscribe(() => {
+      localStorage.setItem(
+        'productDraft',
+        JSON.stringify(this.form.getRawValue())
+      );
+    });
 
-  // ✅ Apply draft if available
-  if (savedDraft) {
-    this.form.patchValue(JSON.parse(savedDraft));
-    this.toastr.info('Draft loaded automatically');
+    // ✅ Watch for category change
+    this.form.get('categoryId')?.valueChanges.subscribe((newCategoryId) => {
+      if (!this.isEditMode) {
+        this.onCategoryChange(newCategoryId);
+      }
+    });
+
+    // ✅ Edit mode setup
+    this.route.paramMap.subscribe((params) => {
+      const id = params.get('id');
+      if (id) {
+        this.isEditMode = true;
+        this.productId = +id;
+        this.loadProductData(this.productId);
+      }
+    });
+
+    this.loadCategories();
   }
-
-  // ✅ Auto save draft
-  this.form.valueChanges.subscribe(() => {
-    localStorage.setItem('productDraft', JSON.stringify(this.form.getRawValue()));
-  });
-
-  // ✅ Watch for category change
-  this.form.get('categoryId')?.valueChanges.subscribe((newCategoryId) => {
-    if (!this.isEditMode) {
-      this.onCategoryChange(newCategoryId);
-    }
-  });
-
-  // ✅ Edit mode setup
-  this.route.paramMap.subscribe((params) => {
-    const id = params.get('id');
-    if (id) {
-      this.isEditMode = true;
-      this.productId = +id;
-      this.loadProductData(this.productId);
-    }
-  });
-
-  this.loadCategories();
-}
-
 
   loadCategories(): void {
     this.categoryService.getAllCategories().subscribe((cats) => {
@@ -152,66 +154,74 @@ ngOnInit(): void {
   //     });
   //   });
   // }
-onCategoryChange(event: Event | number, existingValues: ProductAttribute[] = []): void {
-  let categoryId: number;
+  onCategoryChange(
+    event: Event | number,
+    existingValues: ProductAttribute[] = []
+  ): void {
+    let categoryId: number;
 
-  if (event instanceof Event) {
-    const select = event.target as HTMLSelectElement;
-    categoryId = Number(select.value);
-  } else {
-    categoryId = event;
+    if (event instanceof Event) {
+      const select = event.target as HTMLSelectElement;
+      categoryId = Number(select.value);
+    } else {
+      categoryId = event;
+    }
+
+    if (!categoryId || isNaN(categoryId)) return;
+
+    console.log('🔁 Changing category to:', categoryId);
+
+    // 🧹 Remove old attribute controls
+    this.attributes.forEach((attr) => {
+      const controlName = `attr_${attr.id}`;
+      if (this.form.contains(controlName)) {
+        this.form.removeControl(controlName);
+      }
+    });
+
+    //  Fetch new attributes
+    this.attributeService.getAttributesByCategory(categoryId).subscribe({
+      next: (attrs) => {
+        console.log(' Loaded new attributes:', attrs);
+        this.attributes = attrs.map((attr) => {
+          const matched = existingValues.find(
+            (val) => val.attributeId === attr.Id
+          );
+          const value = matched ? matched.value : '';
+          const controlName = `attr_${attr.Id}`;
+          this.form.addControl(
+            controlName,
+            this.fb.control(value, Validators.required)
+          );
+
+          return {
+            id: attr.Id,
+            name: attr.Name,
+            value: value,
+          };
+        });
+      },
+      error: (err) => {
+        console.error(' Failed to load attributes:', err);
+        this.attributes = [];
+      },
+    });
   }
-
-  if (!categoryId || isNaN(categoryId)) return;
-
-  console.log('🔁 Changing category to:', categoryId);
-
-  // 🧹 Remove old attribute controls
-  this.attributes.forEach(attr => {
-    const controlName = `attr_${attr.Id}`;
-    if (this.form.contains(controlName)) {
-      this.form.removeControl(controlName);
-    }
-  });
-
-  // 🧠 Fetch new attributes
-  this.attributeService.getAttributesByCategory(categoryId).subscribe({
-    next: attrs => {
-      console.log('✅ Loaded new attributes:', attrs);
-      this.attributes = attrs || [];
-
-      this.attributes.forEach(attr => {
-        const controlName = `attr_${attr.Id}`;
-        this.form.addControl(controlName, this.fb.control('', Validators.required));
-
-        const matched = existingValues.find(val => val.name === attr.Name);
-        if (matched) {
-          this.form.get(controlName)?.setValue(matched.value);
-        }
-      });
-    },
-    error: err => {
-      console.error('❌ Failed to load attributes:', err);
-      this.attributes = [];
-    }
-  });
-}
-
 
   loadProductData(id: number): void {
     this.isLoading = true;
     this.productService.getById(id).subscribe((product) => {
       this.isLoading = false;
       this.form.patchValue({
-        name: product.name,
-        description: product.description,
-        stock: product.stock,
-        basePrice: product.basePrice,
-        points: product.points,
-        categoryId: product.categoryId,
-        isSpecialOffer: product.isSpecialOffer,
+        name: product.Name,
+        description: product.Description,
+        stock: product.Stock,
+        basePrice: product.BasePrice,
+        points: product.Points,
+        categoryId: product.CategoryId,
+        isSpecialOffer: product.IsSpecialOffer,
       });
-      this.onCategoryChange(product.categoryId, product.attributes ?? []);
+      this.onCategoryChange(product.CategoryId, product.Attributes ?? []);
     });
   }
 
@@ -285,11 +295,15 @@ onCategoryChange(event: Event | number, existingValues: ProductAttribute[] = [])
       this.form.get('discountPercentage')?.value ?? ''
     );
 
-    const productAttrVms = this.attributes.map((attr) => ({
-      attributeId: attr.Id,
-      value: this.form.get(`attr_${attr.Id}`)?.value,
-    }));
-    formData.append('productAttrVms', JSON.stringify(productAttrVms));
+    this.attributes.forEach((attr, index) => {
+      formData.append(`productAttrVms[${index}].AtrrId`, attr.id.toString());
+      formData.append(
+        `productAttrVms[${index}].AtrrValue`,
+        this.form.get(`attr_${attr.id}`)?.value || ''
+      );
+    });
+
+    // formData.append('productAttrVms', JSON.stringify(productAttrVms));
 
     this.attachments.forEach((file) => {
       formData.append('attachments', file);

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ProductService } from '../../Services/product.service';
 import { ProductFilter } from '../../Models/Product-Filter.model';
 import { Product } from '../../Models/Product.model';
@@ -10,36 +11,127 @@ import { Product } from '../../Models/Product.model';
   standalone: false,
 })
 export class ProductSearchComponent implements OnInit {
-  products: Product[] = [];
-  filter: ProductFilter = {};
-  categories: string[] = ['Electronics', 'Clothing', 'Home', 'Books'];
+  allProducts: Product[] = [];
+  filteredProducts: Product[] = [];
+  categories: string[] = [];
   loading: boolean = false;
   error: string | null = null;
 
-  constructor(private productService: ProductService) {}
+  filter: ProductFilter = {
+    category: '',
+    minPrice: null,
+    maxPrice: null,
+    minPoints: null,
+    maxPoints: null,
+    sortBy: 'price_asc',
+  };
+
+  constructor(private productService: ProductService, private router: Router) {}
 
   ngOnInit() {
-    this.searchProducts();
+    this.loadProducts();
   }
 
-  searchProducts() {
+  loadProducts() {
     this.loading = true;
     this.error = null;
 
-    this.productService.getProducts(this.filter).subscribe({
+    this.productService.getProducts().subscribe({
       next: (products) => {
-        this.products = products;
+        console.log('Products loaded:', products);
+        this.allProducts = products || [];
+
+        this.extractCategories();
+        this.applyFilters();
         this.loading = false;
       },
-      error: (err) => {
-        this.error = 'Failed to load products. Please try again.';
+      error: (error) => {
+        console.error('Error loading products:', error);
+        this.error = error.error?.message || 'Failed to load products';
         this.loading = false;
       },
     });
   }
 
+  private extractCategories() {
+    if (!this.allProducts?.length) {
+      this.categories = [];
+      return;
+    }
+    this.categories = [...new Set(this.allProducts.map((p) => p.CategoryName))];
+  }
+
+  searchProducts(): void {
+    this.applyFilters();
+  }
+
+  private applyFilters() {
+    if (!this.allProducts?.length) {
+      this.filteredProducts = [];
+      return;
+    }
+
+    let filtered = [...this.allProducts];
+
+    if (this.filter.category) {
+      filtered = filtered.filter(
+        (p) => p.CategoryName === this.filter.category
+      );
+    }
+
+    if (this.filter.minPrice !== null) {
+      filtered = filtered.filter(
+        (p) => p.DisplayedPrice >= this.filter.minPrice!
+      );
+    }
+    if (this.filter.maxPrice !== null) {
+      filtered = filtered.filter(
+        (p) => p.DisplayedPrice <= this.filter.maxPrice!
+      );
+    }
+
+    if (this.filter.minPoints !== null) {
+      filtered = filtered.filter(
+        (p) => p.EarnedPoints >= this.filter.minPoints!
+      );
+    }
+    if (this.filter.maxPoints !== null) {
+      filtered = filtered.filter(
+        (p) => p.EarnedPoints <= this.filter.maxPoints!
+      );
+    }
+
+    switch (this.filter.sortBy) {
+      case 'price_asc':
+        filtered.sort((a, b) => a.DisplayedPrice - b.DisplayedPrice);
+        break;
+      case 'price_desc':
+        filtered.sort((a, b) => b.DisplayedPrice - a.DisplayedPrice);
+        break;
+      case 'points_desc':
+        filtered.sort((a, b) => b.EarnedPoints - a.EarnedPoints);
+        break;
+      // case 'rating_desc':
+      //   filtered.sort((a, b) => (b.Rat || 0) - (a.rating || 0));
+      //   break;
+    }
+
+    this.filteredProducts = filtered;
+  }
+
   clearFilters() {
-    this.filter = {};
-    this.searchProducts();
+    this.filter = {
+      category: '',
+      minPrice: null,
+      maxPrice: null,
+      minPoints: null,
+      maxPoints: null,
+      sortBy: 'price_asc',
+    };
+    this.applyFilters();
+  }
+
+  viewProductDetails(productId: number) {
+    this.router.navigate(['/client/products', productId]);
   }
 }

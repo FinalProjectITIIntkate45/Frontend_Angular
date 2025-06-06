@@ -1,20 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
 <!-- Header -->
-<header class="header">
+<header class="header border-bottom py-3">
   <div class="container">
     <div class="row align-items-center">
       <div class="col-md-6">
-        <h1>My Wishlist</h1>
+        <h1 class="h3 mb-0">My Wishlist</h1>
       </div>
       <div class="col-md-6 text-md-end">
-        <span><i class="fas fa-heart me-1"></i> {{ wishlistItems.length }} items in your wishlist</span>
+        <span><i class="fas fa-heart me-1 text-danger"></i> {{ wishlistItems.length }} items in your wishlist</span>
       </div>
     </div>
   </div>
@@ -26,40 +18,48 @@
     <!-- Products Section -->
     <div class="col-lg-8">
       <div class="row">
-        <div class="col-md-4 col-sm-6" *ngFor="let item of wishlistItems">
-          <div class="product-card">
-            <div class="product-image" [style.background-image]="'url(/api/placeholder/400/320)'">
-              <div class="discount-tag" *ngIf="item.discount">15% OFF</div>
-              <div class="wishlist-icon" (click)="deleteProduct(item.productId)">
-                <i class="fas fa-heart"></i>
+        <div class="col-md-4 col-sm-6 mb-4" *ngFor="let item of wishlistItems">
+          <div class="product-card border rounded shadow-sm">
+            <div class="product-image position-relative" [style.background-image]="'url(/api/placeholder/400/320)'">
+              <div class="discount-tag bg-danger text-white position-absolute top-0 start-0 p-2 rounded-bottom-end" *ngIf="item.discount">
+                15% OFF
+              </div>
+              <div class="wishlist-icon position-absolute top-0 end-0 p-2" (click)="deleteProduct(item.productId)">
+                <i class="fas fa-heart text-danger"></i>
               </div>
             </div>
-            <div class="product-details">
-              <h3 class="product-name">{{ item.productName }}</h3>
-              <p class="product-price">${{ item.price || '99.99' }}</p>
-              <button class="add-to-bag" (click)="addToBag(item.productId)">Add to Bag</button>
+            <div class="product-details p-3">
+              <h3 class="product-name h6 mb-2">{{ item.productName }}</h3>
+              <p class="product-price text-success mb-3">${{ item.price || '99.99' }}</p>
+              <button class="add-to-bag btn btn-primary w-100" (click)="addToBag(item.productId)">Add to Bag</button>
             </div>
           </div>
         </div>
       </div>
       <div *ngIf="!wishlistItems.length" class="text-center">
-        <p>No items in your wishlist.</p>
+        <p class="text-muted">No items in your wishlist.</p>
       </div>
     </div>
 
     <!-- Special Request Form -->
     <div class="col-lg-4">
-      <div class="special-request">
-        <h2>Special Request</h2>
-        <p>Can't find what you're looking for? Let us know and we'll try to source it for you.</p>
+      <div class="special-request border rounded p-4 shadow-sm">
+        <h2 class="h4 mb-3">Special Request</h2>
+        <p class="text-muted mb-4">Can't find what you're looking for? Let us know and we'll try to source it for you.</p>
         <form [formGroup]="specialRequestForm" (ngSubmit)="submitSpecialRequest()">
           <div class="mb-3">
             <label for="productName" class="form-label">Product Name</label>
             <input type="text" class="form-control" id="productName" formControlName="productName" placeholder="E.g. Specific brand or model">
+            <div *ngIf="specialRequestForm.get('productName')?.invalid && specialRequestForm.get('productName')?.touched" class="text-danger">
+              Product Name is required.
+            </div>
           </div>
           <div class="mb-3">
             <label for="productDescription" class="form-label">Description</label>
             <textarea class="form-control" id="productDescription" rows="3" formControlName="productDescription" placeholder="Please provide details"></textarea>
+            <div *ngIf="specialRequestForm.get('productDescription')?.invalid && specialRequestForm.get('productDescription')?.touched" class="text-danger">
+              Description is required.
+            </div>
           </div>
           <div class="mb-3">
             <label for="priceRange" class="form-label">Budget Range</label>
@@ -70,14 +70,15 @@
               <option value="3">$100 - $200</option>
               <option value="4">$200+</option>
             </select>
+            <div *ngIf="specialRequestForm.get('priceRange')?.invalid && specialRequestForm.get('priceRange')?.touched" class="text-danger">
+              Budget Range is required.
+            </div>
           </div>
-          <button type="submit" class="submit-request">Submit Request</button>
+          <button type="submit" class="submit-request btn btn-primary w-100" [disabled]="specialRequestForm.invalid">Submit Request</button>
         </form>
       </div>
     </div>
   </div>
 </div>
 
-<p *ngIf="errorMessage" class="error text-center">{{ errorMessage }}</p>
-</body>
-</html>
+<p *ngIf="errorMessage" class="error text-center text-danger">{{ errorMessage }}</p>
