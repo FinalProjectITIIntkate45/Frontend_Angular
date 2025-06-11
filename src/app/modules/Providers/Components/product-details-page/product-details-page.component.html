@@ -1,33 +1,37 @@
 <div *ngIf="isLoading" class="skeleton-loader" style="height: 300px;"></div>
 
 <div *ngIf="!isLoading" class="General-card p-4">
-  <h2 class="mb-3">{{ product.name }}</h2>
+  <h2 class="mb-3">{{ product.Name }}</h2>
 
   <div class="row mb-4">
     <div class="col-md-6">
-      <img *ngIf="product.images?.length"
-           [src]="product.images[0]"
+      <img *ngIf="product.Images?.length"
+           [src]="product.Images[0]"
            class="img-fluid rounded"
            style="max-height: 300px; object-fit: cover;" />
     </div>
     <div class="col-md-6">
-      <p><strong>Description:</strong> {{ product.description }}</p>
-      <p><strong>Stock:</strong> {{ product.stock }}</p>
-      <p><strong>Base Price:</strong> {{ product.basePrice }} EGP</p>
-      <p *ngIf="product.displayedPriceAfterDiscount">
-        <strong>Discounted Price:</strong> {{ product.displayedPriceAfterDiscount }} EGP
+      <p><strong>Description:</strong> {{ product.Description }}</p>
+      <p><strong>Stock:</strong> {{ product.Stock }}</p>
+      <p><strong>Base Price:</strong> {{ product.BasePrice }} EGP</p>
+      <p *ngIf="product.DisplayedPriceAfterDiscount">
+        <strong>Discounted Price:</strong> {{ product.DisplayedPriceAfterDiscount }} EGP
       </p>
-      <p><strong>Earned Points:</strong> {{ product.earnedPoints }}</p>
-      <p><strong>Category:</strong> {{ product.categoryName }}</p>
+      <p><strong>Earned Points:</strong> {{ product.EarnedPoints }}</p>
+      <p><strong>Category:</strong> {{ product.CategoryName }}</p>
     </div>
   </div>
 
-  <div *ngIf="product.attributes?.length">
+  <div *ngIf="product.Attributes?.length">
     <h5>Attributes:</h5>
     <ul class="list-group">
-      <li *ngFor="let attr of product.attributes" class="list-group-item">
+      <li *ngFor="let attr of product.Attributes" class="list-group-item">
         <strong>{{ attr.name }}:</strong> {{ attr.value }}
       </li>
     </ul>
+  </div>
+  <!-- Go back button -->
+  <div class="mt-4">
+    <button class="btn btn-secondary" (click)="goBack()">Go Back</button>
   </div>
 </div>

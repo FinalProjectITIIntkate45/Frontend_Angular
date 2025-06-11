@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CartServicesService } from '../../Services/CardServices.service';
-import { CartItemInterface } from '../../models/CartItemInterface';
+import { CartItemInterface } from '../../Models/CartItemInterface';
 
 @Component({
   selector: 'app-cart',
@@ -8,7 +8,7 @@ import { CartItemInterface } from '../../models/CartItemInterface';
   styleUrls: ['./cart.component.css']
 })
 export class CartComponent implements OnInit {
-  
+
   cartItems: CartItemInterface[] = [];
   isLoading = false;
   error: string | null = null;
@@ -24,7 +24,7 @@ export class CartComponent implements OnInit {
   loadCartItems(): void {
     this.isLoading = true;
     this.error = null;
-    
+
     this.cartService.getCartItems(this.clientId).subscribe({
       next: (items) => {
         this.cartItems = items;

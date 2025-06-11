@@ -1,27 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment.development';
+import { SubscriptionChangeRequest } from '../Models/SubscriptionChangeRequest';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SubscriptionService {
-  private baseUrl = 'http://localhost:5000/api/provider'; 
+  private baseUrl = `${environment.apiUrl}/subscription`;
 
   constructor(private http: HttpClient) {}
 
-  updateSubscription(userId: string, type: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/update-subscription`, {
-      userId,
-      type
-    });
+  changeSubscription(request: SubscriptionChangeRequest): Observable<any> {
+    return this.http.post(`${this.baseUrl}/start-change`, request);
   }
 
-  startPayment(userId: string, amountCents: number) {
-  return this.http.post('https://your-api/api/payment/start', {
-    userId: userId,
-    amountMoney: amountCents
-  });
+ confirmSubscriptionChange(request: SubscriptionChangeRequest): Observable<any> {
+  return this.http.post(`${this.baseUrl}/confirm-change`, request);
 }
-
 }

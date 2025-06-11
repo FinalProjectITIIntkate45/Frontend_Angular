@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { WishlistService } from '../.././Services/wishlist.service';
+import { WishlistService } from '../../Services/wishlist.service';
 import { WishlistItem } from '../../Models/wishlist.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
