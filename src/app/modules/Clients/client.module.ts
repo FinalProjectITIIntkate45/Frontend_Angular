@@ -30,6 +30,7 @@ import { FollowSellerService } from './Services/follow.service';
 import { FollowSellerComponent } from './components/follow-seller/follow-seller.component';
 import { ProductSearchComponent } from './components/product-search/product-search.component';
 import { CartComponent } from './components/cart/cart.component';
+import { ProductNavbarComponent } from '../../shared/components/product-navbar/product-navbar.component';
 
 @NgModule({
   declarations: [
