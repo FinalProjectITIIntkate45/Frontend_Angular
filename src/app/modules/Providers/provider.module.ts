@@ -48,7 +48,6 @@ import { SafeUrlPipe } from './Services/SafeUrl.pipe';
   providers: [
     provideHttpClient(withFetch(), withInterceptors([AuthInterceptor, LoaderInterceptor])),
   ],
-})
-export class ProviderModule {}
+})export class ProviderModule {}
 
 
