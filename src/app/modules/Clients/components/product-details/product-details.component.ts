@@ -1,7 +1,10 @@
+import { WishlistItem } from './../../Models/wishlist.model';
+import { WishlistService } from './../../Services/wishlist.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../../Services/product.service';
 import { Product } from '../../Models/Product.model';
+
 import { Subscription } from 'rxjs';
 
 // Enhanced Product interface with additional display properties

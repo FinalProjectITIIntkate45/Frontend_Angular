@@ -34,6 +34,8 @@ import { UserNavComponent } from './components/user-nav/user-nav.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { WalletSectionComponent } from './components/wallet-section/wallet-section.component';
 import { WishlistSectionComponent } from './components/wishlist-section/wishlist-section.component';
+import { ShopsSectionComponent } from './components/Shop-section/shops-section.component';
+
 
 @NgModule({
   declarations: [
@@ -57,6 +59,8 @@ import { WishlistSectionComponent } from './components/wishlist-section/wishlist
     FollowSellerComponent,
     CartComponent,
     ProductNavbarComponent,
+    ShopsSectionComponent,
+
   ],
   imports: [
     CommonModule,

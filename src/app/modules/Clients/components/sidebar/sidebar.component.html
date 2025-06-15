@@ -1,7 +1,7 @@
 <div class="sidebar bg-light vh-100 d-flex flex-column">
   <!-- Logo -->
   <div class="logo p-3 text-center border-bottom">
-    <img src="assets/images/pointify-logo.png" alt="Pointify Logo" class="img-fluid mb-2" style="max-width: 50px;">
+    <img src="../../../../../../public//assets/pointpay2-05[1].png" alt="Pointify Logo" class="img-fluid mb-2" style="max-width: 50px;">
     <h2 class="h4 mb-0">pointify</h2>
   </div>
 
@@ -46,7 +46,7 @@
     <li class="nav-item mb-2" [class.active]="selectedSection === 'wishlist'" (click)="selectSection('wishlist')">
       <a class="d-flex align-items-center text-dark text-decoration-none p-2 rounded">
         <i class="fas fa-heart me-2"></i>
-        <span>My Favorites</span>
+        <span>Wishlist</span>
       </a>
     </li>
     <li class="nav-item mb-2" [class.active]="selectedSection === 'achievements'" (click)="selectSection('achievements')">
@@ -59,6 +59,12 @@
       <a class="d-flex align-items-center text-dark text-decoration-none p-2 rounded">
         <i class="fas fa-cog me-2"></i>
         <span>Settings</span>
+      </a>
+    </li>
+    <li class="nav-item mb-2" [class.active]="selectedSection === 'shops'" (click)="selectSection('shops')">
+      <a class="d-flex align-items-center text-dark text-decoration-none p-2 rounded">
+        <i class="fas fa-store me-2"></i>
+        <span>Shops</span>
       </a>
     </li>
   </ul>

@@ -15,10 +15,11 @@ import { SettingsSectionComponent } from './components/settings-section/settings
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { WalletSectionComponent } from './components/wallet-section/wallet-section.component';
 import { WishlistSectionComponent } from './components/wishlist-section/wishlist-section.component';
+import { ShopsSectionComponent } from './components/Shop-section/shops-section.component';
 
 const routes: Routes = [
   {
-    path: 'products', // Changed from 'Products' to lowercase
+    path: 'products',
     children: [
       { path: '', component: ProductSearchComponent },
       { path: ':id', component: ProductDetailsComponent },
@@ -26,7 +27,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    component: UserProfileComponent, // Changed from ClientModule to UserProfileComponent
+    component: UserProfileComponent,
     children: [
       { path: '', redirectTo: 'profile', pathMatch: 'full' },
       { path: 'profile', component: ProfileSectionComponent },
@@ -38,9 +39,9 @@ const routes: Routes = [
       { path: 'wishlist', component: WishlistSectionComponent },
       { path: 'achievements', component: AchievementsSectionComponent },
       { path: 'settings', component: SettingsSectionComponent },
-      { path: 'cart', component: CartComponent }, // Changed from 'Card' to 'cart'
+      { path: 'cart', component: CartComponent },
       { path: 'follow-seller', component: FollowSellerComponent },
-      
+      { path: 'shops', component: ShopsSectionComponent },
     ],
   },
 ];
