@@ -5,7 +5,7 @@ import { WishlistItem, WishlistVM } from '../Models/wishlist.model';
 import { environment } from '../../../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class WishlistService {
   private baseUrl = `${environment.apiUrl}/WishList`;
@@ -13,17 +13,22 @@ export class WishlistService {
   constructor(private http: HttpClient) {}
 
   getWishlist(): Observable<WishlistItem[]> {
-    return this.http.post<WishlistItem[]>(`${this.baseUrl}/Index`, {});
+    return this.http.get<WishlistItem[]>(`${this.baseUrl}/Index`);
   }
 
-  addToWishlist(productId: number): Observable<string> {
+  addToWishlist(productId: number) {
     const wishlistData: WishlistVM = { ProductId: productId };
-    return this.http.get<string>(`${this.baseUrl}/AddToWishlist`, { params: { productId } });
+    return this.http.post<string>(
+      `${this.baseUrl}/AddToWishlist`,
+      wishlistData
+    );
   }
 
   deleteProduct(productId: number): Observable<string> {
     const wishlistData: WishlistVM = { ProductId: productId };
-    return this.http.delete<string>(`${this.baseUrl}/Delete`, { body: wishlistData });
+    return this.http.delete<string>(`${this.baseUrl}/Delete`, {
+      body: wishlistData,
+    });
   }
 
   clearWishlist(): Observable<string> {

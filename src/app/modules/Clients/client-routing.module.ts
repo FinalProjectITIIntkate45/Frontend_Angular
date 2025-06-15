@@ -42,6 +42,8 @@ const routes: Routes = [
       { path: 'settings', component: SettingsSectionComponent },
       { path: 'cart', component: CartComponent },
       { path: 'follow-seller', component: FollowSellerComponent },
+      { path: 'shop', component: ShopsSectionComponent },
+
 
     ],
   },
