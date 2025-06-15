@@ -59,7 +59,8 @@
           <!-- Thumbnail Gallery -->
           <div class="thumbnail-gallery" *ngIf="product.Images && product.Images.length > 1">
             <div class="thumbnail-container">
-              <img *ngFor="let image of product.Images; let i = index" [src]="image"
+              <img 
+              *ngFor="let image of product.Images; let i = index" [src]="image"
                 [alt]="product.Name + ' - Image ' + (i + 1)"
                 [class.active]="selectedImage === image || (!selectedImage && i === 0)" (click)="selectImage(image)"
                 class="thumbnail-image">
