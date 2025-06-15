@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../../Services/product.service';
 import { Product } from '../../Models/Product.model';
 import { Subscription } from 'rxjs';
+import { CartServicesService } from '../../Services/CardServices.service';
 
 // Enhanced Product interface with additional display properties
 interface EnhancedProduct extends Product {
@@ -43,7 +44,8 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   constructor(
     public route: ActivatedRoute,
     private router: Router,
-    private productService: ProductService
+    private productService: ProductService ,
+    private  cardsercive : CartServicesService,
   ) {}
 
   ngOnInit() {
@@ -208,9 +210,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
 
     try {
       // Simulate API call delay
-      await new Promise((resolve) => setTimeout(resolve, 500));
-
-      console.log('Adding to cart:', {
+        console.log('Adding to cart:', {
         productId: this.product.Id,
         productName: this.product.Name,
         quantity: this.quantity,
@@ -224,11 +224,25 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
 
       // TODO: Implement actual cart service logic here
       // await this.cartService.addToCart(this.product, this.quantity);
+//productId: number, quantity: number, price: number, points: number
+      this.cardsercive.addToCart(this.product.Id, 
+                                this.quantity,
+                                 this.product.DisplayedPriceAfterDiscount || this.product.DisplayedPrice,
+                                  this.product.Points).subscribe(
+        (response) => {
+        this.showSuccessMessage(
+        `Added ${this.quantity} ${this.product?.Name}(s) to cart!`
+      );
+
+        },
+        (error) => {
+          console.error('Error adding product to cart:', error);
+        }
+      );
+      
 
       // Show success message
-      this.showSuccessMessage(
-        `Added ${this.quantity} ${this.product.Name}(s) to cart!`
-      );
+     
 
       // Reset quantity after successful add
       this.quantity = 1;

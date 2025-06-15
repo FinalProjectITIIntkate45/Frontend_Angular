@@ -10,7 +10,7 @@ import { CartInterface } from '../Models/CartInterface';
 })
 export class CartServicesService {
 
-private baseUrl = `${environment.apiUrl}`+`/Cart`; 
+private baseUrl = `${environment.apiUrl}`+`/cart`; 
 
   constructor(private http: HttpClient) { }
 
