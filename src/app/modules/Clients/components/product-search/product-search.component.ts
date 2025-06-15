@@ -12,6 +12,7 @@ import {
   Subject,
   Subscription,
 } from 'rxjs';
+import { CartServicesService } from '../../Services/CardServices.service';
 
 // Enhanced Product interface with pre-calculated values
 interface EnhancedProduct extends Product {
@@ -66,7 +67,8 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
   constructor(
     private productService: ProductService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private cardservice: CartServicesService,
   ) {
     // Setup debounced search
     this.searchSubject
@@ -370,6 +372,11 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
 
     console.log('Adding to cart:', product);
     // Implement your cart service logic here
+
+    //  this.cardservice.addToCart(product.Id, 
+    //                             product.quantity,
+    //                              product.DisplayedPriceAfterDiscount || product.DisplayedPrice,
+    //                               product.Points);
   }
 
   // Pagination helper methods

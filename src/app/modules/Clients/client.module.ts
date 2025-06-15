@@ -52,7 +52,8 @@ import { ProductNavbarComponent } from '../../shared/components/product-navbar/p
     UserFooterComponent,
     WishlistSectionComponent,
     FollowSellerComponent,
-    CartComponent
+    CartComponent,
+    ProductNavbarComponent
   ],
   imports: [
     CommonModule,
