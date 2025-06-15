@@ -1,64 +1,98 @@
+<!-- Delivery Section -->
 <div *ngIf="currentStep === 1" class="form-section current" id="deliverySection">
   <h3>Delivery Information</h3>
 
   <!-- Delivery method selection -->
   <div class="d-flex justify-content-between mb-4">
     <button type="button" class="btn-option" (click)="selectDeliveryMethod('ship')">Ship to Address</button>
-    <button type="button" class="btn-option" (click)="selectDeliveryMethod('pickup')">Pick-Up from Store</button>
+    <button  type="button" class="btn-option" (click)="selectDeliveryMethod('pickup')">Pick-Up from Store</button>
   </div>
 
   <!-- Shipping form -->
   <div id="shipAddress" *ngIf="deliveryMethod === 'ship'">
     <input [(ngModel)]="checkoutModel.billingData.firstName" placeholder="First Name" class="General-custom-input" />
-    <input [(ngModel)]="checkoutModel.billingData.phoneNumber" placeholder="Phone Number" class="General-custom-input" />
+    <div *ngIf="checkoutModel.billingData.firstName === ''" class="error-message">First Name is required</div>
+    <input [(ngModel)]="checkoutModel.billingData.lastName" placeholder="Last Name" class="General-custom-input" />
+    <div *ngIf="checkoutModel.billingData.lastName === ''" class="error-message">Last Name is required</div>
+    <input [(ngModel)]="checkoutModel.billingData.phoneNumber" placeholder="Phone Number"
+      class="General-custom-input" />
+    <div *ngIf="checkoutModel.billingData.phoneNumber === ''" class="error-message">Phone Number is required</div>
+    <!-- Add more fields as needed  floor -->
+    <input [(ngModel)]="checkoutModel.billingData.floor" placeholder="Floor" class="General-custom-input" />
+    <div *ngIf="checkoutModel.billingData.floor === ''" class="error-message">Floor is required</div>
+
     <input [(ngModel)]="checkoutModel.billingData.street" placeholder="Street Address" class="General-custom-input" />
+    <div *ngIf="checkoutModel.billingData.street === ''" class="error-message">Street Address is required</div>
+    <input [(ngModel)]="checkoutModel.billingData.city" placeholder="City" class="General-custom-input" />
+    <div *ngIf="checkoutModel.billingData.city === ''" class="error-message">City is required</div>
+    <input [(ngModel)]="checkoutModel.billingData.state" placeholder="State" class="General-custom-input" />
+    <div *ngIf="checkoutModel.billingData.state === ''" class="error-message">State is required</div>
+    <input [(ngModel)]="checkoutModel.billingData.country" placeholder="Country" class="General-custom-input" />
+
+    <div *ngIf="checkoutModel.billingData.country === ''" class="error-message">Country is required</div>
+    <input [(ngModel)]="checkoutModel.billingData.email" placeholder="Email" class="General-custom-input" />
+    <div *ngIf="checkoutModel.billingData.email === ''" class="error-message">Email is required</div>
   </div>
 
   <!-- Pickup form -->
   <div id="pickUpStore" *ngIf="deliveryMethod === 'pickup'">
-    <select class="General-custom-input" [(ngModel)]="checkoutModel.billingData.shippingMethod">
-      <option>Select Store Location</option>
-      <option>Store 1</option>
-      <option>Store 2</option>
-    </select>
+  </div>
+  <!-- contaner  Buttons next  and back -->
+  <div class="d-flex justify-content-between ">
+    <button (click)="nextStep()" class="btn btn-custom next-btn">Next</button>
+    <button  (click)="previousStep()" class="btn btn-custom prev-btn" routerLink="/client/cart">Back</button>
   </div>
 
-  <button (click)="nextStep()" class="btn btn-custom next-btn">Next</button>
+
 </div>
 
+<!-- Payment Section -->
 <div *ngIf="currentStep === 2" class="form-section current" id="paymentSection">
-  <h3>Payment Method</h3>
+  <h3 class="section-heading">Payment Method</h3>
 
   <!-- Payment method selection -->
-  <div class="form-check">
+  <div class="form-check custom-radio">
     <input type="radio" id="payPal" name="paymentMethod" [(ngModel)]="checkoutModel.paymentType" value="PayPal" />
-    <label for="payPal">PayPal</label>
+    <label for="payPal"><i class="fab fa-paypal m-1"></i> PayPal</label>
   </div>
-  <div class="form-check">
+  <div class="form-check custom-radio">
     <input type="radio" id="stripe" name="paymentMethod" [(ngModel)]="checkoutModel.paymentType" value="OnlineCard" />
-    <label for="stripe">Stripe</label>
+    <label for="stripe"><i class="fab fa-cc-stripe m-1"></i> Stripe</label>
   </div>
-  <div class="form-check">
+  <div class="form-check custom-radio">
     <input type="radio" id="cash" name="paymentMethod" [(ngModel)]="checkoutModel.paymentType" value="CashOnDelivery" />
-    <label for="cash">Cash on Delivery</label>
+    <label for="cash"><i class="fas fa-money-bill m-1"></i> Cash on Delivery</label>
   </div>
-  <div class="form-check">
+  <div class="form-check custom-radio">
     <input type="radio" id="pointsOnly" name="paymentMethod" [(ngModel)]="checkoutModel.paymentType" value="PointsOnly" />
-    <label for="pointsOnly">Pay with Points</label>
+    <label for="pointsOnly"><i class="fas fa-coins m-1"></i> Pay with Points</label>
   </div>
 
-  <button (click)="nextStep()" class="btn btn-custom next-btn">Next</button>
+  <div class="button-group">
+    <button [disabled]="!checkoutModel.paymentType" (click)="nextStep()" class="btn btn-custom next-btn">Next</button>
+    <button (click)="previousStep()" class="btn btn-custom prev-btn">Previous</button>
+  </div>
 </div>
 
+
+<!-- Confirmation Section -->
 <div *ngIf="currentStep === 3" class="form-section current" id="confirmationSection">
   <h3>Order Confirmation</h3>
   <p>Review and confirm your order details...</p>
 
   <div class="summary">
+    <h4>Order Summary</h4>
     <p><strong>Delivery Method:</strong> {{ checkoutModel.billingData.shippingMethod }}</p>
     <p><strong>Payment Method:</strong> {{ checkoutModel.paymentType }}</p>
+    <p><strong>Total Price:</strong> {{ checkoutModel.totalPrice }}</p>
+    <p><strong>Total Points:</strong> {{ checkoutModel.totalPoints }}</p>
   </div>
 
-  <button (click)="previousStep()" class="btn btn-custom prev-btn">Previous</button>
-  <button (click)="proceedToCheckout()" class="btn btn-custom">Confirm Order</button>
+  <!-- Confirmation buttons  -->
+  <div class="button-group">
+    <!-- <button (click)="placeOrder()" class="btn btn-custom next-btn">Place Order</button> -->
+     
+    <button (click)="previousStep()" class="btn btn-custom prev-btn">Previous</button>
+  </div>
 </div>
+

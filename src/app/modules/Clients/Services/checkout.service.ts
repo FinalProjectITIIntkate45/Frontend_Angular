@@ -17,7 +17,9 @@ export class CheckoutService {
   constructor(private http: HttpClient) {}
 
   checkoutOrder(model: OrderCreateViewModel): Observable<APIResponse<CheckoutResultVM>> {
-  return this.http.post<APIResponse<CheckoutResultVM>>(`${this.baseUrl}/checkout-order`, model);
+    console.log(model);
+    return this.http.post<APIResponse<CheckoutResultVM>>(`${this.baseUrl}/checkout-order`, model);
+
 }
 
 }
