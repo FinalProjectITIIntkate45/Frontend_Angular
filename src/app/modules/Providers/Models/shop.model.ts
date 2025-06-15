@@ -1,11 +1,19 @@
 export interface ShopEditViewModel {
-  id: number; // Unique ID of the shop
-  shopName: string; // Display name of the shop
-  description: string; // Brief description or bio
-  address: string; // Physical location
-  contactDetails: string; // Phone, email, etc.
-  logo?: File; // Optional logo file for upload
-  providerId?: string; // Optional provider reference
+  id: number;
+  shopName: string;
+  description: string;
+  address: string;
+  city: string;
+  street: string;
+  postalCode: string;
+  latitude: number;
+  longitude: number;
+  businessPhone: string;
+  businessEmail: string;
+  logo?: string | File;
+  shopTypeId: number;
+  providerId: string;
+  contactDetails?: string;
 }
 export interface ShopCreateModel {
   shopName: string;

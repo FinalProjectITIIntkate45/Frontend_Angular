@@ -20,16 +20,16 @@ export class AddShopComponent implements OnInit {
     private authService: AuthService
   ) {
     this.shopForm = this.fb.group({
-      shopName: ['', Validators.required],
-      description: ['', Validators.required],
-      address: ['', Validators.required],
-      city: ['', Validators.required],
-      street: ['', Validators.required],
-      postalCode: [''],
-      latitude: [0, Validators.required],
-      longitude: [0, Validators.required],
-      businessPhone: ['', Validators.required],
-      businessEmail: ['', [Validators.required, Validators.email]],
+      shopName: ['test', Validators.required],
+      description: ['test', Validators.required],
+      address: ['aswan', Validators.required],
+      city: ['aswan', Validators.required],
+      street: ['aswan', Validators.required],
+      postalCode: ['2222'],
+      latitude: [2.2, Validators.required],
+      longitude: [1.5, Validators.required],
+      businessPhone: ['1', Validators.required],
+      businessEmail: ['test2', [Validators.required, Validators.email]],
       logo: [null],
       images: [null],
       shopTypeId: [0, Validators.required],
@@ -41,26 +41,31 @@ export class AddShopComponent implements OnInit {
   onSubmit() {
     if (this.shopForm.valid) {
       const formValue = this.shopForm.value;
-      const model: ShopCreateModel = {
-        shopName: formValue.shopName,
-        description: formValue.description,
-        address: formValue.address,
-        city: formValue.city,
-        street: formValue.street,
-        postalCode: formValue.postalCode,
-        latitude: formValue.latitude,
-        longitude: formValue.longitude,
-        businessPhone: formValue.businessPhone,
-        businessEmail: formValue.businessEmail,
-        logo: formValue.logo,
-        images: formValue.images,
-        providerId: this.authService.getUserId(),
-        shopTypeId: formValue.shopTypeId,
-      };
+      const formData = new FormData();
+      formData.append('shopName', formValue.shopName);
+      formData.append('description', formValue.description);
+      formData.append('address', formValue.address);
+      formData.append('city', formValue.city);
+      formData.append('street', formValue.street);
+      formData.append('postalCode', formValue.postalCode || '');
+      formData.append('latitude', formValue.latitude.toString());
+      formData.append('longitude', formValue.longitude.toString());
+      formData.append('businessPhone', formValue.businessPhone);
+      formData.append('businessEmail', formValue.businessEmail);
+      if (formValue.logo) formData.append('logoFile', formValue.logo);
+      if (formValue.images) {
+        (formValue.images as File[]).forEach((file, index) => {
+          formData.append(`imagesFiles[${index}]`, file);
+        });
+      }
+      formData.append('providerId', this.authService.getUserId() || '');
+      formData.append('shopTypeId', formValue.shopTypeId.toString());
 
-      this.shopService.addShop(model).subscribe({
+      console.log('FormData:', Object.fromEntries(formData)); // للتحقق
+
+      this.shopService.addShop(formData).subscribe({
         next: (msg: string) => (this.errorMessage = msg),
-        error: (err: any) => (this.errorMessage = 'Failed to add shop'),
+        error: (err: any) => (this.errorMessage = `Failed to add shop: ${err.message}`),
       });
     } else {
       this.errorMessage = 'Please fill all required fields';

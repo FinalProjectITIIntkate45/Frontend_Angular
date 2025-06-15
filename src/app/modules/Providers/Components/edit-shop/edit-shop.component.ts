@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ShopService } from '../../Services/Shop.service';
-import { ShopEditViewModel } from '../../Models/shop.model';
+import { ShopService } from '../../Services/Shop.service'; // عدّلي المسار حسب هيكليتك
+import { ShopEditViewModel } from '../../Models/shop.model'; // عدّلي المسار
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../../../core/services/Auth.service';
@@ -47,8 +47,21 @@ export class EditShopComponent implements OnInit {
 
   loadShopDetails() {
     this.shopService.getShopById(this.shopId).subscribe({
-      next: (shop: ShopEditViewModel) => this.shopForm.patchValue(shop),
-      error: (_err: any) => (this.errorMessage = 'Failed to load shop details'),
+      next: (shop: ShopEditViewModel) => this.shopForm.patchValue({
+        shopName: shop.shopName,
+        description: shop.description,
+        address: shop.address,
+        contactDetails: shop.contactDetails,
+        city: shop.city,
+        street: shop.street,
+        postalCode: shop.postalCode,
+        latitude: shop.latitude,
+        longitude: shop.longitude,
+        businessPhone: shop.businessPhone,
+        businessEmail: shop.businessEmail,
+        shopTypeId: shop.shopTypeId,
+      }),
+      error: (err) => (this.errorMessage = `Failed to load shop details: ${err.message}`),
     });
   }
 
@@ -61,13 +74,37 @@ export class EditShopComponent implements OnInit {
         description: formValue.description,
         address: formValue.address,
         contactDetails: formValue.contactDetails,
-        logo: formValue.logo,
+        city: formValue.city,
+        street: formValue.street,
+        postalCode: formValue.postalCode,
+        latitude: formValue.latitude,
+        longitude: formValue.longitude,
+        businessPhone: formValue.businessPhone,
+        businessEmail: formValue.businessEmail,
+        logo: formValue.logo instanceof File ? formValue.logo : null,
+        shopTypeId: formValue.shopTypeId,
         providerId: this.authService.getUserId(),
       };
 
-      this.shopService.updateShop(model).subscribe({
-        next: (msg: string) => (this.errorMessage = msg),
-        error: (err: any) => (this.errorMessage = 'Failed to update shop'),
+      const formData = new FormData();
+      formData.append('id', model.id.toString());
+      formData.append('shopName', model.shopName);
+      formData.append('description', model.description);
+      formData.append('address', model.address);
+      formData.append('city', model.city);
+      formData.append('street', model.street);
+      formData.append('postalCode', model.postalCode || '');
+      formData.append('latitude', model.latitude.toString());
+      formData.append('longitude', model.longitude.toString());
+      formData.append('businessPhone', model.businessPhone);
+      formData.append('businessEmail', model.businessEmail);
+      if (model.logo) formData.append('logoFile', model.logo);
+      formData.append('shopTypeId', model.shopTypeId.toString());
+      formData.append('providerId', model.providerId);
+
+      this.shopService.updateShop(formData).subscribe({
+        next: (msg) => (this.errorMessage = msg),
+        error: (err) => (this.errorMessage = `Failed to update shop: ${err.message}`),
       });
     } else {
       this.errorMessage = 'Please fill all required fields';
