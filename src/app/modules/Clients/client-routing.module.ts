@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AchievementsSectionComponent } from './components/achievements-section/achievements-section.component';
 import { CartComponent } from './components/cart/cart.component';
+import { CheckoutComponent } from './components/checkout/checkout.component';
 import { DonationsSectionComponent } from './components/donations-section/donations-section.component';
 import { FollowSellerComponent } from './components/follow-seller/follow-seller.component';
 import { DrdersSectionComponent } from './components/orders-section/orders-section.component';
@@ -40,13 +41,16 @@ const routes: Routes = [
       { path: 'settings', component: SettingsSectionComponent },
       { path: 'cart', component: CartComponent }, // Changed from 'Card' to 'cart'
       { path: 'follow-seller', component: FollowSellerComponent },
-      
+
+
+      {path: 'checkout',component: CheckoutComponent,}
+
     ],
   },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
+    exports: [RouterModule],
 })
 export class ClientRoutingModule {}

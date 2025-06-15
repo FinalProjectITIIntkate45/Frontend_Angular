@@ -1,0 +1,67 @@
+/* Step Wizard */
+.stepwizard {
+  display: flex;
+  justify-content: space-between;
+}
+
+.step-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #ccc;
+  color: #fff;
+  font-weight: bold;
+  line-height: 40px;
+  text-align: center;
+}
+
+.step-active {
+  background-color: var(--primary-color);
+}
+
+.step-completed {
+  background-color: var(--secondary-color);
+}
+
+/* Progress Bar */
+.progress-bar {
+  background-color: var(--primary-color);
+}
+
+/* Buttons */
+.btn-custom {
+  background-color: var(--secondary-color);
+  color: var(--primary-color);
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.btn-custom:hover {
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+}
+
+/* Input Fields */
+.General-custom-input {
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 2px solid var(--border-color);
+}
+
+.General-custom-input:focus {
+  border-color: var(--primary-color);
+}
+
+/* Form Sections */
+.form-section {
+  display: none;
+}
+
+.form-section.current {
+  display: block;
+}

@@ -17,6 +17,7 @@ import { ClientRoutingModule } from './client-routing.module';
 import { FollowSellerService } from './Services/follow.service';
 import { AchievementsSectionComponent } from './components/achievements-section/achievements-section.component';
 import { CartComponent } from './components/cart/cart.component';
+import { CheckoutComponent } from './components/checkout/checkout.component';
 import { ClientLayoutComponent } from './components/client-layout/client-layout.component';
 import { DonationsSectionComponent } from './components/donations-section/donations-section.component';
 import { FollowSellerComponent } from './components/follow-seller/follow-seller.component';
@@ -57,6 +58,7 @@ import { WishlistSectionComponent } from './components/wishlist-section/wishlist
     FollowSellerComponent,
     CartComponent,
     ProductNavbarComponent,
+    CheckoutComponent
   ],
   imports: [
     CommonModule,

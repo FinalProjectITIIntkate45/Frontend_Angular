@@ -1,0 +1,64 @@
+<div *ngIf="currentStep === 1" class="form-section current" id="deliverySection">
+  <h3>Delivery Information</h3>
+
+  <!-- Delivery method selection -->
+  <div class="d-flex justify-content-between mb-4">
+    <button type="button" class="btn-option" (click)="selectDeliveryMethod('ship')">Ship to Address</button>
+    <button type="button" class="btn-option" (click)="selectDeliveryMethod('pickup')">Pick-Up from Store</button>
+  </div>
+
+  <!-- Shipping form -->
+  <div id="shipAddress" *ngIf="deliveryMethod === 'ship'">
+    <input [(ngModel)]="checkoutModel.billingData.firstName" placeholder="First Name" class="General-custom-input" />
+    <input [(ngModel)]="checkoutModel.billingData.phoneNumber" placeholder="Phone Number" class="General-custom-input" />
+    <input [(ngModel)]="checkoutModel.billingData.street" placeholder="Street Address" class="General-custom-input" />
+  </div>
+
+  <!-- Pickup form -->
+  <div id="pickUpStore" *ngIf="deliveryMethod === 'pickup'">
+    <select class="General-custom-input" [(ngModel)]="checkoutModel.billingData.shippingMethod">
+      <option>Select Store Location</option>
+      <option>Store 1</option>
+      <option>Store 2</option>
+    </select>
+  </div>
+
+  <button (click)="nextStep()" class="btn btn-custom next-btn">Next</button>
+</div>
+
+<div *ngIf="currentStep === 2" class="form-section current" id="paymentSection">
+  <h3>Payment Method</h3>
+
+  <!-- Payment method selection -->
+  <div class="form-check">
+    <input type="radio" id="payPal" name="paymentMethod" [(ngModel)]="checkoutModel.paymentType" value="PayPal" />
+    <label for="payPal">PayPal</label>
+  </div>
+  <div class="form-check">
+    <input type="radio" id="stripe" name="paymentMethod" [(ngModel)]="checkoutModel.paymentType" value="OnlineCard" />
+    <label for="stripe">Stripe</label>
+  </div>
+  <div class="form-check">
+    <input type="radio" id="cash" name="paymentMethod" [(ngModel)]="checkoutModel.paymentType" value="CashOnDelivery" />
+    <label for="cash">Cash on Delivery</label>
+  </div>
+  <div class="form-check">
+    <input type="radio" id="pointsOnly" name="paymentMethod" [(ngModel)]="checkoutModel.paymentType" value="PointsOnly" />
+    <label for="pointsOnly">Pay with Points</label>
+  </div>
+
+  <button (click)="nextStep()" class="btn btn-custom next-btn">Next</button>
+</div>
+
+<div *ngIf="currentStep === 3" class="form-section current" id="confirmationSection">
+  <h3>Order Confirmation</h3>
+  <p>Review and confirm your order details...</p>
+
+  <div class="summary">
+    <p><strong>Delivery Method:</strong> {{ checkoutModel.billingData.shippingMethod }}</p>
+    <p><strong>Payment Method:</strong> {{ checkoutModel.paymentType }}</p>
+  </div>
+
+  <button (click)="previousStep()" class="btn btn-custom prev-btn">Previous</button>
+  <button (click)="proceedToCheckout()" class="btn btn-custom">Confirm Order</button>
+</div>
