@@ -1,0 +1,40 @@
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { CharityService } from '../../../Services/Charity.service';
+import { Charity } from '../../../Models/Charity.model';
+
+@Component({
+  selector: 'app-charity-list',
+  templateUrl: './charity-list.component.html',
+  styleUrls: ['./charity-list.component.css'],
+  standalone:false,
+})
+export class CharityListComponent implements OnInit {
+
+  charities: Charity[] = [];
+
+  constructor(
+    private charityService: CharityService,
+    private router: Router // ← مهم علشان نستخدمه في التنقل بين الصفحات
+  ) {}
+
+  ngOnInit(): void {
+    this.charityService.getAllCharities().subscribe({
+      next: (data) => {
+        this.charities = data;
+      },
+      error: (err) => {
+        console.error('Error fetching charities:', err);
+      }
+    });
+  }
+
+  viewDetails(charityId: number): void {
+    this.router.navigate(['/clients/charity-details', charityId]);
+  }
+
+  donate(charityId: number): void {
+    this.router.navigate(['/clients/donate', charityId]);
+  }
+
+}

@@ -11,6 +11,9 @@ import { SettingsSectionComponent } from './components/settings-section/settings
 import { SharedModule } from '../../shared/shared.module';
 import { ClientRoutingModule } from './client-routing.module';
 import { AchievementsSectionComponent } from './components/achievements-section/achievements-section.component';
+import { CharityDetailsComponent } from './components/charity/charity-details/charity-details.component';
+import { DonateComponent } from './components/charity/donate/donate.component';
+import { CharityListComponent } from './components/charity/charity-list/charity-list.component';
 import {
   provideHttpClient,
   withFetch,
@@ -50,6 +53,9 @@ import { ProductSearchComponent } from './components/product-search/product-sear
     UserFooterComponent,
     WishlistSectionComponent,
     FollowSellerComponent,
+    CharityListComponent,
+    CharityDetailsComponent,
+    DonateComponent
   ],
   imports: [
     CommonModule,
@@ -57,6 +63,7 @@ import { ProductSearchComponent } from './components/product-search/product-sear
     ClientRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    
   ],
   providers: [
     provideHttpClient(

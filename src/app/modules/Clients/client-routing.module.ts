@@ -14,8 +14,14 @@ import { ProductSearchComponent } from './components/product-search/product-sear
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { CartComponent } from './components/cart/cart.component';
 
+
+
 import { FollowSellerComponent } from './components/follow-seller/follow-seller.component';
 import { ClientModule } from './client.module';
+import { CharityListComponent } from './components/charity/charity-list/charity-list.component';
+
+import { CharityDetailsComponent } from './components/charity/charity-details/charity-details.component';
+import { DonateComponent } from './components/charity/donate/donate.component';
 
 const routes: Routes = [
   {
@@ -41,6 +47,12 @@ const routes: Routes = [
       { path: 'settings', component: SettingsSectionComponent },
       { path: 'cart', component: CartComponent }, // Changed from 'Card' to 'cart'
       { path: 'follow-seller', component: FollowSellerComponent },
+      { path: 'charity-details/:id', component: CharityDetailsComponent },
+      { path: 'donate/:id', component: DonateComponent },
+      { path: 'charity-details/:id', component: CharityDetailsComponent },
+      { path: 'donate/:id', component: DonateComponent },
+      { path: 'charities', component: CharityListComponent },
+
     ],
   },
 ];
