@@ -60,6 +60,11 @@ import { ShopsSectionComponent } from './components/Shop-section/shops-section.c
     FollowSellerComponent,
     CartComponent,
     ProductNavbarComponent,
+    CartComponent,
+    ProductNavbarComponent,
+    CheckoutComponent
+    ShopsSectionComponent,
+
   ],
   imports: [
     CommonModule,
