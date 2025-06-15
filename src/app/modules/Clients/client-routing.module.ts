@@ -1,21 +1,20 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UserProfileComponent } from './components/user-profile/user-profile.component';
-import { ProfileSectionComponent } from './components/profile-section/profile-section.component';
-import { WalletSectionComponent } from './components/wallet-section/wallet-section.component';
-import { DrdersSectionComponent } from './components/orders-section/orders-section.component'; // تصحيح الاسم
-import { PointsSectionComponent } from './components/points-section/points-section.component'; // تصحيح الاسم
-import { RecyclingSectionComponent } from './components/recycling-section/recycling-section.component'; // تصحيح الاسم
-import { DonationsSectionComponent } from './components/donations-section/donations-section.component'; // تصحيح الاسم
-import { WishlistSectionComponent } from './components/wishlist-section/wishlist-section.component'; // تصحيح الاسم
-import { SettingsSectionComponent } from './components/settings-section/settings-section.component'; // تصحيح الاسم
-import { AchievementsSectionComponent } from './components/achievements-section/achievements-section.component';
-import { ProductSearchComponent } from './components/product-search/product-search.component';
-import { ProductDetailsComponent } from './components/product-details/product-details.component';
-import { CartComponent } from './components/cart/cart.component';
 
+import { AchievementsSectionComponent } from './components/achievements-section/achievements-section.component';
+import { CartComponent } from './components/cart/cart.component';
+import { DonationsSectionComponent } from './components/donations-section/donations-section.component';
 import { FollowSellerComponent } from './components/follow-seller/follow-seller.component';
-import { ClientModule } from './client.module';
+import { DrdersSectionComponent } from './components/orders-section/orders-section.component';
+import { PointsSectionComponent } from './components/points-section/points-section.component';
+import { ProductDetailsComponent } from './components/product-details/product-details.component';
+import { ProductSearchComponent } from './components/product-search/product-search.component';
+import { ProfileSectionComponent } from './components/profile-section/profile-section.component';
+import { RecyclingSectionComponent } from './components/recycling-section/recycling-section.component';
+import { SettingsSectionComponent } from './components/settings-section/settings-section.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { WalletSectionComponent } from './components/wallet-section/wallet-section.component';
+import { WishlistSectionComponent } from './components/wishlist-section/wishlist-section.component';
 
 const routes: Routes = [
   {
@@ -41,6 +40,7 @@ const routes: Routes = [
       { path: 'settings', component: SettingsSectionComponent },
       { path: 'cart', component: CartComponent }, // Changed from 'Card' to 'cart'
       { path: 'follow-seller', component: FollowSellerComponent },
+      
     ],
   },
 ];
