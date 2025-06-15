@@ -62,7 +62,7 @@ import { ShopsSectionComponent } from './components/Shop-section/shops-section.c
     ProductNavbarComponent,
     CartComponent,
     ProductNavbarComponent,
-    CheckoutComponent
+    CheckoutComponent,
     ShopsSectionComponent,
 
   ],
