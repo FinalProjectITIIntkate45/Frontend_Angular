@@ -59,7 +59,7 @@ import { WishlistSectionComponent } from './components/wishlist-section/wishlist
     CartComponent,
     ProductNavbarComponent,
     CartComponent,
-    ProductNavbarComponent
+    ProductNavbarComponent,
     CheckoutComponent
   ],
   imports: [
