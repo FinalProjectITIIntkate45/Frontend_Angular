@@ -5,7 +5,6 @@ import { ShopsSectionComponent } from './components/Shop-section/shops-section.c
 import { AchievementsSectionComponent } from './components/achievements-section/achievements-section.component';
 import { CartComponent } from './components/cart/cart.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
-import { DonationsSectionComponent } from './components/donations-section/donations-section.component';
 import { FollowSellerComponent } from './components/follow-seller/follow-seller.component';
 import { DrdersSectionComponent } from './components/orders-section/orders-section.component';
 import { PointsSectionComponent } from './components/points-section/points-section.component';
@@ -17,6 +16,9 @@ import { SettingsSectionComponent } from './components/settings-section/settings
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { WalletSectionComponent } from './components/wallet-section/wallet-section.component';
 import { WishlistSectionComponent } from './components/wishlist-section/wishlist-section.component';
+import { CharityDetailsComponent } from './components/charity/charity-details/charity-details.component';
+import { CharityListComponent } from './components/charity/charity-list/charity-list.component';
+import { DonateComponent } from './components/charity/donate/donate.component';
 
 const routes: Routes = [
   {
