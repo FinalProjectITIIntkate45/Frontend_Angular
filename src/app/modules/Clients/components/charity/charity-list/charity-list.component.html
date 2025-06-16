@@ -1,0 +1,11 @@
+<h2 class="title">Charities</h2>
+
+<div class="charity-container">
+  <div class="charity-card" *ngFor="let charity of charities">
+    <h3>{{ charity.name }}</h3>
+    <p>{{ charity.description }}</p>
+
+    <button (click)="viewDetails(charity.id)">View Details</button>
+    <button (click)="donate(charity.id)">Donate</button>
+  </div>
+</div>

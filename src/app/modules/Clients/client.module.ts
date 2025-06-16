@@ -1,5 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
+import { CharityDetailsComponent } from './components/charity/charity-details/charity-details.component';
+import { DonateComponent } from './components/charity/donate/donate.component';
+import { CharityListComponent } from './components/charity/charity-list/charity-list.component';
 import {
   provideHttpClient,
   withFetch,
@@ -19,7 +23,6 @@ import { AchievementsSectionComponent } from './components/achievements-section/
 import { CartComponent } from './components/cart/cart.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { ClientLayoutComponent } from './components/client-layout/client-layout.component';
-import { DonationsSectionComponent } from './components/donations-section/donations-section.component';
 import { FollowSellerComponent } from './components/follow-seller/follow-seller.component';
 import { DrdersSectionComponent } from './components/orders-section/orders-section.component';
 import { PointsSectionComponent } from './components/points-section/points-section.component';
@@ -48,7 +51,6 @@ import { ShopsSectionComponent } from './components/Shop-section/shops-section.c
     DrdersSectionComponent,
     PointsSectionComponent,
     RecyclingSectionComponent,
-    DonationsSectionComponent,
     AchievementsSectionComponent,
     SettingsSectionComponent,
     ClientLayoutComponent,
@@ -65,6 +67,9 @@ import { ShopsSectionComponent } from './components/Shop-section/shops-section.c
     CheckoutComponent,
     ShopsSectionComponent,
 
+    CharityListComponent,
+    CharityDetailsComponent,
+    DonateComponent
   ],
   imports: [
     CommonModule,
@@ -77,6 +82,7 @@ import { ShopsSectionComponent } from './components/Shop-section/shops-section.c
 
 
 
+    
   ],
   providers: [
     provideHttpClient(

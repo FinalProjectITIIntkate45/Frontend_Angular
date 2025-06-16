@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+import { ShopViewModel } from '../../Models/shop-view-model';
 import { ShopService } from '../../Services/shop.service';
 
 @Component({
@@ -11,7 +12,7 @@ import { ShopService } from '../../Services/shop.service';
 export class ShopsSectionComponent implements OnInit {
   loading: boolean = true;
   error: string | null = null;
-  shops!: import('../../Models/shop-view-model').ShopViewModel[];
+  shops!: ShopViewModel[];
   Math: any;
 
   constructor(private shopService: ShopService) {}

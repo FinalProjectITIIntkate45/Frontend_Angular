@@ -36,12 +36,17 @@ const routes: Routes = [
       { path: 'orders', component: DrdersSectionComponent },
       { path: 'points', component: PointsSectionComponent },
       { path: 'recycling', component: RecyclingSectionComponent },
-      { path: 'donations', component: DonationsSectionComponent },
       { path: 'wishlist', component: WishlistSectionComponent },
       { path: 'achievements', component: AchievementsSectionComponent },
       { path: 'settings', component: SettingsSectionComponent },
       { path: 'cart', component: CartComponent },
       { path: 'follow-seller', component: FollowSellerComponent },
+      { path: 'charity-details/:id', component: CharityDetailsComponent },
+      { path: 'donate/:id', component: DonateComponent },
+      { path: 'charity-details/:id', component: CharityDetailsComponent },
+      { path: 'donate/:id', component: DonateComponent },
+      { path: 'charities', component: CharityListComponent },
+
       { path: 'shop', component: ShopsSectionComponent },
       { path: 'checkout', component: CheckoutComponent },
 
