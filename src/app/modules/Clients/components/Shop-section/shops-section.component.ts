@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+
 import { ShopService } from '../../Services/shop.service';
 
 @Component({
@@ -10,7 +11,7 @@ import { ShopService } from '../../Services/shop.service';
 export class ShopsSectionComponent implements OnInit {
   loading: boolean = true;
   error: string | null = null;
-  shops!: import('c:/Angular/Frontend_Angular/src/app/modules/Clients/Models/shop-view-model').ShopViewModel[];
+  shops!: import('../../Models/shop-view-model').ShopViewModel[];
   Math: any;
 
   constructor(private shopService: ShopService) {}

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { ShopsSectionComponent } from './components/Shop-section/shops-section.component';
 import { AchievementsSectionComponent } from './components/achievements-section/achievements-section.component';
 import { CartComponent } from './components/cart/cart.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
@@ -16,7 +17,6 @@ import { SettingsSectionComponent } from './components/settings-section/settings
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { WalletSectionComponent } from './components/wallet-section/wallet-section.component';
 import { WishlistSectionComponent } from './components/wishlist-section/wishlist-section.component';
-import { ShopsSectionComponent } from './components/Shop-section/shops-section.component';
 
 const routes: Routes = [
   {
@@ -43,7 +43,7 @@ const routes: Routes = [
       { path: 'cart', component: CartComponent },
       { path: 'follow-seller', component: FollowSellerComponent },
       { path: 'shop', component: ShopsSectionComponent },
-
+      { path: 'checkout', component: CheckoutComponent },
 
     ],
   },
