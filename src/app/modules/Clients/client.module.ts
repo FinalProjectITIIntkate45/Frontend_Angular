@@ -6,7 +6,6 @@ import { WalletSectionComponent } from './components/wallet-section/wallet-secti
 import { DrdersSectionComponent } from './components/orders-section/orders-section.component';
 import { PointsSectionComponent } from './components/points-section/points-section.component';
 import { RecyclingSectionComponent } from './components/recycling-section/recycling-section.component';
-import { DonationsSectionComponent } from './components/donations-section/donations-section.component';
 import { SettingsSectionComponent } from './components/settings-section/settings-section.component';
 import { SharedModule } from '../../shared/shared.module';
 import { ClientRoutingModule } from './client-routing.module';
@@ -43,7 +42,6 @@ import { ProductSearchComponent } from './components/product-search/product-sear
     DrdersSectionComponent,
     PointsSectionComponent,
     RecyclingSectionComponent,
-    DonationsSectionComponent,
     AchievementsSectionComponent,
     SettingsSectionComponent,
     ClientLayoutComponent,

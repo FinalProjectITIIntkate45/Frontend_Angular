@@ -6,7 +6,6 @@ import { WalletSectionComponent } from './components/wallet-section/wallet-secti
 import { DrdersSectionComponent } from './components/orders-section/orders-section.component'; // تصحيح الاسم
 import { PointsSectionComponent } from './components/points-section/points-section.component'; // تصحيح الاسم
 import { RecyclingSectionComponent } from './components/recycling-section/recycling-section.component'; // تصحيح الاسم
-import { DonationsSectionComponent } from './components/donations-section/donations-section.component'; // تصحيح الاسم
 import { WishlistSectionComponent } from './components/wishlist-section/wishlist-section.component'; // تصحيح الاسم
 import { SettingsSectionComponent } from './components/settings-section/settings-section.component'; // تصحيح الاسم
 import { AchievementsSectionComponent } from './components/achievements-section/achievements-section.component';
@@ -41,7 +40,6 @@ const routes: Routes = [
       { path: 'orders', component: DrdersSectionComponent },
       { path: 'points', component: PointsSectionComponent },
       { path: 'recycling', component: RecyclingSectionComponent },
-      { path: 'donations', component: DonationsSectionComponent },
       { path: 'wishlist', component: WishlistSectionComponent },
       { path: 'achievements', component: AchievementsSectionComponent },
       { path: 'settings', component: SettingsSectionComponent },
