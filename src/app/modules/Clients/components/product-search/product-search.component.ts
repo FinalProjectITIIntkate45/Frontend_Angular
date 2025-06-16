@@ -1,8 +1,24 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../Services/product.service';
-import { ProductFilter } from '../../Models/Product-Filter.model';
+import {
+  ProductFilter,
+  ProductSearchRequest,
+} from '../../Models/Product-Filter.model';
 import { Product } from '../../Models/Product.model';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  Subject,
+  Subscription,
+} from 'rxjs';
+import { CartServicesService } from '../../Services/CardServices.service';
+
+// Enhanced Product interface with pre-calculated values
+interface EnhancedProduct extends Product {
+  rating: number;
+  ratingCount: number;
+}
 
 @Component({
   selector: 'app-product-search',
@@ -10,12 +26,28 @@ import { Product } from '../../Models/Product.model';
   styleUrls: ['./product-search.component.css'],
   standalone: false,
 })
-export class ProductSearchComponent implements OnInit {
-  allProducts: Product[] = [];
-  filteredProducts: Product[] = [];
+export class ProductSearchComponent implements OnInit, OnDestroy {
+  allProducts: EnhancedProduct[] = [];
+  filteredProducts: EnhancedProduct[] = [];
+  displayedProducts: EnhancedProduct[] = [];
   categories: string[] = [];
+  brands: { name: string; count: number }[] = [];
   loading: boolean = false;
   error: string | null = null;
+
+  // Search functionality
+  searchQuery: string = '';
+  private searchSubject = new Subject<string>();
+  private routeSubscription?: Subscription;
+
+  // Pagination
+  currentPage: number = 1;
+  itemsPerPage: number = 12;
+  totalPages: number = 1;
+  totalItems: number = 0;
+
+  // Math reference for template
+  Math = Math;
 
   filter: ProductFilter = {
     category: '',
@@ -24,101 +56,193 @@ export class ProductSearchComponent implements OnInit {
     minPoints: null,
     maxPoints: null,
     sortBy: 'price_asc',
+    saleOnly: false,
+    sameDayDelivery: false,
+    availableToOrder: false,
+    selectedBrands: [],
+    pageNumber: 1,
+    pageSize: 12,
   };
 
-  constructor(private productService: ProductService, private router: Router) {}
-
-  ngOnInit() {
-    this.loadProducts();
+  constructor(
+    private productService: ProductService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private cardservice: CartServicesService,
+  ) {
+    // Setup debounced search
+    this.searchSubject
+      .pipe(debounceTime(300), distinctUntilChanged())
+      .subscribe((searchTerm) => {
+        this.filter.search = searchTerm;
+        this.currentPage = 1;
+        this.performSearch();
+      });
   }
 
-  loadProducts() {
+  ngOnInit() {
+    // Listen to route query parameters changes (including from navbar search)
+    this.routeSubscription = this.route.queryParams.subscribe((params) => {
+      const newSearchQuery = params['search'] || '';
+
+      // Only update if search query actually changed
+      if (this.searchQuery !== newSearchQuery) {
+        this.searchQuery = newSearchQuery;
+        this.filter.search = newSearchQuery;
+        this.currentPage = 1;
+
+        // If we have initial data, perform search immediately
+        // Otherwise, loadInitialData will handle the first search
+        if (this.categories.length > 0 || this.brands.length > 0) {
+          this.performSearch();
+        }
+      }
+    });
+
+    this.loadInitialData();
+  }
+
+  ngOnDestroy() {
+    if (this.routeSubscription) {
+      this.routeSubscription.unsubscribe();
+    }
+    this.searchSubject.complete();
+  }
+
+  private loadInitialData() {
     this.loading = true;
     this.error = null;
 
-    this.productService.getProducts().subscribe({
-      next: (products) => {
-        console.log('Products loaded:', products);
-        this.allProducts = products || [];
+    // Load categories and brands first, then perform search
+    Promise.all([this.loadCategories(), this.loadBrands()])
+      .then(() => {
+        this.performSearch();
+      })
+      .catch((error) => {
+        console.error('Error loading initial data:', error);
+        this.error = 'Failed to load initial data';
+        this.loading = false;
+      });
+  }
 
-        this.extractCategories();
-        this.applyFilters();
+  private async loadCategories(): Promise<void> {
+    try {
+      this.categories =
+        (await this.productService.getCategories().toPromise()) || [];
+    } catch (error) {
+      console.error('Error loading categories:', error);
+      this.categories = [];
+    }
+  }
+
+  private async loadBrands(): Promise<void> {
+    try {
+      const brandNames =
+        (await this.productService.getBrands().toPromise()) || [];
+      this.brands = brandNames.map((name) => ({ name, count: 0 }));
+    } catch (error) {
+      console.error('Error loading brands:', error);
+      this.brands = [];
+    }
+  }
+
+  private performSearch() {
+    this.loading = true;
+    this.error = null;
+
+    const searchRequest: ProductSearchRequest = {
+      search: this.filter.search,
+      category: this.filter.category || undefined,
+      minPrice: this.filter.minPrice || undefined,
+      maxPrice: this.filter.maxPrice || undefined,
+      minPoints: this.filter.minPoints || undefined,
+      maxPoints: this.filter.maxPoints || undefined,
+      sortBy: this.filter.sortBy,
+      saleOnly: this.filter.saleOnly,
+      availableToOrder: this.filter.availableToOrder,
+      selectedBrands: this.filter.selectedBrands?.length
+        ? this.filter.selectedBrands
+        : undefined,
+      pageNumber: this.currentPage,
+      pageSize: this.itemsPerPage,
+    };
+
+    this.productService.searchProducts(searchRequest).subscribe({
+      next: (result) => {
+        console.log('Search results:', result);
+
+        // Update these lines to use PascalCase property names
+        this.displayedProducts = (result.Products || []).map((product) => ({
+          ...product,
+          rating: this.generateRandomRating(),
+          ratingCount: this.generateRandomRatingCount(),
+        }));
+
+        // Update pagination info with PascalCase properties
+        this.totalItems = result.TotalItems;
+        this.totalPages = result.TotalPages;
+        this.currentPage = result.PageNumber;
+
+        this.filteredProducts = this.displayedProducts;
         this.loading = false;
       },
       error: (error) => {
-        console.error('Error loading products:', error);
-        this.error = error.error?.message || 'Failed to load products';
+        console.error('Error searching products:', error);
+        this.error = error.error?.message || 'Failed to search products';
         this.loading = false;
       },
     });
   }
 
-  private extractCategories() {
-    if (!this.allProducts?.length) {
-      this.categories = [];
-      return;
-    }
-    this.categories = [...new Set(this.allProducts.map((p) => p.CategoryName))];
+  // Generate random values once per product
+  private generateRandomRating(): number {
+    return Math.random() * 5;
+  }
+
+  private generateRandomRatingCount(): number {
+    return Math.floor(Math.random() * 500) + 10;
+  }
+
+  // Search functionality
+  onSearchQueryChange() {
+    // Update URL query params to sync with navbar
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { search: this.searchQuery || null },
+      queryParamsHandling: 'merge',
+    });
+
+    // The route subscription will handle the actual search
   }
 
   searchProducts(): void {
-    this.applyFilters();
+    this.currentPage = 1; // Reset to first page when applying filters
+    this.performSearch();
   }
 
-  private applyFilters() {
-    if (!this.allProducts?.length) {
-      this.filteredProducts = [];
-      return;
+  // Pagination methods
+  previousPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.performSearch();
     }
-
-    let filtered = [...this.allProducts];
-
-    if (this.filter.category) {
-      filtered = filtered.filter(
-        (p) => p.CategoryName === this.filter.category
-      );
-    }
-
-    if (this.filter.minPrice !== null) {
-      filtered = filtered.filter(
-        (p) => p.DisplayedPrice >= this.filter.minPrice!
-      );
-    }
-    if (this.filter.maxPrice !== null) {
-      filtered = filtered.filter(
-        (p) => p.DisplayedPrice <= this.filter.maxPrice!
-      );
-    }
-
-    if (this.filter.minPoints !== null) {
-      filtered = filtered.filter(
-        (p) => p.EarnedPoints >= this.filter.minPoints!
-      );
-    }
-    if (this.filter.maxPoints !== null) {
-      filtered = filtered.filter(
-        (p) => p.EarnedPoints <= this.filter.maxPoints!
-      );
-    }
-
-    switch (this.filter.sortBy) {
-      case 'price_asc':
-        filtered.sort((a, b) => a.DisplayedPrice - b.DisplayedPrice);
-        break;
-      case 'price_desc':
-        filtered.sort((a, b) => b.DisplayedPrice - a.DisplayedPrice);
-        break;
-      case 'points_desc':
-        filtered.sort((a, b) => b.EarnedPoints - a.EarnedPoints);
-        break;
-      // case 'rating_desc':
-      //   filtered.sort((a, b) => (b.Rat || 0) - (a.rating || 0));
-      //   break;
-    }
-
-    this.filteredProducts = filtered;
   }
 
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.performSearch();
+    }
+  }
+
+  goToPage(page: number) {
+    if (page >= 1 && page <= this.totalPages && page !== this.currentPage) {
+      this.currentPage = page;
+      this.performSearch();
+    }
+  }
+
+  // Filter helper methods
   clearFilters() {
     this.filter = {
       category: '',
@@ -127,11 +251,160 @@ export class ProductSearchComponent implements OnInit {
       minPoints: null,
       maxPoints: null,
       sortBy: 'price_asc',
+      saleOnly: false,
+      sameDayDelivery: false,
+      availableToOrder: false,
+      selectedBrands: [],
+      pageNumber: 1,
+      pageSize: 12,
     };
-    this.applyFilters();
+    this.searchQuery = '';
+    this.currentPage = 1;
+
+    // Clear URL params too
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { search: null },
+      queryParamsHandling: 'merge',
+    });
   }
 
+  hasActiveFilters(): boolean {
+    return !!(
+      this.filter.category ||
+      this.filter.minPrice ||
+      this.filter.maxPrice ||
+      this.filter.minPoints ||
+      this.filter.maxPoints ||
+      this.filter.saleOnly ||
+      this.filter.sameDayDelivery ||
+      this.filter.availableToOrder ||
+      (this.filter.selectedBrands && this.filter.selectedBrands.length > 0) ||
+      (this.searchQuery && this.searchQuery.trim())
+    );
+  }
+
+  clearCategoryFilter() {
+    this.filter.category = '';
+    this.currentPage = 1;
+    this.performSearch();
+  }
+
+  clearPriceFilter() {
+    this.filter.minPrice = null;
+    this.filter.maxPrice = null;
+    this.currentPage = 1;
+    this.performSearch();
+  }
+
+  clearSearchFilter() {
+    this.searchQuery = '';
+    this.filter.search = '';
+    this.currentPage = 1;
+
+    // Clear URL params
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { search: null },
+      queryParamsHandling: 'merge',
+    });
+  }
+
+  toggleBrand(brandName: string) {
+    if (!this.filter.selectedBrands) {
+      this.filter.selectedBrands = [];
+    }
+
+    const index = this.filter.selectedBrands.indexOf(brandName);
+    if (index > -1) {
+      this.filter.selectedBrands.splice(index, 1);
+    } else {
+      this.filter.selectedBrands.push(brandName);
+    }
+    this.currentPage = 1;
+    this.performSearch();
+  }
+
+  getCategoryCount(category: string): number {
+    // This would need to be implemented based on server response
+    // For now, return 0 as placeholder
+    return 0;
+  }
+
+  // Product helper methods
   viewProductDetails(productId: number) {
     this.router.navigate(['/client/products', productId]);
+  }
+
+  getDiscountPercentage(product: Product): number {
+    if (product.DisplayedPriceAfterDiscount >= product.DisplayedPrice) {
+      return 0;
+    }
+    const discount =
+      product.DisplayedPrice - product.DisplayedPriceAfterDiscount;
+    return Math.round((discount / product.DisplayedPrice) * 100);
+  }
+
+  isNewProduct(product: Product): boolean {
+    if (!product.CreatedAt) return false;
+    const createdDate = new Date(product.CreatedAt);
+    const now = new Date();
+    const diffInDays =
+      (now.getTime() - createdDate.getTime()) / (1000 * 3600 * 24);
+    return diffInDays <= 30;
+  }
+
+  // Now these methods return the pre-calculated values
+  getRating(product: EnhancedProduct): number {
+    return product.rating;
+  }
+
+  getRatingCount(product: EnhancedProduct): number {
+    return product.ratingCount;
+  }
+
+  addToCart(product: Product, event: Event) {
+    event.stopPropagation();
+
+    if (product.Stock === 0) {
+      return;
+    }
+
+    console.log('Adding to cart:', product);
+    // Implement your cart service logic here
+
+    //  this.cardservice.addToCart(product.Id, 
+    //                             product.quantity,
+    //                              product.DisplayedPriceAfterDiscount || product.DisplayedPrice,
+    //                               product.Points);
+  }
+
+  // Pagination helper methods
+  getPageNumbers(): number[] {
+    const pages: number[] = [];
+    const start = Math.max(1, this.currentPage - 2);
+    const end = Math.min(this.totalPages, this.currentPage + 2);
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+
+    return pages;
+  }
+
+  shouldShowFirstPage(): boolean {
+    return this.currentPage > 3;
+  }
+
+  shouldShowLastPage(): boolean {
+    return this.currentPage < this.totalPages - 2;
+  }
+
+  shouldShowFirstEllipsis(): boolean {
+    return this.currentPage > 4;
+  }
+
+  shouldShowLastEllipsis(): boolean {
+    return this.currentPage < this.totalPages - 3;
   }
 }

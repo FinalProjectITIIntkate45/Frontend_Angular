@@ -1,60 +1,281 @@
-<div class="product-details-container">
-  <div *ngIf="loading" class="loading">Loading product details...</div>
-  <div *ngIf="error" class="error">{{error}}</div>
+<div class="product-details-page">
+  <!-- Breadcrumb -->
+  <div class="breadcrumb-section">
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="/client/home" class="breadcrumb-link">Home</a>
+        <i class="breadcrumb-separator">›</i>
+        <a href="/client/products" class="breadcrumb-link">Products</a>
+        <i class="breadcrumb-separator">›</i>
+        <span class="breadcrumb-current" *ngIf="product">{{product.Name}}</span>
+      </nav>
+    </div>
+  </div>
 
-  <div class="product-content" *ngIf="product">
-    <div class="product-gallery">
-      <div class="main-image">
-        <img [src]="selectedImage || product.Images[0]" [alt]="product.Name">
-      </div>
-      <!-- *ngIf="product.Images?.length > 1" -->
-      <div class="thumbnail-list">
-        <img *ngFor="let img of product.Images" [src]="img" [alt]="product.Name" (click)="selectedImage = img"
-          [class.active]="selectedImage === img">
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="loading">
+    <div class="container">
+      <div class="loading-spinner"></div>
+      <p>Loading product details...</p>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-state" *ngIf="error && !loading">
+    <div class="container">
+      <div class="error-content">
+        <div class="error-icon">⚠️</div>
+        <h3>Oops! Something went wrong</h3>
+        <p>{{error}}</p>
+        <button (click)="loadProduct(+route.snapshot.params['id'])" class="retry-btn">
+          Try Again
+        </button>
       </div>
     </div>
+  </div>
 
-    <div class="product-info">
-      <div class="product-header">
-        <h2>{{product.Name}}</h2>
-        <span class="shop-badge">{{product.ShopName}}</span>
-      </div>
+  <!-- Product Details Content -->
+  <div class="product-content" *ngIf="product && !loading && !error">
+    <div class="container">
+      <div class="product-layout">
 
-      <div class="price-section">
-        <div class="price-container">
-          <span class="original-price"
-            [class.strikethrough]="product.DisplayedPriceAfterDiscount < product.DisplayedPrice">
-            ${{product.DisplayedPrice}}
-          </span>
-          <span class="discount-price" *ngIf="product.DisplayedPriceAfterDiscount < product.DisplayedPrice">
-            ${{product.DisplayedPriceAfterDiscount}}
-          </span>
+        <!-- Product Gallery -->
+        <div class="product-gallery">
+          <!-- Product Badges -->
+          <div class="product-badges">
+            <span class="sale-badge" *ngIf="product.discountPercentage > 0">
+              -{{product.discountPercentage}}%
+            </span>
+            <span class="new-badge" *ngIf="product.isNew">New</span>
+          </div>
+
+          <!-- Main Image -->
+          <div class="main-image">
+            <img
+              [src]="selectedImage || (product.Images && product.Images[0]) || '/assets/images/placeholder-product.jpg'"
+              [alt]="product.Name" loading="lazy">
+          </div>
+
+          <!-- Thumbnail Gallery -->
+          <div class="thumbnail-gallery" *ngIf="product.Images && product.Images.length > 1">
+            <div class="thumbnail-container">
+              <img 
+              *ngFor="let image of product.Images; let i = index" [src]="image"
+                [alt]="product.Name + ' - Image ' + (i + 1)"
+                [class.active]="selectedImage === image || (!selectedImage && i === 0)" (click)="selectImage(image)"
+                class="thumbnail-image">
+            </div>
+          </div>
         </div>
-        <div class="points-badge">
-          Earn {{product.EarnedPoints}} points
+
+        <!-- Product Information -->
+        <div class="product-info">
+          <!-- Product Header -->
+          <div class="product-header">
+            <div class="product-title">
+              <h1>{{product.Name}}</h1>
+              <button (click)="shareProduct()" class="share-btn" title="Share Product">
+                <i class="share-icon">🔗</i>
+              </button>
+            </div>
+
+            <!-- Shop Info -->
+            <div class="shop-info" *ngIf="product.ShopName">
+              <span class="shop-label">Sold by:</span>
+              <button (click)="goToShop(product.ShopName)" class="shop-link">
+                <i class="shop-icon">🏪</i>
+                {{product.ShopName}}
+              </button>
+            </div>
+
+            <!-- Category -->
+            <div class="category-info" *ngIf="product.CategoryName">
+              <span class="category-label">Category:</span>
+              <button (click)="goToCategory(product.CategoryName)" class="category-link">
+                {{product.CategoryName}}
+              </button>
+            </div>
+          </div>
+
+          <!-- Rating -->
+          <div class="product-rating">
+            <div class="stars">
+              <span class="star" *ngFor="let filled of getRatingStars(product.rating)" [class.filled]="filled">★</span>
+            </div>
+            <span class="rating-text">{{product.rating | number:'1.1-1'}}</span>
+            <span class="rating-count">({{product.ratingCount}} reviews)</span>
+          </div>
+
+          <!-- Price Section -->
+          <div class="price-section">
+            <div class="price-container">
+              <span class="current-price">
+                ${{formatPrice(product.DisplayedPriceAfterDiscount || product.DisplayedPrice)}}
+              </span>
+              <span class="original-price" *ngIf="product.DisplayedPriceAfterDiscount < product.DisplayedPrice">
+                ${{formatPrice(product.DisplayedPrice)}}
+              </span>
+              <span class="discount-badge" *ngIf="product.discountPercentage > 0">
+                Save {{product.discountPercentage}}%
+              </span>
+            </div>
+
+            <!-- Points -->
+            <div class="points-info" *ngIf="product.EarnedPoints > 0">
+              <span class="points-icon">⭐</span>
+              <span class="points-text">Earn {{product.EarnedPoints}} points with this purchase</span>
+            </div>
+          </div>
+
+          <!-- Stock Status -->
+          <div class="stock-section">
+            <div class="stock-status" [class.out-of-stock]="product.Stock === 0">
+              <span class="stock-icon">📦</span>
+              <span class="stock-text" *ngIf="product.Stock > 0">
+                In Stock - {{product.Stock}} available
+              </span>
+              <span class="stock-text" *ngIf="product.Stock === 0">
+                Currently Out of Stock
+              </span>
+            </div>
+          </div>
+
+          <!-- Quantity & Actions -->
+          <div class="purchase-section" *ngIf="product.Stock > 0">
+            <div class="quantity-selector">
+              <label class="quantity-label">Quantity:</label>
+              <div class="quantity-controls">
+                <button (click)="decreaseQuantity()" [disabled]="quantity <= 1" class="quantity-btn">
+                  −
+                </button>
+                <span class="quantity-display">{{quantity}}</span>
+                <button (click)="increaseQuantity()" [disabled]="quantity >= product.Stock" class="quantity-btn">
+                  +
+                </button>
+              </div>
+            </div>
+
+            <div class="action-buttons">
+              <button (click)="addToCart()" class="add-to-cart-btn">
+                <i class="cart-icon">🛒</i>
+                <span>Add to Cart</span>
+              </button>
+              <button (click)="addToWishlist()" class="wishlist-btn">
+                <i class="heart-icon">❤️</i>
+                <span>Wishlist</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Out of Stock Message -->
+          <div class="out-of-stock-section" *ngIf="product.Stock === 0">
+            <div class="out-of-stock-message">
+              <h4>Currently Out of Stock</h4>
+              <p>This item is temporarily unavailable. Add to wishlist to be notified when it's back in stock.</p>
+              <button (click)="addToWishlist()" class="wishlist-btn">
+                <i class="heart-icon">❤️</i>
+                <span>Add to Wishlist</span>
+
+
+              </button>
+            </div>
+          </div>
+
+          <!-- Shipping Info -->
+          <div class="shipping-info">
+            <h4>🚚 Shipping Options</h4>
+            <div class="shipping-options">
+              <div class="shipping-option">
+                <i class="shipping-icon">🚚</i>
+                <div class="shipping-details">
+                  <span class="shipping-title">Standard Delivery</span>
+                  <span class="shipping-time">3-5 business days</span>
+                </div>
+                <span class="shipping-price">$5.99</span>
+              </div>
+              <div class="shipping-option">
+                <i class="shipping-icon">⚡</i>
+                <div class="shipping-details">
+                  <span class="shipping-title">Express Delivery</span>
+                  <span class="shipping-time">1-2 business days</span>
+                </div>
+                <span class="shipping-price">$12.99</span>
+              </div>
+              <div class="shipping-option">
+                <i class="shipping-icon">🏪</i>
+                <div class="shipping-details">
+                  <span class="shipping-title">Store Pickup</span>
+                  <span class="shipping-time">Available today</span>
+                </div>
+                <span class="shipping-price">Free</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="stock-info" [class.out-of-stock]="product.Stock === 0">
-        <i class="material-icons">{{product.Stock > 0 ? 'check_circle' : 'remove_circle'}}</i>
-        <span>{{product.Stock > 0 ? 'In Stock' : 'Out of Stock'}}</span>
-        <span *ngIf="product.Stock > 0">({{product.Stock}} available)</span>
-      </div>
-
+      <!-- Product Description -->
       <div class="description-section">
-        <h3>Description</h3>
-        <p class="description">{{product.Description}}</p>
+        <div class="description-header">
+          <h3>📝 Product Description</h3>
+        </div>
+        <div class="description-content">
+          <p>{{product.Description}}</p>
+        </div>
       </div>
 
-      <div class="actions">
-        <button class="add-to-cart-btn" *ngIf="product.Stock > 0" (click)="addToCart()">
-          <i class="material-icons">shopping_cart</i>
-          Add to Cart
-        </button>
-        <button class="wishlist-btn">
-          <i class="material-icons">favorite_border</i>
-          Add to Wishlist
-        </button>
+      <!-- Related Products -->
+      <div class="related-products-section" *ngIf="relatedProducts.length > 0">
+        <div class="section-header">
+          <h3>✨ You might also like</h3>
+        </div>
+
+        <div class="related-products-grid">
+          <div class="product-card" *ngFor="let relatedProduct of relatedProducts"
+            (click)="viewRelatedProduct(relatedProduct.Id)">
+
+            <!-- Product Badges -->
+            <div class="sale-badge" *ngIf="relatedProduct.discountPercentage > 0">
+              -{{relatedProduct.discountPercentage}}%
+            </div>
+            <div class="new-badge" *ngIf="relatedProduct.isNew">New</div>
+
+            <!-- Product Image -->
+            <div class="product-image">
+              <img
+                [src]="(relatedProduct.Images && relatedProduct.Images[0]) || '/assets/images/placeholder-product.jpg'"
+                [alt]="relatedProduct.Name" loading="lazy">
+            </div>
+
+            <!-- Product Info -->
+            <div class="product-info">
+              <div class="product-rating">
+                <div class="stars">
+                  <span class="star" *ngFor="let filled of getRatingStars(relatedProduct.rating)"
+                    [class.filled]="filled">★</span>
+                </div>
+                <span class="rating-count">({{relatedProduct.ratingCount}})</span>
+              </div>
+
+              <h4 class="product-name">{{relatedProduct.Name}}</h4>
+
+              <div class="product-price">
+                <span class="current-price">
+                  ${{formatPrice(relatedProduct.DisplayedPriceAfterDiscount || relatedProduct.DisplayedPrice)}}
+                </span>
+                <span class="original-price"
+                  *ngIf="relatedProduct.DisplayedPriceAfterDiscount < relatedProduct.DisplayedPrice">
+                  ${{formatPrice(relatedProduct.DisplayedPrice)}}
+                </span>
+              </div>
+
+              <div class="product-points" *ngIf="relatedProduct.EarnedPoints > 0">
+                <span class="points-icon">⭐</span>
+                <span>{{relatedProduct.EarnedPoints}} pts</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

@@ -8,11 +8,10 @@ export interface Product {
   CategoryName: string;
   ShopName: string;
   CreatedAt: string;
-  Images: string[];
+  Images: string[]; // Make sure this is not optional
   ModificationDate: string;
   CategoryId: number;
   DisplayedPrice: number;
   DisplayedPriceAfterDiscount: number;
-  IsSpecialOffer: boolean;
   EarnedPoints: number;
 }

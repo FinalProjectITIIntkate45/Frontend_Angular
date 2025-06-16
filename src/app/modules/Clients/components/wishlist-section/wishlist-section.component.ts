@@ -13,6 +13,7 @@ export class WishlistSectionComponent implements OnInit {
   wishlistItems: WishlistItem[] = [];
   errorMessage: string = '';
   specialRequestForm: FormGroup;
+  product: any;
 
   constructor(
     private wishlistService: WishlistService,
@@ -31,8 +32,14 @@ export class WishlistSectionComponent implements OnInit {
 
   loadWishlist() {
     this.wishlistService.getWishlist().subscribe({
-      next: (data) => (this.wishlistItems = data),
-      error: (err) => (this.errorMessage = 'Failed to load wishlist'),
+      next: (data) => {
+        console.log(data);
+
+        this.wishlistItems = data;
+      },
+      error: (err) => {
+        this.errorMessage = 'Failed to load wishlist';
+      },
     });
   }
 
@@ -58,6 +65,16 @@ export class WishlistSectionComponent implements OnInit {
 
   addToBag(productId: number) {
     console.log(`Added product ${productId} to bag`);
+  }
+
+  addToWishlist(productId: number) {
+    this.wishlistService.addToWishlist(productId).subscribe({
+      next: (msg) => {
+        this.errorMessage = msg;
+        this.loadWishlist();
+      },
+      error: (err) => (this.errorMessage = 'Failed to add product to wishlist'),
+    });
   }
 
   submitSpecialRequest() {

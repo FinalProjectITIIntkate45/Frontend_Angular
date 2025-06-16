@@ -16,7 +16,7 @@ export class SubscriptionService {
     return this.http.post(`${this.baseUrl}/start-change`, request);
   }
 
-  confirmSubscriptionChange(transactionId: string): Observable<any> {
-    return this.http.post(`${this.baseUrl}/confirm-change`, { transactionId });
-  }
+ confirmSubscriptionChange(request: SubscriptionChangeRequest): Observable<any> {
+  return this.http.post(`${this.baseUrl}/confirm-change`, request);
+}
 }

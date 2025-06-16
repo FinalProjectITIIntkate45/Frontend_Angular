@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SubscriptionService } from '../../Services/SubscrptionServece.service';
 import { ToastrService } from 'ngx-toastr';
-import { AccountService } from '../../../auth/services/account.service'; // تأكد من المسار الصحيح
-import { FormControl } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service';
 import { SubscriptionChangeRequest } from '../../Models/SubscriptionChangeRequest';
 
@@ -14,10 +12,11 @@ import { SubscriptionChangeRequest } from '../../Models/SubscriptionChangeReques
 })
 export class SubScrptionComponent implements OnInit {
   showPaymentOptions: boolean = false;
-  selectedPlan: string | null = null;
-  paymentType: string = 'OnlineCard'; // القيمة الافتراضية
-  userId: string | null = null;
+  selectedPlan: number | null = null;
+  paymentType: number = 5044395; // القيمة الافتراضية
   statusMessage: string | null = null;
+  paymentUrl: string | null = null;
+
 
   constructor(
     private subscriptionService: SubscriptionService,
@@ -25,71 +24,71 @@ export class SubScrptionComponent implements OnInit {
     private cookieService: CookieService,
   ) {}
 
-  ngOnInit(): void {
-    this.userId = this.cookieService.get('userId'); 
-  }
+  ngOnInit(): void {}
 
-  selectPlan(plan: string) {
-    this.selectedPlan = plan;
-
-    // اذا اخترت VIP نعرض خيارات الدفع، اما لو Free نخلي paymentType افتراضية
-    if (plan === 'Free') {
-      this.paymentType = '';
-    } else if (plan === 'VIP' && !this.paymentType) {
-      this.paymentType = 'OnlineCard';
+  selectPlan(plan: 'VIP' | 'Free') {
+    if (plan === 'VIP') {
+      this.selectedPlan = 1;
+      this.showPaymentOptions = true;
+      this.paymentType = this.paymentType || 5044395;
+    } else {
+      this.selectedPlan = 0;
+      this.showPaymentOptions = false;
+      this.paymentType = 0;
     }
   }
 
   submitPlan() {
-    if (!this.selectedPlan) {
+    if (this.selectedPlan === null) {
       this.toastr.warning('Please make sure you select a plan');
       return;
     }
 
-    if (!this.userId) {
-      this.toastr.warning('Please make sure you are logged in');
-      return;
-    }
-
-    if (this.selectedPlan === 'VIP') {
+    if (this.selectedPlan === 1) {
       if (!this.paymentType) {
         this.toastr.warning('Please select a payment method');
         return;
       }
 
       const req: SubscriptionChangeRequest = {
-        type: 'VIP',
-        PaymentType: this.paymentType as 'OnlineCard' | 'VodafoneCash' | 'MeezaQR',
-        isPaid: false
+        Type: this.selectedPlan,
+        IsPaid: false,
+        PaymentType: this.paymentType,
       };
 
       this.subscriptionService.changeSubscription(req).subscribe({
         next: (res: any) => {
-          if (res.data?.paymentUrl) {
-            window.open(res.data.paymentUrl, '_blank');
+          if (res.data?.PaymentUrl) {
+          this.paymentUrl = res.data.PaymentUrl;
+          console.log(this.paymentUrl);
+          
 
-            setTimeout(() => {
-              const transactionId = prompt('بعد الدفع، أدخل Transaction ID:');
+  setTimeout(() => {
+    const transactionId = prompt('بعد الدفع، أدخل Transaction ID:');
 
-              if (transactionId) {
-                const verifyReq: SubscriptionChangeRequest = {
-                  type: 'VIP',
-                  transactionId,
-                  isPaid: true
-                };
+    if (transactionId) {
+      const verifyReq: SubscriptionChangeRequest = {
+        Type: this.selectedPlan!,
+        PaymentType: this.paymentType,
+        IsPaid: true,
+        transactionId: transactionId,
+      };
 
-                this.subscriptionService.confirmSubscriptionChange(JSON.stringify(verifyReq)).subscribe({
-                  next: () => {
-                    this.toastr.success('تم الاشتراك في VIP بنجاح');
-                    this.statusMessage = 'تم الاشتراك في VIP بنجاح';
-                  },
-                  error: () => {
-                    this.toastr.error('لم يتم التحقق من الدفع، حاول مجددًا');
-                    this.statusMessage = 'فشل التحقق من الدفع';
-                  }
-                });
-              }
-            }, 2000);              } else {
+      this.subscriptionService.confirmSubscriptionChange(verifyReq).subscribe({
+        next: () => {
+          this.toastr.success('تم الاشتراك في VIP بنجاح');
+          this.statusMessage = 'تم الاشتراك في VIP بنجاح';
+          this.paymentUrl = null; // إخفاء iframe بعد الدفع
+        },
+        error: () => {
+          this.toastr.error('لم يتم التحقق من الدفع، حاول مجددًا');
+          this.statusMessage = 'فشل التحقق من الدفع';
+        }
+      });
+    }
+  }, 2000);
+
+          } else {
             this.toastr.error('فشل في إنشاء رابط الدفع');
             this.statusMessage = 'فشل في إنشاء رابط الدفع';
           }
@@ -100,22 +99,11 @@ export class SubScrptionComponent implements OnInit {
         }
       });
     } else {
-      // خطة مجانية
+      // Free plan
       const req: SubscriptionChangeRequest = {
-        type: 'Free',
-        isPaid: true
+        Type: this.selectedPlan,
+        IsPaid: true,
       };
-
-      this.subscriptionService.changeSubscription(req).subscribe({
-        next: () => {
-          this.toastr.success('تم الاشتراك بالخطة المجانية');
-          this.statusMessage = 'تم الاشتراك بالخطة المجانية';
-        },
-        error: () => {
-          this.toastr.error('فشل الاشتراك بالخطة المجانية');
-          this.statusMessage = 'فشل الاشتراك بالخطة المجانية';
-        }
-      });
     }
-  }}
-
+  }
+}

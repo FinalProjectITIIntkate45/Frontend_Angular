@@ -1,9 +1,10 @@
 // src/app/app-routing.module.ts
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
+import { authGuard } from './core/guards/Auth.guard';
 import { ClientLayoutComponent } from './modules/Clients/components/client-layout/client-layout.component';
 import { ProviderLayoutComponent } from './modules/Providers/Components/provider-layout/provider-layout.component';
-import { authGuard } from './core/guards/Auth.guard';
 
 const routes: Routes = [
   // { path: '', redirectTo: 'client/products', pathMatch: 'full' },

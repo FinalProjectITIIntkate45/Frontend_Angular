@@ -53,8 +53,8 @@ export class LoginComponent {
     this.accountService.login(this.model).subscribe({
       next: (response) => {
         this.loading = false;
+        console.log('Response:', response);
         if (response.IsSuccess) {
-          console.log('Response:', response);
           this.authService.setUserData(response.Data);
 
           const role = this.authService.getUserRole();
