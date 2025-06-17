@@ -1,31 +1,24 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UserProfileComponent } from './components/user-profile/user-profile.component';
-import { ProfileSectionComponent } from './components/profile-section/profile-section.component';
-import { WalletSectionComponent } from './components/wallet-section/wallet-section.component';
-import { DrdersSectionComponent } from './components/orders-section/orders-section.component'; // تصحيح الاسم
-import { PointsSectionComponent } from './components/points-section/points-section.component'; // تصحيح الاسم
-import { RecyclingSectionComponent } from './components/recycling-section/recycling-section.component'; // تصحيح الاسم
-import { WishlistSectionComponent } from './components/wishlist-section/wishlist-section.component'; // تصحيح الاسم
-import { SettingsSectionComponent } from './components/settings-section/settings-section.component'; // تصحيح الاسم
-
-import { AchievementsSectionComponent } from './components/achievements-section/achievements-section.component';
-import { CartComponent } from './components/cart/cart.component';
-
-
-
-
-
-import { FollowSellerComponent } from './components/follow-seller/follow-seller.component';
-import { CharityListComponent } from './components/charity/charity-list/charity-list.component';
-
-import { CharityDetailsComponent } from './components/charity/charity-details/charity-details.component';
-import { DonateComponent } from './components/charity/donate/donate.component';
-
-import { ProductDetailsComponent } from './components/product-details/product-details.component';
-import { ProductSearchComponent } from './components/product-search/product-search.component';
 
 import { ShopsSectionComponent } from './components/Shop-section/shops-section.component';
+import { AchievementsSectionComponent } from './components/achievements-section/achievements-section.component';
+import { CartComponent } from './components/cart/cart.component';
+import { CheckoutComponent } from './components/checkout/checkout.component';
+import { FollowSellerComponent } from './components/follow-seller/follow-seller.component';
+import { DrdersSectionComponent } from './components/orders-section/orders-section.component';
+import { PointsSectionComponent } from './components/points-section/points-section.component';
+import { ProductDetailsComponent } from './components/product-details/product-details.component';
+import { ProductSearchComponent } from './components/product-search/product-search.component';
+import { ProfileSectionComponent } from './components/profile-section/profile-section.component';
+import { RecyclingSectionComponent } from './components/recycling-section/recycling-section.component';
+import { SettingsSectionComponent } from './components/settings-section/settings-section.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { WalletSectionComponent } from './components/wallet-section/wallet-section.component';
+import { WishlistSectionComponent } from './components/wishlist-section/wishlist-section.component';
+import { CharityDetailsComponent } from './components/charity/charity-details/charity-details.component';
+import { CharityListComponent } from './components/charity/charity-list/charity-list.component';
+import { DonateComponent } from './components/charity/donate/donate.component';
 
 const routes: Routes = [
   {
@@ -57,7 +50,7 @@ const routes: Routes = [
       { path: 'charities', component: CharityListComponent },
 
       { path: 'shop', component: ShopsSectionComponent },
-
+      { path: 'checkout', component: CheckoutComponent },
 
     ],
   },
