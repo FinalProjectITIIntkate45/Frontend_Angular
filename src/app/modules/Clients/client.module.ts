@@ -1,9 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { CharityDetailsComponent } from './components/charity/charity-details/charity-details.component';
-import { DonateComponent } from './components/charity/donate/donate.component';
-import { CharityListComponent } from './components/charity/charity-list/charity-list.component';
 import {
   provideHttpClient,
   withFetch,
@@ -19,6 +15,7 @@ import { ProductNavbarComponent } from '../../shared/components/product-navbar/p
 import { ClientRoutingModule } from './client-routing.module';
 
 import { FollowSellerService } from './Services/follow.service';
+import { ShopsSectionComponent } from './components/Shop-section/shops-section.component';
 import { AchievementsSectionComponent } from './components/achievements-section/achievements-section.component';
 import { CartComponent } from './components/cart/cart.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
@@ -38,7 +35,10 @@ import { UserNavComponent } from './components/user-nav/user-nav.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { WalletSectionComponent } from './components/wallet-section/wallet-section.component';
 import { WishlistSectionComponent } from './components/wishlist-section/wishlist-section.component';
-import { ShopsSectionComponent } from './components/Shop-section/shops-section.component';
+import { CharityDetailsComponent } from './components/charity/charity-details/charity-details.component';
+import { CharityListComponent } from './components/charity/charity-list/charity-list.component';
+import { DonateComponent } from './components/charity/donate/donate.component';
+import { DeliveryInfoComponent } from './components/checkout/delivery-info/delivery-info.component';
 
 
 @NgModule({
@@ -65,6 +65,9 @@ import { ShopsSectionComponent } from './components/Shop-section/shops-section.c
     CartComponent,
     ProductNavbarComponent,
     CheckoutComponent,
+    DeliveryInfoComponent,
+
+
     ShopsSectionComponent,
 
     CharityListComponent,
@@ -82,7 +85,7 @@ import { ShopsSectionComponent } from './components/Shop-section/shops-section.c
 
 
 
-    
+
   ],
   providers: [
     provideHttpClient(

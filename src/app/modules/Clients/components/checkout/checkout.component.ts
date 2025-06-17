@@ -196,24 +196,24 @@ isPaymentValid(): boolean {
 
   // Proceed to checkout
   proceedToCheckout(): void {
-    if (this.isFormValid()) {
-      this.checkoutService.checkoutOrder(this.checkoutModel).subscribe({
-        next: (result) => {
-          console.log(result);
-          if (result.IsSuccess) {
-            this.paymentResult = result.Data;
-            this.toastr.success('Checkout completed successfully!', 'Success');
-          } else {
-            this.toastr.error(result.Message, 'Error');
-          }
-        },
-        error: (err) => {
-          this.toastr.error('Checkout failed. Please try again later.', 'Error');
-        },
-      });
-    } else {
-      this.toastr.error('Please complete the form before proceeding.', 'Error');
-    }
+    // if (this.isFormValid()) {
+    //   this.checkoutService.checkoutOrder(this.checkoutModel).subscribe({
+    //     next: (result) => {
+    //       console.log(result);
+    //       if (result.IsSuccess) {
+    //         this.paymentResult = result.Data;
+    //         this.toastr.success('Checkout completed successfully!', 'Success');
+    //       } else {
+    //         this.toastr.error(result.Message, 'Error');
+    //       }
+    //     },
+    //     error: (err) => {
+    //       this.toastr.error('Checkout failed. Please try again later.', 'Error');
+    //     },
+    //   });
+    // } else {
+    //   this.toastr.error('Please complete the form before proceeding.', 'Error');
+    // }
   }
 
 
