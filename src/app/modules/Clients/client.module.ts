@@ -39,6 +39,7 @@ import { CharityDetailsComponent } from './components/charity/charity-details/ch
 import { CharityListComponent } from './components/charity/charity-list/charity-list.component';
 import { DonateComponent } from './components/charity/donate/donate.component';
 import { DeliveryInfoComponent } from './components/checkout/delivery-info/delivery-info.component';
+import { OrderConfirmationComponent } from './components/checkout/order-confirmation/order-confirmation.component';
 import { PaymentInfoComponent } from './components/checkout/payment-info/payment-info.component';
 
 
@@ -68,6 +69,7 @@ import { PaymentInfoComponent } from './components/checkout/payment-info/payment
     CheckoutComponent,
     DeliveryInfoComponent,
     PaymentInfoComponent,
+    OrderConfirmationComponent,
 
     ShopsSectionComponent,
 

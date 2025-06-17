@@ -1,3 +1,4 @@
+// payment-info.component.ts
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 import { OrderCreateViewModel } from '../../../Models/OrderCreateViewModel';
@@ -16,14 +17,6 @@ export class PaymentInfoComponent {
 
   constructor() {
     this.checkoutModel = {
-      clientId: '',
-      orderItems: [],
-      totalPrice: 0,
-      totalPoints: 0,
-      usedPaidPoints: 0,
-      usedFreePoints: 0,
-      couponCode: '',
-      paymentType: 0,
       billingData: {
         firstName: '',
         lastName: '',
@@ -31,29 +24,37 @@ export class PaymentInfoComponent {
         street: '',
         city: '',
         state: '',
+        country: '',
+        email: '',
         apartment: '',
         floor: '',
         building: '',
-        country: '',
         shippingMethod: '',
-        email: '',
       },
-      status: 0,
+
+      paymentType : 0,
+      clientId: '',
+      orderItems: [],
+      totalPrice: 0,
+      totalPoints: 0,
+      usedPaidPoints: 0,
+      usedFreePoints: 0,
+      couponCode: '',
+      status: 0
+
     };
   }
 
-  // تنفيذ التحقق من صحة البيانات الخاصة بالدفع
   isPaymentValid(): boolean {
     return !!this.checkoutModel.paymentType;
   }
 
   onNextStep(): void {
     if (this.isPaymentValid()) {
-      this.nextStep.emit(); // يتم إرسال حدث للانتقال إلى الخطوة التالية
+      this.nextStep.emit();
     }
   }
   onPreviousStep(): void {
-    this.previousStep.emit(); // يتم إرسال حدث للانتقال إلى الخطوة السابقة
+    this.previousStep.emit();  // Emit event to go to previous step
   }
-
 }

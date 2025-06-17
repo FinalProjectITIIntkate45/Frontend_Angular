@@ -1,16 +1,28 @@
-<!-- Delivery Section -->
 <app-delivery-info
   [checkoutModel]="checkoutModel"
   [currentStep]="currentStep"
   (nextStep)="nextStep()">
 </app-delivery-info>
 
+
 <!-- Payment Section -->
 <app-payment-info
   [checkoutModel]="checkoutModel"
   [currentStep]="currentStep"
-  (nextStep)="nextStep()">
+  (nextStep)="nextStep()"
+  (previousStep)="previousStep()">
 </app-payment-info>
+<app-order-confirmation
+  [checkoutModel]="checkoutModel"
+  [currentStep]="currentStep"
+  (previousStep)="previousStep()"
+></app-order-confirmation>
+
+
+
+
+<!-- Delivery Section -->
+
 <!-- Confirmation Section -->
  <!-- <app-confirmation-info
   [checkoutModel]="checkoutModel"
@@ -21,7 +33,7 @@
 
 
 
-<div *ngIf="currentStep === 1" class="form-section current" id="deliverySection">
+<!-- <div *ngIf="currentStep === 1" class="form-section current" id="deliverySection">
   <h3>Delivery Information</h3>
 
   <div class="d-flex justify-content-between mb-4">
@@ -62,7 +74,7 @@
 
 
 </div>
-
+ -->
 
 <!-- <div *ngIf="currentStep === 2" class="form-section current" id="paymentSection">
   <h3 class="section-heading">Payment Method</h3>
@@ -93,7 +105,7 @@
 
 
 <!-- Confirmation Section -->
-<div *ngIf="currentStep === 3" class="form-section current" id="confirmationSection">
+<!-- <div *ngIf="currentStep === 3" class="form-section current" id="confirmationSection">
   <h3>Order Confirmation</h3>
   <p>Review and confirm your order details...</p>
 
@@ -105,11 +117,9 @@
     <p><strong>Total Points:</strong> {{ checkoutModel.totalPoints }}</p>
   </div>
 
-  <!-- Confirmation buttons  -->
   <div class="button-group">
-    <!-- <button (click)="placeOrder()" class="btn btn-custom next-btn">Place Order</button> -->
 
     <button (click)="previousStep()" class="btn btn-custom prev-btn">Previous</button>
   </div>
-</div>
+</div> -->
 
