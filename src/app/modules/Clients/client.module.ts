@@ -39,6 +39,7 @@ import { CharityDetailsComponent } from './components/charity/charity-details/ch
 import { CharityListComponent } from './components/charity/charity-list/charity-list.component';
 import { DonateComponent } from './components/charity/donate/donate.component';
 import { DeliveryInfoComponent } from './components/checkout/delivery-info/delivery-info.component';
+import { PaymentInfoComponent } from './components/checkout/payment-info/payment-info.component';
 
 
 @NgModule({
@@ -66,7 +67,7 @@ import { DeliveryInfoComponent } from './components/checkout/delivery-info/deliv
     ProductNavbarComponent,
     CheckoutComponent,
     DeliveryInfoComponent,
-
+    PaymentInfoComponent,
 
     ShopsSectionComponent,
 

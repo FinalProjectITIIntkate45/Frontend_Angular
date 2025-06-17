@@ -28,11 +28,9 @@ export class CheckoutComponent implements OnInit {
   constructor(
     private cartService: CartServicesService,
     private checkoutService: CheckoutService,
-    private toastr: ToastrService,  // إضافة ToastrService,
-
+    private toastr: ToastrService,
     private orderService: OrderService
   ) {
-    // تهيئة الـ checkoutModel مع قيم افتراضية
     this.checkoutModel = {
       clientId: '',
       orderItems: [],
@@ -64,7 +62,6 @@ export class CheckoutComponent implements OnInit {
     this.loadCartItems();
   }
 
-  // تحميل عناصر العربة (Cart)
   loadCartItems(): void {
     this.isLoading = true;
     this.error = null;
@@ -73,16 +70,12 @@ export class CheckoutComponent implements OnInit {
       next: (data) => {
         this.cartData = data;
 
-        // تحويل بيانات العربة إلى نموذج الطلب
-        this.checkoutModel.orderItems = this.cartData.Items.map(
-          (item: any) => ({
-            productId: item.ProductId,
-            quantity: item.Quantity,
-            price: item.Price,
-          })
-        );
+        this.checkoutModel.orderItems = this.cartData.Items.map((item: any) => ({
+          productId: item.ProductId,
+          quantity: item.Quantity,
+          price: item.Price,
+        }));
 
-        // تحديث الأسعار والنقاط في نموذج الطلب
         this.checkoutModel.totalPrice = this.cartData.CartTotalPrice;
         this.checkoutModel.totalPoints = this.cartData.CartTotalPoints;
         this.isLoading = false;
@@ -103,8 +96,6 @@ export class CheckoutComponent implements OnInit {
       this.currentStep = 2;
     }
   }
-
-
 
   previousStep(): void {
     if (this.currentStep > 1) {
@@ -127,49 +118,14 @@ export class CheckoutComponent implements OnInit {
       };
     }
   }
-   // Validation function for the delivery section// Validation function for the delivery section
-// Validation function for the delivery section
-isDeliveryValid(): boolean {
-  if (this.deliveryMethod === 'pickup') {
-    this.checkoutModel.billingData.shippingMethod = 'pickup';
-    return true;
-  } else if (this.deliveryMethod === 'ship') {
-    this.checkoutModel.billingData.shippingMethod = 'ship';
-    const billingData = this.checkoutModel.billingData;
-    const isValid =
-      billingData.firstName !== '' &&
-      billingData.lastName !== '' &&
-      billingData.phoneNumber !== '' &&
-      billingData.street !== '' &&
-      billingData.city !== '' &&
-      billingData.state !== '' &&
-      billingData.country !== '' &&
-      billingData.email !== '';
 
-    // If all fields are valid, automatically go to next step
-    if (isValid) {
-      this.currentStep++; // Automatically go to the next step
-    }
-
-    return isValid;
-  } else {
-    return false;
+  // Validation function for the payment section
+  isPaymentValid(): boolean {
+    return !!this.checkoutModel.paymentType;
   }
-}
-
-
-
-  // Validation function for the payment section
-  // Validation function for the payment section
-isPaymentValid(): boolean {
-  return !!this.checkoutModel.paymentType;
-}
-
-
 
   // Function to check if the form is valid
   isFormValid(): boolean {
-
     if (this.currentStep === 1) {
       return this.isDeliveryValid();
     } else if (this.currentStep === 2) {
@@ -181,90 +137,48 @@ isPaymentValid(): boolean {
 
   // Proceed to next step
   nextStep(): void {
-  if (this.isFormValid()) {
-    if (this.currentStep < 3) {
-      this.currentStep++;
+    if (this.isFormValid()) {
+      if (this.currentStep < 3) {
+        this.currentStep++;
+      }
+    } else {
+      this.toastr.error('Please complete the required fields.', 'Error');
     }
-  } else {
-    this.toastr.error('Please complete the required fields.', 'Error');
   }
-}
 
-
-
-
+  // Validation function for the delivery section
+  isDeliveryValid(): boolean {
+    return (
+      !!this.checkoutModel.billingData.firstName &&
+      !!this.checkoutModel.billingData.lastName &&
+      !!this.checkoutModel.billingData.phoneNumber &&
+      !!this.checkoutModel.billingData.floor &&
+      !!this.checkoutModel.billingData.street &&
+      !!this.checkoutModel.billingData.city &&
+      !!this.checkoutModel.billingData.state &&
+      !!this.checkoutModel.billingData.country &&
+      !!this.checkoutModel.billingData.email
+    );
+  }
 
   // Proceed to checkout
   proceedToCheckout(): void {
-    // if (this.isFormValid()) {
-    //   this.checkoutService.checkoutOrder(this.checkoutModel).subscribe({
-    //     next: (result) => {
-    //       console.log(result);
-    //       if (result.IsSuccess) {
-    //         this.paymentResult = result.Data;
-    //         this.toastr.success('Checkout completed successfully!', 'Success');
-    //       } else {
-    //         this.toastr.error(result.Message, 'Error');
-    //       }
-    //     },
-    //     error: (err) => {
-    //       this.toastr.error('Checkout failed. Please try again later.', 'Error');
-    //     },
-    //   });
-    // } else {
-    //   this.toastr.error('Please complete the form before proceeding.', 'Error');
-    // }
+    if (this.isFormValid()) {
+      this.checkoutService.finalizeCheckout(this.checkoutModel).subscribe({
+        next: (result) => {
+          if (result.IsSuccess) {
+            this.paymentResult = result.Data;
+            this.toastr.success('Checkout completed successfully!', 'Success');
+          } else {
+            this.toastr.error(result.Message, 'Error');
+          }
+        },
+        error: (err) => {
+          this.toastr.error('Checkout failed. Please try again later.', 'Error');
+        },
+      });
+    } else {
+      this.toastr.error('Please complete the form before proceeding.', 'Error');
+    }
   }
-
-
-  // placeOrder(): void {
-  //   this.isLoading = true;
-
-  //   // إرسال البيانات إلى خدمة الـ OrderService
-  //   this.orderService.confirmOrder(this.checkoutModel).subscribe({
-  //     next: (orderResult) => {
-  //       this.isLoading = false;
-  //       // عرض النتيجة
-  //       this.toastr.success('Order confirmed successfully!', 'Success');
-  //       // إعادة توجيه أو تنفيذ أي عملية بعد تأكيد الطلب
-  //     },
-  //     error: (err) => {
-  //       this.isLoading = false;
-  //       this.toastr.error('Failed to confirm order. Please try again later.', 'Error');
-  //     },
-  //   });
-  // }
-
-
-
-  // تنفيذ عملية الدفع
-  // proceedToCheckout(): void {
-  //   this.isLoading = true;
-
-  //   // إرسال البيانات إلى الـ Backend
-  //   this.checkoutService.checkoutOrder(this.checkoutModel).subscribe({
-  //     next: (result: APIResponse<CheckoutResultVM>) => {
-  //       this.isLoading = false;
-
-  //       if (result.IsSuccess) {
-
-  //         this.paymentResult = result.Data; // حفظ نتيجة الدفع
-
-
-  //         // عرض رابط الدفع أو تفاصيل التأكيد
-  //         this.toastr.success('Checkout completed successfully!', 'Success'); // رسالة نجاح
-  //       } else {
-  //         // في حالة فشل الدفع، عرض الرسالة المناسبة
-  //         this.toastr.error(
-  //           result.Message || 'فشل في إتمام عملية الدفع. يرجى المحاولة لاحقاً.',
-  //           'Error'
-  //         );
-  //       }
-  //     },
-  //     error: (err) => {
-  //       this.isLoading = false;
-  //       this.toastr.error('فشل في إتمام عملية الدفع. يرجى المحاولة لاحقاً.', 'Error'); // رسالة فشل
-  //     },
-  //   });
-  // }
 }
