@@ -1,9 +1,15 @@
 export interface BillingDataVM {
   firstName: string;
   lastName: string;
-  phoneNumber: string;
   email: string;
-  street: string;
+  phoneNumber: string;
   city: string;
   country: string;
+  state: string;
+  apartment: string;
+  floor: string;
+  street: string;
+  building: string;
+  shippingMethod: string;
 }
+

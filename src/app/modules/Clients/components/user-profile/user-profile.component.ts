@@ -12,5 +12,6 @@ export class UserProfileComponent {
 
   onSectionChange(section: string) {
     this.router.navigate([`/user-profile/${section}`]);
+      console.log('Routing to:', `/user-profile/${section}`);
   }
 }

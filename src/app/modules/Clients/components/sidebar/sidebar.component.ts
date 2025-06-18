@@ -16,6 +16,7 @@ export class SidebarComponent {
   selectSection(section: string) {
     this.selectedSection = section;
     this.sectionChange.emit(section);
+    console.log('Navigating to section:', section);
   }
 
   logout() {

@@ -1,64 +1,146 @@
 <div class="sidebar bg-light vh-100 d-flex flex-column">
   <!-- Logo -->
   <div class="logo p-3 text-center border-bottom">
-    <img src="assets/images/pointify-logo.png" alt="Pointify Logo" class="img-fluid mb-2" style="max-width: 50px;">
+    <img
+      src="../../../../../../public//assets/pointpay2-05[1].png"
+      alt="Pointify Logo"
+      class="img-fluid mb-2"
+      style="max-width: 50px"
+    />
     <h2 class="h4 mb-0">pointify</h2>
   </div>
 
   <!-- Navigation Menu -->
   <ul class="nav-menu list-unstyled flex-grow-1 p-3">
-    <li class="nav-item mb-2" [class.active]="selectedSection === 'profile'" (click)="selectSection('profile')">
-      <a class="d-flex align-items-center text-dark text-decoration-none p-2 rounded">
+    <li
+      class="nav-item mb-2"
+      [class.active]="selectedSection === 'profile'"
+      (click)="selectSection('profile')"
+    >
+      <a
+        class="d-flex align-items-center text-dark text-decoration-none p-2 rounded"
+      >
         <i class="fas fa-user me-2"></i>
         <span>Profile</span>
       </a>
     </li>
-    <li class="nav-item mb-2" [class.active]="selectedSection === 'wallet'" (click)="selectSection('wallet')">
-      <a class="d-flex align-items-center text-dark text-decoration-none p-2 rounded">
+    <li
+      class="nav-item mb-2"
+      [class.active]="selectedSection === 'wallet'"
+      (click)="selectSection('wallet')"
+    >
+      <a
+        class="d-flex align-items-center text-dark text-decoration-none p-2 rounded"
+      >
         <i class="fas fa-wallet me-2"></i>
         <span>My Wallet</span>
       </a>
     </li>
-    <li class="nav-item mb-2" [class.active]="selectedSection === 'orders'" (click)="selectSection('orders')">
-      <a class="d-flex align-items-center text-dark text-decoration-none p-2 rounded">
+    <li
+      class="nav-item mb-2"
+      [class.active]="selectedSection === 'orders'"
+      (click)="selectSection('orders')"
+    >
+      <a
+        class="d-flex align-items-center text-dark text-decoration-none p-2 rounded"
+      >
         <i class="fas fa-shopping-bag me-2"></i>
         <span>Order History</span>
       </a>
     </li>
-    <li class="nav-item mb-2" [class.active]="selectedSection === 'points'" (click)="selectSection('points')">
-      <a class="d-flex align-items-center text-dark text-decoration-none p-2 rounded">
+    <li
+      class="nav-item mb-2"
+      [class.active]="selectedSection === 'points'"
+      (click)="selectSection('points')"
+    >
+      <a
+        class="d-flex align-items-center text-dark text-decoration-none p-2 rounded"
+      >
         <i class="fas fa-star me-2"></i>
         <span>Points History</span>
       </a>
     </li>
-    <li class="nav-item mb-2" [class.active]="selectedSection === 'recycling'" (click)="selectSection('recycling')">
-      <a class="d-flex align-items-center text-dark text-decoration-none p-2 rounded">
+    <li
+      class="nav-item mb-2"
+      [class.active]="selectedSection === 'recycling'"
+      (click)="selectSection('recycling')"
+    >
+      <a
+        class="d-flex align-items-center text-dark text-decoration-none p-2 rounded"
+      >
         <i class="fas fa-recycle me-2"></i>
         <span>Recycling</span>
       </a>
     </li>
-    <li class="nav-item mb-2" [class.active]="selectedSection === 'donations'" (click)="selectSection('donations')">
-      <a class="d-flex align-items-center text-dark text-decoration-none p-2 rounded">
+    <li
+      class="nav-item mb-2"
+      [class.active]="selectedSection === 'donations'"
+      (click)="selectSection('donations')"
+    >
+      <a
+        class="d-flex align-items-center text-dark text-decoration-none p-2 rounded"
+      >
         <i class="fas fa-hand-holding-heart me-2"></i>
         <span>Donations</span>
       </a>
     </li>
-    <li class="nav-item mb-2" [class.active]="selectedSection === 'wishlist'" (click)="selectSection('wishlist')">
-      <a class="d-flex align-items-center text-dark text-decoration-none p-2 rounded">
+    <li
+      class="nav-item mb-2"
+            routerLink="/client/Wishlist"
+
+    >
+      <a
+        class="d-flex align-items-center text-dark text-decoration-none p-2 rounded"
+                     routerLink="wishlist"
+
+      >
         <i class="fas fa-heart me-2"></i>
-        <span>My Favorites</span>
+        <span>Wishlist</span>
       </a>
     </li>
-    <li class="nav-item mb-2" [class.active]="selectedSection === 'achievements'" (click)="selectSection('achievements')">
-      <a class="d-flex align-items-center text-dark text-decoration-none p-2 rounded">
+    <li
+      class="nav-item mb-2"
+
+    >
+      <a
+        class="d-flex align-items-center text-dark text-decoration-none p-2 rounded"
+                     routerLink="Achievements"
+
+      >
         <i class="fas fa-trophy me-2"></i>
         <span>Achievements</span>
       </a>
     </li>
-    <li class="nav-item mb-2" [class.active]="selectedSection === 'settings'" (click)="selectSection('settings')">
-      <a class="d-flex align-items-center text-dark text-decoration-none p-2 rounded">
+    <li
+      class="nav-item mb-2"
+
+    >
+      <a
+        class="d-flex align-items-center text-dark text-decoration-none p-2 rounded"
+                     routerLink="/client/Settings"
+
+      >
         <i class="fas fa-cog me-2"></i>
         <span>Settings</span>
+      </a>
+    </li>
+    <li class="nav-item mb-2">
+      <a
+        class="d-flex align-items-center text-dark text-decoration-none p-2 rounded"
+        routerLink="/client/shop"
+      >
+        <i class="fas fa-store me-2"></i>
+        <span>Shops</span>
+      </a>
+    </li>
+
+     <li class="nav-item mb-2">
+      <a
+        class="d-flex align-items-center text-dark text-decoration-none p-2 rounded"
+        routerLink="cart"
+      >
+        <i class="fas fa-store me-2"></i>
+        <span>Cart</span>
       </a>
     </li>
   </ul>
@@ -66,13 +148,17 @@
   <!-- Sidebar Footer -->
   <div class="sidebar-footer p-3 border-top">
     <div class="help-center mb-2">
-      <a class="d-flex align-items-center text-dark text-decoration-none p-2 rounded">
+      <a
+        class="d-flex align-items-center text-dark text-decoration-none p-2 rounded"
+      >
         <i class="fas fa-question-circle me-2"></i>
         <span>Help Center</span>
       </a>
     </div>
     <div class="logout" (click)="logout()">
-      <a class="d-flex align-items-center text-danger text-decoration-none p-2 rounded">
+      <a
+        class="d-flex align-items-center text-danger text-decoration-none p-2 rounded"
+      >
         <i class="fas fa-sign-out-alt me-2"></i>
         <span>Log out</span>
       </a>

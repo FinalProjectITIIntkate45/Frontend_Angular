@@ -1,0 +1,72 @@
+<div class="form-section">
+  <h3>Delivery Information</h3>
+
+  <div>
+    <label>First Name</label>
+    <input [(ngModel)]="checkoutModel.billingData.firstName" placeholder="First Name" class="General-custom-input" />
+    <div *ngIf="checkoutModel.billingData.firstName === ''" class="error-message">First Name is required</div>
+  </div>
+
+  <div>
+    <label>Last Name</label>
+    <input [(ngModel)]="checkoutModel.billingData.lastName" placeholder="Last Name" class="General-custom-input" />
+    <div *ngIf="checkoutModel.billingData.lastName === ''" class="error-message">Last Name is required</div>
+  </div>
+
+  <div>
+    <label>Phone Number</label>
+    <input [(ngModel)]="checkoutModel.billingData.phoneNumber" placeholder="Phone Number" class="General-custom-input" />
+    <div *ngIf="checkoutModel.billingData.phoneNumber === ''" class="error-message">Phone Number is required</div>
+  </div>
+
+  <div>
+    <label>Street Address</label>
+    <input [(ngModel)]="checkoutModel.billingData.street" placeholder="Street Address" class="General-custom-input" />
+    <div *ngIf="checkoutModel.billingData.street === ''" class="error-message">Street Address is required</div>
+  </div>
+
+  <div>
+    <label>Apartment</label>
+    <input [(ngModel)]="checkoutModel.billingData.apartment" placeholder="Apartment" class="General-custom-input" />
+    <div *ngIf="checkoutModel.billingData.apartment === ''" class="error-message">Apartment is required</div>
+  </div>
+
+  <div>
+    <label>Floor</label>
+    <input [(ngModel)]="checkoutModel.billingData.floor" placeholder="Floor" class="General-custom-input" />
+    <div *ngIf="checkoutModel.billingData.floor === ''" class="error-message">Floor is required</div>
+  </div>
+
+  <div>
+    <label>Building</label>
+    <input [(ngModel)]="checkoutModel.billingData.building" placeholder="Building"  class="General-custom-input "/>
+    <div *ngIf="checkoutModel.billingData.building === ''" class="error-message">Building is required</div>
+  </div>
+
+  <div>
+    <label>City</label>
+    <input [(ngModel)]="checkoutModel.billingData.city" placeholder="City"  class="General-custom-input" />
+    <div *ngIf="checkoutModel.billingData.city === ''" class="error-message">City is required</div>
+  </div>
+
+  <div>
+    <label>State</label>
+    <input [(ngModel)]="checkoutModel.billingData.state" placeholder="State"  class="General-custom-input"/>
+    <div *ngIf="checkoutModel.billingData.state === ''" class="error-message">State is required</div>
+  </div>
+
+  <div>
+    <label>Country</label>
+    <input [(ngModel)]="checkoutModel.billingData.country" placeholder="Country"  class="General-custom-input"/>
+    <div *ngIf="checkoutModel.billingData.country === ''" class="error-message">Country is required</div>
+  </div>
+
+  <div>
+    <label>Email</label>
+    <input [(ngModel)]="checkoutModel.billingData.email" placeholder="Email"  class="General-custom-input"/>
+    <div *ngIf="checkoutModel.billingData.email === ''" class="error-message">Email is required</div>
+  </div>
+
+  <!-- Only show "Next" button if delivery data is valid -->
+  <button [disabled]="!isDeliveryValid()" (click)="onNextStep()" class="btn btn-custom next-btn">Next</button>
+</div>

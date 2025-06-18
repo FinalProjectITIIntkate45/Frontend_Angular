@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { CartServicesService } from '../../Services/CardServices.service';
+import { Router } from '@angular/router';
+
+import { ToastrService } from 'ngx-toastr';
+
 import { CartInterface } from '../../Models/CartInterface';
+import { CartServicesService } from '../../Services/CardServices.service';
 
 @Component({
   selector: 'app-cart',
@@ -13,7 +17,10 @@ export class CartComponent implements OnInit {
   isLoading = false;
   error: string | null = null;
 
-  constructor(private cartService: CartServicesService) {}
+  constructor(private cartService: CartServicesService ,
+    private router: Router,
+    private toster : ToastrService
+  ) {}
 
   ngOnInit(): void {
     this.loadCartItems();
@@ -72,5 +79,17 @@ export class CartComponent implements OnInit {
 
     this.cartData.CartTotalPrice = total;
     this.cartData.CartTotalPoints = points;
+  }
+
+  // proceedToCheckout to  navigate to checkout
+  proceedToCheckout(): void {
+
+    if (this.cartData && this.cartData.Items.length > 0) {
+      // Navigate to checkout
+      this.router.navigate(['/client/checkout']);
+      this.toster.success('You are now ready to checkout.', 'Success');
+    } else {
+      this.toster.error('Your cart is empty. Please add items to your cart before proceeding to checkout.', 'Error');
+    }
   }
 }

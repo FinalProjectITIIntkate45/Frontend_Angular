@@ -1,0 +1,44 @@
+.charity-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  background-color: #F7F7F8;
+  padding: 20px;
+  justify-content: center;
+}
+
+.charity-card {
+  background-color: #ffffff;
+  border: 1px solid #9197B3;
+  border-radius: 12px;
+  padding: 20px;
+  width: 300px;
+  box-shadow: 0 4px 10px rgba(2, 48, 89, 0.1);
+  text-align: center;
+}
+
+.charity-card h3 {
+  color: #023059;
+  margin-bottom: 10px;
+}
+
+.charity-card p {
+  color: #9197B3;
+  font-size: 14px;
+  min-height: 60px;
+}
+
+button {
+  margin: 10px 5px 0 5px;
+  padding: 8px 16px;
+  background-color: #EFB036;
+  color: #023059;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #d89b2f;
+}

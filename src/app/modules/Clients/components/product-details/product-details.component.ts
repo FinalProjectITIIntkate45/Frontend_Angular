@@ -1,7 +1,10 @@
+import { WishlistItem } from './../../Models/wishlist.model';
+import { WishlistService } from './../../Services/wishlist.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../../Services/product.service';
 import { Product } from '../../Models/Product.model';
+
 import { Subscription } from 'rxjs';
 import { CartServicesService } from '../../Services/CardServices.service';
 
@@ -44,8 +47,9 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   constructor(
     public route: ActivatedRoute,
     private router: Router,
-    private productService: ProductService ,
-    private  cardsercive : CartServicesService,
+    private productService: ProductService,
+    private cardsercive: CartServicesService,
+    private WishlistService: WishlistService
   ) {}
 
   ngOnInit() {
@@ -210,7 +214,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
 
     try {
       // Simulate API call delay
-        console.log('Adding to cart:', {
+      console.log('Adding to cart:', {
         productId: this.product.Id,
         productName: this.product.Name,
         quantity: this.quantity,
@@ -224,25 +228,27 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
 
       // TODO: Implement actual cart service logic here
       // await this.cartService.addToCart(this.product, this.quantity);
-//productId: number, quantity: number, price: number, points: number
-      this.cardsercive.addToCart(this.product.Id, 
-                                this.quantity,
-                                 this.product.DisplayedPriceAfterDiscount || this.product.DisplayedPrice,
-                                  this.product.Points).subscribe(
-        (response) => {
-        this.showSuccessMessage(
-        `Added ${this.quantity} ${this.product?.Name}(s) to cart!`
-      );
-
-        },
-        (error) => {
-          console.error('Error adding product to cart:', error);
-        }
-      );
-      
+      //productId: number, quantity: number, price: number, points: number
+      this.cardsercive
+        .addToCart(
+          this.product.Id,
+          this.quantity,
+          this.product.DisplayedPriceAfterDiscount ||
+            this.product.DisplayedPrice,
+          this.product.Points
+        )
+        .subscribe(
+          (response) => {
+            this.showSuccessMessage(
+              `Added ${this.quantity} ${this.product?.Name}(s) to cart!`
+            );
+          },
+          (error) => {
+            console.error('Error adding product to cart:', error);
+          }
+        );
 
       // Show success message
-     
 
       // Reset quantity after successful add
       this.quantity = 1;
@@ -254,29 +260,26 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  async addToWishlist() {
+  addToWishlist() {
     if (!this.product || this.isAddingToWishlist) return;
 
     this.isAddingToWishlist = true;
 
     try {
-      // Simulate API call delay
-      await new Promise((resolve) => setTimeout(resolve, 300));
-
-      console.log('Adding to wishlist:', {
-        productId: this.product.Id,
-        productName: this.product.Name,
-      });
-
       // TODO: Implement actual wishlist service logic here
-      // await this.wishlistService.addToWishlist(this.product);
+      this.WishlistService.addToWishlist(this.product.Id).subscribe({
+        next:(value)=> {
+          this.showSuccessMessage(`${this.product?.Name} added to wishlist!`);
+        },
+        error:(err)=>{
 
-      this.showSuccessMessage(`${this.product.Name} added to wishlist!`);
+          console.error('Error adding to wishlist:', err);
+          this.showErrorMessage(
+            'Failed to add item to wishlist. Please try again.'
+          );
+        }
+      });
     } catch (error) {
-      console.error('Error adding to wishlist:', error);
-      this.showErrorMessage(
-        'Failed to add item to wishlist. Please try again.'
-      );
     } finally {
       this.isAddingToWishlist = false;
     }
