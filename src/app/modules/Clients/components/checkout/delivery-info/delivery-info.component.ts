@@ -1,11 +1,10 @@
-// delivery-info.component.ts
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 import { OrderCreateViewModel } from '../../../Models/OrderCreateViewModel';
 
 @Component({
   selector: 'app-delivery-info',
-  standalone:false,
+  standalone: false ,
   templateUrl: './delivery-info.component.html',
   styleUrls: ['./delivery-info.component.css'],
 })
@@ -15,7 +14,7 @@ export class DeliveryInfoComponent {
   @Output() nextStep: EventEmitter<void> = new EventEmitter<void>();
 
   constructor() {
-    this.checkoutModel = {
+      this.checkoutModel = {
       clientId: '',
       orderItems: [],
       totalPrice: 0,
@@ -31,12 +30,12 @@ export class DeliveryInfoComponent {
         street: '',
         city: '',
         state: '',
-        country: '',
-        email: '',
         apartment: '',
         floor: '',
         building: '',
+        country: '',
         shippingMethod: '',
+        email: '',
       },
       status: 0,
     };
@@ -44,19 +43,17 @@ export class DeliveryInfoComponent {
   isDeliveryValid(): boolean {
     const billingData = this.checkoutModel.billingData;
     return (
-      billingData.firstName === '' &&
-      billingData.lastName === '' &&
-      billingData.phoneNumber === '' &&
-      billingData.street === '' &&
-      billingData.city === '' &&
-      billingData.state === '' &&
-      billingData.country === '' &&
-      billingData.email === '' &&
-      billingData.floor === '' &&
-      billingData.building === '' &&
-      billingData.apartment === '' &&
-      billingData.shippingMethod === ''
-
+      !!billingData.firstName &&
+      !!billingData.lastName &&
+      !!billingData.phoneNumber &&
+      !!billingData.street &&
+      !!billingData.city &&
+      !!billingData.state &&
+      !!billingData.country &&
+      !!billingData.email &&
+      !!billingData.floor &&
+      !!billingData.building &&
+      !!billingData.apartment
     );
   }
 

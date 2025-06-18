@@ -1,23 +1,32 @@
+  <div class="d-flex justify-content-between mb-4">
+    <button type="button" class="btn-option" (click)="selectDeliveryMethod('ship')">Ship to Address</button>
+    <button  type="button" class="btn-option" (click)="selectDeliveryMethod('pickup')">Pick-Up from Store</button>
+  </div>
+<div *ngIf="currentStep === 1" class="form-section current" id="deliverySection">
 <app-delivery-info
   [checkoutModel]="checkoutModel"
   [currentStep]="currentStep"
   (nextStep)="nextStep()">
 </app-delivery-info>
 
-
-<!-- Payment Section -->
+</div>
+<div *ngIf="currentStep === 2" class="form-section current" id="paymentSection">
 <app-payment-info
   [checkoutModel]="checkoutModel"
   [currentStep]="currentStep"
   (nextStep)="nextStep()"
   (previousStep)="previousStep()">
 </app-payment-info>
+</div>
+
+<div *ngIf="currentStep === 3" class="form-section current" id="confirmationSection">
 <app-order-confirmation
   [checkoutModel]="checkoutModel"
   [currentStep]="currentStep"
   (previousStep)="previousStep()"
 ></app-order-confirmation>
 
+</div>
 
 
 
