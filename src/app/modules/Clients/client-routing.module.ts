@@ -20,6 +20,7 @@ import { CharityDetailsComponent } from './components/charity/charity-details/ch
 import { CharityListComponent } from './components/charity/charity-list/charity-list.component';
 import { DonateComponent } from './components/charity/donate/donate.component';
 
+
 const routes: Routes = [
   {
     path: 'products',
@@ -51,6 +52,8 @@ const routes: Routes = [
 
       { path: 'shop', component: ShopsSectionComponent },
       { path: 'checkout', component: CheckoutComponent },
+      { path: 'charity-details/:id', component: CharityDetailsComponent }
+
 
     ],
   },

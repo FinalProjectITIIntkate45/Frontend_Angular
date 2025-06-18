@@ -1,1 +1,16 @@
-<p>charity-details works!</p>
+<div class="details-container" *ngIf="charity">
+  <h2>{{ charity.name }}</h2>
+  <p>{{ charity.description }}</p>
+
+  <div class="image-gallery" *ngIf="charity.images?.length > 0">
+    <img *ngFor="let img of charity.images" [src]="img.url" alt="Charity Image" />
+  </div>
+
+  <button class="back-button" (click)="backtocharty()">
+    ← Back to Charities
+  </button>
+</div>
+
+<div *ngIf="!charity">
+  <p style="text-align: center; color: #9197b3;">Loading details...</p>
+</div>
