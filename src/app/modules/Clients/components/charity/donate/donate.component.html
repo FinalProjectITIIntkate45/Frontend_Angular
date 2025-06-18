@@ -1,1 +1,8 @@
-<p>donate works!</p>
+<h2>Donate to Charity</h2>
+
+<form [formGroup]="donateForm" (ngSubmit)="submitDonation()">
+  <label for="amount">Donation Amount:</label>
+  <input id="amount" type="number" formControlName="amount" required />
+
+  <button type="submit" [disabled]="donateForm.invalid">Donate</button>
+</form>
