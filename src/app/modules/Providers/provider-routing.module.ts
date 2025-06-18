@@ -13,6 +13,9 @@ import { ProductDetailsPageComponent } from './Components/product-details-page/p
 import { ProductFormPageComponent } from './Components/product-form-page/product-form-page.component';
 import { ProductListPageComponent } from './Components/product-list-page/product-list-page.component';
 import { ProviderLayoutComponent } from './Components/provider-layout/provider-layout.component';
+import { EfitofferComponent } from './Components/offers/efitoffer/efitoffer.component';
+import { OfferFormComponent } from './Components/offers/addoffer/offers.component';
+import { ShowoffersComponent } from './Components/offers/showoffers/showoffers.component';
 
 const routes: Routes = [
   {
@@ -26,6 +29,11 @@ const routes: Routes = [
       { path: 'add-shop', component: AddShopComponent },
       { path: 'edit-shop/:id', component: EditShopComponent },
       { path: 'subscription', component: SubScrptionComponent },
+      { path: 'editoffer/:id', component: EfitofferComponent },
+      { path: 'addoffer', component: OfferFormComponent },
+      { path: 'showoffers', component: ShowoffersComponent },
+      { path: 'provider/editoffer/:id', component: EfitofferComponent }
+
     ],
   },
 ];

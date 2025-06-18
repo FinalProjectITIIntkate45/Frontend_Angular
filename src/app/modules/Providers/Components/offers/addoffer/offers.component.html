@@ -1,0 +1,74 @@
+<div class="offer-container">
+  <div class="offer-card">
+    <div class="card-header">
+      <div class="header-icon">
+        <i class="fas fa-plus-circle"></i>
+      </div>
+      <h2>إنشاء عرض جديد</h2>
+      <p>أضف عرض خاص جديد لعملائك</p>
+    </div>
+    
+    <form [formGroup]="offerForm" (ngSubmit)="onSubmit()" class="offer-form">
+      <div class="form-row">
+        <div class="form-field">
+          <label for="code">
+            <i class="fas fa-barcode"></i>
+            كود العرض
+          </label>
+          <input 
+            id="code" 
+            class="form-input" 
+            formControlName="code" 
+            type="text" 
+            placeholder="أدخل كود العرض"
+          />
+          <div class="input-focus-line"></div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label for="discount">
+            <i class="fas fa-percentage"></i>
+            نسبة الخصم
+          </label>
+          <input 
+            id="discount" 
+            class="form-input" 
+            formControlName="discount" 
+            type="number" 
+            placeholder="0"
+            min="0"
+            max="100"
+          />
+          <div class="input-focus-line"></div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-field">
+          <label for="expiryDate">
+            <i class="fas fa-calendar-alt"></i>
+            تاريخ الانتهاء
+          </label>
+          <input 
+            id="expiryDate" 
+            class="form-input" 
+            formControlName="expiryDate" 
+            type="date"
+          />
+          <div class="input-focus-line"></div>
+        </div>
+      </div>
+
+      <button 
+        class="btn-primary-custom" 
+        type="submit" 
+        [disabled]="offerForm.invalid"
+      >
+        <i class="fas fa-rocket"></i>
+        إنشاء العرض
+      </button>
+    </form>
+  </div>
+</div>
