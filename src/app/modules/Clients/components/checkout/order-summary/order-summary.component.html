@@ -1,0 +1,22 @@
+<div class="General-card" *ngIf="!isLoading && cartData">
+  <h5 class="fw-bold mb-3">Order Summary</h5>
+
+  <div *ngFor="let item of cartData.Items" class="mb-2">
+    <div class="d-flex justify-content-between">
+      <span>{{ item.ProductName }} (x{{ item.Quantity }})</span>
+      <span>{{ item.TotalPrice }} EGP</span>
+    </div>
+  </div>
+
+  <hr>
+  <div class="d-flex justify-content-between">
+    <strong>Total Price:</strong>
+    <strong>{{ cartData?.CartTotalPrice }} EGP</strong>
+  </div>
+  <div class="d-flex justify-content-between">
+    <strong>Total Points:</strong>
+    <strong>{{ cartData?.CartTotalPoints }}</strong>
+  </div>
+</div>
+
+<div *ngIf="isLoading">Loading summary...</div>
