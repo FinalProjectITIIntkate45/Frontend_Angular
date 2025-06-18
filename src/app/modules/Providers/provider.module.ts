@@ -24,7 +24,9 @@ import { ProductListPageComponent } from './Components/product-list-page/product
 import { ProviderLayoutComponent } from './Components/provider-layout/provider-layout.component';
 import { ProviderSidebarComponent } from './Components/provider-sidebar/provider-sidebar.component';
 import { SafeUrlPipe } from './Services/SafeUrl.pipe';
-
+import { OfferFormComponent } from './Components/offers/addoffer/offers.component';
+import { EfitofferComponent } from './Components/offers/efitoffer/efitoffer.component';
+import { ShowoffersComponent } from './Components/offers/showoffers/showoffers.component';
 
 
 @NgModule({
@@ -37,13 +39,18 @@ import { SafeUrlPipe } from './Services/SafeUrl.pipe';
     ProductFormPageComponent,
     ProductDetailsPageComponent,
     ProductListPageComponent,
+    OfferFormComponent ,
+    EfitofferComponent,
+    ShowoffersComponent
   ],
-  imports: [
+   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     ProviderRoutingModule,
     SafeUrlPipe,
+    
+    
 ],
   providers: [
     provideHttpClient(withFetch(), withInterceptors([AuthInterceptor, LoaderInterceptor])),
