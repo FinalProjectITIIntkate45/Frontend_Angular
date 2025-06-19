@@ -17,12 +17,19 @@ export class CharityService {
     return this.http.get<Pagination<Charity>>(`${this.baseUrl}/getall`);
   }
 
+
+getCharityDetails(charityId: number): Observable<any> {
+  return this.http.get(`${this.baseUrl}/ShowDetails?charityId=${charityId}`);
+}
+
+
 donateToCharity(donationData: { charityId: number; amount: number }): Observable<any> {
   const headers = new HttpHeaders({
     'Content-Type': 'application/json'
     // لو عندك JWT Token حابة تبعتيه:
     // 'Authorization': `Bearer ${yourToken}`
   });
+  
 
   return this.http.post(`${this.baseUrl}/GiveDonate`, donationData, { headers });
 }
