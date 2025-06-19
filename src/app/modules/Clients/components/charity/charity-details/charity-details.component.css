@@ -1,0 +1,63 @@
+:host {
+  display: block;
+  padding: 2rem;
+  background-color: #f7f7f8; /* الخلفية العامة */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.details-container {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(2, 48, 89, 0.15);
+  max-width: 900px;
+  margin: auto;
+  text-align: center;
+}
+
+.details-container h2 {
+  color: #023059;
+  margin-bottom: 1rem;
+  font-size: 2.2rem;
+}
+
+.details-container p {
+  color: #555;
+  line-height: 1.6;
+  font-size: 1.1rem;
+}
+
+.image-gallery {
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.image-gallery img {
+  width: 100%;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 2px solid #efb036;
+  transition: transform 0.3s ease-in-out;
+}
+
+.image-gallery img:hover {
+  transform: scale(1.05);
+}
+
+.back-button {
+  margin-top: 2rem;
+  background-color: #efb036;
+  color: #fff;
+  border: none;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.back-button:hover {
+  background-color: #d39a29;
+}
