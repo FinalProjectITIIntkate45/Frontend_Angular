@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
-// import { ShopViewModel } from '../../Models/shop-view-model';
-import { ShopService } from '../../Services/shop.service';
 import { ShopViewModel } from '../../Models/shop-view-model';
+import { ShopService } from '../../Services/shop.service';
+
 
 
 @Component({
