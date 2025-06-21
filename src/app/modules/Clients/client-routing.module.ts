@@ -19,6 +19,8 @@ import { WishlistSectionComponent } from './components/wishlist-section/wishlist
 import { CharityDetailsComponent } from './components/charity/charity-details/charity-details.component';
 import { CharityListComponent } from './components/charity/charity-list/charity-list.component';
 import { DonateComponent } from './components/charity/donate/donate.component';
+import { OfferDetailsComponent } from './components/offer/offer-details/offer-details.component';
+import { OfferListComponent } from './components/offer/offer-list/offer-list.component';
 
 
 const routes: Routes = [
@@ -46,8 +48,6 @@ const routes: Routes = [
       { path: 'follow-seller', component: FollowSellerComponent },
       { path: 'charity-details/:id', component: CharityDetailsComponent },
       { path: 'donate/:id', component: DonateComponent },
-      { path: 'charity-details/:id', component: CharityDetailsComponent },
-      { path: 'donate/:id', component: DonateComponent },
       { path: 'charities', component: CharityListComponent },
 
       { path: 'shop', component: ShopsSectionComponent },
@@ -55,6 +55,8 @@ const routes: Routes = [
       { path: 'charity-details/:id', component: CharityDetailsComponent }
 
 
+      { path: 'offers', component: OfferListComponent },
+      { path: 'offers/:id', component: OfferDetailsComponent },
     ],
   },
 ];

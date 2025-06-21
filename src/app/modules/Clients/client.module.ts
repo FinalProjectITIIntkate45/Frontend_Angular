@@ -82,12 +82,6 @@ import { PaymentInfoComponent } from './components/checkout/payment-info/payment
     ClientRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    // ngModel is used in the template
-
-
-
-
-
   ],
   providers: [
     provideHttpClient(

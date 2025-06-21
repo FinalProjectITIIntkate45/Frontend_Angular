@@ -1,0 +1,134 @@
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="mb-0">📦 عروضي الحالية</h2>
+    <button routerLink="/provider/make-offer" class="btn btn-primary">
+      <i class="fas fa-plus"></i> إنشاء عرض جديد
+    </button>
+  </div>
+
+  <!-- Loading indicator -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">جاري التحميل...</span>
+    </div>
+    <p class="mt-2">جاري تحميل العروض...</p>
+  </div>
+
+  <!-- No offers message -->
+  <div *ngIf="!loading && offers.length === 0" class="alert alert-info text-center">
+    <i class="fas fa-info-circle me-2"></i>
+    لا توجد عروض حالياً. يمكنك إنشاء عرض جديد بالضغط على زر "إنشاء عرض جديد".
+  </div>
+
+  <!-- Offers list -->
+  <div *ngIf="!loading && offers.length > 0">
+    <div class="row">
+      <div *ngFor="let offer of offers" class="col-md-6 col-lg-4 mb-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <span class="badge {{ getStatusBadgeClass(offer.Status) }}">
+              {{ getStatusText(offer.Status) }}
+            </span>
+            <small class="text-muted">#{{ offer.Id }}</small>
+          </div>
+          
+          <div class="card-body">
+            <div *ngIf="offer.OfferImgUrl" class="text-center mb-3">
+              <img [src]="offer.OfferImgUrl" 
+                   alt="صورة العرض" 
+                   class="img-fluid rounded"
+                   style="max-height: 150px;">
+            </div>
+            
+            <h5 class="card-title">عرض #{{ offer.Id }}</h5>
+            
+            <div class="mb-3">
+              <small class="text-muted d-block">
+                <i class="far fa-calendar-alt me-1"></i>
+                من {{ offer.StartDate | date:'shortDate' }} إلى {{ offer.EndDate | date:'shortDate' }}
+              </small>
+            </div>
+            
+            <div class="d-flex justify-content-between mb-2">
+              <span>السعر القديم:</span>
+              <span class="text-decoration-line-through">{{ offer.OldPrice }} ج.م</span>
+            </div>
+            
+            <div class="d-flex justify-content-between mb-2">
+              <span>السعر الجديد:</span>
+              <span class="fw-bold text-success">{{ offer.NewPrice }} ج.م</span>
+            </div>
+            
+            <div class="d-flex justify-content-between mb-3">
+              <span>النقاط:</span>
+              <span>
+                <span class="text-decoration-line-through me-2">{{ offer.OldPoints }}</span>
+                <i class="fas fa-arrow-right me-2"></i>
+                <span class="fw-bold">{{ offer.NewPoints }}</span>
+              </span>
+            </div>
+            
+            <div class="d-flex justify-content-between align-items-center">
+              <span class="badge bg-light text-dark">
+                <i class="fas fa-boxes me-1"></i>
+                {{ offer.Products.length }} منتج
+              </span>
+            </div>
+          </div>
+          
+          <div class="card-footer bg-white border-top-0">
+            <div class="d-flex justify-content-between">
+              <button [routerLink]="['/provider/offer-details', offer.Id]"
+                      class="btn btn-sm btn-outline-info">
+                <i class="fas fa-info-circle me-1"></i> تفاصيل
+              </button>
+
+              <button (click)="editOffer(offer)" 
+                      class="btn btn-sm btn-outline-primary"
+                      [disabled]="offer.Status !== 0">
+                <i class="fas fa-edit me-1"></i> تعديل
+              </button>
+              
+              <button (click)="editOfferProducts(offer)" 
+                      class="btn btn-sm btn-outline-warning">
+                <i class="fas fa-boxes me-1"></i> المنتجات
+              </button>
+              
+              <button (click)="deleteOffer(offer)" 
+                      class="btn btn-sm btn-outline-danger"
+                      [disabled]="offer.Status !== 0">
+                <i class="fas fa-trash me-1"></i> حذف
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <!-- Pagination -->
+<nav *ngIf="totalPages > 1" aria-label="Page navigation">
+  <ul class="pagination justify-content-center">
+    <li class="page-item" [class.disabled]="pageNumber === 1">
+      <a class="page-link" (click)="prevPage()" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+
+    <li *ngFor="let page of generatePages()" class="page-item" [class.active]="page === pageNumber">
+      <a class="page-link" (click)="goToPage(page)">{{ page }}</a>
+    </li>
+
+    <li class="page-item" [class.disabled]="pageNumber === totalPages">
+      <a class="page-link" (click)="nextPage()" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+  <div class="text-center text-muted small">
+    عرض {{ (pageNumber - 1) * pageSize + 1 }} - {{ getToIndex() }} من {{ totalRecords }} عنصر
+  </div>
+
+    </nav> 
+   </div>
+</div>

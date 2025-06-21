@@ -1,0 +1,8 @@
+export interface EditOfferProductVM {
+  Id: number;
+  ProductId: number;
+  ProductName?: string;
+  ProductQuantity: number;
+  Type: number;
+  offerid: number;
+} 
