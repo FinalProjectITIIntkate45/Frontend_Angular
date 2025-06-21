@@ -1,9 +1,8 @@
-import { OfferProduct } from "./OfferProduct";
+import { OfferProductViewModel } from "./OfferProductViewModel";
 
-export interface Offer {
-    Id : number;
-      File?: File;
+export interface AddOffer {
     OfferImgUrl: string;
+    file?: File;
     Status: number;
     OldPrice: number;
     NewPrice: number;
@@ -11,5 +10,5 @@ export interface Offer {
     NewPoints: number;
     StartDate: string;
     EndDate: string;
-    offerProducts: OfferProduct[];
+    Products: OfferProductViewModel[];
 }
