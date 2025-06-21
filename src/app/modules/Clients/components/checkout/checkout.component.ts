@@ -19,6 +19,9 @@ export class CheckoutComponent implements OnInit {
   deliveryMethod: string = 'ship'; // لتحديد ما إذا كان المستخدم يختار الشحن أو الاستلام من المتجر
   isLoading: boolean = false; // تعريف المتغير isLoading هنا
   error: string | null = null;
+  originalTotalPrice: number = 0;
+shopName: string = '';
+
 
   constructor(
     private checkoutService: CheckoutService,
@@ -63,17 +66,19 @@ loadCartData(): void {
 
   this.cartService.getCartItems().subscribe(
     (cartItems) => {
-      // تحويل CartItemInterface إلى OrderItemViewModel
       this.checkoutModel.orderItems = cartItems.Items.map((item: CartItemInterface) => ({
         productId: item.ProductId,
         quantity: item.Quantity,
         price: item.Price,
-        points: item.points // إذا كان يوجد في CartItemInterface
+        points: item.points
       }));
 
-      // تحديث باقي القيم في checkoutModel
-      this.checkoutModel.totalPrice = cartItems.CartTotalPrice;
+      this.originalTotalPrice = cartItems.CartTotalPrice;
+      this.checkoutModel.totalPrice = this.originalTotalPrice;
       this.checkoutModel.totalPoints = cartItems.CartTotalPoints;
+
+      // لو عايز اسم المحل:
+      this.shopName = cartItems.Items.length > 0 ? cartItems.Items[0].shopName : '';
 
       this.isLoading = false;
     },
@@ -97,6 +102,10 @@ loadCartData(): void {
       this.currentStep = 1;  // العودة إلى خطوة الشحن
     }
   }
+  resetTotalPrice(): void {
+  this.checkoutModel.totalPrice = this.originalTotalPrice;
+}
+
 
   nextStep(): void {
     if (this.currentStep < 3) {

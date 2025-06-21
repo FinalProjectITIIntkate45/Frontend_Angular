@@ -20,6 +20,26 @@
     <label for="pointsOnly"><i class="fas fa-coins m-1"></i> Pay with Points</label>
   </div>
 
+  <div class="coupon-section mb-4">
+  <label for="couponCode">Coupon Code</label>
+  <div class="d-flex gap-2">
+    <input
+      type="text"
+      id="couponCode"
+      class="form-control"
+      [(ngModel)]="couponCode"
+      placeholder="Enter coupon code"
+    />
+    <button class="btn btn-custom" (click)="applyCoupon()">Apply</button>
+  </div>
+
+  <div *ngIf="couponMessage" class="mt-2" [ngClass]="{ 'text-success': couponValid, 'text-danger': !couponValid }">
+    {{ couponMessage }}
+  </div>
+</div>
+
+
+
   <!-- Next Button -->
   <div class="button-group">
     <button [disabled]="!isPaymentValid()" (click)="onNextStep()" class="btn btn-custom next-btn">Next</button>

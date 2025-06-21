@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 import { CartInterface } from '../../../Models/CartInterface';
+import { OrderCreateViewModel } from '../../../Models/OrderCreateViewModel';
 import { CartServicesService } from '../../../Services/CardServices.service';
 
 
@@ -13,6 +14,8 @@ import { CartServicesService } from '../../../Services/CardServices.service';
 export class OrderSummaryComponent implements OnInit {
   cartData: CartInterface | null = null;
   isLoading: boolean = true;
+  @Input() checkoutModel!: OrderCreateViewModel;
+  @Input() shopName!: string;
 
   constructor(private cartService?: CartServicesService) {}
 
