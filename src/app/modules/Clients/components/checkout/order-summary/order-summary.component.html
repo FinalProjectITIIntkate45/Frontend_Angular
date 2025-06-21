@@ -1,0 +1,35 @@
+<div class="General-card p-3" *ngIf="!isLoading && cartData">
+  <h5 class="fw-bold mb-3 text-center">Order Summary</h5>
+
+  <div class="mb-3" *ngFor="let item of cartData.Items">
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="text-truncate">
+        <span class="fw-medium">{{ item.ProductName }}</span>
+        <small class="text-muted d-block">Qty: {{ item.Quantity }}</small>
+      </div>
+      <span>{{ item.TotalPrice }} EGP</span>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="d-flex justify-content-between">
+    <span class="fw-semibold">Subtotal:</span>
+    <span>{{ cartData.CartTotalPrice }} EGP</span>
+  </div>
+
+
+  <div class="alert alert-info p-2 mb-3">
+    You have <strong>120</strong> Shop Points and <strong>200</strong> Free Points
+  </div>
+  <div class="d-flex justify-content-between">
+    <strong>Total Points:</strong>
+    <strong>{{ cartData?.CartTotalPoints }}</strong>
+  </div>
+
+
+</div>
+
+<div *ngIf="isLoading" class="text-center">
+  <div class="spinner-border text-primary" role="status"></div>
+</div>

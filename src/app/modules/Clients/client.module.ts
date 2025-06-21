@@ -14,7 +14,6 @@ import { ProductNavbarComponent } from '../../shared/components/product-navbar/p
 
 import { ClientRoutingModule } from './client-routing.module';
 
-import { FollowSellerService } from './Services/follow.service';
 import { ShopsSectionComponent } from './components/Shop-section/shops-section.component';
 import { AchievementsSectionComponent } from './components/achievements-section/achievements-section.component';
 import { CartComponent } from './components/cart/cart.component';
@@ -40,6 +39,7 @@ import { CharityListComponent } from './components/charity/charity-list/charity-
 import { DonateComponent } from './components/charity/donate/donate.component';
 import { DeliveryInfoComponent } from './components/checkout/delivery-info/delivery-info.component';
 import { OrderConfirmationComponent } from './components/checkout/order-confirmation/order-confirmation.component';
+import { OrderSummaryComponent } from './components/checkout/order-summary/order-summary.component';
 import { PaymentInfoComponent } from './components/checkout/payment-info/payment-info.component';
 
 
@@ -70,9 +70,8 @@ import { PaymentInfoComponent } from './components/checkout/payment-info/payment
     DeliveryInfoComponent,
     PaymentInfoComponent,
     OrderConfirmationComponent,
-
+    OrderSummaryComponent,
     ShopsSectionComponent,
-
     CharityListComponent,
     CharityDetailsComponent,
     DonateComponent

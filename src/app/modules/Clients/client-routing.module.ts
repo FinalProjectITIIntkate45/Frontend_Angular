@@ -22,6 +22,7 @@ import { DonateComponent } from './components/charity/donate/donate.component';
 import { OfferDetailsComponent } from './components/offer/offer-details/offer-details.component';
 import { OfferListComponent } from './components/offer/offer-list/offer-list.component';
 
+
 const routes: Routes = [
   {
     path: 'products',
@@ -51,6 +52,8 @@ const routes: Routes = [
 
       { path: 'shop', component: ShopsSectionComponent },
       { path: 'checkout', component: CheckoutComponent },
+      { path: 'charity-details/:id', component: CharityDetailsComponent }
+
 
       { path: 'offers', component: OfferListComponent },
       { path: 'offers/:id', component: OfferDetailsComponent },

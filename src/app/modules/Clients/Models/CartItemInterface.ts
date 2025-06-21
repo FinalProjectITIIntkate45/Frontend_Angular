@@ -2,7 +2,9 @@
 import { ProductInterface } from "./ProductInterface";
 
 export interface CartItemInterface {
-      ProductName : string;
+  ProductId: number;
+  ProductName : string;
+
       Price: number;
       points: number;
       Quantity: number;
