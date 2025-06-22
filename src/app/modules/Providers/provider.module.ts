@@ -24,10 +24,13 @@ import { ProductListPageComponent } from './Components/product-list-page/product
 import { ProviderLayoutComponent } from './Components/provider-layout/provider-layout.component';
 import { ProviderSidebarComponent } from './Components/provider-sidebar/provider-sidebar.component';
 import { SafeUrlPipe } from './Services/SafeUrl.pipe';
-import { OfferFormComponent } from './Components/offers/addoffer/offers.component';
-import { EfitofferComponent } from './Components/offers/efitoffer/efitoffer.component';
-import { ShowoffersComponent } from './Components/offers/showoffers/showoffers.component';
-
+import { EditDetailsComponent } from './Components/OfferGroupe/editDetailes/editDetailes.component';
+import { EditOfferComponent } from './Components/OfferGroupe/EditOffer/EditOffer.component';
+import { ShopProductsComponent } from './Components/OfferGroupe/ShopProducts/ShopProducts.component';
+import { ShopOffersComponent } from './Components/OfferGroupe/ShopOffers/ShopOffers.component';
+import { OfferDetailesComponent } from './Components/OfferGroupe/OfferDetailes/OfferDetailes.component';
+import { MakeOfferComponent } from './Components/OfferGroupe/MakeOffer/MakeOffer.component';
+import { OfferProductManagerComponent } from './Components/OfferGroupe/OfferProductManager/OfferProductManager.component';
 
 @NgModule({
   declarations: [
@@ -39,9 +42,13 @@ import { ShowoffersComponent } from './Components/offers/showoffers/showoffers.c
     ProductFormPageComponent,
     ProductDetailsPageComponent,
     ProductListPageComponent,
-    OfferFormComponent ,
-    EfitofferComponent,
-    ShowoffersComponent
+    EditDetailsComponent,
+    EditOfferComponent,
+    ShopProductsComponent,
+    ShopOffersComponent,
+    OfferDetailesComponent,
+    MakeOfferComponent,
+    OfferProductManagerComponent
   ],
    imports: [
     CommonModule,
@@ -49,8 +56,6 @@ import { ShowoffersComponent } from './Components/offers/showoffers/showoffers.c
     ReactiveFormsModule,
     ProviderRoutingModule,
     SafeUrlPipe,
-    
-    
 ],
   providers: [
     provideHttpClient(withFetch(), withInterceptors([AuthInterceptor, LoaderInterceptor])),

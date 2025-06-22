@@ -1,0 +1,100 @@
+<div class="container mt-4">
+  <h2 class="text-center mb-4">منتجات المتجر</h2>
+
+  <!-- Search and Filter Section -->
+  <div class="row mb-4">
+    <div class="col-md-6">
+      <div class="input-group">
+        <input type="text" class="form-control" 
+               [(ngModel)]="searchTerm"
+               (input)="filterProducts()"
+               placeholder="ابحث عن منتج...">
+        <span class="input-group-text">
+          <i class="bi bi-search" title="Search"></i>
+        </span>
+      </div>
+    </div>
+    <div class="col-md-6 text-end">
+      <span class="badge bg-secondary">
+        عدد المنتجات: {{ filteredProducts.length }}
+      </span>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">جارٍ التحميل...</span>
+    </div>
+    <p class="mt-2">جارٍ تحميل المنتجات...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="errorMessage" class="alert alert-danger text-center">
+    {{ errorMessage }}
+    <button class="btn btn-sm btn-outline-danger ms-2" (click)="loadProducts()">
+      إعادة المحاولة
+    </button>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && !errorMessage && filteredProducts.length === 0" 
+       class="alert alert-info text-center">
+    لا توجد منتجات متاحة حالياً.
+    <div *ngIf="searchTerm">
+      <p>لا توجد نتائج بحث لـ "{{ searchTerm }}"</p>
+      <button class="btn btn-sm btn-outline-info" (click)="searchTerm = ''; filterProducts()">
+        عرض جميع المنتجات
+      </button>
+    </div>
+  </div>
+
+  <!-- Products Grid -->
+  <div *ngIf="!loading && filteredProducts.length > 0" class="row g-4">
+    <div *ngFor="let product of filteredProducts; trackBy: trackByProductId" 
+         class="col-md-4 col-lg-3">
+      <div class="card h-100 product-card">
+        
+        <!-- Product Image -->
+        <div class="product-image-container position-relative">
+          <div *ngIf="product.isSpecialOffer" 
+               class="position-absolute top-0 start-0 m-2 badge bg-danger">
+            عرض خاص
+          </div>
+          <img [src]="product.images && product.images.length ? product.images[0] : 'assets/images/placeholder.png'" 
+               class="card-img-top" alt="صورة المنتج">
+        </div>
+
+        <!-- Product Body -->
+        <div class="card-body">
+          <h5 class="card-title">{{ product.name || 'منتج بدون اسم' }}</h5>
+          <p class="card-text text-muted small">
+            {{ (product.description || '').substring(0, 50) }}{{ product.description && product.description.length > 50 ? '...' : '' }}
+          </p>
+          
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="text-success fw-bold">
+              {{ (product.displayedPriceAfterDiscount || product.displayedPrice || 0) | currency:'EGP' }}
+            </span>
+            <span *ngIf="product.displayedPriceAfterDiscount" 
+                  class="text-decoration-line-through text-muted small">
+              {{ (product.basePrice || 0) | currency:'EGP' }}
+            </span>
+          </div>
+
+          <div class="d-flex justify-content-between small">
+            <span class="text-muted">المخزون: {{ product.stock || 0 }}</span>
+            <span class="text-primary">النقاط: {{ product.earnedPoints || 0 }}</span>
+          </div>
+        </div>
+
+        <!-- Card Footer -->
+        <div class="card-footer bg-transparent">
+          <a [routerLink]="['/provider/products/details', product.id]" class="btn btn-sm btn-outline-primary w-100">
+            التفاصيل
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

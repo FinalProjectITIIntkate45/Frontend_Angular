@@ -1,0 +1,164 @@
+<div class="container py-4">
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-2">Loading offer details...</p>
+  </div>
+
+  <div *ngIf="!loading && offer" class="card">
+    <div class="card-header bg-primary text-white">
+      <h3 class="mb-0">Offer Details</h3>
+    </div>
+    
+    <div class="card-body">
+      <!-- Offer Status Badge -->
+      <div class="mb-4">
+        <span class="badge" [ngClass]="{
+          'bg-success': isOfferActive(),
+          'bg-secondary': !isOfferActive()
+        }">
+          {{ isOfferActive() ? 'Active' : 'Inactive' }}
+        </span>
+        <span class="ms-2 text-muted">
+          Valid from {{ formatDate(offer.StartDate) }} to {{ formatDate(offer.EndDate) }}
+        </span>
+      </div>
+
+      <!-- Offer Image -->
+      <div class="text-center mb-4">
+        <img [src]="offer.OfferImgUrl || 'assets/images/default-offer.png'" 
+             class="img-fluid rounded" 
+             style="max-height: 300px;"
+             alt="Offer image">
+      </div>
+
+      <!-- Pricing Information -->
+      <div class="row mb-4">
+        <div class="col-md-6">
+          <div class="card h-100">
+            <div class="card-header bg-light">
+              <h5 class="mb-0">Pricing</h5>
+            </div>
+            <div class="card-body">
+              <div class="d-flex justify-content-between mb-2">
+                <span>Original Price:</span>
+                <span class="text-decoration-line-through">{{ offer.OldPrice | currency }}</span>
+              </div>
+              <div class="d-flex justify-content-between mb-2">
+                <span>Discounted Price:</span>
+                <span class="fw-bold text-success">{{ offer.NewPrice | currency }}</span>
+              </div>
+              <div class="d-flex justify-content-between">
+                <span>You Save:</span>
+                <span class="text-danger">
+                  {{ calculateDiscountPercentage(offer.OldPrice, offer.NewPrice) }}% 
+                  ({{ offer.OldPrice - offer.NewPrice | currency }})
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="card h-100">
+            <div class="card-header bg-light">
+              <h5 class="mb-0">Points</h5>
+            </div>
+            <div class="card-body">
+              <div class="d-flex justify-content-between mb-2">
+                <span>Original Points:</span>
+                <span class="text-decoration-line-through">{{ offer.OldPoints }}</span>
+              </div>
+              <div class="d-flex justify-content-between">
+                <span>Discounted Points:</span>
+                <span class="fw-bold text-success">{{ offer.NewPoints }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Products in Offer -->
+      <div class="mb-4">
+        <h5 class="mb-3">Products Included</h5>
+        
+        <!-- Loading state for products -->
+        <div *ngIf="productsLoading" class="text-center py-3">
+          <div class="spinner-border spinner-border-sm text-primary" role="status">
+            <span class="visually-hidden">Loading products...</span>
+          </div>
+          <p class="mt-2 text-muted">Loading products...</p>
+        </div>
+
+        <!-- Products table -->
+        <div *ngIf="!productsLoading" class="table-responsive">
+          <table class="table table-hover">
+            <thead class="table-light">
+              <tr>
+                <th>Product Image</th>
+                <th>Product Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Points</th>
+                <th>Stock</th>
+                <th>Category</th>
+              </tr>
+            </thead>
+            <tbody *ngIf="products && products.length > 0">
+              <tr *ngFor="let product of products">
+                <td>
+                  <img *ngIf="product.images && product.images.length > 0" 
+                       [src]="product.images[0]" 
+                       class="img-thumbnail" 
+                       style="width: 50px; height: 50px; object-fit: cover;"
+                       [alt]="product.name">
+                  <div *ngIf="!product.images || product.images.length === 0" 
+                       class="bg-light d-flex align-items-center justify-content-center"
+                       style="width: 50px; height: 50px;">
+                    <i class="fas fa-image text-muted"></i>
+                  </div>
+                </td>
+                <td>{{ product.name }}</td>
+                <td>
+                  <span class="text-truncate d-inline-block" style="max-width: 200px;" 
+                        [title]="product.description">
+                    {{ product.description }}
+                  </span>
+                </td>
+                <td>
+                  <span *ngIf="product.isSpecialOffer && product.displayedPriceAfterDiscount" 
+                        class="text-decoration-line-through text-muted me-2">
+                    {{ product.displayedPrice | currency }}
+                  </span>
+                  <span [ngClass]="{'text-success fw-bold': product.isSpecialOffer}">
+                    {{ (product.displayedPriceAfterDiscount || product.displayedPrice) | currency }}
+                  </span>
+                </td>
+                <td>{{ product.points }}</td>
+                <td>
+                  <span [ngClass]="{
+                    'text-success': product.stock > 10,
+                    'text-warning': product.stock <= 10 && product.stock > 0,
+                    'text-danger': product.stock === 0
+                  }">
+                    {{ product.stock }}
+                  </span>
+                </td>
+                <td>{{ product.categoryName }}</td>
+              </tr>
+            </tbody>
+            <tbody *ngIf="!products || products.length === 0">
+              <tr>
+                <td colspan="7" class="text-center text-muted py-4">
+                  <i class="fas fa-box-open fa-2x mb-2"></i>
+                  <p class="mb-0">No products found for this offer</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -20,8 +20,9 @@ export class CharityListComponent implements OnInit {
 
   ngOnInit(): void {
     this.charityService.getAllCharities().subscribe({
-      next: (data) => {
-        this.charities = data;
+      next: (responce) => {
+        console.log(responce)
+        this.charities = responce.Data;
       },
       error: (err) => {
         console.error('Error fetching charities:', err);

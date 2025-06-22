@@ -1,0 +1,268 @@
+<div class="container py-4">
+  <h2 class="mb-4">📢 Create New Offer</h2>
+
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-2">Loading products...</p>
+  </div>
+
+  <form *ngIf="!loading" [formGroup]="offerForm" (ngSubmit)="saveOffer()">
+    <!-- Offer Image -->
+    <div class="mb-4">
+      <label for="imageFile" class="form-label">Offer Image</label>
+      <input type="file" (change)="onFileSelected($event)" class="form-control" id="imageFile" 
+             accept="image/*">
+      <div *ngIf="previewImage" class="mt-2">
+        <img [src]="previewImage" alt="Preview" class="img-thumbnail" style="max-width: 200px;">
+      </div>
+    </div>
+
+    <!-- Pricing -->
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="oldPrice" class="form-label">Original Price</label>
+        <div class="input-group">
+          <span class="input-group-text">$</span>
+          <input type="number" formControlName="oldPrice" class="form-control" id="oldPrice">
+        </div>
+        <div *ngIf="offerForm.get('oldPrice')?.invalid && offerForm.get('oldPrice')?.touched" 
+             class="text-danger">
+          Please enter a valid price
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label for="newPrice" class="form-label">Discounted Price</label>
+        <div class="input-group">
+          <span class="input-group-text">$</span>
+          <input type="number" formControlName="newPrice" class="form-control" id="newPrice">
+        </div>
+        <div *ngIf="offerForm.get('newPrice')?.invalid && offerForm.get('newPrice')?.touched" 
+             class="text-danger">
+          Please enter a valid price
+        </div>
+      </div>
+    </div>
+
+    <!-- Points -->
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="oldPoints" class="form-label">Original Points</label>
+        <input type="number" formControlName="oldPoints" class="form-control" id="oldPoints">
+        <div *ngIf="offerForm.get('oldPoints')?.invalid && offerForm.get('oldPoints')?.touched" 
+             class="text-danger">
+          Please enter valid points
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label for="newPoints" class="form-label">Discounted Points</label>
+        <input type="number" formControlName="newPoints" class="form-control" id="newPoints">
+        <div *ngIf="offerForm.get('newPoints')?.invalid && offerForm.get('newPoints')?.touched" 
+             class="text-danger">
+          Please enter valid points
+        </div>
+      </div>
+    </div>
+
+    <!-- Dates -->
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <label for="startDate" class="form-label">Start Date</label>
+        <input type="date" formControlName="startDate" class="form-control" id="startDate" [min]="today">
+        <input type="time" formControlName="startTime" class="form-control mt-1" id="startTime">
+        <div *ngIf="offerForm.get('startDate')?.invalid && offerForm.get('startDate')?.touched" class="text-danger">
+          Start date is required
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label for="endDate" class="form-label">End Date</label>
+        <input type="date" formControlName="endDate" class="form-control" id="endDate" [min]="offerForm.get('startDate')?.value || today">
+        <input type="time" formControlName="endTime" class="form-control mt-1" id="endTime">
+        <div *ngIf="offerForm.get('endDate')?.invalid && offerForm.get('endDate')?.touched" class="text-danger">
+          End date is required and must be after start date
+        </div>
+      </div>
+    </div>
+
+    <!-- Status -->
+    <div class="mb-4">
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="status" formControlName="status">
+        <label class="form-check-label" for="status">Active Offer</label>
+      </div>
+    </div>
+
+    <hr class="my-4">
+
+    <!-- Products Section -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5 class="mb-0">🧾 Offer Products</h5>
+      <span class="badge bg-info">{{ offerSummary }}</span>
+    </div>
+
+    <div *ngIf="shopProducts && shopProducts.length > 0; else noProducts">
+      <!-- Main Products Table -->
+      <div class="card mb-4">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+          <h6 class="mb-0">📦 Main Products</h6>
+          <button type="button" (click)="addProduct(0)" class="btn btn-sm btn-light">
+            <i class="fas fa-plus"></i> Add Main Product
+          </button>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead class="table-light">
+                <tr>
+                  <th>Product Name & Details</th>
+                  <th>Quantity</th>
+                  <th>Total Price</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let product of mainProducts; let i = index">
+                  <td>
+                    <select [(ngModel)]="product.ProductId" [ngModelOptions]="{standalone: true}"
+                            class="form-select" (change)="onProductChange($event, offerProducts.indexOf(product))">
+                      <option [value]="0" disabled>-- Select a product --</option>
+                      <option *ngFor="let p of shopProducts; trackBy: trackByProductId" [value]="p.id">
+                        {{ p.name }} | {{ (p.basePrice || 0) | currency:'EGP' }} | Stock: {{ p.stock || 0 }}
+                      </option>
+                    </select>
+                    <div *ngIf="product.ProductId > 0" class="mt-2">
+                      <div class="d-flex align-items-center">
+                        <i class="fas fa-box text-primary me-2"></i>
+                        <strong>{{ getProductDetails(product.ProductId).name }}</strong>
+                      </div>
+                      <small class="text-muted">
+                        <i class="fas fa-tag me-1"></i>{{ getProductDetails(product.ProductId).category }} |
+                        <i class="fas fa-dollar-sign me-1"></i>{{ getProductDetails(product.ProductId).price | currency:'EGP' }} |
+                        <i class="fas fa-warehouse me-1"></i>{{ getProductDetails(product.ProductId).stock }} in stock
+                      </small>
+                    </div>
+                  </td>
+                  <td>
+                    <input type="number" [(ngModel)]="product.ProductQuantity"
+                           [ngModelOptions]="{standalone: true}"
+                           (change)="onQuantityChange()"
+                           class="form-control" min="1" style="width: 80px;">
+                  </td>
+                  <td>
+                    <span class="fw-bold text-success">
+                      {{ (getProductDetails(product.ProductId).price * product.ProductQuantity) | currency:'EGP' }}
+                    </span>
+                  </td>
+                  <td>
+                    <button type="button" (click)="removeProduct(offerProducts.indexOf(product))" 
+                            class="btn btn-sm btn-danger">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+                <tr *ngIf="mainProducts.length === 0">
+                  <td colspan="4" class="text-center text-muted py-4">
+                    <i class="fas fa-box-open fa-2x mb-2 d-block"></i>
+                    No main products added
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bonus Products Table -->
+      <div class="card mb-4">
+        <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
+          <h6 class="mb-0">🎁 Bonus Products</h6>
+          <button type="button" (click)="addProduct(1)" class="btn btn-sm btn-light">
+            <i class="fas fa-plus"></i> Add Bonus Product
+          </button>
+        </div>
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead class="table-light">
+                <tr>
+                  <th>Product Name & Details</th>
+                  <th>Quantity</th>
+                  <th>Total Price</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let product of bonusProducts; let i = index">
+                  <td>
+                    <select [(ngModel)]="product.ProductId" [ngModelOptions]="{standalone: true}"
+                            class="form-select" (change)="onProductChange($event, offerProducts.indexOf(product))">
+                      <option [value]="0" disabled>-- Select a product --</option>
+                      <option *ngFor="let p of shopProducts; trackBy: trackByProductId" [value]="p.id">
+                        {{ p.name }} | {{ (p.basePrice || 0) | currency:'EGP' }} | Stock: {{ p.stock || 0 }}
+                      </option>
+                    </select>
+                    <div *ngIf="product.ProductId > 0" class="mt-2">
+                      <div class="d-flex align-items-center">
+                        <i class="fas fa-gift text-warning me-2"></i>
+                        <strong>{{ getProductDetails(product.ProductId).name }}</strong>
+                      </div>
+                      <small class="text-muted">
+                        <i class="fas fa-tag me-1"></i>{{ getProductDetails(product.ProductId).category }} |
+                        <i class="fas fa-dollar-sign me-1"></i>{{ getProductDetails(product.ProductId).price | currency:'EGP' }} |
+                        <i class="fas fa-warehouse me-1"></i>{{ getProductDetails(product.ProductId).stock }} in stock
+                      </small>
+                    </div>
+                  </td>
+                  <td>
+                    <input type="number" [(ngModel)]="product.ProductQuantity"
+                           [ngModelOptions]="{standalone: true}"
+                           (change)="onQuantityChange()"
+                           class="form-control" min="1" style="width: 80px;">
+                  </td>
+                  <td>
+                    <span class="fw-bold text-success">
+                      {{ (getProductDetails(product.ProductId).price * product.ProductQuantity) | currency:'EGP' }}
+                    </span>
+                  </td>
+                  <td>
+                    <button type="button" (click)="removeProduct(offerProducts.indexOf(product))" 
+                            class="btn btn-sm btn-danger">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </td>
+                </tr>
+                <tr *ngIf="bonusProducts.length === 0">
+                  <td colspan="4" class="text-center text-muted py-4">
+                    <i class="fas fa-gift fa-2x mb-2 d-block"></i>
+                    No bonus products added
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noProducts>
+      <div class="alert alert-warning text-center">
+        <i class="fas fa-exclamation-triangle fa-2x mb-2 d-block"></i>
+        There are no products available in your shop to add to an offer. Please add products first.
+      </div>
+    </ng-template>
+
+    <!-- Submit Button -->
+    <div class="d-flex justify-content-end gap-2">
+      <button type="button" class="btn btn-outline-secondary" 
+              (click)="cancel()">
+        <i class="fas fa-times"></i> Cancel
+      </button>
+      <button type="submit" class="btn btn-success" [disabled]="submitting">
+        <span *ngIf="submitting" class="spinner-border spinner-border-sm me-1"></span>
+        <i class="fas fa-save" *ngIf="!submitting"></i> 
+        {{ submitting ? 'Creating...' : 'Create Offer' }}
+      </button>
+    </div>
+  </form>
+</div>

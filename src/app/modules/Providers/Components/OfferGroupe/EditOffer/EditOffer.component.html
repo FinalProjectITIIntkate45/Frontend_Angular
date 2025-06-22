@@ -1,0 +1,187 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="mb-0">✏️ Edit Offer Products</h3>
+    <div *ngIf="offer" class="d-flex align-items-center">
+      <span class="badge me-2" [ngClass]="getOfferStatusClass()">
+        {{ getOfferStatusText() }}
+      </span>
+      <span class="text-muted">Offer #{{ offer.Id }}</span>
+    </div>
+  </div>
+
+  <!-- Warning message for active offers -->
+  <div *ngIf="offer && isOfferActive()" class="alert alert-warning" role="alert">
+    <i class="fas fa-exclamation-triangle me-2"></i>
+    <strong>Warning:</strong> This offer is currently active. You cannot add, edit, or remove products from active offers.
+  </div>
+
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="mt-2">Loading offer details...</p>
+  </div>
+
+  <div *ngIf="!loading">
+    <!-- Main Products Section -->
+    <div class="card mb-4">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Main Products</h5>
+        <div class="d-flex align-items-center">
+          <span *ngIf="isOfferActive()" class="badge bg-warning text-dark me-2">
+            <i class="fas fa-lock me-1"></i>Editing Disabled
+          </span>
+          <button class="btn btn-sm btn-primary" 
+                  (click)="addProduct(0)"
+                  [disabled]="isOfferActive()">
+            <i class="fas fa-plus"></i> Add Product
+          </button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let product of mainProducts; let i = index; trackBy: trackByFn">
+                <td>
+                  <select class="form-select" 
+                          [(ngModel)]="product.ProductId"
+                          [disabled]="isOfferActive()"
+                          (change)="onProductChange($event, product)">
+                    <option *ngFor="let p of shopProducts" [value]="p.id">
+                      {{ p.name }} - {{ p.basePrice | currency }} (Stock: {{ p.stock }})
+                    </option>
+                  </select>
+                  <div *ngIf="product.ProductName" class="mt-1">
+                    <small class="text-muted">
+                      <i class="fas fa-box text-primary me-1"></i>
+                      {{ product.ProductName }}
+                    </small>
+                  </div>
+                </td>
+                <td>
+                  <input type="number" class="form-control" min="1"
+                         [(ngModel)]="product.ProductQuantity"
+                         [disabled]="isOfferActive()"
+                         [class.bg-light]="isOfferActive()">
+                </td>
+                <td>
+                  {{ getProductById(product.ProductId)?.basePrice | currency }}
+                </td>
+                <td>
+                  <button class="btn btn-sm btn-danger" 
+                          (click)="removeProduct(mainProducts, i)"
+                          [disabled]="isOfferActive()"
+                          [title]="isOfferActive() ? 'Cannot remove products from active offer' : 'Remove product'">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+              <tr *ngIf="mainProducts.length === 0">
+                <td colspan="4" class="text-center text-muted">
+                  <i class="fas fa-box-open fa-2x mb-2 d-block"></i>
+                  No main products added
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bonus Products Section -->
+    <div class="card mb-4">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Bonus Products</h5>
+        <div class="d-flex align-items-center">
+          <span *ngIf="isOfferActive()" class="badge bg-warning text-dark me-2">
+            <i class="fas fa-lock me-1"></i>Editing Disabled
+          </span>
+          <button class="btn btn-sm btn-primary" 
+                  (click)="addProduct(1)"
+                  [disabled]="isOfferActive()">
+            <i class="fas fa-plus"></i> Add Bonus
+          </button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let product of bonusProducts; let i = index; trackBy: trackByFn">
+                <td>
+                  <select class="form-select" 
+                          [(ngModel)]="product.ProductId"
+                          [disabled]="isOfferActive()"
+                          (change)="onProductChange($event, product)">
+                    <option *ngFor="let p of shopProducts" [value]="p.id">
+                      {{ p.name }} - {{ p.basePrice | currency }} (Stock: {{ p.stock }})
+                    </option>
+                  </select>
+                  <div *ngIf="product.ProductName" class="mt-1">
+                    <small class="text-muted">
+                      <i class="fas fa-gift text-warning me-1"></i>
+                      {{ product.ProductName }}
+                    </small>
+                  </div>
+                </td>
+                <td>
+                  <input type="number" class="form-control" min="1"
+                         [(ngModel)]="product.ProductQuantity"
+                         [disabled]="isOfferActive()"
+                         [class.bg-light]="isOfferActive()">
+                </td>
+                <td>
+                  {{ getProductById(product.ProductId)?.basePrice | currency }}
+                </td>
+                <td>
+                  <button class="btn btn-sm btn-danger" 
+                          (click)="removeProduct(bonusProducts, i)"
+                          [disabled]="isOfferActive()"
+                          [title]="isOfferActive() ? 'Cannot remove products from active offer' : 'Remove product'">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+              <tr *ngIf="bonusProducts.length === 0">
+                <td colspan="4" class="text-center text-muted">
+                  <i class="fas fa-gift fa-2x mb-2 d-block"></i>
+                  No bonus products added
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="d-flex justify-content-end gap-2 mb-4">
+      <button class="btn btn-outline-secondary" (click)="cancel()">
+        <i class="fas fa-times"></i> Cancel
+      </button>
+      <button class="btn btn-primary" 
+              (click)="saveChanges()" 
+              [disabled]="saving || isOfferActive()">
+        <span *ngIf="saving" class="spinner-border spinner-border-sm me-1"></span>
+        <i class="fas fa-save" *ngIf="!saving"></i> {{ saving ? 'Saving...' : 'Save Changes' }}
+      </button>
+    </div>
+  </div>
+</div>

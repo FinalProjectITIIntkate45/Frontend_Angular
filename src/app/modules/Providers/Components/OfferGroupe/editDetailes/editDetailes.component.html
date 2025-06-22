@@ -1,0 +1,107 @@
+<div class="container mt-4">
+  <h3 class="mb-4">✏️ Edit Offer Details</h3>
+
+  <div *ngIf="loading" class="text-center">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p>Loading offer details...</p>
+  </div>
+
+  <form *ngIf="!loading" [formGroup]="offerForm" (ngSubmit)="saveChanges()">
+    <!-- Image Upload -->
+    <div class="mb-4">
+      <label class="form-label">Offer Image</label>
+      <div class="d-flex align-items-center">
+        <div class="me-3">
+          <img [src]="previewImage || 'assets/images/default-offer.png'" 
+               class="img-thumbnail" 
+               style="max-width: 150px; max-height: 150px;"
+               alt="Offer preview">
+        </div>
+        <div>
+          <label for="imageUpload" class="form-label">Choose Image</label>
+          <input type="file" class="form-control" id="imageUpload" (change)="onFileSelected($event)" accept="image/*" title="Select offer image">
+          <div class="form-text">Upload a new image or keep the existing one</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pricing -->
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="oldPrice" class="form-label">Old Price</label>
+        <div class="input-group">
+          <span class="input-group-text">$</span>
+          <input type="number" class="form-control" id="oldPrice" formControlName="oldPrice" placeholder="Enter old price">
+        </div>
+        <div *ngIf="offerForm.get('oldPrice')?.invalid && offerForm.get('oldPrice')?.touched" class="text-danger">
+          Please enter a valid price
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label for="newPrice" class="form-label">New Price</label>
+        <div class="input-group">
+          <span class="input-group-text">$</span>
+          <input type="number" class="form-control" id="newPrice" formControlName="newPrice" placeholder="Enter new price">
+        </div>
+        <div *ngIf="offerForm.get('newPrice')?.invalid && offerForm.get('newPrice')?.touched" class="text-danger">
+          Please enter a valid price
+        </div>
+      </div>
+    </div>
+
+    <!-- Points -->
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="oldPoints" class="form-label">Old Points</label>
+        <input type="number" class="form-control" id="oldPoints" formControlName="oldPoints" placeholder="Enter old points">
+        <div *ngIf="offerForm.get('oldPoints')?.invalid && offerForm.get('oldPoints')?.touched" class="text-danger">
+          Please enter valid points
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label for="newPoints" class="form-label">New Points</label>
+        <input type="number" class="form-control" id="newPoints" formControlName="newPoints" placeholder="Enter new points">
+        <div *ngIf="offerForm.get('newPoints')?.invalid && offerForm.get('newPoints')?.touched" class="text-danger">
+          Please enter valid points
+        </div>
+      </div>
+    </div>
+
+    <!-- Dates -->
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <label for="startDate" class="form-label">Start Date</label>
+        <input type="datetime-local" class="form-control" id="startDate" formControlName="startDate" title="Select start date">
+        <div *ngIf="offerForm.get('startDate')?.invalid && offerForm.get('startDate')?.touched" class="text-danger">
+          Start date is required
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label for="endDate" class="form-label">End Date</label>
+        <input type="datetime-local" class="form-control" id="endDate" formControlName="endDate" title="Select end date">
+        <div *ngIf="offerForm.get('endDate')?.invalid && offerForm.get('endDate')?.touched" class="text-danger">
+          End date is required
+        </div>
+      </div>
+    </div>
+
+    <!-- Status -->
+    <div class="mb-4">
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="status" formControlName="status" title="Toggle offer status">
+        <label class="form-check-label" for="status">Active Offer</label>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="d-flex justify-content-end gap-2">
+      <button type="button" class="btn btn-outline-secondary" (click)="onCancel()" title="Cancel changes">
+        Cancel
+      </button>
+      <button type="submit" class="btn btn-primary" [disabled]="offerForm.invalid || saving" title="Save changes">
+        <span *ngIf="saving" class="spinner-border spinner-border-sm me-1"></span>
+        {{ saving ? 'Saving...' : 'Save Changes' }}
+      </button>    </div>  </form>
+</div>

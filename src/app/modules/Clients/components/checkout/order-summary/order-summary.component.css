@@ -1,0 +1,13 @@
+:host {
+  display: block;
+  min-width: 280px;
+  max-width: 350px;
+  margin: auto;
+}
+
+hr {
+  border-top: 1px solid #dee2e6;
+}
+.order-summary {
+  padding: 15px;
+}

@@ -2,6 +2,11 @@ import { Component, OnInit } from '@angular/core';
 
 import { ShopViewModel } from '../../Models/shop-view-model';
 import { ShopService } from '../../Services/shop.service';
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> ac91e5ffad8194b9c71cfa3706bf8deac3558a8b
 
 @Component({
   selector: 'app-shops-section',
