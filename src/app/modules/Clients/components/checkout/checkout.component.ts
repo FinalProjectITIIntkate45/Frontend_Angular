@@ -20,8 +20,7 @@ export class CheckoutComponent implements OnInit {
   isLoading: boolean = false; // تعريف المتغير isLoading هنا
   error: string | null = null;
   originalTotalPrice: number = 0;
-shopName: string = '';
-
+  shopName: string = '';
 
   constructor(
     private checkoutService: CheckoutService,
@@ -56,56 +55,57 @@ shopName: string = '';
   }
 
   ngOnInit(): void {
-    this.loadCartData();  // تحميل بيانات العربة عند بداية تحميل المكون
+    this.loadCartData(); // تحميل بيانات العربة عند بداية تحميل المكون
   }
-// In CheckoutComponent
+  // In CheckoutComponent
 
-loadCartData(): void {
-  this.isLoading = true;
-  this.error = null;
+  loadCartData(): void {
+    this.isLoading = true;
+    this.error = null;
 
-  this.cartService.getCartItems().subscribe(
-    (cartItems) => {
-      this.checkoutModel.orderItems = cartItems.Items.map((item: CartItemInterface) => ({
-        productId: item.ProductId,
-        quantity: item.Quantity,
-        price: item.Price,
-        points: item.points
-      }));
+    this.cartService.getCartItems().subscribe(
+      (cartItems) => {
+        this.checkoutModel.orderItems = cartItems.Items.map(
+          (item: CartItemInterface) => ({
+            productId: item.ProductId,
+            quantity: item.Quantity,
+            price: item.Price,
+            points: item.points,
+          })
+        );
 
-      this.originalTotalPrice = cartItems.CartTotalPrice;
-      this.checkoutModel.totalPrice = this.originalTotalPrice;
-      this.checkoutModel.totalPoints = cartItems.CartTotalPoints;
+        this.originalTotalPrice = cartItems.CartTotalPrice;
+        this.checkoutModel.totalPrice = this.originalTotalPrice;
+        this.checkoutModel.totalPoints = cartItems.CartTotalPoints;
 
-      // لو عايز اسم المحل:
-      this.shopName = cartItems.Items.length > 0 ? cartItems.Items[0].shopName : '';
+        // لو عايز اسم المحل:
+        this.shopName =
+          cartItems.Items.length > 0 ? cartItems.Items[0].shopName : '';
 
-      this.isLoading = false;
-    },
-    (error) => {
-      console.error('Error loading cart data:', error);
-      this.isLoading = false;
-      this.toastr.error('Error loading cart data', 'Error');
-    }
-  );
-}
-
+        this.isLoading = false;
+      },
+      (error) => {
+        console.error('Error loading cart data:', error);
+        this.isLoading = false;
+        this.toastr.error('Error loading cart data', 'Error');
+      }
+    );
+  }
 
   // عند اختيار طريقة التوصيل، نحدد ما إذا كان يجب إظهار التفاصيل
   selectDeliveryMethod(method: string): void {
     this.deliveryMethod = method;
     if (method === 'pickup') {
       this.checkoutModel.billingData.shippingMethod = 'pickup';
-      this.currentStep = 2;  // الانتقال مباشرةً إلى خطوة الدفع
+      this.currentStep = 2; // الانتقال مباشرةً إلى خطوة الدفع
     } else {
       this.checkoutModel.billingData.shippingMethod = 'ship';
-      this.currentStep = 1;  // العودة إلى خطوة الشحن
+      this.currentStep = 1; // العودة إلى خطوة الشحن
     }
   }
   resetTotalPrice(): void {
-  this.checkoutModel.totalPrice = this.originalTotalPrice;
-}
-
+    this.checkoutModel.totalPrice = this.originalTotalPrice;
+  }
 
   nextStep(): void {
     if (this.currentStep < 3) {
@@ -118,8 +118,53 @@ loadCartData(): void {
       this.currentStep--;
     }
   }
-
   onPlaceOrder() {
-    // تنفيذ منطق الطلب هنا
+    this.checkoutService.createOrder(this.checkoutModel).subscribe(
+      (response) => {
+        this.toastr.success('Order placed successfully!', 'Success');
+
+        this.cartService.clearCart().subscribe(
+          () => {
+            this.toastr.success('Cart cleared after order');
+
+            // إعادة تهيئة النموذج بعد تفريغ العربة
+            this.checkoutModel = {
+              clientId: '',
+              orderItems: [],
+              totalPrice: 0,
+              totalPoints: 0,
+              usedPaidPoints: 0,
+              usedFreePoints: 0,
+              couponCode: '',
+              paymentType: 0,
+              billingData: {
+                firstName: '',
+                lastName: '',
+                phoneNumber: '',
+                street: '',
+                city: '',
+                state: '',
+                apartment: '',
+                floor: '',
+                building: '',
+                country: '',
+                shippingMethod: '',
+                email: '',
+              },
+              status: 0,
+            };
+            this.currentStep = 1; // العودة إلى الخطوة الأولى
+          },
+          (error) => {
+            console.error('Error clearing cart:', error);
+            this.toastr.warning('Order placed but cart not cleared', 'Warning');
+          }
+        );
+      },
+      (error) => {
+        console.error('Error placing order:', error);
+        this.toastr.error('Failed to place order', 'Error');
+      }
+    );
   }
 }
