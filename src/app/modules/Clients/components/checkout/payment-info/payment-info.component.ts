@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
+import { PaymentType } from '../../../Models/CheckoutResultVM';
 import { OrderCreateViewModel } from '../../../Models/OrderCreateViewModel';
 import { CheckoutService } from '../../../Services/checkout.service';
 
@@ -18,6 +19,9 @@ export class PaymentInfoComponent {
   couponCode: string = '';
   couponMessage: string | null = null;
   couponValid: boolean = false;
+
+  // ✅ ده اللي بيحل المشكلة
+  PaymentType = PaymentType;
 
   constructor(private checkoutService: CheckoutService) {}
 

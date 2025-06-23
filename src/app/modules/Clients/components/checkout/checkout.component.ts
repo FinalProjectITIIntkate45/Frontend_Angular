@@ -6,6 +6,7 @@ import { CartItemInterface } from '../../Models/CartItemInterface';
 import { OrderCreateViewModel } from '../../Models/OrderCreateViewModel';
 import { CartServicesService } from '../../Services/CardServices.service';
 import { CheckoutService } from '../../Services/checkout.service';
+import { AuthService } from '../../../../core/services/Auth.service';
 
 @Component({
   selector: 'app-checkout',
@@ -16,8 +17,8 @@ import { CheckoutService } from '../../Services/checkout.service';
 export class CheckoutComponent implements OnInit {
   checkoutModel: OrderCreateViewModel;
   currentStep: number = 1;
-  deliveryMethod: string = 'ship'; // لتحديد ما إذا كان المستخدم يختار الشحن أو الاستلام من المتجر
-  isLoading: boolean = false; // تعريف المتغير isLoading هنا
+  deliveryMethod: string = 'ship';
+  isLoading: boolean = false;
   error: string | null = null;
   originalTotalPrice: number = 0;
   shopName: string = '';
@@ -25,7 +26,8 @@ export class CheckoutComponent implements OnInit {
   constructor(
     private checkoutService: CheckoutService,
     private cartService: CartServicesService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private authService: AuthService
   ) {
     this.checkoutModel = {
       clientId: '',
@@ -55,9 +57,10 @@ export class CheckoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadCartData(); // تحميل بيانات العربة عند بداية تحميل المكون
+    this.checkoutModel.clientId = this.authService.getUserId();
+
+    this.loadCartData();
   }
-  // In CheckoutComponent
 
   loadCartData(): void {
     this.isLoading = true;
@@ -74,13 +77,12 @@ export class CheckoutComponent implements OnInit {
           })
         );
 
+
         this.originalTotalPrice = cartItems.CartTotalPrice;
         this.checkoutModel.totalPrice = this.originalTotalPrice;
         this.checkoutModel.totalPoints = cartItems.CartTotalPoints;
 
-        // لو عايز اسم المحل:
-        this.shopName =
-          cartItems.Items.length > 0 ? cartItems.Items[0].shopName : '';
+        this.shopName = cartItems.Items.length > 0 ? cartItems.Items[0].shopName : '';
 
         this.isLoading = false;
       },
@@ -92,33 +94,36 @@ export class CheckoutComponent implements OnInit {
     );
   }
 
-  // عند اختيار طريقة التوصيل، نحدد ما إذا كان يجب إظهار التفاصيل
   selectDeliveryMethod(method: string): void {
     this.deliveryMethod = method;
     if (method === 'pickup') {
       this.checkoutModel.billingData.shippingMethod = 'pickup';
-      this.currentStep = 2; // الانتقال مباشرةً إلى خطوة الدفع
+      this.currentStep = 2;
     } else {
       this.checkoutModel.billingData.shippingMethod = 'ship';
-      this.currentStep = 1; // العودة إلى خطوة الشحن
+      this.currentStep = 1;
     }
   }
+
   resetTotalPrice(): void {
     this.checkoutModel.totalPrice = this.originalTotalPrice;
   }
 
   nextStep(): void {
-    if (this.currentStep < 3) {
-      this.currentStep++;
-    }
+    if (this.currentStep < 3) this.currentStep++;
   }
 
   previousStep(): void {
-    if (this.currentStep > 1) {
-      this.currentStep--;
-    }
+    if (this.currentStep > 1) this.currentStep--;
   }
-  onPlaceOrder() {
+
+  onPlaceOrder(): void {
+    console.log('📦 Submitting order:', this.checkoutModel);
+    if (this.checkoutModel.orderItems.length === 0) {
+      this.toastr.error('Your cart is empty!', 'Error');
+      return;
+    }
+    this.checkoutModel.clientId = this.authService.getUserId();
     this.checkoutService.createOrder(this.checkoutModel).subscribe(
       (response) => {
         this.toastr.success('Order placed successfully!', 'Success');
@@ -127,7 +132,6 @@ export class CheckoutComponent implements OnInit {
           () => {
             this.toastr.success('Cart cleared after order');
 
-            // إعادة تهيئة النموذج بعد تفريغ العربة
             this.checkoutModel = {
               clientId: '',
               orderItems: [],
@@ -153,7 +157,7 @@ export class CheckoutComponent implements OnInit {
               },
               status: 0,
             };
-            this.currentStep = 1; // العودة إلى الخطوة الأولى
+            this.currentStep = 1;
           },
           (error) => {
             console.error('Error clearing cart:', error);
