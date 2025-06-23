@@ -1,0 +1,17 @@
+.form-group {
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 767px) {
+  .form-group {
+    margin-bottom: 1.25rem;
+  }
+
+  .button-group {
+    flex-direction: column;
+  }
+
+  .next-btn {
+    width: 100%;
+  }
+}

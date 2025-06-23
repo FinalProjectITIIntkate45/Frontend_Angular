@@ -12,7 +12,7 @@
     </p>
 
     <h5 class="mt-4">💳 Payment Method:</h5>
-    <p>{{ checkoutModel.paymentType }}</p>
+    <p>{{ getPaymentLabel(checkoutModel.paymentType) }}</p>
 
     <h5 class="mt-4">💰 Total:</h5>
     <p><strong>{{ checkoutModel.totalPrice | number:'1.2-2' }} EGP</strong></p>
