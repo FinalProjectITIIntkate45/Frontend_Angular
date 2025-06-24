@@ -72,18 +72,16 @@
         <span>Recycling</span>
       </a>
     </li>
-    <li
-      class="nav-item mb-2"
-      [class.active]="selectedSection === 'donations'"
-      (click)="selectSection('donations')"
-    >
-      <a
-        class="d-flex align-items-center text-dark text-decoration-none p-2 rounded"
-      >
-        <i class="fas fa-hand-holding-heart me-2"></i>
-        <span>Donations</span>
-      </a>
-    </li>
+   <li class="nav-item mb-2">
+  <a
+    routerLink="/client/charities"
+    class="d-flex align-items-center text-dark text-decoration-none p-2 rounded"
+  >
+    <i class="fas fa-hand-holding-heart me-2"></i>
+    <span>Donations</span>
+  </a>
+</li>
+
     <li
       class="nav-item mb-2"
             routerLink="/client/Wishlist"

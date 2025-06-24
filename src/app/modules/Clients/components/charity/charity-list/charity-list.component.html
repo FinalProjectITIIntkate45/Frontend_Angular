@@ -5,7 +5,9 @@
     <h3>{{ charity.name }}</h3>
     <p>{{ charity.description }}</p>
 
-    <button (click)="viewDetails(charity.id)">View Details</button>
+<button [routerLink]="['/clients/charity-details', charity.id]">
+  View Details
+</button>
     <button (click)="donate(charity.id)">Donate</button>
   </div>
 </div>
