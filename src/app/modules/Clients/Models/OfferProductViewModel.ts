@@ -1,7 +1,6 @@
 export interface OfferProductViewModel {
-  Id?: number;
+  Productname: string;
   ProductId: number;
-  ProductName?: string;
   ProductQuantity: number;
   Type: number;
 } 

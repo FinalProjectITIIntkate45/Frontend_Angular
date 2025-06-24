@@ -4,10 +4,10 @@
   <div class="mb-3" *ngFor="let item of cartData.Items">
     <div class="d-flex justify-content-between align-items-center">
       <div class="text-truncate">
-        <span class="fw-medium">{{ item.ProductName }}</span>
-        <small class="text-muted d-block">Qty: {{ item.Quantity }}</small>
+        <span class="fw-medium">{{ item.productVM?.Name }}</span>
+        <small class="text-muted d-block">Qty: 1</small>
       </div>
-      <span>{{ item.TotalPrice }} EGP</span>
+      <span>{{ item.productVM?.DisplayedPrice }} EGP</span>
     </div>
   </div>
 
@@ -24,7 +24,7 @@
   </div>
   <div class="d-flex justify-content-between">
     <strong>Total Points:</strong>
-    <strong>{{ cartData?.CartTotalPoints }}</strong>
+    <strong>{{ cartData.CartTotalPoints }}</strong>
   </div>
 
 

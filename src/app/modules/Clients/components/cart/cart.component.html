@@ -36,37 +36,44 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of cartData.Items; let i = index">
+        <tr *ngFor="let item of cartData.Items">
           <td>
             <div class="d-flex align-items-center">
-              <img
-                [src]="item.ImgUrl"
-                [alt]="item.ProductName"
-                title="{{ item.ProductName }}"
-                class="me-2"
-                style="width: 50px; height: 50px; object-fit: cover;">
-              <span>{{ item.ProductName }}</span>
+              <ng-container *ngIf="item.offer; else productBlock">
+                <div>
+                  <img [src]="item.offer.OfferImgUrl" [alt]="'Offer ' + item.offer.Id"
+                       [title]="'Offer ' + item.offer.Id"
+                       class="me-2"
+                       style="width: 50px; height: 50px; object-fit: cover;">
+                  <span class="fw-bold">Offer #{{ item.offer.Id }}</span>
+                </div>
+              
+                <!-- 🧩 المنتجات اللي جوا العرض -->
+                <ul class="list-unstyled ms-4 mt-2 small text-muted" *ngIf="item.offer.Products?.length">
+                  <li *ngFor="let p of item.offer.Products">
+                    • {{ (item.productVM && p.ProductId === item.productVM.Id) ? item.productVM.Name : ('Product ID: ' + p.ProductId) }} (x{{ p.ProductQuantity }})
+                    <span *ngIf="p.Type === 0" class="badge bg-info ms-2">Main</span>
+                    <span *ngIf="p.Type === 1" class="badge bg-secondary ms-1">Bonus</span>
+                  </li>
+                </ul>
+              </ng-container>
+              
+              <ng-template #productBlock>
+                <img *ngIf="item.productVM && item.productVM.Images && item.productVM.Images.length > 0" [src]="item.productVM.Images[0]" [alt]="item.productVM.Name" [title]="item.productVM.Name" class="me-2" style="width: 50px; height: 50px; object-fit: cover;">
+                <span *ngIf="item.productVM">{{ item.productVM.Name }}</span>
+              </ng-template>
             </div>
           </td>
+          <td><span>1</span></td>
+          <td>{{ item.offer ? item.offer.NewPrice : item.productVM?.DisplayedPrice }}</td>
+          <td class="fw-bold">{{ item.offer ? item.offer.NewPrice : item.productVM?.DisplayedPrice }}</td>
+          <td>{{ item.offer ? item.offer.NewPoints : item.productVM?.Points }}</td>
           <td>
-            <div class="d-flex align-items-center">
-              <button
-                (click)="updateQuantity(item.ProductName, item.Quantity - 1)"
-                class="btn btn-outline-secondary btn-sm me-2"
-                [disabled]="item.Quantity <= 1">-</button>
-              <span class="fw-bold">{{ item.Quantity }}</span>
-              <button
-                (click)="updateQuantity(item.ProductName, item.Quantity + 1)"
-                class="btn btn-outline-secondary btn-sm ms-2">+</button>
-            </div>
-          </td>
-          <td>{{ item.Price }}</td>
-          <td class="fw-bold">{{ item.TotalPrice }}</td>
-          <td>{{ item.Totalpoints }}</td>
-          <td>
-            <button
-              (click)="removeItem(item.ProductName)"
-              class="btn btn-danger btn-sm">🗑️ Remove</button>
+            <ng-container *ngIf="(item.cartItemId ?? (item.offer ? item.offer.Id : item.productVM?.Id)) as removeId">
+              <button *ngIf="removeId != null"
+                      (click)="removeItem(removeId, !!item.offer)"
+                      class="btn btn-danger btn-sm">🗑️ Remove</button>
+            </ng-container>
           </td>
         </tr>
       </tbody>

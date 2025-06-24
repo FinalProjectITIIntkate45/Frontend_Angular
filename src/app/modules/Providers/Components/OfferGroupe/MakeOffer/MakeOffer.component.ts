@@ -34,6 +34,7 @@ export class MakeOfferComponent implements OnInit {
       newPrice: [0, [Validators.required, Validators.min(0)]],
       oldPoints: [0, [Validators.required, Validators.min(0)]],
       newPoints: [0, [Validators.required, Validators.min(0)]],
+      offerPricePoint: [0, [Validators.required, Validators.min(0)]],
       startDate: ['', [Validators.required]],
       startTime: ['', [Validators.required]],
       endDate: ['', [Validators.required]],
@@ -199,23 +200,25 @@ export class MakeOfferComponent implements OnInit {
     }
 
     this.submitting = true;
+    const formValue = this.offerForm.value;
 
-    const offerData: AddOffer = {
-      OfferImgUrl: '',
-      file: this.selectedFile,
-      Status: this.offerForm.value.status ? 1 : 0,
-      OldPrice: this.offerForm.value.oldPrice,
-      NewPrice: this.offerForm.value.newPrice,
-      OldPoints: this.offerForm.value.oldPoints,
-      NewPoints: this.offerForm.value.newPoints,
-      StartDate: this.offerForm.value.startDate + 'T' + this.offerForm.value.startTime,
-      EndDate: this.offerForm.value.endDate + 'T' + this.offerForm.value.endTime,
+    const newOffer: AddOffer = {
+      OldPrice: formValue.oldPrice,
+      NewPrice: formValue.newPrice,
+      OldPoints: formValue.oldPoints,
+      NewPoints: formValue.newPoints,
+      offerPricePoint: formValue.offerPricePoint,
+      StartDate: `${formValue.startDate}T${formValue.startTime}`,
+      EndDate: `${formValue.endDate}T${formValue.endTime}`,
+      Status: formValue.status ? 1 : 0,
+      OfferImgUrl: this.selectedFile?.name || '',
+      file: this.selectedFile!,
       Products: this.offerProducts
     };
 
-    console.log('Submitting the following offer data to the service:', offerData);
+    console.log('Submitting the following offer data to the service:', newOffer);
 
-    this.offerService.addNewOffer(offerData).subscribe({
+    this.offerService.addNewOffer(newOffer).subscribe({
       next: () => {
         this.toastr.success('Offer created successfully');
         this.router.navigate(['/provider/ShowShopOffer']);

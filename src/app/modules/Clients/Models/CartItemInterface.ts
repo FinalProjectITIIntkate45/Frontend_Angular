@@ -1,14 +1,8 @@
-
 import { ProductInterface } from "./ProductInterface";
+import { OfferViewModel } from "./OfferViewModel";
 
 export interface CartItemInterface {
-  ProductId: number;
-  ProductName : string;
-
-      Price: number;
-      points: number;
-      Quantity: number;
-      TotalPrice: number;
-      Totalpoints: number;
-      ImgUrl: string;
+  cartItemId?: number;
+  productVM?: ProductInterface;
+  offer?: OfferViewModel;
 }

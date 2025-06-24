@@ -170,6 +170,7 @@ export class OfferService {
               OldPoints: offer.OldPoints,
               NewPoints: offer.NewPoints,
               StartDate: offer.StartDate,
+              offerPricePoint: offer.offerPricePoint || offer.OfferPricePoint, // ← هنا لو محتار بين اسمين
               EndDate: offer.EndDate,
               Products: offer.Products?.map((p: any) => ({
                 Id: p.Id,

@@ -68,6 +68,7 @@ export class EditDetailsComponent implements OnInit {
           newPrice: offer.NewPrice,
           oldPoints: offer.OldPoints,
           newPoints: offer.NewPoints,
+          offerPricePoint: offer.offerPricePoint,
           startDate: startDate,
           endDate: endDate
         });
@@ -126,6 +127,7 @@ export class EditDetailsComponent implements OnInit {
       NewPrice: formValue.newPrice,
       OldPoints: formValue.oldPoints,
       NewPoints: formValue.newPoints,
+      offerPricePoint: formValue.offerPricePoint,
       StartDate: new Date(formValue.startDate).toISOString(),
       EndDate: new Date(formValue.endDate).toISOString(),
       file: this.selectedFile || undefined,

@@ -64,12 +64,14 @@ loadCartData(): void {
   this.cartService.getCartItems().subscribe(
     (cartItems) => {
       // تحويل CartItemInterface إلى OrderItemViewModel
-      this.checkoutModel.orderItems = cartItems.Items.map((item: CartItemInterface) => ({
-        productId: item.ProductId,
-        quantity: item.Quantity,
-        price: item.Price,
-        points: item.points // إذا كان يوجد في CartItemInterface
-      }));
+      this.checkoutModel.orderItems = cartItems.Items
+        .filter((item: CartItemInterface) => item.productVM !== undefined)
+        .map((item: CartItemInterface) => ({
+          productId: item.productVM!.Id,
+          quantity: 1,
+          price: item.productVM!.DisplayedPrice,
+          points: item.productVM!.Points
+        }));
 
       // تحديث باقي القيم في checkoutModel
       this.checkoutModel.totalPrice = cartItems.CartTotalPrice;
