@@ -23,16 +23,22 @@
 
     <!-- الخطوة 3 -->
     <div *ngIf="currentStep === 3" class="form-section current" id="confirmationSection">
-      <app-order-confirmation [checkoutModel]="checkoutModel" [currentStep]="currentStep"
-        (previousStep)="previousStep()">
-      </app-order-confirmation>
+      <app-order-confirmation
+        [checkoutModel]="checkoutModel"
+        [currentStep]="currentStep"
+        (placeOrder)="onPlaceOrder()"
+        (previousStep)="previousStep()"
+      ></app-order-confirmation>
+
     </div>
 
   </div>
 
   <!-- 👉 Summary Column -->
   <div class="checkout-summary w-25">
-    <app-order-summary></app-order-summary>
+    <app-order-summary [checkoutModel]="checkoutModel" [shopName]="shopName">
+    </app-order-summary>
+
   </div>
 
 </div>

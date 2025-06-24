@@ -12,23 +12,17 @@ export class WishlistService {
 
   constructor(private http: HttpClient) {}
 
-  getWishlist(): Observable<WishlistItem[]> {
-    return this.http.get<WishlistItem[]>(`${this.baseUrl}/Index`);
+  getWishlist(page: number = 1, pageSize: number = 10): Observable<WishlistItem[]> {
+    return this.http.get<WishlistItem[]>(`${this.baseUrl}/Index?page=${page}&pageSize=${pageSize}`);
   }
 
-  addToWishlist(productId: number) {
+  addToWishlist(productId: number): Observable<string> {
     const wishlistData: WishlistVM = { ProductId: productId };
-    return this.http.post<string>(
-      `${this.baseUrl}/AddToWishlist`,
-      wishlistData
-    );
+    return this.http.post<string>(`${this.baseUrl}/AddToWishlist`, wishlistData);
   }
 
   deleteProduct(productId: number): Observable<string> {
-    const wishlistData: WishlistVM = { ProductId: productId };
-    return this.http.delete<string>(`${this.baseUrl}/Delete`, {
-      body: wishlistData,
-    });
+    return this.http.delete<string>(`${this.baseUrl}/Delete/${productId}`);
   }
 
   clearWishlist(): Observable<string> {

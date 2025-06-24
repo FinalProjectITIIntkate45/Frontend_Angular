@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
+
+import { BehaviorSubject, Observable } from 'rxjs';
+
+import { CookieService } from 'ngx-cookie-service';
+
 import { AuthState, LoginResponse } from '../models/auth.models';
 
 @Injectable({
@@ -84,13 +87,14 @@ export class AuthService {
   }
 
   getUserId(): string {
-    const token = this.getToken();
-    if (token) {
-      const decoded = this.parseJwt(token);
-      return decoded?.userId || '';
-    }
-    return '';
+  const token = this.getToken();
+  if (token) {
+    const decoded = this.parseJwt(token);
+    return decoded?.nameid || decoded?.sub || '';
   }
+  return '';
+}
+
 
   logout(): void {
     this.cookieService.delete(this.TOKEN_KEY);

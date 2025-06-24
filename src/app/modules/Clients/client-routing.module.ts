@@ -53,8 +53,6 @@ const routes: Routes = [
       { path: 'shop', component: ShopsSectionComponent },
       { path: 'checkout', component: CheckoutComponent },
       { path: 'charity-details/:id', component: CharityDetailsComponent },
-
-
       { path: 'offers', component: OfferListComponent },
       { path: 'offers/:id', component: OfferDetailsComponent },
     ],

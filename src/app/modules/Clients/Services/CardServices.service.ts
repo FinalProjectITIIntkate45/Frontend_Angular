@@ -10,7 +10,7 @@ import { CartInterface } from '../Models/CartInterface';
 })
 export class CartServicesService {
 
-private baseUrl = `${environment.apiUrl}`+`/cart`; 
+private baseUrl = `${environment.apiUrl}`+`/cart`;
 
   constructor(private http: HttpClient) { }
 
@@ -30,6 +30,7 @@ private baseUrl = `${environment.apiUrl}`+`/cart`;
     return this.http.delete(`${this.baseUrl}/remove/${cartItemId}`);
   }
 
+
   // ✅ Get cart list details (for current user)
   getCartListDetails(): Observable<CartInterface> {
     return this.http.get<CartInterface>(`${this.baseUrl}/CartlistAllItems`);
@@ -40,4 +41,9 @@ private baseUrl = `${environment.apiUrl}`+`/cart`;
     const params = `?productId=${productId}&quantity=${quantity}&price=${price}&points=${points}&offerId=${offerId}`;
     return this.http.post(`${this.baseUrl}/add${params}`, null);
   }
+
+  clearCart(): Observable<any> {
+  return this.http.delete(`${this.baseUrl}/clear`);
+}
+
 }
