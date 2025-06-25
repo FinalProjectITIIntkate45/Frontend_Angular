@@ -32,6 +32,10 @@ export class CartComponent implements OnInit {
 
     this.cartService.getCartItems().subscribe({
       next: (data: CartInterface) => {
+        // Use new backend fields if present
+        if (typeof data.price1 === 'number' && typeof data.price2 === 'number') {
+          data.CartTotalPrice = data.price1 + data.price2;
+        }
         this.cartData = data;
         this.isLoading = false;
       },
@@ -65,14 +69,19 @@ export class CartComponent implements OnInit {
 
   recalculateTotals(): void {
     if (!this.cartData) return;
-    let total = 0;
-    let points = 0;
-    this.cartData.Items.forEach(item => {
-      total += item.offer ? item.offer.NewPrice : (item.productVM?.DisplayedPrice ?? 0);
-      points += item.offer ? item.offer.NewPoints : (item.productVM?.Points ?? 0);
-    });
-    this.cartData.CartTotalPrice = total;
-    this.cartData.CartTotalPoints = points;
+    // Use new backend fields if present
+    if (typeof this.cartData.price1 === 'number' && typeof this.cartData.price2 === 'number') {
+      this.cartData.CartTotalPrice = this.cartData.price1 + this.cartData.price2;
+    } else {
+      let total = 0;
+      let points = 0;
+      this.cartData.Items.forEach(item => {
+        total += item.offer ? item.offer.NewPrice : (item.productVM?.DisplayedPrice ?? 0);
+        points += item.offer ? item.offer.NewPoints : (item.productVM?.Points ?? 0);
+      });
+      this.cartData.CartTotalPrice = total;
+      this.cartData.CartTotalPoints = points;
+    }
   }
 
   // proceedToCheckout to  navigate to checkout
