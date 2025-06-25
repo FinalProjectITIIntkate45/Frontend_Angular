@@ -24,7 +24,7 @@ export class CheckoutService {
 
   // Endpoint 2: Validate Coupon
   validateCoupon(model: OrderCreateViewModel): Observable<APIResponse<CouponCode>> {
-    
+
     return this.http.post<APIResponse<CouponCode>>(`${this.baseUrl}/validate-coupon`, model);
   }
 

@@ -2,17 +2,27 @@
   <h3 class="mb-3">🧾 Order Confirmation</h3>
 
   <div class="summary mb-4">
-    <h5>📍 Shipping Info:</h5>
-    <p><strong>Name:</strong> {{ checkoutModel.billingData.firstName }} {{ checkoutModel.billingData.lastName }}</p>
-    <p><strong>Phone:</strong> {{ checkoutModel.billingData.phoneNumber }}</p>
-    <p><strong>Address:</strong>
-      {{ checkoutModel.billingData.street }},
-      {{ checkoutModel.billingData.city }},
-      {{ checkoutModel.billingData.country }}
-    </p>
+
+    <!-- ✅ شرط نوع التوصيل -->
+    <ng-container *ngIf="checkoutModel.billingData.shippingMethod === 'ship'; else pickupInfo">
+      <h5>📍 Shipping Info:</h5>
+      <p><strong>Name:</strong> {{ checkoutModel.billingData.firstName }} {{ checkoutModel.billingData.lastName }}</p>
+      <p><strong>Phone:</strong> {{ checkoutModel.billingData.phoneNumber }}</p>
+      <p><strong>Address:</strong>
+        {{ checkoutModel.billingData.street }},
+        {{ checkoutModel.billingData.city }},
+        {{ checkoutModel.billingData.country }}
+      </p>
+    </ng-container>
+
+    <!-- ✅ محتوى يظهر في حالة pickup -->
+    <ng-template #pickupInfo>
+      <h5>🏬 Pick-Up Info:</h5>
+      <p><strong>You chose to pick up the order from our store in <span style="text-transform: uppercase;">L/IVILA</span> branch.</strong></p>
+    </ng-template>
 
     <h5 class="mt-4">💳 Payment Method:</h5>
-    <p>{{ checkoutModel.paymentType }}</p>
+    <p>{{ getPaymentLabel(checkoutModel.paymentType) }}</p>
 
     <h5 class="mt-4">💰 Total:</h5>
     <p><strong>{{ checkoutModel.totalPrice | number:'1.2-2' }} EGP</strong></p>

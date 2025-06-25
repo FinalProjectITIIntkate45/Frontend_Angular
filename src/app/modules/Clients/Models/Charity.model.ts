@@ -10,6 +10,7 @@ export interface Charity {
   imageUrl: string;
   charityId: number;
   charityImages: CharityImage[];
+  images?: { url: string }[];
 }
 
 export interface CharityImage {

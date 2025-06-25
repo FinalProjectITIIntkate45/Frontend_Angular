@@ -1,13 +1,17 @@
-<h2 class="title">Charities</h2>
+<h2 class="charity-title">Charities</h2>
 
-<div class="charity-container">
+<div class="charity-list-container">
   <div class="charity-card" *ngFor="let charity of charities">
-    <h3>{{ charity.name }}</h3>
-    <p>{{ charity.description }}</p>
-
-<button [routerLink]="['/clients/charity-details', charity.id]">
-  View Details
-</button>
-    <button (click)="donate(charity.id)">Donate</button>
+    <div class="charity-image-wrapper">
+      <img *ngIf="charity.images && charity.images.length > 0" [src]="charity.images[0].url" alt="{{ charity.name }}" class="charity-image" />
+    </div>
+    <div class="charity-card-content">
+      <h3 class="charity-name">{{ charity.name }}</h3>
+      <p class="charity-description">{{ charity.description }}</p>
+      <div class="charity-card-actions">
+        <a [routerLink]="['/client/charity-details', charity.id]" class="btn primary">View Details</a>
+        <a [routerLink]="['/client/donate', charity.id]" class="btn secondary">Donate</a>
+      </div>
+    </div>
   </div>
 </div>

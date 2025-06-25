@@ -1,16 +1,18 @@
-<div class="details-container" *ngIf="charity">
-  <h2>{{ charity.name }}</h2>
-  <p>{{ charity.description }}</p>
-
-  <div class="image-gallery" *ngIf="charity.images?.length > 0">
-    <img *ngFor="let img of charity.images" [src]="img.url" alt="Charity Image" />
+<div class="charity-details-container" *ngIf="!loading && charity">
+  <div class="charity-details-header">
+    <img *ngIf="charity.images?.length" [src]="charity.images[0].url" alt="{{ charity.name }}" class="charity-details-image" />
+    <div>
+      <h2 class="charity-details-title">{{ charity.name }}</h2>
+      <p class="charity-details-description">{{ charity.description }}</p>
+    </div>
   </div>
-
-  <button class="back-button" (click)="backtocharty()">
-    ← Back to Charities
-  </button>
+  <div class="charity-details-gallery" *ngIf="charity.images?.length > 1">
+    <img *ngFor="let img of charity.images.slice(1)" [src]="img.url" alt="Charity Image" class="charity-gallery-image" />
+  </div>
+  <div class="charity-details-actions">
+    <button class="btn primary" (click)="backToCharity()">← Back to Charities</button>
+    <a [routerLink]="['/client/donate', charity.id]" class="btn secondary">Donate</a>
+  </div>
 </div>
-
-<div *ngIf="!charity">
-  <p style="text-align: center; color: #9197b3;">Loading details...</p>
-</div>
+<div *ngIf="loading" class="loading-message">Loading details...</div>
+<div *ngIf="!loading && !charity" class="not-found-message">Charity not found.</div>
