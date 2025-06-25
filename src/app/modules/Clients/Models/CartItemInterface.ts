@@ -1,8 +1,8 @@
-import { ProductInterface12 } from "./ProductInterface12";
 import { OfferViewModel } from "./OfferViewModel";
+import { ProductInterface } from "./ProductInterface";
 
 export interface CartItemInterface {
   cartItemId?: number;
-  productVM?: ProductInterface12;
+  productVM?: ProductInterface;
   offer?: OfferViewModel;
 }
