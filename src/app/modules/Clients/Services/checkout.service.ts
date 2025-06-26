@@ -57,4 +57,8 @@ export class CheckoutService {
   finalizeCheckout(model: OrderCreateViewModel): Observable<APIResponse<CheckoutResultVM>> {
     return this.http.post<APIResponse<CheckoutResultVM>>(`${this.baseUrl}/finalize-checkout`, model);
   }
+  completeOrder(data: { order: OrderCreateViewModel, saveOrder: boolean }) {
+  return this.http.post<APIResponse<CheckoutResultVM>>(`${this.baseUrl}/complete-order`, data);
+}
+
 }
