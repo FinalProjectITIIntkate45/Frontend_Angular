@@ -1,1 +1,360 @@
-<p>recycling-section works!</p>
+<div class="recycling-section">
+    <!-- Header -->
+    <div class="section-header mb-4">
+        <h2 class="mb-3">
+            <i class="fas fa-recycle text-success me-2"></i>
+            Recycling Center
+        </h2>
+        <p class="text-muted">Recycle your materials and earn points for a sustainable future!</p>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <div class="nav-tabs mb-4">
+        <ul class="nav nav-pills" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" [class.active]="showMaterialsList" (click)="showMaterials()" type="button">
+                    <i class="fas fa-list me-2"></i>
+                    Available Materials
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" [class.active]="showMyRequests" (click)="showRequests()" type="button">
+                    <i class="fas fa-history me-2"></i>
+                    My Requests
+                </button>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Alert Messages -->
+    <div *ngIf="errorMessage" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        {{ errorMessage }}
+        <button type="button" class="btn-close" (click)="clearMessages()"></button>
+    </div>
+
+    <div *ngIf="successMessage" class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="fas fa-check-circle me-2"></i>
+        {{ successMessage }}
+        <button type="button" class="btn-close" (click)="clearMessages()"></button>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div *ngIf="isLoading" class="text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="mt-2 text-muted">Loading...</p>
+    </div>
+
+    <!-- Materials List Section -->
+    <div *ngIf="showMaterialsList && !isLoading" class="materials-section">
+        <div class="row">
+            <div class="col-12">
+                <h4 class="mb-3">
+                    <i class="fas fa-leaf text-success me-2"></i>
+                    Available Recycling Materials
+                </h4>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div *ngFor="let material of materials" class="col-md-6 col-lg-4">
+                <div class="card h-100 material-card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="material-icon me-3">
+                                <i class="fas fa-recycle text-success fa-2x"></i>
+                            </div>
+                            <div>
+                                <h5 class="card-title mb-1">{{ material.Name }}</h5>
+                                <span class="badge bg-info">{{ getUnitTypeDisplayName(material.UnitType) }}</span>
+                            </div>
+                        </div>
+
+                        <div class="material-details">
+                            <p class="text-success fw-bold mb-2">
+                                <i class="fas fa-star me-1"></i>
+                                {{ material.PointsPerUnit }} points per {{
+                                getUnitTypeDisplayName(material.UnitType).toLowerCase() }}
+                            </p>
+
+                            <div *ngIf="material.MaterialImage" class="material-image mb-3">
+                                <img [src]="material.MaterialImage" [alt]="material.Name" class="img-fluid rounded">
+                            </div>
+                        </div>
+
+                        <button class="btn btn-success w-100" (click)="selectMaterial(material)">
+                            <i class="fas fa-plus me-2"></i>
+                            Recycle This Material
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div *ngIf="materials.length === 0" class="text-center py-5">
+            <i class="fas fa-recycle text-muted fa-3x mb-3"></i>
+            <h5 class="text-muted">No recycling materials available</h5>
+            <p class="text-muted">Check back later for available materials to recycle.</p>
+        </div>
+    </div>
+
+    <!-- Request Form Section -->
+    <div *ngIf="showRequestForm && !isLoading" class="request-form-section">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex align-items-center mb-4">
+                    <button class="btn btn-outline-secondary me-3" (click)="goBack()">
+                        <i class="fas fa-arrow-left me-2"></i>
+                        Back to Materials
+                    </button>
+                    <h4 class="mb-0">
+                        <i class="fas fa-plus-circle text-primary me-2"></i>
+                        Create Recycling Request
+                    </h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-body">
+                        <form [formGroup]="requestForm" (ngSubmit)="submitRequest()">
+                            <!-- Selected Material Info -->
+                            <div *ngIf="selectedMaterial" class="selected-material-info mb-4 p-3 bg-light rounded">
+                                <h6 class="mb-2">
+                                    <i class="fas fa-info-circle text-info me-2"></i>
+                                    Selected Material
+                                </h6>
+                                <div class="d-flex align-items-center">
+                                    <i class="fas fa-recycle text-success me-3 fa-lg"></i>
+                                    <div>
+                                        <strong>{{ selectedMaterial.Name }}</strong>
+                                        <br>
+                                        <small class="text-muted">
+                                            {{ selectedMaterial.PointsPerUnit }} points per {{
+                                            getUnitTypeDisplayName(selectedMaterial.UnitType).toLowerCase() }}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- City Field -->
+                            <div class="mb-3">
+                                <label for="city" class="form-label">
+                                    <i class="fas fa-map-marker-alt me-2"></i>
+                                    City *
+                                </label>
+                                <input type="text" class="form-control" id="city" formControlName="city"
+                                    placeholder="Enter your city"
+                                    [class.is-invalid]="requestForm.get('city')?.invalid && requestForm.get('city')?.touched">
+                                <div *ngIf="requestForm.get('city')?.invalid && requestForm.get('city')?.touched"
+                                    class="invalid-feedback">
+                                    City is required.
+                                </div>
+                            </div>
+
+                            <!-- Address Field -->
+                            <div class="mb-3">
+                                <label for="address" class="form-label">
+                                    <i class="fas fa-home me-2"></i>
+                                    Address *
+                                </label>
+                                <textarea class="form-control" id="address" formControlName="address"
+                                    placeholder="Enter your full address" rows="3"
+                                    [class.is-invalid]="requestForm.get('address')?.invalid && requestForm.get('address')?.touched"></textarea>
+                                <div *ngIf="requestForm.get('address')?.invalid && requestForm.get('address')?.touched"
+                                    class="invalid-feedback">
+                                    Address is required.
+                                </div>
+                            </div>
+
+                            <!-- Quantity Field -->
+                            <div class="mb-3">
+                                <label for="quantity" class="form-label">
+                                    <i class="fas fa-weight-hanging me-2"></i>
+                                    Quantity *
+                                </label>
+                                <div class="input-group">
+                                    <input type="number" class="form-control" id="quantity" formControlName="quantity"
+                                        placeholder="Enter quantity" step="0.1" min="0.1"
+                                        [class.is-invalid]="requestForm.get('quantity')?.invalid && requestForm.get('quantity')?.touched">
+                                    <span class="input-group-text">{{ getUnitTypeDisplayName(selectedMaterial?.UnitType
+                                        || 1).toLowerCase() }}</span>
+                                </div>
+                                <div *ngIf="requestForm.get('quantity')?.invalid && requestForm.get('quantity')?.touched"
+                                    class="invalid-feedback">
+                                    <div *ngIf="requestForm.get('quantity')?.errors?.['required']">Quantity is required.
+                                    </div>
+                                    <div *ngIf="requestForm.get('quantity')?.errors?.['min']">Quantity must be at least
+                                        0.1.</div>
+                                </div>
+                            </div>
+
+                            <!-- Image Upload -->
+                            <div class="mb-4">
+                                <label class="form-label">
+                                    <i class="fas fa-camera me-2"></i>
+                                    Upload Image (Optional)
+                                </label>
+                                <div class="upload-area">
+                                    <input type="file" class="form-control" accept="image/*"
+                                        (change)="onFileSelected($event)"
+                                        [class.is-invalid]="requestForm.get('requestImage')?.invalid && requestForm.get('requestImage')?.touched">
+                                    <small class="form-text text-muted">
+                                        Upload a photo of the material you want to recycle. Image will be converted to
+                                        base64 format.
+                                    </small>
+                                </div>
+
+                                <!-- Image Preview -->
+                                <div *ngIf="previewUrl" class="image-preview mt-3">
+                                    <div class="position-relative d-inline-block">
+                                        <img [src]="previewUrl" alt="Preview" class="img-thumbnail"
+                                            style="max-width: 200px; max-height: 200px;">
+                                        <button type="button"
+                                            class="btn btn-sm btn-danger position-absolute top-0 end-0 m-1"
+                                            (click)="removeImage()">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-success btn-lg"
+                                    [disabled]="isLoading || requestForm.invalid">
+                                    <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2"></span>
+                                    <i *ngIf="!isLoading" class="fas fa-paper-plane me-2"></i>
+                                    {{ isLoading ? 'Submitting...' : 'Submit Recycling Request' }}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar Info -->
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h6 class="mb-0">
+                            <i class="fas fa-lightbulb me-2"></i>
+                            Recycling Tips
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Clean your materials before recycling
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Separate different types of materials
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Take clear photos for verification
+                            </li>
+                            <li class="mb-2">
+                                <i class="fas fa-check text-success me-2"></i>
+                                Provide accurate city information
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- My Requests Section -->
+    <div *ngIf="showMyRequests && !isLoading" class="my-requests-section">
+        <div class="row">
+            <div class="col-12">
+                <h4 class="mb-3">
+                    <i class="fas fa-history text-primary me-2"></i>
+                    My Recycling Requests
+                </h4>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <!-- Feature Coming Soon Message -->
+                <div class="text-center py-5">
+                    <i class="fas fa-tools text-primary fa-3x mb-3"></i>
+                    <h5 class="text-primary">Feature Coming Soon!</h5>
+                    <p class="text-muted mb-4">
+                        The request history feature is currently under development.
+                        You can still create new recycling requests from the Available Materials tab.
+                    </p>
+                    <button class="btn btn-success" (click)="showMaterials()">
+                        <i class="fas fa-plus me-2"></i>
+                        Create New Request
+                    </button>
+                </div>
+
+                <!-- This will be used when the backend endpoint is implemented -->
+                <div *ngIf="myRequests.length > 0" class="table-responsive" style="display: none;">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Material</th>
+                                <th>Unit Type</th>
+                                <th>Quantity</th>
+                                <th>Status</th>
+                                <th>Points Awarded</th>
+                                <th>Created Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let request of myRequests">
+                                <td>
+                                    <strong>{{ request.materialName }}</strong>
+                                </td>
+                                <td>
+                                    <span class="badge bg-info">{{ getUnitTypeDisplayName(request.unitType) }}</span>
+                                </td>
+                                <td>
+                                    <span class="text-muted">{{ request.quantity || 'N/A' }}</span>
+                                </td>
+                                <td>
+                                    <span [class]="getStatusBadgeClass(request.status)">
+                                        {{ getStatusText(request.status) }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span *ngIf="request.pointsAwarded" class="text-success fw-bold">
+                                        <i class="fas fa-star me-1"></i>
+                                        {{ request.pointsAwarded }}
+                                    </span>
+                                    <span *ngIf="!request.pointsAwarded" class="text-muted">
+                                        -
+                                    </span>
+                                </td>
+                                <td>
+                                    <small class="text-muted">
+                                        {{ request.createdAt | date:'short' }}
+                                    </small>
+                                </td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-primary"
+                                        (click)="viewRequestDetails(request.id)">
+                                        <i class="fas fa-eye me-1"></i>
+                                        View
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
