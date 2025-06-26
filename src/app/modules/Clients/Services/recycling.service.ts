@@ -83,16 +83,69 @@ export class RecyclingService {
       );
   }
 
-  // Since my-requests endpoint doesn't exist yet, return empty array
+  // Get user's recycling requests
   getMyRequests(): Observable<RecyclingRequestListItemViewModel[]> {
-    // TODO: Implement when backend endpoint is available
-    return of([]);
+    return this.http
+      .get<APIResponse<any[]>>(`${this.baseUrl}/RecyclingRequest/MyRequests`)
+      .pipe(
+        map((response) => {
+          console.log('API Response for MyRequests:', response);
+          console.log('Raw Data Array:', response.Data);
+
+          // Map PascalCase backend properties to camelCase frontend properties
+          const mappedData = (response.Data || []).map((item) => ({
+            id: item.Id,
+            materialName: item.MaterialName,
+            unitType: item.UnitType,
+            quantity: item.Quantity,
+            status: item.Status,
+            pointsAwarded: item.PointsAwarded,
+            createdAt: item.CreatedAt,
+          }));
+
+          console.log('Mapped Data:', mappedData);
+          return mappedData;
+        }),
+        catchError((error) => {
+          console.error('Error fetching my requests:', error);
+          return of([]); // Return empty array on error
+        })
+      );
   }
 
-  // Since request details endpoint doesn't exist yet, return null
-  getRequestDetails(id: number): Observable<any> {
-    // TODO: Implement when backend endpoint is available
-    return of(null);
+  // Get specific request details
+  getRequestDetails(
+    id: number
+  ): Observable<RecyclingRequestDetailsViewModel | null> {
+    return this.http
+      .get<APIResponse<any>>(`${this.baseUrl}/RecyclingRequest/${id}`)
+      .pipe(
+        map((response) => {
+          console.log('Request Details Response:', response);
+
+          if (!response.Data) return null;
+
+          // Map PascalCase backend properties to camelCase frontend properties
+          const mappedData = {
+            id: response.Data.Id,
+            materialName: response.Data.MaterialName,
+            unitType: response.Data.UnitType,
+            quantity: response.Data.Quantity,
+            status: response.Data.Status,
+            pointsAwarded: response.Data.PointsAwarded,
+            requestImage: response.Data.RequestImage,
+            clientUsername: response.Data.ClientUsername,
+            createdAt: response.Data.CreatedAt,
+          };
+
+          console.log('Mapped Request Details:', mappedData);
+          return mappedData;
+        }),
+        catchError((error) => {
+          console.error('Error fetching request details:', error);
+          return of(null);
+        })
+      );
   }
 
   // Update request status (for admin/provider)

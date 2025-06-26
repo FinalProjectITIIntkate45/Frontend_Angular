@@ -17,6 +17,7 @@ export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
   const isPublicRoute = publicRoutes.some((route) => req.url.includes(route));
 
   if (isPublicRoute) {
+    console.log(`[AuthInterceptor] Public route detected: ${req.url}`);
     return next(req);
   }
 
@@ -30,7 +31,9 @@ export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
     });
     return next(authReq);
   } else {
-    console.warn('[AuthInterceptor] No token found. Request will not be authenticated.');
+    console.warn(
+      '[AuthInterceptor] No token found. Request will not be authenticated.'
+    );
   }
 
   return next(req);

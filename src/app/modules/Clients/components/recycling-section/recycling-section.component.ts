@@ -38,8 +38,6 @@ export class RecyclingSectionComponent implements OnInit {
     private fb: FormBuilder
   ) {
     this.requestForm = this.fb.group({
-      materialId: ['', Validators.required],
-      unitType: ['', Validators.required],
       city: ['', Validators.required],
       address: ['', Validators.required],
       quantity: ['', [Validators.required, Validators.min(0.1)]],
@@ -77,6 +75,7 @@ export class RecyclingSectionComponent implements OnInit {
   loadMyRequests(): void {
     this.recyclingService.getMyRequests().subscribe({
       next: (requests) => {
+        console.log('Received requests in component:', requests);
         this.myRequests = requests;
         // No error message needed since this endpoint is not implemented yet
       },
@@ -90,8 +89,9 @@ export class RecyclingSectionComponent implements OnInit {
   selectMaterial(material: RecyclingMaterial): void {
     this.selectedMaterial = material;
     this.requestForm.patchValue({
-      materialId: material.Id,
-      unitType: material.UnitType,
+      city: '',
+      address: '',
+      quantity: '',
     });
     this.showRequestForm = true;
     this.showMaterialsList = false;
@@ -121,45 +121,44 @@ export class RecyclingSectionComponent implements OnInit {
   }
 
   submitRequest(): void {
-    if (this.requestForm.valid) {
-      this.isLoading = true;
-      this.errorMessage = '';
-      this.successMessage = '';
-
-      const requestData: RecyclingRequestCreateViewModel = {
-        materialId: this.requestForm.value.materialId,
-        unitType: this.requestForm.value.unitType,
-        city: this.requestForm.value.city,
-        address: this.requestForm.value.address,
-        quantity: this.requestForm.value.quantity,
-        requestImage: this.imageBase64 || undefined, // Convert null to undefined
-      };
-
-      this.recyclingService.createRequest(requestData).subscribe({
-        next: (response) => {
-          if (response.IsSuccess) {
-            this.successMessage =
-              response.Message || 'Recycling request submitted successfully!';
-            this.resetForm();
-            this.loadMyRequests();
-            this.showMaterialsList = true;
-            this.showRequestForm = false;
-          } else {
-            this.errorMessage =
-              response.Message || 'Failed to submit recycling request.';
-          }
-          this.isLoading = false;
-        },
-        error: (error) => {
-          console.error('Error submitting request:', error);
-          this.errorMessage =
-            'Failed to submit recycling request. Please try again.';
-          this.isLoading = false;
-        },
-      });
-    } else {
+    if (this.requestForm.invalid) {
       this.markFormGroupTouched();
+      return;
     }
+
+    this.isLoading = true;
+    this.errorMessage = '';
+    this.successMessage = '';
+
+    const formValue = this.requestForm.value;
+    const request: RecyclingRequestCreateViewModel = {
+      materialId: this.selectedMaterial!.Id,
+      unitType: this.selectedMaterial!.UnitType,
+      city: formValue.city,
+      address: formValue.address,
+      quantity: formValue.quantity,
+      requestImage: this.imageBase64 || undefined,
+    };
+
+    this.recyclingService.createRequest(request).subscribe({
+      next: (response) => {
+        console.log('Request created successfully:', response);
+        this.isLoading = false;
+        this.successMessage = 'Recycling request created successfully!';
+        this.resetForm();
+
+        // Reset form and go back to materials list
+        setTimeout(() => {
+          this.showMaterials();
+        }, 2000);
+      },
+      error: (error) => {
+        console.error('Error creating request:', error);
+        this.isLoading = false;
+        this.errorMessage =
+          'Failed to create recycling request. Please try again.';
+      },
+    });
   }
 
   resetForm(): void {
@@ -187,6 +186,7 @@ export class RecyclingSectionComponent implements OnInit {
     this.showMyRequests = true;
     this.showMaterialsList = false;
     this.showRequestForm = false;
+    this.loadMyRequests();
   }
 
   showMaterials(): void {
@@ -235,9 +235,34 @@ export class RecyclingSectionComponent implements OnInit {
   }
 
   viewRequestDetails(requestId: number): void {
-    // TODO: Implement request details view
     console.log('Viewing request details for ID:', requestId);
-    // This could open a modal or navigate to a details page
-    this.successMessage = `Viewing details for request #${requestId}`;
+
+    this.isLoading = true;
+    this.errorMessage = '';
+
+    this.recyclingService.getRequestDetails(requestId).subscribe({
+      next: (requestDetails) => {
+        this.isLoading = false;
+
+        if (requestDetails) {
+          // For now, just show the details in a success message
+          // Later we can create a modal or separate page
+          this.successMessage = `Request #${requestDetails.id} Details: ${
+            requestDetails.materialName
+          } - Status: ${this.getStatusText(
+            requestDetails.status
+          )} - Created: ${new Date(
+            requestDetails.createdAt
+          ).toLocaleDateString()}`;
+        } else {
+          this.errorMessage = 'Request details not found.';
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching request details:', error);
+        this.errorMessage = 'Failed to load request details.';
+        this.isLoading = false;
+      },
+    });
   }
 }

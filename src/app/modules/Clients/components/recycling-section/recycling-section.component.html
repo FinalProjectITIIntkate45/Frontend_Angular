@@ -285,13 +285,12 @@
 
         <div class="row">
             <div class="col-12">
-                <!-- Feature Coming Soon Message -->
-                <div class="text-center py-5">
-                    <i class="fas fa-tools text-primary fa-3x mb-3"></i>
-                    <h5 class="text-primary">Feature Coming Soon!</h5>
+                <!-- Empty State -->
+                <div *ngIf="myRequests.length === 0" class="text-center py-5">
+                    <i class="fas fa-recycle text-muted fa-3x mb-3"></i>
+                    <h5 class="text-muted">No recycling requests found</h5>
                     <p class="text-muted mb-4">
-                        The request history feature is currently under development.
-                        You can still create new recycling requests from the Available Materials tab.
+                        You haven't created any recycling requests yet. Start by selecting a material to recycle.
                     </p>
                     <button class="btn btn-success" (click)="showMaterials()">
                         <i class="fas fa-plus me-2"></i>
@@ -299,8 +298,8 @@
                     </button>
                 </div>
 
-                <!-- This will be used when the backend endpoint is implemented -->
-                <div *ngIf="myRequests.length > 0" class="table-responsive" style="display: none;">
+                <!-- Requests Table -->
+                <div *ngIf="myRequests.length > 0" class="table-responsive">
                     <table class="table table-hover">
                         <thead class="table-light">
                             <tr>
