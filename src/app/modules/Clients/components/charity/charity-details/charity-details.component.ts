@@ -12,6 +12,7 @@ import { Router } from '@angular/router';
 export class CharityDetailsComponent implements OnInit {
   charity: any;
   charityId!: number;
+  loading = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -19,9 +20,8 @@ export class CharityDetailsComponent implements OnInit {
     private router: Router
   ) {}
 
-backtocharty(){
-  this.router.navigate(['/clients/charities']);
-  
+backToCharity(){
+  this.router.navigate(['charities']);
 }
 
 
@@ -30,10 +30,13 @@ backtocharty(){
 
     this.charityService.getCharityDetails(this.charityId).subscribe({
       next: (res) => {
-        this.charity = res.data;
+        console.log(res);
+        this.charity = res.data || res;
+        this.loading = false;
       },
       error: (err) => {
         console.error('Error fetching details:', err);
+        this.loading = false;
       }
     });
   }

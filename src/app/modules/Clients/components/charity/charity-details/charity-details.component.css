@@ -61,3 +61,82 @@
 .back-button:hover {
   background-color: #d39a29;
 }
+
+.charity-details-container {
+  max-width: 700px;
+  margin: 2rem auto;
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 4px 24px rgba(30, 50, 100, 0.10);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.charity-details-header {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.charity-details-image {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(30, 50, 100, 0.10);
+  background: #f4f6fa;
+}
+
+.charity-details-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a2a4f;
+  margin-bottom: 0.5rem;
+}
+
+.charity-details-description {
+  font-size: 1.1rem;
+  color: #5a6a85;
+  margin-bottom: 1rem;
+}
+
+.charity-details-gallery {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.charity-gallery-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  background: #f4f6fa;
+  box-shadow: 0 1px 4px rgba(30, 50, 100, 0.08);
+}
+
+.charity-details-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.loading-message, .not-found-message {
+  text-align: center;
+  color: #9197b3;
+  font-size: 1.2rem;
+  margin-top: 2rem;
+}
+
+@media (max-width: 700px) {
+  .charity-details-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  .charity-details-container {
+    padding: 1rem;
+  }
+}
