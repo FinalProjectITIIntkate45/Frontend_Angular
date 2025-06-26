@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { Observable, of, BehaviorSubject } from 'rxjs';
+import { catchError, map, shareReplay, tap } from 'rxjs/operators';
 import { environment } from '../../../../environments/environment';
 import { APIResponse } from '../../../core/models/APIResponse';
 import {
@@ -20,24 +20,66 @@ import {
 export class RecyclingService {
   private baseUrl = `${environment.apiUrl}`;
 
+  // ✅ Add caching for materials (they don't change often)
+  private materialsCache$ = new BehaviorSubject<RecyclingMaterial[]>([]);
+  private materialsCacheTime = 0;
+  private readonly CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
   constructor(private http: HttpClient) {}
 
-  // Recycling Materials - Read Only Operations
+  // Recycling Materials - Read Only Operations with Caching
   getAllMaterials(): Observable<RecyclingMaterial[]> {
+    const now = Date.now();
+
+    // ✅ Return cached data if still valid
+    if (
+      this.materialsCache$.value.length > 0 &&
+      now - this.materialsCacheTime < this.CACHE_DURATION
+    ) {
+      console.log('Returning cached materials');
+      return of(this.materialsCache$.value);
+    }
+
+    // ✅ Fetch fresh data and cache it
     return this.http
       .get<APIResponse<RecyclingMaterial[]>>(
         `${this.baseUrl}/RecyclingMaterialsApi/getall`
       )
       .pipe(
         map((response) => response.Data || []),
+        tap((materials) => {
+          // ✅ Cache the results
+          this.materialsCache$.next(materials);
+          this.materialsCacheTime = now;
+          console.log('Materials cached, count:', materials.length);
+        }),
+        shareReplay(1), // ✅ Share the same response with multiple subscribers
         catchError((error) => {
           console.error('Error fetching materials:', error);
-          return of([]); // Return empty array on error
+          // ✅ Return cached data on error if available
+          if (this.materialsCache$.value.length > 0) {
+            console.log('Returning cached materials due to error');
+            return of(this.materialsCache$.value);
+          }
+          return of([]);
         })
       );
   }
 
+  // ✅ Clear cache when needed (e.g., after creating/updating materials)
+  clearMaterialsCache(): void {
+    this.materialsCache$.next([]);
+    this.materialsCacheTime = 0;
+    console.log('Materials cache cleared');
+  }
+
   getMaterialById(id: number): Observable<RecyclingMaterial | null> {
+    // ✅ Try to get from cache first
+    const cachedMaterial = this.materialsCache$.value.find((m) => m.Id === id);
+    if (cachedMaterial) {
+      return of(cachedMaterial);
+    }
+
     return this.http
       .get<APIResponse<RecyclingMaterial>>(
         `${this.baseUrl}/RecyclingMaterialsApi/${id}`
@@ -53,8 +95,6 @@ export class RecyclingService {
 
   // Recycling Requests - Client Operations
   createRequest(request: RecyclingRequestCreateViewModel): Observable<any> {
-    // Send JSON data instead of FormData since backend doesn't handle file uploads
-    // Note: Backend extension method needs to be updated to include Address and Quantity fields
     const requestData = {
       MaterialId: request.materialId,
       UnitType: request.unitType,
@@ -83,10 +123,17 @@ export class RecyclingService {
       );
   }
 
-  // Get user's recycling requests
-  getMyRequests(): Observable<RecyclingRequestListItemViewModel[]> {
+  // Get user's recycling requests with pagination
+  getMyRequests(
+    pageNumber: number = 1,
+    pageSize: number = 10
+  ): Observable<RecyclingRequestListItemViewModel[]> {
+    const params = `?pageNumber=${pageNumber}&pageSize=${pageSize}`;
+
     return this.http
-      .get<APIResponse<any[]>>(`${this.baseUrl}/RecyclingRequest/MyRequests`)
+      .get<APIResponse<any[]>>(
+        `${this.baseUrl}/RecyclingRequest/MyRequests${params}`
+      )
       .pipe(
         map((response) => {
           console.log('API Response for MyRequests:', response);
@@ -108,7 +155,7 @@ export class RecyclingService {
         }),
         catchError((error) => {
           console.error('Error fetching my requests:', error);
-          return of([]); // Return empty array on error
+          return of([]);
         })
       );
   }
