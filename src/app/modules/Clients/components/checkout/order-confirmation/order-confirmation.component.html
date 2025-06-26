@@ -1,17 +1,35 @@
 <div class="form-section">
-  <h3>Order Confirmation</h3>
-  <p>Review and confirm your order details...</p>
+  <h3 class="mb-3">🧾 Order Confirmation</h3>
 
-  <div class="summary">
-    <h4>Order Summary</h4>
-    <p><strong>Delivery Method:</strong> {{ checkoutModel.billingData.shippingMethod }}</p>
-    <p><strong>Payment Method:</strong> {{ checkoutModel.paymentType }}</p>
-    <p><strong>Total Price:</strong> {{ checkoutModel.totalPrice }}</p>
-    <p><strong>Total Points:</strong> {{ checkoutModel.totalPoints }}</p>
+  <div class="summary mb-4">
+
+    <!-- ✅ شرط نوع التوصيل -->
+    <ng-container *ngIf="checkoutModel.billingData?.shippingMethod === 'ship'; else pickupInfo">
+      <h5>📍 Shipping Info:</h5>
+      <p><strong>Name:</strong> {{ checkoutModel.billingData?.firstName }} {{ checkoutModel.billingData?.lastName }}</p>
+      <p><strong>Phone:</strong> {{ checkoutModel.billingData?.phoneNumber }}</p>
+      <p><strong>Address:</strong>
+        {{ checkoutModel.billingData?.street }},
+        {{ checkoutModel.billingData?.city }},
+        {{ checkoutModel.billingData?.country }}
+      </p>
+    </ng-container>
+
+    <!-- ✅ محتوى يظهر في حالة pickup -->
+    <ng-template #pickupInfo>
+      <h5>🏬 Pick-Up Info:</h5>
+      <p><strong>You chose to pick up the order from our store in <span style="text-transform: uppercase;">L/IVILA</span> branch.</strong></p>
+    </ng-template>
+
+    <h5 class="mt-4">💳 Payment Method:</h5>
+    <p>{{ getPaymentLabel(checkoutModel.paymentType) }}</p>
+
+    <h5 class="mt-4">💰 Total:</h5>
+    <p><strong>{{ checkoutModel.totalPrice | number:'1.2-2' }} EGP</strong></p>
   </div>
 
   <div class="button-group">
-    <button class="btn btn-primary" (click)="onConfirmOrder()">Confirm Order</button>
-    <button class="btn btn-secondary" (click)="onCancelOrder()">Cancel Order</button>
+    <button class="btn btn-custom next-btn" (click)="onConfirmOrder()">Confirm Order</button>
+    <button class="btn btn-custom prev-btn" (click)="onCancelOrder()">Back</button>
   </div>
 </div>

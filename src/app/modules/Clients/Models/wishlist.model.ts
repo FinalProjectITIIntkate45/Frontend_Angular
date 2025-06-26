@@ -1,9 +1,10 @@
 export interface WishlistItem {
-  productId: number;
-  productName: string;
-  clientId: string;
-  price?: number; // إضافة السعر
-  discount?: boolean; // إضافة الخصم
+  ProductId: number;
+  ProductName: string;
+  ProductImage: string;
+  ProductPrice: number;
+  ProductPoints: number;
+  DiscountPercentage?: number;
 }
 
 export interface WishlistVM {

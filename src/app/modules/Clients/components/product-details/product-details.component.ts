@@ -268,7 +268,9 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     try {
       // TODO: Implement actual wishlist service logic here
       this.WishlistService.addToWishlist(this.product.Id).subscribe({
-        next:(value)=> {
+        next:(value)=> 
+      {
+        console.log(value);
           this.showSuccessMessage(`${this.product?.Name} added to wishlist!`);
         },
         error:(err)=>{
