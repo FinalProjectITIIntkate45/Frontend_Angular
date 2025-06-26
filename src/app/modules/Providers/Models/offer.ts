@@ -12,4 +12,5 @@ export interface Offer {
     StartDate: string;
     EndDate: string;
     offerProducts: OfferProduct[];
+    offerPricePoint : number;
 }

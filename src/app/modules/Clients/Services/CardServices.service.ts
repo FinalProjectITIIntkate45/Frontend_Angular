@@ -32,8 +32,14 @@ private baseUrl = `${environment.apiUrl}`+`/cart`;
 
 
   // ✅ Get cart list details (for current user)
-  getCartListDetails(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/list`);
+  getCartListDetails(): Observable<CartInterface> {
+    return this.http.get<CartInterface>(`${this.baseUrl}/CartlistAllItems`);
+  }
+
+  // Add offer to cart (with offerId)
+  addOfferToCart(productId: number, quantity: number, price: number, points: number, offerId: number): Observable<any> {
+    const params = `?productId=${productId}&quantity=${quantity}&price=${price}&points=${points}&offerId=${offerId}`;
+    return this.http.post(`${this.baseUrl}/add${params}`, null);
   }
 
   clearCart(): Observable<any> {

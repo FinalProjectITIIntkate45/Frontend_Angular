@@ -5,6 +5,7 @@ import { OfferViewModel } from '../../../Models/OfferViewModel';
 import { OfferService } from '../../../Services/offer.service';
 import { PaginationResponse } from '../../../Models/PaginationResponse';
 import { CommonModule } from '@angular/common';
+import { CartServicesService } from '../../../Services/CardServices.service';
 
 @Component({
   selector: 'app-offer-list',
@@ -24,7 +25,8 @@ export class OfferListComponent implements OnInit {
   constructor(
     private offerService: OfferService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private cartService: CartServicesService
   ) { }
 
   ngOnInit(): void {
@@ -82,5 +84,18 @@ export class OfferListComponent implements OnInit {
   get getToIndex(): number {
     const to = this.pageNumber * this.pageSize;
     return to > this.totalRecords ? this.totalRecords : to;
+  }
+
+  addOfferToCart(offer: OfferViewModel): void {
+    if (!offer.Products || offer.Products.length === 0) {
+      this.toastr.error('No products in this offer.');
+      return;
+    }
+    const product = offer.Products[0];
+    this.cartService.addOfferToCart(product.ProductId, product.ProductQuantity, offer.NewPrice, offer.NewPoints, offer.Id)
+      .subscribe({
+        next: () => this.toastr.success('Offer added to cart!'),
+        error: () => this.toastr.error('Failed to add offer to cart.')
+      });
   }
 } 

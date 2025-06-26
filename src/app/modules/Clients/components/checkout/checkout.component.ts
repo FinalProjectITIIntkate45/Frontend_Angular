@@ -66,23 +66,21 @@ export class CheckoutComponent implements OnInit {
     this.isLoading = true;
     this.error = null;
 
-    this.cartService.getCartItems().subscribe(
-      (cartItems) => {
-        this.checkoutModel.orderItems = cartItems.Items.map(
-          (item: CartItemInterface) => ({
-            productId: item.ProductId,
-            quantity: item.Quantity,
-            price: item.Price,
-            points: item.points,
-          })
-        );
+  this.cartService.getCartItems().subscribe(
+    (cartItems) => {
+      // تحويل CartItemInterface إلى OrderItemViewModel
+      this.checkoutModel.orderItems = cartItems.Items
+        .filter((item: CartItemInterface) => item.productVM !== undefined)
+        .map((item: CartItemInterface) => ({
+          productId: item.productVM!.Id,
+          quantity: 1,
+          price: item.productVM!.DisplayedPrice,
+          points: item.productVM!.Points
+        }));
 
-
-        this.originalTotalPrice = cartItems.CartTotalPrice;
-        this.checkoutModel.totalPrice = this.originalTotalPrice;
-        this.checkoutModel.totalPoints = cartItems.CartTotalPoints;
-
-        this.shopName = cartItems.Items.length > 0 ? cartItems.Items[0].shopName : '';
+      // تحديث باقي القيم في checkoutModel
+      this.checkoutModel.totalPrice = cartItems.CartTotalPrice;
+      this.checkoutModel.totalPoints = cartItems.CartTotalPoints;
 
         this.isLoading = false;
       },

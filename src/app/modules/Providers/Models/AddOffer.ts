@@ -11,4 +11,5 @@ export interface AddOffer {
     StartDate: string;
     EndDate: string;
     Products: OfferProductViewModel[];
+    offerPricePoint: number;
 }

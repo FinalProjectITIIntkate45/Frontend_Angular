@@ -1,8 +1,8 @@
 import { OfferProductViewModel } from "./OfferProductViewModel";
 
 export interface OfferViewModel {
-Name: any;
   Id: number;
+  offerPricePoint: number;
   OfferImgUrl: string;
   Status: number;
   OldPrice: number;
