@@ -36,7 +36,7 @@ export class CheckoutComponent implements OnInit {
       totalPoints: 0,
       usedPaidPoints: 0,
       usedFreePoints: 0,
-      couponCode: '',
+      couponCode: { code: '' },
       paymentType: 0,
       billingData: {
         firstName: '',
@@ -66,21 +66,21 @@ export class CheckoutComponent implements OnInit {
     this.isLoading = true;
     this.error = null;
 
-  this.cartService.getCartItems().subscribe(
-    (cartItems) => {
-      // تحويل CartItemInterface إلى OrderItemViewModel
-      this.checkoutModel.orderItems = cartItems.Items
-        .filter((item: CartItemInterface) => item.productVM !== undefined)
-        .map((item: CartItemInterface) => ({
+    this.cartService.getCartItems().subscribe(
+      (cartItems) => {
+        // تحويل CartItemInterface إلى OrderItemViewModel
+        this.checkoutModel.orderItems = cartItems.Items.filter(
+          (item: CartItemInterface) => item.productVM !== undefined
+        ).map((item: CartItemInterface) => ({
           productId: item.productVM!.Id,
           quantity: 1,
           price: item.productVM!.DisplayedPrice,
-          points: item.productVM!.Points
+          points: item.productVM!.Points,
         }));
 
-      // تحديث باقي القيم في checkoutModel
-      this.checkoutModel.totalPrice = cartItems.CartTotalPrice;
-      this.checkoutModel.totalPoints = cartItems.CartTotalPoints;
+        // تحديث باقي القيم في checkoutModel
+        this.checkoutModel.totalPrice = cartItems.CartTotalPrice;
+        this.checkoutModel.totalPoints = cartItems.CartTotalPoints;
 
         this.isLoading = false;
       },
@@ -95,10 +95,11 @@ export class CheckoutComponent implements OnInit {
   selectDeliveryMethod(method: string): void {
     this.deliveryMethod = method;
     if (method === 'pickup') {
-      this.checkoutModel.billingData.shippingMethod = 'pickup';
+      this.checkoutModel.billingData!.shippingMethod = 'pickup';
+
       this.currentStep = 2;
     } else {
-      this.checkoutModel.billingData.shippingMethod = 'ship';
+      this.checkoutModel.billingData!.shippingMethod = 'ship';
       this.currentStep = 1;
     }
   }
@@ -116,57 +117,105 @@ export class CheckoutComponent implements OnInit {
   }
 
   onPlaceOrder(): void {
-    console.log('📦 Submitting order:', this.checkoutModel);
-    if (this.checkoutModel.orderItems.length === 0) {
-      this.toastr.error('Your cart is empty!', 'Error');
-      return;
-    }
-    this.checkoutModel.clientId = this.authService.getUserId();
-    this.checkoutService.createOrder(this.checkoutModel).subscribe(
-      (response) => {
-        this.toastr.success('Order placed successfully!', 'Success');
+  console.log('📦 Submitting order:', this.checkoutModel);
 
-        this.cartService.clearCart().subscribe(
-          () => {
-            this.toastr.success('Cart cleared after order');
-
-            this.checkoutModel = {
-              clientId: '',
-              orderItems: [],
-              totalPrice: 0,
-              totalPoints: 0,
-              usedPaidPoints: 0,
-              usedFreePoints: 0,
-              couponCode: '',
-              paymentType: 0,
-              billingData: {
-                firstName: '',
-                lastName: '',
-                phoneNumber: '',
-                street: '',
-                city: '',
-                state: '',
-                apartment: '',
-                floor: '',
-                building: '',
-                country: '',
-                shippingMethod: '',
-                email: '',
-              },
-              status: 0,
-            };
-            this.currentStep = 1;
-          },
-          (error) => {
-            console.error('Error clearing cart:', error);
-            this.toastr.warning('Order placed but cart not cleared', 'Warning');
-          }
-        );
-      },
-      (error) => {
-        console.error('Error placing order:', error);
-        this.toastr.error('Failed to place order', 'Error');
-      }
-    );
+  // 1️⃣ تأكيد وجود عناصر في الطلب
+  if (this.checkoutModel.orderItems.length === 0) {
+    this.toastr.error('Your cart is empty!', 'Error');
+    return;
   }
+
+  // 2️⃣ حذف بيانات العنوان لو Pick-up
+  if (this.checkoutModel.billingData?.shippingMethod?.toLowerCase() === 'pickup') {
+    this.checkoutModel.billingData = null;
+  }
+
+  // 3️⃣ تأكيد اختيار وسيلة الدفع
+  if (!this.checkoutModel.paymentType) {
+    this.toastr.error('Please select a payment method', 'Error');
+    return;
+  }
+
+  // 4️⃣ نبدأ بمعاينة السعر النهائي من الباك
+  this.checkoutService.finalizeCheckout(this.checkoutModel).subscribe({
+    next: (res) => {
+      if (res.IsSuccess && res.Data) {
+        const result = res.Data;
+
+        // ✅ نعرض السعر والنقاط قبل تنفيذ الطلب
+        const confirmed = confirm(
+          `✅ Final Amount: ${result.finalAmount} EGP\n🎯 Earned Points: ${result.earnedPoints}\n\nDo you want to confirm the order?`
+        );
+
+        if (!confirmed) return;
+
+        // ✅ لو فيه رابط دفع خارجي (زي Paymob)
+        if (result.paymentUrl) {
+          window.location.href = result.paymentUrl;
+          return;
+        }
+
+        // ✅ مفيش دفع خارجي، يبقى نكمل تنفيذ الأوردر بنفسنا
+        this.checkoutService.createOrder(this.checkoutModel).subscribe({
+          next: () => {
+            this.toastr.success('Order placed successfully!', 'Success');
+
+            this.cartService.clearCart().subscribe(
+              () => {
+                this.toastr.success('Cart cleared after order');
+                this.resetCheckout();
+              },
+              (error) => {
+                console.error('Error clearing cart:', error);
+                this.toastr.warning(
+                  'Order placed but cart not cleared',
+                  'Warning'
+                );
+              }
+            );
+          },
+          error: (error) => {
+            console.error('Error placing order:', error);
+            this.toastr.error('Failed to place order', 'Error');
+          },
+        });
+      } else {
+        this.toastr.error(res.Message || '❌ Failed to finalize checkout');
+      }
+    },
+    error: () => {
+      this.toastr.error('⚠️ Error finalizing checkout');
+    },
+  });
+}
+
+  resetCheckout(): void {
+  this.checkoutModel = {
+    clientId: '',
+    orderItems: [],
+    totalPrice: 0,
+    totalPoints: 0,
+    usedPaidPoints: 0,
+    usedFreePoints: 0,
+    couponCode: { code: '' },
+    paymentType: 0,
+    billingData: {
+      firstName: '',
+      lastName: '',
+      phoneNumber: '',
+      street: '',
+      city: '',
+      state: '',
+      apartment: '',
+      floor: '',
+      building: '',
+      country: '',
+      shippingMethod: '',
+      email: '',
+    },
+    status: 0,
+  };
+  this.currentStep = 1;
+}
+
 }

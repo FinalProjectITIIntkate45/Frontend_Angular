@@ -12,9 +12,10 @@ export class DeliveryInfoComponent {
   @Input() checkoutModel!: OrderCreateViewModel;
   @Input() currentStep: number = 1;
   @Output() nextStep: EventEmitter<void> = new EventEmitter<void>();
-
   isDeliveryValid(): boolean {
     const billingData = this.checkoutModel.billingData;
+    if (!billingData) return false;
+
     return (
       !!billingData.firstName &&
       !!billingData.lastName &&

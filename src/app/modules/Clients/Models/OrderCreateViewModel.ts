@@ -10,8 +10,8 @@ export interface OrderCreateViewModel {
   totalPoints: number;
   usedPaidPoints: number;
   usedFreePoints: number;
-  couponCode?: string;
+  couponCode: { code: string } | null
   paymentType: PaymentType; // enum
-  billingData: BillingDataVM;
+  billingData: BillingDataVM | null;
   status?: number;
 }

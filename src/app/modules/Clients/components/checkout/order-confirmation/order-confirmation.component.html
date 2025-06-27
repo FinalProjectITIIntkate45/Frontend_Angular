@@ -4,14 +4,14 @@
   <div class="summary mb-4">
 
     <!-- ✅ شرط نوع التوصيل -->
-    <ng-container *ngIf="checkoutModel.billingData.shippingMethod === 'ship'; else pickupInfo">
+    <ng-container *ngIf="checkoutModel.billingData?.shippingMethod === 'ship'; else pickupInfo">
       <h5>📍 Shipping Info:</h5>
-      <p><strong>Name:</strong> {{ checkoutModel.billingData.firstName }} {{ checkoutModel.billingData.lastName }}</p>
-      <p><strong>Phone:</strong> {{ checkoutModel.billingData.phoneNumber }}</p>
+      <p><strong>Name:</strong> {{ checkoutModel.billingData?.firstName }} {{ checkoutModel.billingData?.lastName }}</p>
+      <p><strong>Phone:</strong> {{ checkoutModel.billingData?.phoneNumber }}</p>
       <p><strong>Address:</strong>
-        {{ checkoutModel.billingData.street }},
-        {{ checkoutModel.billingData.city }},
-        {{ checkoutModel.billingData.country }}
+        {{ checkoutModel.billingData?.street }},
+        {{ checkoutModel.billingData?.city }},
+        {{ checkoutModel.billingData?.country }}
       </p>
     </ng-container>
 

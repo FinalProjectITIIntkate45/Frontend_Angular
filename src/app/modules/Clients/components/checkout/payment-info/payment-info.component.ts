@@ -16,7 +16,7 @@ export class PaymentInfoComponent {
   @Output() nextStep: EventEmitter<void> = new EventEmitter<void>();
   @Output() previousStep: EventEmitter<void> = new EventEmitter<void>();
 
-  couponCode: string = '';
+  couponCode:  { code: 'DISCOUNT50' }  = { code: 'DISCOUNT50' };
   couponMessage: string | null = null;
   couponValid: boolean = false;
 
@@ -40,13 +40,13 @@ export class PaymentInfoComponent {
   }
 
   applyCoupon(): void {
-    if (!this.couponCode.trim()) {
+    if (!this.couponCode.code.trim()) {
       this.couponMessage = 'Please enter a coupon code.';
       this.couponValid = false;
       return;
     }
 
-    this.checkoutModel.couponCode = this.couponCode.trim();
+    this.checkoutModel.couponCode = { code: this.couponCode.code.trim() };
 
     this.checkoutService.validateCoupon(this.checkoutModel).subscribe({
       next: (res) => {
@@ -67,9 +67,9 @@ export class PaymentInfoComponent {
   }
 
   resetCoupon(): void {
-    this.couponCode = '';
+    this.checkoutModel.totalPrice = this.checkoutModel.totalPrice; // Reset to original price
     this.couponMessage = null;
     this.couponValid = false;
-    this.checkoutModel.couponCode = '';
+    this.checkoutModel.couponCode = null;
   }
 }
