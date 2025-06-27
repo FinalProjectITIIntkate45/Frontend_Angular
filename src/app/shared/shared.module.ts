@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { LinebreaksPipe } from './pipes/linebreaks.pipe';
 
 @NgModule({
-  declarations: [],
+  declarations: [LinebreaksPipe],
   imports: [CommonModule],
-  exports: [],
+  exports: [LinebreaksPipe],
 })
 export class SharedModule {}

@@ -3,7 +3,7 @@
     <img *ngIf="charity.images?.length" [src]="charity.images[0].url" alt="{{ charity.name }}" class="charity-details-image" />
     <div>
       <h2 class="charity-details-title">{{ charity.name }}</h2>
-      <p class="charity-details-description">{{ charity.description }}</p>
+      <div class="charity-details-description" *ngIf="charity.description" [innerHTML]="charity.description | linebreaks"></div>
     </div>
   </div>
   <div class="charity-details-gallery" *ngIf="charity.images?.length > 1">

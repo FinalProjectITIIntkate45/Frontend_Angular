@@ -1,25 +1,20 @@
 export interface Charity {
-  id: number;
-  name: string;
-  description: string;
-  contactEmail: string;
-  contactPhone: string;
-  website: string;
-  logoUrl: string;
-  createdAt: string;
-  imageUrl: string;
-  charityId: number;
-  charityImages: CharityImage[];
-  images?: { url: string }[];
+  Id: number;
+  Name: string;
+  Description: string;
+  ContactEmail: string;
+  ContactPhone: string;
+  Website: string;
+  LogoUrl: string;
+  CreatedAt?: string;
+  CharityImages: CharityImage[];
 }
 
 export interface CharityImage {
-  imageUrl: string;
-  charity: {
-    id: number;
-    name: string;
-    description: string;
-    createdAt: string;
-    imageUrl: string;
-  };
+  Id: number;
+  CharityId: number;
+  ImageUrl: string;
+  CreatedAt: string;
+  Charity?: any;
 }
+

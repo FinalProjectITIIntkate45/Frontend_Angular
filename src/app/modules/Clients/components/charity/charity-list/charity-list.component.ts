@@ -24,7 +24,7 @@ export class CharityListComponent implements OnInit {
         console.log(responce)
         this.charities = responce.Data.map((charity: Charity) => ({
           ...charity,
-          images: charity.charityImages?.map(img => ({ url: img.imageUrl })) || []
+          images: charity.CharityImages?.map(img => ({ url: img.ImageUrl })) || []
         }));
       },
       error: (err) => {
