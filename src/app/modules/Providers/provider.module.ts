@@ -31,6 +31,8 @@ import { ShopOffersComponent } from './Components/OfferGroupe/ShopOffers/ShopOff
 import { OfferDetailesComponent } from './Components/OfferGroupe/OfferDetailes/OfferDetailes.component';
 import { MakeOfferComponent } from './Components/OfferGroupe/MakeOffer/MakeOffer.component';
 import { OfferProductManagerComponent } from './Components/OfferGroupe/OfferProductManager/OfferProductManager.component';
+import { ProviderOrdersComponent } from './Components/provider-orders/provider-orders.component';
+
 
 @NgModule({
   declarations: [
@@ -48,7 +50,9 @@ import { OfferProductManagerComponent } from './Components/OfferGroupe/OfferProd
     ShopOffersComponent,
     OfferDetailesComponent,
     MakeOfferComponent,
-    OfferProductManagerComponent
+    OfferProductManagerComponent,
+    ProviderOrdersComponent,
+
   ],
    imports: [
     CommonModule,

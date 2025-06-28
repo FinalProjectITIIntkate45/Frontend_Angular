@@ -1,0 +1,44 @@
+<div class="container mt-4">
+  <h2 class="mb-4">Provider Orders</h2>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead class="table-light">
+        <tr>
+          <th>Image</th>
+          <th>Order ID</th>
+          <th>Client</th>
+          <th>Date & Time</th>
+          <th>Status</th>
+          <th>Amount</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="orders.length; else noOrders">
+        <tr *ngFor="let order of orders">
+          <td>
+            <img *ngIf="order.orderItems[0] && order.orderItems[0].productId !== undefined"
+                 [src]="getProductImage(order.orderItems[0].productId)"
+                 class="img-thumbnail"
+                 style="width: 50px;"
+                 alt="Product">
+          </td>
+          <td>{{ order.id }}</td>
+          <td>{{ order.clientId }}</td>
+          <td>{{ order.creationDateTime | date:'medium' }}</td>
+          <td>
+            <span [ngClass]="{'text-success': order.status === 'Success', 'text-warning': order.status === 'Pending', 'text-danger': order.status === 'Cancel'}">
+              {{ order.status }}
+            </span>
+          </td>
+          <td>{{ order.totalAmount }}</td>
+          <td>
+            <button class="btn btn-info btn-sm" (click)="viewOrderDetails(order)">View Details</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <ng-template #noOrders>
+    <p class="text-center">No orders found for this provider.</p>
+  </ng-template>
+</div>
