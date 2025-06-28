@@ -2,70 +2,70 @@
   <h3 class="mb-3">📍 Delivery Information</h3>
 
   <div class="row">
-    <div class="col-md-6 form-group">
+    <div class="col-md-6 form-group mb-3">
       <label>First Name</label>
       <input [(ngModel)]="checkoutModel.billingData.firstName" placeholder="First Name" class="General-custom-input" />
-      <div *ngIf="checkoutModel.billingData.firstName === ''" class="error-message">First Name is required</div>
+      <div *ngIf="showErrors && !checkoutModel.billingData.firstName?.trim()" class="error-message">First Name is required</div>
     </div>
 
-    <div class="col-md-6 form-group">
+    <div class="col-md-6 form-group mb-3">
       <label>Last Name</label>
       <input [(ngModel)]="checkoutModel.billingData.lastName" placeholder="Last Name" class="General-custom-input" />
-      <div *ngIf="checkoutModel.billingData.lastName === ''" class="error-message">Last Name is required</div>
+      <div *ngIf="showErrors && !checkoutModel.billingData.lastName?.trim()" class="error-message">Last Name is required</div>
     </div>
 
-    <div class="col-md-6 form-group">
+    <div class="col-md-6 form-group mb-3">
       <label>Phone Number</label>
       <input [(ngModel)]="checkoutModel.billingData.phoneNumber" placeholder="Phone Number" class="General-custom-input" />
-      <div *ngIf="checkoutModel.billingData.phoneNumber === ''" class="error-message">Phone Number is required</div>
+      <div *ngIf="showErrors && !checkoutModel.billingData.phoneNumber?.trim()" class="error-message">Phone Number is required</div>
     </div>
 
-    <div class="col-md-6 form-group">
+    <div class="col-md-6 form-group mb-3">
       <label>Email</label>
       <input [(ngModel)]="checkoutModel.billingData.email" placeholder="Email" class="General-custom-input" />
-      <div *ngIf="checkoutModel.billingData.email === ''" class="error-message">Email is required</div>
+      <div *ngIf="showErrors && !checkoutModel.billingData.email?.trim()" class="error-message">Email is required</div>
     </div>
 
-    <div class="col-md-12 form-group">
+    <div class="col-md-12 form-group mb-3">
       <label>Street Address</label>
       <input [(ngModel)]="checkoutModel.billingData.street" placeholder="Street Address" class="General-custom-input" />
-      <div *ngIf="checkoutModel.billingData.street === ''" class="error-message">Street Address is required</div>
+      <div *ngIf="showErrors && !checkoutModel.billingData.street?.trim()" class="error-message">Street Address is required</div>
     </div>
 
-    <div class="col-md-4 form-group">
+    <div class="col-md-4 form-group mb-3">
       <label>Apartment</label>
       <input [(ngModel)]="checkoutModel.billingData.apartment" placeholder="Apartment" class="General-custom-input" />
-      <div *ngIf="checkoutModel.billingData.apartment === ''" class="error-message">Apartment is required</div>
+      <div *ngIf="showErrors && !checkoutModel.billingData.apartment?.trim()" class="error-message">Apartment is required</div>
     </div>
 
-    <div class="col-md-4 form-group">
+    <div class="col-md-4 form-group mb-3">
       <label>Floor</label>
       <input [(ngModel)]="checkoutModel.billingData.floor" placeholder="Floor" class="General-custom-input" />
-      <div *ngIf="checkoutModel.billingData.floor === ''" class="error-message">Floor is required</div>
+      <div *ngIf="showErrors && !checkoutModel.billingData.floor?.trim()" class="error-message">Floor is required</div>
     </div>
 
-    <div class="col-md-4 form-group">
+    <div class="col-md-4 form-group mb-3">
       <label>Building</label>
       <input [(ngModel)]="checkoutModel.billingData.building" placeholder="Building" class="General-custom-input" />
-      <div *ngIf="checkoutModel.billingData.building === ''" class="error-message">Building is required</div>
+      <div *ngIf="showErrors && !checkoutModel.billingData.building?.trim()" class="error-message">Building is required</div>
     </div>
 
-    <div class="col-md-6 form-group">
+    <div class="col-md-6 form-group mb-3">
       <label>City</label>
       <input [(ngModel)]="checkoutModel.billingData.city" placeholder="City" class="General-custom-input" />
-      <div *ngIf="checkoutModel.billingData.city === ''" class="error-message">City is required</div>
+      <div *ngIf="showErrors && !checkoutModel.billingData.city?.trim()" class="error-message">City is required</div>
     </div>
 
-    <div class="col-md-6 form-group">
+    <div class="col-md-6 form-group mb-3">
       <label>State</label>
       <input [(ngModel)]="checkoutModel.billingData.state" placeholder="State" class="General-custom-input" />
-      <div *ngIf="checkoutModel.billingData.state === ''" class="error-message">State is required</div>
+      <div *ngIf="showErrors && !checkoutModel.billingData.state?.trim()" class="error-message">State is required</div>
     </div>
 
-    <div class="col-md-12 form-group">
+    <div class="col-md-12 form-group mb-3">
       <label>Country</label>
       <input [(ngModel)]="checkoutModel.billingData.country" placeholder="Country" class="General-custom-input" />
-      <div *ngIf="checkoutModel.billingData.country === ''" class="error-message">Country is required</div>
+      <div *ngIf="showErrors && !checkoutModel.billingData.country?.trim()" class="error-message">Country is required</div>
     </div>
   </div>
 
