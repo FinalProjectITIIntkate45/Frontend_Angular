@@ -20,6 +20,7 @@ import { OfferProductManagerComponent } from './Components/OfferGroupe/OfferProd
 import { OfferDetailesComponent } from './Components/OfferGroupe/OfferDetailes/OfferDetailes.component';
 import { MakeOfferComponent } from './Components/OfferGroupe/MakeOffer/MakeOffer.component';
 import { EditDetailsComponent } from './Components/OfferGroupe/editDetailes/editDetailes.component';
+import { ProviderOrdersComponent } from './Components/provider-orders/provider-orders.component';
 
 const routes: Routes = [
   {
@@ -40,6 +41,7 @@ const routes: Routes = [
       { path: 'offer-product-manager/:offerId', component: OfferProductManagerComponent },
       { path: 'offer-details/:id', component: OfferDetailesComponent },
       { path: 'make-offer', component: MakeOfferComponent },
+      { path: 'provider-orders', component: ProviderOrdersComponent },
     ],
   },
 ];
