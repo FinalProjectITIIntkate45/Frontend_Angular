@@ -77,8 +77,13 @@ export class CheckoutComponent implements OnInit {
           (item: CartItemInterface) => item.productVM !== undefined
         ).map((item: CartItemInterface) => ({
           productId: item.productVM!.Id,
-          quantity: 1,
+          quantity: item.productVM!.Stock ,
+          name: item.productVM!.Name,
+          shopName: item.productVM!.ShopName,
+          description: item.productVM!.Description,
           price: item.productVM!.DisplayedPrice,
+          priceAfterDiscount: item.productVM!.DisplayedPriceAfterDiscount || 0,
+          image: item.productVM!.Images[0] || '',
           points: item.productVM!.Points,
         }));
 

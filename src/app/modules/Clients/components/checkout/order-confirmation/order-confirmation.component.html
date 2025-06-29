@@ -1,35 +1,36 @@
-<div class="form-section">
-  <h3 class="mb-3">🧾 Order Confirmation</h3>
+<h5 class="mt-4">🛒 Products Summary:</h5>
+<!-- <pre>{{ checkoutModel.orderItems | json }}</pre> -->
 
-  <div class="summary mb-4">
+<table class="table table-bordered table-striped mt-2">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Image</th>
+      <th>Product</th>
+      <th>Description</th>
+      <th>Qty</th>
+      <th>Price</th>
+      <th>After Discount</th>
+      <th>Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let item of checkoutModel.orderItems; let i = index">
+      <td>{{ i + 1 }}</td>
+      <td>
+        <img [src]="item.image" width="50" height="50" alt="Product Image" *ngIf="item.image">
+      </td>
+      <td>{{ item.name }}</td>
+      <td>{{ item.description }}</td>
+      <td>{{ item.quantity }}</td>
+      <td>{{ item.price | number: '1.2-2' }} EGP</td>
+      <td>{{ item.priceAfterDiscount | number: '1.2-2' }} EGP</td>
+      <td>{{ (item.priceAfterDiscount || item.price || 0) * item.quantity | number: '1.2-2' }} EGP</td>
+    </tr>
+  </tbody>
+</table>
 
-    <!-- ✅ شرط نوع التوصيل -->
-    <ng-container *ngIf="checkoutModel.billingData?.shippingMethod === 'ship'; else pickupInfo">
-      <h5>📍 Shipping Info:</h5>
-      <p><strong>Name:</strong> {{ checkoutModel.billingData?.firstName }} {{ checkoutModel.billingData?.lastName }}</p>
-      <p><strong>Phone:</strong> {{ checkoutModel.billingData?.phoneNumber }}</p>
-      <p><strong>Address:</strong>
-        {{ checkoutModel.billingData?.street }},
-        {{ checkoutModel.billingData?.city }},
-        {{ checkoutModel.billingData?.country }}
-      </p>
-    </ng-container>
-
-    <!-- ✅ محتوى يظهر في حالة pickup -->
-    <ng-template #pickupInfo>
-      <h5>🏬 Pick-Up Info:</h5>
-      <p><strong>You chose to pick up the order from our store in <span style="text-transform: uppercase;">L/IVILA</span> branch.</strong></p>
-    </ng-template>
-
-    <h5 class="mt-4">💳 Payment Method:</h5>
-    <p>{{ getPaymentLabel(checkoutModel.paymentType) }}</p>
-
-    <h5 class="mt-4">💰 Total:</h5>
-    <p><strong>{{ checkoutModel.totalPrice | number:'1.2-2' }} EGP</strong></p>
-  </div>
-
-  <div class="button-group">
-    <button class="btn btn-custom next-btn" (click)="onConfirmOrder()">Confirm Order</button>
-    <button class="btn btn-custom prev-btn" (click)="onCancelOrder()">Back</button>
-  </div>
+<div class="d-flex justify-content-between mt-4">
+  <button class="btn btn-secondary" (click)="onCancelOrder()">⬅️ Back</button>
+  <button class="btn btn-success" (click)="onConfirmOrder()">✅ Confirm Order</button>
 </div>
