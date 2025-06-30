@@ -1,1 +1,67 @@
-<p>wallet-section works!</p>
+<div class="wallet-section-container">
+    <h2 class="wallet-title">My Wallet</h2>
+
+    <div *ngIf="loading" class="wallet-loading">
+        <mat-spinner></mat-spinner>
+        <span>Loading your wallet...</span>
+    </div>
+
+    <div *ngIf="error" class="wallet-error">
+        <mat-icon color="warn">error</mat-icon>
+        <span>{{ error }}</span>
+    </div>
+
+    <div *ngIf="wallet && !loading && !error">
+        <!-- Free Points Card -->
+        <div class="wallet-card wallet-free-points">
+            <div class="wallet-card-header">
+                <mat-icon class="wallet-icon info">card_giftcard</mat-icon>
+                <span class="wallet-card-title">Free Points</span>
+            </div>
+            <div class="wallet-card-content">
+                <div *ngIf="wallet.freePoints.length > 0; else noFreePoints">
+                    <div *ngFor="let fp of wallet.freePoints" class="wallet-point-row">
+                        <span class="wallet-point-amount">{{ fp.points | number:'1.0-0' }}</span>
+                        <span class="wallet-point-source">{{ fp.sourceType }}</span>
+                        <span class="wallet-point-expiry">Expires: {{ fp.expireAt | date:'mediumDate' }}</span>
+                        <span *ngIf="fp.reference" class="wallet-point-ref">({{ fp.reference }})</span>
+                    </div>
+                </div>
+                <ng-template #noFreePoints>
+                    <span class="wallet-no-points">No free points available.</span>
+                </ng-template>
+            </div>
+        </div>
+
+        <!-- Shop Points Cards -->
+        <div class="wallet-shop-points-list">
+            <h3 class="wallet-section-subtitle">Shop Points</h3>
+            <div *ngIf="wallet.shopPoints.length > 0; else noShopPoints" class="wallet-shop-cards">
+                <div *ngFor="let sp of wallet.shopPoints" class="wallet-card wallet-shop-card"
+                    [ngClass]="{'special-shop': sp.shop?.shopType === 'Special', 'regular-shop': sp.shop?.shopType !== 'Special'}">
+                    <div class="wallet-card-header">
+                        <img *ngIf="sp.shop?.logo" [src]="sp.shop.logo" alt="Shop Logo" class="wallet-shop-logo" />
+                        <span class="wallet-card-title">{{ sp.shop?.name }}</span>
+                        <span class="wallet-shop-type-badge"
+                            [ngClass]="{'special': sp.shop?.shopType === 'Special', 'regular': sp.shop?.shopType !== 'Special'}">
+                            {{ sp.shop?.shopType }}
+                        </span>
+                    </div>
+                    <div class="wallet-card-content">
+                        <div class="wallet-point-row">
+                            <span class="wallet-point-amount primary">{{ sp.points | number:'1.0-0' }}</span>
+                            <span class="wallet-point-label">Points</span>
+                        </div>
+                        <div class="wallet-point-meta">
+                            <span>Earned: {{ sp.earnedAt | date:'mediumDate' }}</span>
+                            <span>Expires: {{ sp.expireAt | date:'mediumDate' }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <ng-template #noShopPoints>
+                <span class="wallet-no-points">No shop points available.</span>
+            </ng-template>
+        </div>
+    </div>
+</div>
