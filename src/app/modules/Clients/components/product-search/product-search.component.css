@@ -28,6 +28,48 @@
   font-style: normal;
 }
 
+.search-section {
+  margin-bottom: 20px;
+}
+
+.search-input-group {
+  display: flex;
+  max-width: 500px;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  overflow: hidden;
+  background: white;
+}
+
+.search-input {
+  flex: 1;
+  padding: 12px 16px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+}
+
+.search-input::placeholder {
+  color: #6c757d;
+}
+
+.search-btn {
+  background: #1976d2;
+  color: white;
+  border: none;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-btn:hover {
+  background: #1565c0;
+}
+
+.search-icon {
+  font-size: 16px;
+}
+
 .results-header {
   display: flex;
   justify-content: space-between;
@@ -60,6 +102,21 @@
   background: white;
   font-size: 14px;
   min-width: 180px;
+}
+
+.items-per-page {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.items-select {
+  padding: 8px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  background: white;
+  font-size: 14px;
+  min-width: 80px;
 }
 
 /* Main Content Layout */
@@ -349,7 +406,8 @@
 }
 
 .loading-state,
-.error-state {
+.error-state,
+.no-results {
   text-align: center;
   padding: 60px 20px;
   color: #6c757d;
@@ -372,6 +430,46 @@
   100% {
     transform: rotate(360deg);
   }
+}
+
+.error-icon {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.retry-btn {
+  background: #1976d2;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 20px;
+}
+
+.retry-btn:hover {
+  background: #1565c0;
+}
+
+.no-results-icon {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.clear-filters-btn {
+  background: #6c757d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 20px;
+}
+
+.clear-filters-btn:hover {
+  background: #5a6268;
 }
 
 .products-grid {
@@ -595,6 +693,18 @@
   border-top: 1px solid #e9ecef;
 }
 
+.page-numbers {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.page-numbers span {
+  color: #6c757d;
+  font-weight: 500;
+  padding: 0 8px;
+}
+
 .page-btn {
   padding: 8px 16px;
   background: #1976d2;
@@ -604,6 +714,8 @@
   cursor: pointer;
   font-size: 14px;
   transition: background-color 0.3s ease;
+  min-width: 40px;
+  text-align: center;
 }
 
 .page-btn:hover:not(:disabled) {
@@ -615,9 +727,16 @@
   cursor: not-allowed;
 }
 
+.page-btn.active {
+  background: #0d47a1;
+  font-weight: 600;
+}
+
 .page-info {
   font-size: 14px;
   color: #495057;
+  text-align: center;
+  margin-top: 20px;
 }
 
 /* Promotional Banner */

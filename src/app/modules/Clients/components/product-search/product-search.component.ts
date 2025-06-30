@@ -11,6 +11,7 @@ import {
   distinctUntilChanged,
   Subject,
   Subscription,
+  firstValueFrom,
 } from 'rxjs';
 import { CartServicesService } from '../../Services/CardServices.service';
 
@@ -68,7 +69,7 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
     private productService: ProductService,
     private router: Router,
     private route: ActivatedRoute,
-    private cardservice: CartServicesService,
+    private cardservice: CartServicesService
   ) {
     // Setup debounced search
     this.searchSubject
@@ -128,7 +129,7 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
   private async loadCategories(): Promise<void> {
     try {
       this.categories =
-        (await this.productService.getCategories().toPromise()) || [];
+        (await firstValueFrom(this.productService.getCategories())) || [];
     } catch (error) {
       console.error('Error loading categories:', error);
       this.categories = [];
@@ -138,7 +139,7 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
   private async loadBrands(): Promise<void> {
     try {
       const brandNames =
-        (await this.productService.getBrands().toPromise()) || [];
+        (await firstValueFrom(this.productService.getBrands())) || [];
       this.brands = brandNames.map((name) => ({ name, count: 0 }));
     } catch (error) {
       console.error('Error loading brands:', error);
@@ -212,7 +213,8 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
       queryParamsHandling: 'merge',
     });
 
-    // The route subscription will handle the actual search
+    // Use the debounced search subject
+    this.searchSubject.next(this.searchQuery);
   }
 
   searchProducts(): void {
@@ -373,7 +375,7 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
     console.log('Adding to cart:', product);
     // Implement your cart service logic here
 
-    //  this.cardservice.addToCart(product.Id, 
+    //  this.cardservice.addToCart(product.Id,
     //                             product.quantity,
     //                              product.DisplayedPriceAfterDiscount || product.DisplayedPrice,
     //                               product.Points);

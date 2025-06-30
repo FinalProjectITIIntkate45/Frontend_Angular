@@ -9,6 +9,17 @@
         <span>Catalog with sidebar filters</span>
       </div>
 
+      <!-- Search Input -->
+      <div class="search-section">
+        <div class="search-input-group">
+          <input type="text" [(ngModel)]="searchQuery" (input)="onSearchQueryChange()" placeholder="Search products..."
+            class="search-input">
+          <button (click)="searchProducts()" class="search-btn">
+            <span class="search-icon">🔍</span>
+          </button>
+        </div>
+      </div>
+
       <div class="results-header">
         <div class="results-info">
           <span class="results-count">Found <strong>{{totalItems}}</strong> items</span>
@@ -257,7 +268,7 @@
           </div>
 
           <!-- Pagination -->
-          <div class="pagination" *ngIf="!loading && !error && totalPages > 1">
+          <div class="pagination" *ngIf="!loading && !error && totalItems > 0">
             <button class="page-btn" [disabled]="currentPage === 1" (click)="previousPage()">
               Previous
             </button>
