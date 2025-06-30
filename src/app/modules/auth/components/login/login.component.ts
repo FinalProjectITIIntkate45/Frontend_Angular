@@ -60,8 +60,10 @@ export class LoginComponent {
           const role = this.authService.getUserRole();
           if (role === 'Provider') {
             this.router.navigate(['/provider']);
-          } else {
+          } else if (role === 'Client') {
             this.router.navigate(['/client']);
+          } else if (role === 'Recycler') {
+            this.router.navigate(['/Recycler']);
           }
         } else {
           this.errorMessage = response.Message || 'Login failed';

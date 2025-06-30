@@ -207,6 +207,11 @@ export class RecyclingService {
       );
   }
 
+  // Delete a recycling request by ID
+  deleteRequest(requestId: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/RecyclingRequest/${requestId}`);
+  }
+
   // Helper method to get unit type display name
   getUnitTypeDisplayName(unitType: UnitOfMeasurementType | number): string {
     // Convert to number if it's a string

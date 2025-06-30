@@ -1,0 +1,59 @@
+<div class="wallet-container">
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Loading wallet information...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error && !loading" class="error-container">
+    <div class="error-icon">⚠️</div>
+    <h3>Error</h3>
+    <p>{{ error }}</p>
+    <button class="retry-btn" (click)="refreshWallet()">Try Again</button>
+  </div>
+
+  <!-- Wallet Information -->
+  <div *ngIf="wallet && !loading && !error" class="wallet-content">
+    <div class="wallet-header">
+      <h2>My Wallet</h2>
+      <button class="refresh-btn" (click)="refreshWallet()" title="Refresh wallet">
+        🔄
+      </button>
+    </div>
+
+    <div class="wallet-cards">
+      <!-- Points Balance Card -->
+      <div class="balance-card points-card">
+        <div class="card-icon">🎯</div>
+        <div class="card-content">
+          <h3>Points Balance</h3>
+          <div class="balance-amount">{{ formatPoints(wallet.BalancePoints) }}</div>
+          <p class="balance-label">Available Points</p>
+        </div>
+      </div>
+
+      <!-- Cash Balance Card -->
+      <div class="balance-card cash-card">
+        <div class="card-icon">💰</div>
+        <div class="card-content">
+          <h3>Cash Balance</h3>
+          <div class="balance-amount">{{ formatCurrency(wallet.Balancecash) }}</div>
+          <p class="balance-label">Available Cash</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Last Updated Information -->
+    <div class="last-updated">
+      <p><strong>Last Updated:</strong> {{ formatDate(wallet.LastUpdated) }}</p>
+    </div>
+  </div>
+
+  <!-- No Wallet Found -->
+  <div *ngIf="!wallet && !loading && !error" class="no-wallet">
+    <div class="no-wallet-icon">💳</div>
+    <h3>No Wallet Found</h3>
+    <p>You don't have a wallet yet. Please contact support to create one.</p>
+  </div>
+</div> 

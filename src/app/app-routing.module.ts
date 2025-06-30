@@ -34,6 +34,12 @@ const routes: Routes = [
     loadChildren: () =>
       import('./modules/Clients/client.module').then((m) => m.ClientModule),
   },
+  {
+    path: 'Recycler',
+    canActivate: [authGuard],
+    loadChildren: () =>
+      import('./modules/Recycling/recycling.module').then((m) => m.RecyclingModule),
+  },
   // { path: '', redirectTo: 'clients/follow-seller', pathMatch: 'full' },
   // {
   //   path: 'clients',

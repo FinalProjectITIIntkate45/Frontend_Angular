@@ -25,7 +25,6 @@ import { PointsSectionComponent } from './components/points-section/points-secti
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { ProductSearchComponent } from './components/product-search/product-search.component';
 import { ProfileSectionComponent } from './components/profile-section/profile-section.component';
-import { RecyclingSectionComponent } from './components/recycling-section/recycling-section.component';
 import { SettingsSectionComponent } from './components/settings-section/settings-section.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { TopNavigationComponent } from './components/top-navigation/top-navigation.component';
@@ -52,7 +51,6 @@ import { PaymentInfoComponent } from './components/checkout/payment-info/payment
     WalletSectionComponent,
     DrdersSectionComponent,
     PointsSectionComponent,
-    RecyclingSectionComponent,
     AchievementsSectionComponent,
     SettingsSectionComponent,
     ClientLayoutComponent,

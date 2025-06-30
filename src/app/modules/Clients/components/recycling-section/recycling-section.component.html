@@ -157,6 +157,24 @@
                                 </div>
                             </div>
 
+                            <!-- Governorate Field -->
+                            <div class="mb-3">
+                                <label for="governorate" class="form-label">
+                                    <i class="fas fa-map me-2"></i>
+                                    Governorate *
+                                </label>
+                                <select class="form-select" id="governorate" formControlName="governorate"
+                                    [class.is-invalid]="requestForm.get('governorate')?.invalid && requestForm.get('governorate')?.touched">
+                                    <option value="" disabled selected>Select your governorate</option>
+                                    <option *ngFor="let gov of governorates" [value]="gov">
+                                        {{ Governorate[gov] }}
+                                    </option>
+                                </select>
+                                <div *ngIf="requestForm.get('governorate')?.invalid && requestForm.get('governorate')?.touched" class="invalid-feedback">
+                                    Governorate is required.
+                                </div>
+                            </div>
+
                             <!-- Address Field -->
                             <div class="mb-3">
                                 <label for="address" class="form-label">
@@ -348,10 +366,20 @@
                                         <i class="fas fa-eye me-1"></i>
                                         View
                                     </button>
+                                    <button class="btn btn-sm btn-outline-danger ms-1"
+                                        (click)="deleteRequest(request.id)">
+                                        <i class="fas fa-trash-alt me-1"></i>
+                                        Delete
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
+                </div>
+                <div class="d-flex justify-content-center my-3">
+                  <button class="btn btn-outline-secondary me-2" (click)="prevPage()" [disabled]="pageNumber === 1">Previous</button>
+                  <span>Page {{ pageNumber }}</span>
+                  <button class="btn btn-outline-secondary ms-2" (click)="nextPage()">Next</button>
                 </div>
             </div>
         </div>

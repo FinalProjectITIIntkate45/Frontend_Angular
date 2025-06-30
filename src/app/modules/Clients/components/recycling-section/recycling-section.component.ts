@@ -9,6 +9,7 @@ import {
   RecyclingRequestCreateViewModel,
   RecyclingRequestListItemViewModel,
   RecyclingRequestStatus,
+  Governorate,
 } from '../../Models/recycling-request.model';
 
 @Component({
@@ -32,6 +33,11 @@ export class RecyclingSectionComponent implements OnInit {
   selectedFile: File | null = null;
   previewUrl: string | null = null;
   imageBase64: string | null = null;
+  governorates = Object.values(Governorate).filter(v => typeof v === 'number');
+  Governorate = Governorate;
+
+  pageNumber = 1;
+  pageSize = 10;
 
   constructor(
     private recyclingService: RecyclingService,
@@ -42,6 +48,7 @@ export class RecyclingSectionComponent implements OnInit {
       address: ['', Validators.required],
       quantity: ['', [Validators.required, Validators.min(0.1)]],
       requestImage: [''],
+      governorate: [null, Validators.required],
     });
   }
 
@@ -73,15 +80,15 @@ export class RecyclingSectionComponent implements OnInit {
   }
 
   loadMyRequests(): void {
-    this.recyclingService.getMyRequests().subscribe({
+    this.isLoading = true;
+    this.recyclingService.getMyRequests(this.pageNumber, this.pageSize).subscribe({
       next: (requests) => {
-        console.log('Received requests in component:', requests);
         this.myRequests = requests;
-        // No error message needed since this endpoint is not implemented yet
+        this.isLoading = false;
       },
       error: (error) => {
-        console.error('Error loading requests:', error);
-        // Don't show error for unimplemented endpoint
+        this.errorMessage = 'Error loading requests';
+        this.isLoading = false;
       },
     });
   }
@@ -138,6 +145,7 @@ export class RecyclingSectionComponent implements OnInit {
       address: formValue.address,
       quantity: formValue.quantity,
       requestImage: this.imageBase64 || undefined,
+      governorate: formValue.governorate,
     };
 
     this.recyclingService.createRequest(request).subscribe({
@@ -261,6 +269,38 @@ export class RecyclingSectionComponent implements OnInit {
       error: (error) => {
         console.error('Error fetching request details:', error);
         this.errorMessage = 'Failed to load request details.';
+        this.isLoading = false;
+      },
+    });
+  }
+
+  nextPage(): void {
+    this.pageNumber++;
+    this.loadMyRequests();
+  }
+
+  prevPage(): void {
+    if (this.pageNumber > 1) {
+      this.pageNumber--;
+      this.loadMyRequests();
+    }
+  }
+
+  deleteRequest(requestId: number): void {
+    if (!confirm('Are you sure you want to delete this request?')) {
+      return;
+    }
+    this.isLoading = true;
+    this.errorMessage = '';
+    this.successMessage = '';
+    this.recyclingService.deleteRequest(requestId).subscribe({
+      next: () => {
+        this.successMessage = 'Request deleted successfully!';
+        this.loadMyRequests();
+        this.isLoading = false;
+      },
+      error: (error) => {
+        this.errorMessage = 'Failed to delete request. Please try again.';
         this.isLoading = false;
       },
     });

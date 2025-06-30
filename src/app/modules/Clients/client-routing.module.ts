@@ -11,7 +11,6 @@ import { PointsSectionComponent } from './components/points-section/points-secti
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { ProductSearchComponent } from './components/product-search/product-search.component';
 import { ProfileSectionComponent } from './components/profile-section/profile-section.component';
-import { RecyclingSectionComponent } from './components/recycling-section/recycling-section.component';
 import { SettingsSectionComponent } from './components/settings-section/settings-section.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { WalletSectionComponent } from './components/wallet-section/wallet-section.component';
@@ -21,6 +20,7 @@ import { CharityListComponent } from './components/charity/charity-list/charity-
 import { DonateComponent } from './components/charity/donate/donate.component';
 import { OfferDetailsComponent } from './components/offer/offer-details/offer-details.component';
 import { OfferListComponent } from './components/offer/offer-list/offer-list.component';
+import { RecyclingSectionComponent } from './components/recycling-section/recycling-section.component';
 
 
 const routes: Routes = [
@@ -40,7 +40,6 @@ const routes: Routes = [
       { path: 'wallet', component: WalletSectionComponent },
       { path: 'orders', component: DrdersSectionComponent },
       { path: 'points', component: PointsSectionComponent },
-      { path: 'recycling', component: RecyclingSectionComponent },
       { path: 'wishlist', component: WishlistSectionComponent },
       { path: 'achievements', component: AchievementsSectionComponent },
       { path: 'settings', component: SettingsSectionComponent },
@@ -55,6 +54,7 @@ const routes: Routes = [
       { path: 'charity-details/:id', component: CharityDetailsComponent },
       { path: 'offers', component: OfferListComponent },
       { path: 'offers/:id', component: OfferDetailsComponent },
+      { path: 'recycling', component: RecyclingSectionComponent },
     ],
   },
 ];

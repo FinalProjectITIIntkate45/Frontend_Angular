@@ -1,0 +1,528 @@
+/* auctions-list.component.css */
+
+/* Modern Navbar */
+.modern-navbar {
+  width: 100%;
+  background: linear-gradient(90deg, #007bff 0%, #00c6ff 100%);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  padding: 0.8rem 0;
+  margin-bottom: 24px;
+}
+
+.navbar-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 32px;
+}
+
+.navbar-title {
+  color: #fff;
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Filter Toolbar */
+.auctions-list-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 0 auto 24px auto;
+  max-width: 500px;
+  justify-content: center;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  padding: 20px 24px;
+}
+
+.auctions-list-toolbar .form-label {
+  white-space: nowrap;
+  color: #495057;
+  font-weight: 600;
+}
+
+/* Alert Container */
+.alert-container {
+  max-width: 800px;
+  margin: 0 auto 20px auto;
+}
+
+/* Loading Container */
+.loading-container {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.loading-container .spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+
+/* Auctions Grid */
+.auctions-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* No Auctions Message */
+.no-auctions {
+  text-align: center;
+  padding: 80px 20px;
+  color: #6c757d;
+}
+
+.no-auctions i {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  opacity: 0.5;
+  color: #dee2e6;
+}
+
+.no-auctions h4 {
+  color: #6c757d;
+  margin-bottom: 16px;
+}
+
+/* Auction Card */
+.auction-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  border: 1px solid #e3e8ee;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.auction-card:hover {
+  box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+  transform: translateY(-4px);
+  border-color: #007bff;
+}
+
+/* Auction Image Placeholder */
+.auction-image-placeholder {
+  background: linear-gradient(135deg, #e9ecef 60%, #cbe7ff 100%);
+  height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #007bff;
+  position: relative;
+}
+
+.auction-image-placeholder i {
+  margin-bottom: 8px;
+}
+
+.material-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: center;
+  color: #495057;
+}
+
+/* Card Content */
+.auction-card .card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 16px;
+  line-height: 1.4;
+}
+
+.auction-card .card-title small {
+  font-size: 0.85em;
+  font-weight: 400;
+}
+
+/* Auction Details */
+.auction-details p {
+  margin: 0 0 8px 0;
+  color: #495057;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.auction-details i {
+  width: 16px;
+  text-align: center;
+}
+
+/* Time Remaining */
+.time-remaining {
+  background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+  padding: 12px 16px;
+  border-radius: 8px;
+  border-left: 4px solid #ffc107;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #856404;
+  text-align: center;
+}
+
+/* Badge Styles */
+.badge {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.badge.bg-success {
+  background-color: #28a745 !important;
+  color: white;
+}
+
+.badge.bg-warning {
+  background-color: #ffc107 !important;
+  color: #212529;
+}
+
+.badge.bg-primary {
+  background-color: #007bff !important;
+  color: white;
+}
+
+.badge.bg-danger {
+  background-color: #dc3545 !important;
+  color: white;
+}
+
+.badge.bg-secondary {
+  background-color: #6c757d !important;
+  color: white;
+}
+
+/* Action Buttons */
+.auction-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.auction-actions .btn {
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 0.9rem;
+  padding: 10px 16px;
+  transition: all 0.3s ease;
+}
+
+.auction-actions .btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #28a745, #20c997);
+  border: none;
+  color: white;
+}
+
+.btn-success:hover:not(:disabled) {
+  background: linear-gradient(135deg, #218838, #1ea085);
+  color: white;
+}
+
+.btn-outline-secondary {
+  border: 2px solid #6c757d;
+  color: #6c757d;
+  background: transparent;
+}
+
+.btn-outline-secondary:hover:not(:disabled) {
+  background-color: #6c757d;
+  color: white;
+  border-color: #6c757d;
+}
+
+/* Pagination */
+.pagination-nav {
+  display: flex;
+  justify-content: center;
+  margin: 40px 0 20px 0;
+}
+
+.pagination {
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  border: 1px solid #e3e8ee;
+  overflow: hidden;
+}
+
+.page-item {
+  border: none;
+}
+
+.page-link {
+  border: none;
+  background: none;
+  color: #007bff;
+  padding: 12px 16px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border-radius: 0;
+}
+
+.page-link:hover:not(.disabled) {
+  background-color: #f8f9fa;
+  color: #0056b3;
+}
+
+.page-item.active .page-link {
+  background: #007bff;
+  color: #fff;
+  border-color: #007bff;
+}
+
+.page-item.disabled .page-link {
+  color: #6c757d;
+  background-color: #f8f9fa;
+  cursor: not-allowed;
+}
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+  backdrop-filter: blur(4px);
+}
+
+.modal-dialog {
+  max-width: 500px;
+  width: 90%;
+  margin: 0;
+}
+
+.modal-content {
+  border: none;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+.modal-header {
+  background: linear-gradient(135deg, #007bff, #0056b3);
+  color: white;
+  border-bottom: none;
+  padding: 20px 24px;
+}
+
+.modal-header .modal-title {
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.modal-body {
+  padding: 24px;
+}
+
+.modal-footer {
+  border-top: 1px solid #dee2e6;
+  padding: 16px 24px;
+  background-color: #f8f9fa;
+}
+
+/* Auction Info in Modal */
+.auction-info {
+  background: #f8f9fa;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.auction-info .row > div {
+  margin-bottom: 12px;
+}
+
+.auction-info .row > div:last-child {
+  margin-bottom: 0;
+}
+
+/* Alert Styles */
+.alert {
+  border-radius: 10px;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  font-size: 0.9rem;
+}
+
+.alert-success {
+  background: linear-gradient(135deg, #d4edda, #c3e6cb);
+  color: #155724;
+}
+
+.alert-danger {
+  background: linear-gradient(135deg, #f8d7da, #f5c6cb);
+  color: #721c24;
+}
+
+.alert-info {
+  background: linear-gradient(135deg, #d1ecf1, #bee5eb);
+  color: #0c5460;
+}
+
+/* Animations */
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .navbar-content {
+    padding: 0 16px;
+  }
+  
+  .navbar-title {
+    font-size: 1.5rem;
+  }
+  
+  .auctions-list-toolbar {
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+  }
+  
+  .auctions-list-toolbar .form-select {
+    max-width: none;
+    width: 100%;
+  }
+  
+  .auction-card .card-title {
+    font-size: 1rem;
+  }
+  
+  .auction-details p {
+    font-size: 0.85rem;
+  }
+  
+  .auction-actions .btn {
+    font-size: 0.85rem;
+    padding: 8px 12px;
+  }
+  
+  .modal-dialog {
+    width: 95%;
+  }
+  
+  .modal-body {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .auction-actions {
+    flex-direction: column;
+  }
+  
+  .auction-actions .btn {
+    width: 100%;
+  }
+}
+
+/* Eco-Industrial Theme Utilities */
+.bg-steel { background-color: #495057 !important; }
+.bg-earth { background-color: #f4f1ee !important; }
+.bg-green { background-color: #295135 !important; }
+.bg-rust { background-color: #c97a3a !important; }
+.text-steel { color: #495057 !important; }
+.text-green { color: #3e7d4c !important; }
+.text-rust { color: #c97a3a !important; }
+.border-steel { border: 1.5px solid #495057 !important; }
+
+.btn-green {
+  background: linear-gradient(90deg, #295135 0%, #3e7d4c 100%);
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  border-radius: 30px;
+  box-shadow: 0 2px 8px rgba(46, 125, 76, 0.08);
+  transition: all 0.2s;
+}
+.btn-green:hover, .btn-green:focus {
+  background: linear-gradient(90deg, #3e7d4c 0%, #295135 100%);
+  color: #fff;
+}
+
+.btn-orange {
+  background: linear-gradient(90deg, #c97a3a 0%, #e9a86b 100%);
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  border-radius: 30px;
+  box-shadow: 0 2px 8px rgba(201, 122, 58, 0.08);
+  transition: all 0.2s;
+}
+.btn-orange:hover, .btn-orange:focus {
+  background: linear-gradient(90deg, #e9a86b 0%, #c97a3a 100%);
+  color: #fff;
+}
+
+.card.bg-earth {
+  border: 1.5px solid #495057;
+  background: #f4f1ee;
+}
+.card-header.bg-steel {
+  background: #495057;
+  color: #fff;
+}
+
+/* Remove old custom grid, card, and toolbar styles in favor of Bootstrap */
+.auctions-list-toolbar, .auctions-grid, .auction-card, .auction-image-placeholder, .material-name, .fade-in, .pagination-nav, .no-auctions {
+  all: unset;
+}
+
+/* Modal customizations */
+.modal-content.bg-earth {
+  background: #f4f1ee;
+  border: 1.5px solid #495057;
+}
+.modal-header.bg-steel {
+  background: #495057;
+  color: #fff;
+}
+
+/* Badge overrides for status */
+.badge.bg-success { background-color: #3e7d4c !important; color: #fff; }
+.badge.bg-warning { background-color: #c97a3a !important; color: #fff; }
+.badge.bg-primary { background-color: #495057 !important; color: #fff; }
+.badge.bg-danger { background-color: #b23c17 !important; color: #fff; }
+.badge.bg-secondary { background-color: #6c757d !important; color: #fff; }
+
+/* Responsive tweaks */
+@media (max-width: 900px) {
+  .card-header, .card-body { padding: 1rem !important; }
+}
+@media (max-width: 600px) {
+  .card-header, .card-body { padding: 0.7rem !important; }
+  .btn-green, .btn-orange { font-size: 0.95rem; padding: 0.5rem 1.2rem; }
+}
