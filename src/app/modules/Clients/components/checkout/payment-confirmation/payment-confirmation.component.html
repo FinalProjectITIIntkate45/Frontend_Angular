@@ -1,0 +1,7 @@
+<p>payment-confirmation works!</p>
+<div class="container mt-5 text-center">
+  <h2 *ngIf="isSuccess === true" class="text-success">✅ {{ message }}</h2>
+  <h2 *ngIf="isSuccess === false" class="text-danger">❌ {{ message }}</h2>
+  <p *ngIf="isSuccess === null">جارٍ التحقق من الدفع...</p>
+  <a routerLink="/" class="btn btn-primary mt-3">العودة للرئيسية</a>
+</div>

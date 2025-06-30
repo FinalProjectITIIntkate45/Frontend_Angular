@@ -4,41 +4,79 @@
 
     <!-- زر اختيار طريقة التوصيل -->
     <div class="d-flex justify-content-between mb-4">
-      <button type="button" class="btn-option" (click)="selectDeliveryMethod('ship')">Ship to Address</button>
-      <button type="button" class="btn-option" (click)="selectDeliveryMethod('pickup')">Pick-Up from Store</button>
+      <button
+        type="button"
+        class="btn-option"
+        [class.active]="deliveryMethod === 'ship'"
+        (click)="selectDeliveryMethod('ship')"
+      >
+        🚚 Ship to Address
+      </button>
+
+      <button
+        type="button"
+        class="btn-option"
+        [class.active]="deliveryMethod === 'pickup'"
+        (click)="selectDeliveryMethod('pickup')"
+      >
+        🏬 Pick-Up from Store
+      </button>
     </div>
 
-    <!-- الخطوة 1 -->
-    <div *ngIf="currentStep === 1" class="form-section current" id="deliverySection">
-      <app-delivery-info [checkoutModel]="checkoutModel" [currentStep]="currentStep" (nextStep)="nextStep()">
-      </app-delivery-info>
+    <!-- ✅ لودر عند تحميل البيانات -->
+    <div *ngIf="isLoading" class="text-center my-4">
+      <div class="spinner-border text-primary" role="status"></div>
+      <p class="mt-2">جاري تحميل البيانات...</p>
     </div>
 
-    <!-- الخطوة 2 -->
-    <div *ngIf="currentStep === 2" class="form-section current" id="paymentSection">
-      <app-payment-info [checkoutModel]="checkoutModel" [currentStep]="currentStep" (nextStep)="nextStep()"
-        (previousStep)="previousStep()">
-      </app-payment-info>
+    <!-- الخطوة 1: بيانات التوصيل -->
+<div *ngIf="currentStep === 1 && deliveryMethod === 'ship'" class="form-section" id="deliverySection">
+  <p class="text-success">✅ Delivery Step is Active</p>
+
+  <ng-container *ngIf="checkoutModel && checkoutModel.billingData; else missingBilling">
+    <p class="text-muted">BillingData Status: Ready</p>
+
+    <app-delivery-info
+      [checkoutModel]="checkoutModel"
+      [currentStep]="currentStep"
+      (nextStep)="nextStep()"
+    ></app-delivery-info>
+  </ng-container>
+
+  <ng-template #missingBilling>
+    <p class="text-danger">❌ BillingData is missing!</p>
+  </ng-template>
+</div>
+
+
+
+    <!-- الخطوة 2: الدفع -->
+    <div *ngIf="currentStep === 2" class="form-section" id="paymentSection">
+      <app-payment-info
+        [checkoutModel]="checkoutModel"
+        [currentStep]="currentStep"
+        (nextStep)="nextStep()"
+        (previousStep)="previousStep()"
+      ></app-payment-info>
     </div>
 
-    <!-- الخطوة 3 -->
-    <div *ngIf="currentStep === 3" class="form-section current" id="confirmationSection">
+    <!-- الخطوة 3: التأكيد -->
+    <div *ngIf="currentStep === 3" class="form-section" id="confirmationSection">
       <app-order-confirmation
         [checkoutModel]="checkoutModel"
         [currentStep]="currentStep"
         (placeOrder)="onPlaceOrder()"
         (previousStep)="previousStep()"
       ></app-order-confirmation>
-
     </div>
 
   </div>
 
   <!-- 👉 Summary Column -->
   <div class="checkout-summary w-25">
-    <app-order-summary [checkoutModel]="checkoutModel" [shopName]="shopName">
-    </app-order-summary>
-
+    <app-order-summary
+      [checkoutModel]="checkoutModel"
+      [shopName]="shopName"
+    ></app-order-summary>
   </div>
-
 </div>

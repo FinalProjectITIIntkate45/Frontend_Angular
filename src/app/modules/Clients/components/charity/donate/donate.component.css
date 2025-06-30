@@ -91,3 +91,73 @@ button:hover {
   font-size: 0.95rem;
   line-height: 1.5;
 }
+
+.donate-container {
+  max-width: 400px;
+  margin: 2rem auto;
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 4px 24px rgba(30, 50, 100, 0.10);
+  padding: 2rem;
+}
+
+.donate-title {
+  text-align: center;
+  font-size: 1.7rem;
+  color: #1a2a4f;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+}
+
+.donate-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.form-control {
+  padding: 0.7rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #e0e6ed;
+  font-size: 1rem;
+  background: #f4f6fa;
+  transition: border 0.2s;
+}
+
+.form-control:focus {
+  border: 1.5px solid #1a2a4f;
+  outline: none;
+}
+
+.btn.primary {
+  background: #1a2a4f;
+  color: #fff;
+  padding: 0.7rem 1.2rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.btn.primary:disabled {
+  background: #b0b8c9;
+  cursor: not-allowed;
+}
+
+.btn.primary:hover:not(:disabled), .btn.primary:focus:not(:disabled) {
+  background: #223a6a;
+  box-shadow: 0 2px 8px rgba(30, 50, 100, 0.10);
+}
+
+@media (max-width: 500px) {
+  .donate-container {
+    padding: 1rem;
+  }
+}

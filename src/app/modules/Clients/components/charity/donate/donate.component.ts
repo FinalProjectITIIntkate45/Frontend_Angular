@@ -12,6 +12,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class DonateComponent implements OnInit {
   donateForm!: FormGroup;
   charityId!: number;
+  charity: any;
+  donationAmount: number = 0;
+  donationMessage: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -25,16 +28,24 @@ export class DonateComponent implements OnInit {
     this.donateForm = this.fb.group({
       amount: [null, [Validators.required, Validators.min(1)]]
     });
+    this.charityService.getCharityDetails(this.charityId).subscribe({
+      next: (res) => {
+        this.charity = res.data || res;
+      },
+      error: (err) => {
+        console.error('Error fetching charity:', err);
+      }
+    });
   }
 
-  submitDonation(): void {
-    if (this.donateForm.invalid) return;
-
+  onDonate(): void {
+    if (!this.donationAmount || this.donationAmount < 1) return;
     const donationData = {
       charityId: this.charityId,
-      amount: this.donateForm.value.amount
+      amount: this.donationAmount,
+      message: this.donationMessage
     };
-
+    // Call your donation service here
     this.charityService.donateToCharity(donationData).subscribe({
       next: (res) => {
         alert('Donation successful!');

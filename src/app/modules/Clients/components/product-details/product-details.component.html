@@ -1,33 +1,50 @@
 <div class="product-details-page">
   <!-- Breadcrumb -->
-  <div class="breadcrumb-section">
+  <nav class="breadcrumb-nav">
     <div class="container">
-      <nav class="breadcrumb">
-        <a href="/client/home" class="breadcrumb-link">Home</a>
-        <i class="breadcrumb-separator">›</i>
-        <a href="/client/products" class="breadcrumb-link">Products</a>
-        <i class="breadcrumb-separator">›</i>
-        <span class="breadcrumb-current" *ngIf="product">{{product.Name}}</span>
-      </nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="/client/home" class="breadcrumb-link">
+            <i class="breadcrumb-icon">🏠</i>
+            Home
+          </a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="/client/products" class="breadcrumb-link">Products</a>
+        </li>
+        <li class="breadcrumb-item active" *ngIf="product">
+          <span>{{product.Name}}</span>
+        </li>
+      </ol>
     </div>
-  </div>
+  </nav>
 
   <!-- Loading State -->
-  <div class="loading-state" *ngIf="loading">
+  <div class="loading-wrapper" *ngIf="loading">
     <div class="container">
-      <div class="loading-spinner"></div>
-      <p>Loading product details...</p>
+      <div class="loading-content">
+        <div class="loading-spinner">
+          <div class="spinner-ring"></div>
+        </div>
+        <p class="loading-text">Loading product details...</p>
+      </div>
     </div>
   </div>
 
   <!-- Error State -->
-  <div class="error-state" *ngIf="error && !loading">
+  <div class="error-wrapper" *ngIf="error && !loading">
     <div class="container">
       <div class="error-content">
-        <div class="error-icon">⚠️</div>
-        <h3>Oops! Something went wrong</h3>
-        <p>{{error}}</p>
-        <button (click)="loadProduct(+route.snapshot.params['id'])" class="retry-btn">
+        <div class="error-illustration">
+          <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
+            <circle cx="60" cy="60" r="50" stroke="#ef4444" stroke-width="2" fill="#fef2f2" />
+            <path d="M40 40L80 80M80 40L40 80" stroke="#ef4444" stroke-width="3" stroke-linecap="round" />
+          </svg>
+        </div>
+        <h3 class="error-title">Something went wrong</h3>
+        <p class="error-message">{{error}}</p>
+        <button (click)="loadProduct(+route.snapshot.params['id'])" class="btn btn-primary">
+          <i class="btn-icon">🔄</i>
           Try Again
         </button>
       </div>
@@ -35,243 +52,536 @@
   </div>
 
   <!-- Product Details Content -->
-  <div class="product-content" *ngIf="product && !loading && !error">
+  <div class="product-wrapper" *ngIf="product && !loading && !error">
     <div class="container">
-      <div class="product-layout">
 
-        <!-- Product Gallery -->
-        <div class="product-gallery">
-          <!-- Product Badges -->
-          <div class="product-badges">
-            <span class="sale-badge" *ngIf="product.discountPercentage > 0">
-              -{{product.discountPercentage}}%
-            </span>
-            <span class="new-badge" *ngIf="product.isNew">New</span>
-          </div>
+      <!-- Main Product Section -->
+      <div class="product-main">
+        <div class="row">
 
-          <!-- Main Image -->
-          <div class="main-image">
-            <img
-              [src]="selectedImage || (product.Images && product.Images[0]) || '/assets/images/placeholder-product.jpg'"
-              [alt]="product.Name" loading="lazy">
-          </div>
+          <!-- Product Gallery -->
+          <div class="col-lg-6">
+            <div class="product-gallery">
 
-          <!-- Thumbnail Gallery -->
-          <div class="thumbnail-gallery" *ngIf="product.Images && product.Images.length > 1">
-            <div class="thumbnail-container">
-              <img 
-              *ngFor="let image of product.Images; let i = index" [src]="image"
-                [alt]="product.Name + ' - Image ' + (i + 1)"
-                [class.active]="selectedImage === image || (!selectedImage && i === 0)" (click)="selectImage(image)"
-                class="thumbnail-image">
-            </div>
-          </div>
-        </div>
-
-        <!-- Product Information -->
-        <div class="product-info">
-          <!-- Product Header -->
-          <div class="product-header">
-            <div class="product-title">
-              <h1>{{product.Name}}</h1>
-              <button (click)="shareProduct()" class="share-btn" title="Share Product">
-                <i class="share-icon">🔗</i>
-              </button>
-            </div>
-
-            <!-- Shop Info -->
-            <div class="shop-info" *ngIf="product.ShopName">
-              <span class="shop-label">Sold by:</span>
-              <button (click)="goToShop(product.ShopName)" class="shop-link">
-                <i class="shop-icon">🏪</i>
-                {{product.ShopName}}
-              </button>
-            </div>
-
-            <!-- Category -->
-            <div class="category-info" *ngIf="product.CategoryName">
-              <span class="category-label">Category:</span>
-              <button (click)="goToCategory(product.CategoryName)" class="category-link">
-                {{product.CategoryName}}
-              </button>
-            </div>
-          </div>
-
-          <!-- Rating -->
-          <div class="product-rating">
-            <div class="stars">
-              <span class="star" *ngFor="let filled of getRatingStars(product.rating)" [class.filled]="filled">★</span>
-            </div>
-            <span class="rating-text">{{product.rating | number:'1.1-1'}}</span>
-            <span class="rating-count">({{product.ratingCount}} reviews)</span>
-          </div>
-
-          <!-- Price Section -->
-          <div class="price-section">
-            <div class="price-container">
-              <span class="current-price">
-                ${{formatPrice(product.DisplayedPriceAfterDiscount || product.DisplayedPrice)}}
-              </span>
-              <span class="original-price" *ngIf="product.DisplayedPriceAfterDiscount < product.DisplayedPrice">
-                ${{formatPrice(product.DisplayedPrice)}}
-              </span>
-              <span class="discount-badge" *ngIf="product.discountPercentage > 0">
-                Save {{product.discountPercentage}}%
-              </span>
-            </div>
-
-            <!-- Points -->
-            <div class="points-info" *ngIf="product.EarnedPoints > 0">
-              <span class="points-icon">⭐</span>
-              <span class="points-text">Earn {{product.EarnedPoints}} points with this purchase</span>
-            </div>
-          </div>
-
-          <!-- Stock Status -->
-          <div class="stock-section">
-            <div class="stock-status" [class.out-of-stock]="product.Stock === 0">
-              <span class="stock-icon">📦</span>
-              <span class="stock-text" *ngIf="product.Stock > 0">
-                In Stock - {{product.Stock}} available
-              </span>
-              <span class="stock-text" *ngIf="product.Stock === 0">
-                Currently Out of Stock
-              </span>
-            </div>
-          </div>
-
-          <!-- Quantity & Actions -->
-          <div class="purchase-section" *ngIf="product.Stock > 0">
-            <div class="quantity-selector">
-              <label class="quantity-label">Quantity:</label>
-              <div class="quantity-controls">
-                <button (click)="decreaseQuantity()" [disabled]="quantity <= 1" class="quantity-btn">
-                  −
-                </button>
-                <span class="quantity-display">{{quantity}}</span>
-                <button (click)="increaseQuantity()" [disabled]="quantity >= product.Stock" class="quantity-btn">
-                  +
-                </button>
+              <!-- Product Badges -->
+              <div class="product-badges">
+                <span class="badge badge-sale" *ngIf="product.discountPercentage > 0">
+                  {{product.discountPercentage}}% OFF
+                </span>
+                <span class="badge badge-new" *ngIf="product.isNew">New</span>
               </div>
-            </div>
 
-            <div class="action-buttons">
-              <button (click)="addToCart()" class="add-to-cart-btn">
-                <i class="cart-icon">🛒</i>
-                <span>Add to Cart</span>
-              </button>
-              <button (click)="addToWishlist()" class="wishlist-btn">
-                <i class="heart-icon">❤️</i>
-                <span>Wishlist</span>
-              </button>
-            </div>
-          </div>
+              <!-- Main Image -->
+              <div class="gallery-main">
+                <div class="main-image-wrapper">
+                  <img
+                    [src]="selectedImage || (product.Images && product.Images[0]) || '/assets/images/placeholder-product.jpg'"
+                    [alt]="product.Name" class="main-image" loading="lazy">
 
-          <!-- Out of Stock Message -->
-          <div class="out-of-stock-section" *ngIf="product.Stock === 0">
-            <div class="out-of-stock-message">
-              <h4>Currently Out of Stock</h4>
-              <p>This item is temporarily unavailable. Add to wishlist to be notified when it's back in stock.</p>
-              <button (click)="addToWishlist()" class="wishlist-btn">
-                <i class="heart-icon">❤️</i>
-                <span>Add to Wishlist</span>
-
-
-              </button>
-            </div>
-          </div>
-
-          <!-- Shipping Info -->
-          <div class="shipping-info">
-            <h4>🚚 Shipping Options</h4>
-            <div class="shipping-options">
-              <div class="shipping-option">
-                <i class="shipping-icon">🚚</i>
-                <div class="shipping-details">
-                  <span class="shipping-title">Standard Delivery</span>
-                  <span class="shipping-time">3-5 business days</span>
+                  <!-- Zoom Icon -->
+                  <button class="zoom-btn" title="Zoom image">
+                    <i class="zoom-icon">🔍</i>
+                  </button>
                 </div>
-                <span class="shipping-price">$5.99</span>
               </div>
-              <div class="shipping-option">
-                <i class="shipping-icon">⚡</i>
-                <div class="shipping-details">
-                  <span class="shipping-title">Express Delivery</span>
-                  <span class="shipping-time">1-2 business days</span>
+
+              <!-- Thumbnail Gallery -->
+              <div class="gallery-thumbs" *ngIf="product.Images && product.Images.length > 1">
+                <div class="thumbs-container">
+                  <button *ngFor="let image of product.Images; let i = index" class="thumb-item"
+                    [class.active]="selectedImage === image || (!selectedImage && i === 0)"
+                    (click)="selectImage(image)">
+                    <img [src]="image" [alt]="product.Name + ' - Image ' + (i + 1)" class="thumb-image">
+                  </button>
                 </div>
-                <span class="shipping-price">$12.99</span>
-              </div>
-              <div class="shipping-option">
-                <i class="shipping-icon">🏪</i>
-                <div class="shipping-details">
-                  <span class="shipping-title">Store Pickup</span>
-                  <span class="shipping-time">Available today</span>
-                </div>
-                <span class="shipping-price">Free</span>
               </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      <!-- Product Description -->
-      <div class="description-section">
-        <div class="description-header">
-          <h3>📝 Product Description</h3>
-        </div>
-        <div class="description-content">
-          <p>{{product.Description}}</p>
-        </div>
-      </div>
-
-      <!-- Related Products -->
-      <div class="related-products-section" *ngIf="relatedProducts.length > 0">
-        <div class="section-header">
-          <h3>✨ You might also like</h3>
-        </div>
-
-        <div class="related-products-grid">
-          <div class="product-card" *ngFor="let relatedProduct of relatedProducts"
-            (click)="viewRelatedProduct(relatedProduct.Id)">
-
-            <!-- Product Badges -->
-            <div class="sale-badge" *ngIf="relatedProduct.discountPercentage > 0">
-              -{{relatedProduct.discountPercentage}}%
-            </div>
-            <div class="new-badge" *ngIf="relatedProduct.isNew">New</div>
-
-            <!-- Product Image -->
-            <div class="product-image">
-              <img
-                [src]="(relatedProduct.Images && relatedProduct.Images[0]) || '/assets/images/placeholder-product.jpg'"
-                [alt]="relatedProduct.Name" loading="lazy">
-            </div>
-
-            <!-- Product Info -->
+          <!-- Product Information -->
+          <div class="col-lg-6">
             <div class="product-info">
-              <div class="product-rating">
-                <div class="stars">
-                  <span class="star" *ngFor="let filled of getRatingStars(relatedProduct.rating)"
-                    [class.filled]="filled">★</span>
+
+              <!-- Product Header -->
+              <div class="product-header">
+                <div class="header-top">
+                  <h1 class="product-title">{{product.Name}}</h1>
+                  <div class="product-actions">
+                    <button (click)="shareProduct()" class="action-btn" title="Share Product">
+                      <i class="action-icon">📤</i>
+                    </button>
+                    <button (click)="addToWishlist()" class="action-btn wishlist-btn" title="Add to Wishlist">
+                      <i class="action-icon">🤍</i>
+                    </button>
+                  </div>
                 </div>
-                <span class="rating-count">({{relatedProduct.ratingCount}})</span>
+
+                <!-- Meta Information -->
+                <div class="product-meta">
+                  <div class="meta-item" *ngIf="product.ShopName">
+                    <span class="meta-label">Brand:</span>
+                    <button (click)="goToShop(product.ShopName)" class="meta-link">
+                      {{product.ShopName}}
+                    </button>
+                  </div>
+                  <div class="meta-item" *ngIf="product.CategoryName">
+                    <span class="meta-label">Category:</span>
+                    <button (click)="goToCategory(product.CategoryName)" class="meta-link">
+                      {{product.CategoryName}}
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Rating -->
+                <div class="product-rating">
+                  <div class="rating-stars">
+                    <span class="star" *ngFor="let filled of getRatingStars(product.rating)"
+                      [class.filled]="filled">★</span>
+                  </div>
+                  <span class="rating-value">{{product.rating | number:'1.1-1'}}</span>
+                  <span class="rating-count">({{product.ratingCount}} reviews)</span>
+                  <button class="rating-link">Read all reviews</button>
+                </div>
               </div>
 
-              <h4 class="product-name">{{relatedProduct.Name}}</h4>
-
-              <div class="product-price">
-                <span class="current-price">
-                  ${{formatPrice(relatedProduct.DisplayedPriceAfterDiscount || relatedProduct.DisplayedPrice)}}
-                </span>
-                <span class="original-price"
-                  *ngIf="relatedProduct.DisplayedPriceAfterDiscount < relatedProduct.DisplayedPrice">
-                  ${{formatPrice(relatedProduct.DisplayedPrice)}}
-                </span>
+              <!-- Price Section -->
+              <div class="price-section">
+                <div class="price-main">
+                  <span class="price-current">
+                    ${{formatPrice(product.DisplayedPriceAfterDiscount || product.DisplayedPrice)}}
+                  </span>
+                  <span class="price-original" *ngIf="product.DisplayedPriceAfterDiscount < product.DisplayedPrice">
+                    ${{formatPrice(product.DisplayedPrice)}}
+                  </span>
+                </div>
+                <div class="price-savings" *ngIf="product.discountPercentage > 0">
+                  <span class="savings-text">
+                    You save ${{formatPrice(product.DisplayedPrice - product.DisplayedPriceAfterDiscount)}}
+                    ({{product.discountPercentage}}%)
+                  </span>
+                </div>
+                <div class="price-points" *ngIf="product.EarnedPoints > 0">
+                  <i class="points-icon">⭐</i>
+                  <span class="points-text">Earn {{product.EarnedPoints}} reward points</span>
+                </div>
               </div>
 
-              <div class="product-points" *ngIf="relatedProduct.EarnedPoints > 0">
-                <span class="points-icon">⭐</span>
-                <span>{{relatedProduct.EarnedPoints}} pts</span>
+              <!-- Stock & Availability -->
+              <div class="availability-section">
+                <div class="stock-info" [class.out-of-stock]="product.Stock === 0">
+                  <div class="stock-indicator">
+                    <span class="stock-dot" [class.available]="product.Stock > 0"></span>
+                    <span class="stock-text" *ngIf="product.Stock > 0">
+                      In Stock ({{product.Stock}} items available)
+                    </span>
+                    <span class="stock-text" *ngIf="product.Stock === 0">
+                      Out of Stock
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Purchase Options -->
+              <div class="purchase-options" *ngIf="product.Stock > 0">
+
+                <!-- Quantity Selector -->
+                <div class="quantity-section">
+                  <label class="quantity-label">Qty:</label>
+                  <div class="quantity-input">
+                    <button (click)="decreaseQuantity()" [disabled]="quantity <= 1" class="qty-btn qty-decrease">
+                      <i class="qty-icon">−</i>
+                    </button>
+                    <input type="number" [(ngModel)]="quantity" [min]="1" [max]="product.Stock" class="qty-value">
+                    <button (click)="increaseQuantity()" [disabled]="quantity >= product.Stock"
+                      class="qty-btn qty-increase">
+                      <i class="qty-icon">+</i>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                  <button (click)="addToCart()" class="btn btn-primary btn-lg add-to-cart">
+                    <i class="btn-icon">🛒</i>
+                    <span>Add to Cart</span>
+                  </button>
+                  <button class="btn btn-outline btn-lg buy-now">
+                    <i class="btn-icon">⚡</i>
+                    <span>Buy Now</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Out of Stock Message -->
+              <div class="out-of-stock-notice" *ngIf="product.Stock === 0">
+                <div class="notice-content">
+                  <h4 class="notice-title">Currently Unavailable</h4>
+                  <p class="notice-text">This item is temporarily out of stock. Get notified when it's back!</p>
+                  <div class="notice-actions">
+                    <button (click)="addToWishlist()" class="btn btn-outline-primary">
+                      <i class="btn-icon">🔔</i>
+                      Notify When Available
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Additional Info -->
+              <div class="additional-info">
+                <div class="info-tabs">
+                  <button class="info-tab active" data-tab="shipping">
+                    <i class="tab-icon">🚚</i>
+                    Shipping
+                  </button>
+                  <button class="info-tab" data-tab="returns">
+                    <i class="tab-icon">↩️</i>
+                    Returns
+                  </button>
+                  <button class="info-tab" data-tab="warranty">
+                    <i class="tab-icon">🛡️</i>
+                    Warranty
+                  </button>
+                </div>
+
+                <div class="info-content">
+                  <div class="tab-panel active" id="shipping">
+                    <div class="shipping-options">
+                      <div class="shipping-option">
+                        <div class="option-info">
+                          <strong>Standard Delivery</strong>
+                          <span>3-5 business days</span>
+                        </div>
+                        <span class="option-price">$5.99</span>
+                      </div>
+                      <div class="shipping-option">
+                        <div class="option-info">
+                          <strong>Express delivery</strong>
+                          <span>1-2 business days</span>
+                        </div>
+                        <span class="option-price">$12.99</span>
+                      </div>
+                      <div class="shipping-option">
+                        <div class="option-info">
+                          <strong>Store Pickup</strong>
+                          <span>Available today</span>
+                        </div>
+                        <span class="option-price free">Free</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Details Tabs -->
+      <div class="product-details-tabs">
+        <div class="tabs-nav">
+          <button class="tab-btn active" data-target="description">Description</button>
+          <button class="tab-btn" data-target="specifications">Specifications</button>
+          <button class="tab-btn" data-target="reviews">Reviews ({{product.ratingCount}})</button>
+        </div>
+
+        <div class="tabs-content">
+          <div class="tab-pane active" id="description">
+            <div class="description-content">
+              <p>{{product.Description}}</p>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="specifications">
+            <div class="specs-content">
+              <div class="specs-grid">
+                <div class="spec-item">
+                  <span class="spec-label">Brand</span>
+                  <span class="spec-value">{{product.ShopName}}</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-label">Category</span>
+                  <span class="spec-value">{{product.CategoryName}}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="reviews">
+            <div class="reviews-content">
+              <div class="reviews-summary">
+                <div class="rating-overview">
+                  <div class="rating-score">
+                    <span class="score-value">{{product.rating | number:'1.1-1'}}</span>
+                    <div class="score-stars">
+                      <span class="star" *ngFor="let filled of getRatingStars(product.rating)"
+                        [class.filled]="filled">★</span>
+                    </div>
+                    <span class="score-text">Based on {{product.ratingCount}} reviews</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Suggestions -->
+      <div class="product-suggestions">
+
+        <!-- Related Products -->
+        <div class="suggestion-section" *ngIf="relatedProducts.length > 0">
+          <div class="section-header">
+            <h3 class="section-title">Related Products</h3>
+            <p class="section-subtitle">More items from the same category</p>
+          </div>
+
+          <div class="products-carousel">
+            <div class="carousel-container">
+              <div class="product-card" *ngFor="let relatedProduct of relatedProducts"
+                (click)="viewRelatedProduct(relatedProduct.Id)">
+
+                <div class="card-image">
+                  <img
+                    [src]="(relatedProduct.Images && relatedProduct.Images[0]) || '/assets/images/placeholder-product.jpg'"
+                    [alt]="relatedProduct.Name" loading="lazy">
+
+                  <div class="card-badges" *ngIf="relatedProduct.discountPercentage > 0 || relatedProduct.isNew">
+                    <span class="badge badge-sale" *ngIf="relatedProduct.discountPercentage > 0">
+                      -{{relatedProduct.discountPercentage}}%
+                    </span>
+                    <span class="badge badge-new" *ngIf="relatedProduct.isNew">New</span>
+                  </div>
+
+                  <div class="card-overlay">
+                    <button class="overlay-btn" title="Quick View">
+                      <i class="btn-icon">👁️</i>
+                    </button>
+                    <button class="overlay-btn" title="Add to Wishlist">
+                      <i class="btn-icon">🤍</i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="card-content">
+                  <div class="card-rating">
+                    <div class="rating-stars">
+                      <span class="star" *ngFor="let filled of getRatingStars(relatedProduct.rating)"
+                        [class.filled]="filled">★</span>
+                    </div>
+                    <span class="rating-count">({{relatedProduct.ratingCount}})</span>
+                  </div>
+
+                  <h4 class="card-title">{{relatedProduct.Name}}</h4>
+
+                  <div class="card-price">
+                    <span class="price-current">
+                      ${{formatPrice(relatedProduct.DisplayedPriceAfterDiscount || relatedProduct.DisplayedPrice)}}
+                    </span>
+                    <span class="price-original"
+                      *ngIf="relatedProduct.DisplayedPriceAfterDiscount < relatedProduct.DisplayedPrice">
+                      ${{formatPrice(relatedProduct.DisplayedPrice)}}
+                    </span>
+                  </div>
+
+                  <div class="card-points" *ngIf="relatedProduct.EarnedPoints > 0">
+                    <i class="points-icon">⭐</i>
+                    <span>{{relatedProduct.EarnedPoints}} pts</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Similar Products -->
+        <div class="suggestion-section" *ngIf="similarProducts.length > 0">
+          <div class="section-header">
+            <h3 class="section-title">You May Also Like</h3>
+            <p class="section-subtitle">Products similar to what you're viewing</p>
+          </div>
+
+          <div class="products-carousel">
+            <div class="carousel-container">
+              <div class="product-card" *ngFor="let similarProduct of similarProducts"
+                (click)="viewSimilarProduct(similarProduct.Id)">
+
+                <div class="card-image">
+                  <img
+                    [src]="(similarProduct.Images && similarProduct.Images[0]) || '/assets/images/placeholder-product.jpg'"
+                    [alt]="similarProduct.Name" loading="lazy">
+
+                  <div class="card-badges" *ngIf="similarProduct.discountPercentage > 0 || similarProduct.isNew">
+                    <span class="badge badge-sale" *ngIf="similarProduct.discountPercentage > 0">
+                      -{{similarProduct.discountPercentage}}%
+                    </span>
+                    <span class="badge badge-new" *ngIf="similarProduct.isNew">New</span>
+                  </div>
+
+                  <div class="card-overlay">
+                    <button class="overlay-btn" title="Quick View">
+                      <i class="btn-icon">👁️</i>
+                    </button>
+                    <button class="overlay-btn" title="Add to Wishlist">
+                      <i class="btn-icon">🤍</i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="card-content">
+                  <div class="card-rating">
+                    <div class="rating-stars">
+                      <span class="star" *ngFor="let filled of getRatingStars(similarProduct.rating)"
+                        [class.filled]="filled">★</span>
+                    </div>
+                    <span class="rating-count">({{similarProduct.ratingCount}})</span>
+                  </div>
+
+                  <h4 class="card-title">{{similarProduct.Name}}</h4>
+
+                  <div class="card-price">
+                    <span class="price-current">
+                      ${{formatPrice(similarProduct.DisplayedPriceAfterDiscount || similarProduct.DisplayedPrice)}}
+                    </span>
+                    <span class="price-original"
+                      *ngIf="similarProduct.DisplayedPriceAfterDiscount < similarProduct.DisplayedPrice">
+                      ${{formatPrice(similarProduct.DisplayedPrice)}}
+                    </span>
+                  </div>
+
+                  <div class="card-points" *ngIf="similarProduct.EarnedPoints > 0">
+                    <i class="points-icon">⭐</i>
+                    <span>{{similarProduct.EarnedPoints}} pts</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Popular Products -->
+        <div class="suggestion-section" *ngIf="popularProducts.length > 0">
+          <div class="section-header">
+            <h3 class="section-title">Trending Now</h3>
+            <p class="section-subtitle">Popular products with high ratings</p>
+          </div>
+
+          <div class="products-carousel">
+            <div class="carousel-container">
+              <div class="product-card" *ngFor="let popularProduct of popularProducts"
+                (click)="viewPopularProduct(popularProduct.Id)">
+
+                <div class="card-image">
+                  <img
+                    [src]="(popularProduct.Images && popularProduct.Images[0]) || '/assets/images/placeholder-product.jpg'"
+                    [alt]="popularProduct.Name" loading="lazy">
+
+                  <div class="card-badges" *ngIf="popularProduct.discountPercentage > 0 || popularProduct.isNew">
+                    <span class="badge badge-sale" *ngIf="popularProduct.discountPercentage > 0">
+                      -{{popularProduct.discountPercentage}}%
+                    </span>
+                    <span class="badge badge-new" *ngIf="popularProduct.isNew">New</span>
+                  </div>
+
+                  <div class="card-overlay">
+                    <button class="overlay-btn" title="Quick View">
+                      <i class="btn-icon">👁️</i>
+                    </button>
+                    <button class="overlay-btn" title="Add to Wishlist">
+                      <i class="btn-icon">🤍</i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="card-content">
+                  <div class="card-rating">
+                    <div class="rating-stars">
+                      <span class="star" *ngFor="let filled of getRatingStars(popularProduct.rating)"
+                        [class.filled]="filled">★</span>
+                    </div>
+                    <span class="rating-count">({{popularProduct.ratingCount}})</span>
+                  </div>
+
+                  <h4 class="card-title">{{popularProduct.Name}}</h4>
+
+                  <div class="card-price">
+                    <span class="price-current">
+                      ${{formatPrice(popularProduct.DisplayedPriceAfterDiscount || popularProduct.DisplayedPrice)}}
+                    </span>
+                    <span class="price-original"
+                      *ngIf="popularProduct.DisplayedPriceAfterDiscount < popularProduct.DisplayedPrice">
+                      ${{formatPrice(popularProduct.DisplayedPrice)}}
+                    </span>
+                  </div>
+
+                  <div class="card-points" *ngIf="popularProduct.EarnedPoints > 0">
+                    <i class="points-icon">⭐</i>
+                    <span>{{popularProduct.EarnedPoints}} pts</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- New Arrivals -->
+        <div class="suggestion-section" *ngIf="newArrivals.length > 0">
+          <div class="section-header">
+            <h3 class="section-title">New Arrivals</h3>
+            <p class="section-subtitle">Fresh products just added to our catalog</p>
+          </div>
+
+          <div class="products-carousel">
+            <div class="carousel-container">
+              <div class="product-card" *ngFor="let newProduct of newArrivals"
+                (click)="viewNewArrivalProduct(newProduct.Id)">
+
+                <div class="card-image">
+                  <img [src]="(newProduct.Images && newProduct.Images[0]) || '/assets/images/placeholder-product.jpg'"
+                    [alt]="newProduct.Name" loading="lazy">
+
+                  <div class="card-badges" *ngIf="newProduct.discountPercentage > 0 || newProduct.isNew">
+                    <span class="badge badge-sale" *ngIf="newProduct.discountPercentage > 0">
+                      -{{newProduct.discountPercentage}}%
+                    </span>
+                    <span class="badge badge-new" *ngIf="newProduct.isNew">New</span>
+                  </div>
+
+                  <div class="card-overlay">
+                    <button class="overlay-btn" title="Quick View">
+                      <i class="btn-icon">👁️</i>
+                    </button>
+                    <button class="overlay-btn" title="Add to Wishlist">
+                      <i class="btn-icon">🤍</i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="card-content">
+                  <div class="card-rating">
+                    <div class="rating-stars">
+                      <span class="star" *ngFor="let filled of getRatingStars(newProduct.rating)"
+                        [class.filled]="filled">★</span>
+                    </div>
+                    <span class="rating-count">({{newProduct.ratingCount}})</span>
+                  </div>
+
+                  <h4 class="card-title">{{newProduct.Name}}</h4>
+
+                  <div class="card-price">
+                    <span class="price-current">
+                      ${{formatPrice(newProduct.DisplayedPriceAfterDiscount || newProduct.DisplayedPrice)}}
+                    </span>
+                    <span class="price-original"
+                      *ngIf="newProduct.DisplayedPriceAfterDiscount < newProduct.DisplayedPrice">
+                      ${{formatPrice(newProduct.DisplayedPrice)}}
+                    </span>
+                  </div>
+
+                  <div class="card-points" *ngIf="newProduct.EarnedPoints > 0">
+                    <i class="points-icon">⭐</i>
+                    <span>{{newProduct.EarnedPoints}} pts</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

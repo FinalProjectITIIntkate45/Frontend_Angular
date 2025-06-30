@@ -17,7 +17,11 @@ interface EnhancedProduct extends Product {
   formattedPrice?: string;
   formattedOriginalPrice?: string;
 }
-
+// When a product loads, all 4 suggestion types are fetched simultaneously
+// Related Products: Same category, sorted by price similarity
+// Similar Products: Different categories, similar price range (±30%)
+// Popular Products: High points products, sorted by points
+// New Arrivals: Products created in last 30 days, sorted by date
 @Component({
   selector: 'app-product-details',
   templateUrl: './product-details.component.html',
@@ -33,7 +37,13 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
 
   // Related/suggested products
   relatedProducts: EnhancedProduct[] = [];
+  similarProducts: EnhancedProduct[] = [];
+  popularProducts: EnhancedProduct[] = [];
+  newArrivals: EnhancedProduct[] = [];
   loadingRelated: boolean = false;
+  loadingSimilar: boolean = false;
+  loadingPopular: boolean = false;
+  loadingNewArrivals: boolean = false;
 
   // UI state
   isAddingToCart: boolean = false;
@@ -80,8 +90,11 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
         this.selectedImage = this.product.Images?.[0] || null;
         this.loading = false;
 
-        // Load related products
+        // Load all types of product suggestions
         this.loadRelatedProducts();
+        this.loadSimilarProducts();
+        this.loadPopularProducts();
+        this.loadNewArrivals();
       },
       error: (error) => {
         console.error('Error loading product:', error);
@@ -97,6 +110,9 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     this.quantity = 1;
     this.selectedImage = null;
     this.relatedProducts = [];
+    this.similarProducts = [];
+    this.popularProducts = [];
+    this.newArrivals = [];
     this.isAddingToCart = false;
     this.isAddingToWishlist = false;
   }
@@ -124,26 +140,169 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
 
     this.loadingRelated = true;
 
-    // Search for products in the same category
+    // Search for products in the same category with better filtering
     this.productService
       .searchProducts({
         category: this.product.CategoryName,
         pageNumber: 1,
-        pageSize: 6, // Increased to get more options
+        pageSize: 8, // Get more options for better filtering
       })
       .subscribe({
         next: (result) => {
           // Filter out current product and enhance the results
-          this.relatedProducts = (result.Products || [])
+          const filteredProducts = (result.Products || [])
             .filter((p) => p.Id !== this.product?.Id)
-            .slice(0, 3)
             .map((p) => this.enhanceProduct(p));
+
+          // Sort by relevance (same category, similar price range)
+          const sortedProducts = filteredProducts.sort((a, b) => {
+            const priceDiffA = Math.abs(
+              a.DisplayedPrice - this.product!.DisplayedPrice
+            );
+            const priceDiffB = Math.abs(
+              b.DisplayedPrice - this.product!.DisplayedPrice
+            );
+            return priceDiffA - priceDiffB; // Sort by price similarity
+          });
+
+          this.relatedProducts = sortedProducts.slice(0, 4);
           this.loadingRelated = false;
         },
         error: (error) => {
           console.error('Error loading related products:', error);
           this.relatedProducts = [];
           this.loadingRelated = false;
+        },
+      });
+  }
+
+  private loadSimilarProducts() {
+    if (!this.product) return;
+
+    this.loadingSimilar = true;
+
+    // Search for products in different categories but similar price range
+    const priceRange = this.product.DisplayedPrice * 0.3; // 30% price range
+    const minPrice = this.product.DisplayedPrice - priceRange;
+    const maxPrice = this.product.DisplayedPrice + priceRange;
+
+    this.productService
+      .searchProducts({
+        minPrice: Math.max(0, minPrice),
+        maxPrice: maxPrice,
+        pageNumber: 1,
+        pageSize: 12, // Get more options for better filtering
+      })
+      .subscribe({
+        next: (result) => {
+          // Filter out current product and products from same category
+          const filteredProducts = (result.Products || [])
+            .filter(
+              (p) =>
+                p.Id !== this.product?.Id &&
+                p.CategoryName !== this.product?.CategoryName
+            )
+            .map((p) => this.enhanceProduct(p));
+
+          // Sort by price similarity
+          const sortedProducts = filteredProducts.sort((a, b) => {
+            const priceDiffA = Math.abs(
+              a.DisplayedPrice - this.product!.DisplayedPrice
+            );
+            const priceDiffB = Math.abs(
+              b.DisplayedPrice - this.product!.DisplayedPrice
+            );
+            return priceDiffA - priceDiffB;
+          });
+
+          this.similarProducts = sortedProducts.slice(0, 4);
+          this.loadingSimilar = false;
+        },
+        error: (error) => {
+          console.error('Error loading similar products:', error);
+          this.similarProducts = [];
+          this.loadingSimilar = false;
+        },
+      });
+  }
+
+  private loadPopularProducts() {
+    if (!this.product) return;
+
+    this.loadingPopular = true;
+
+    // Search for popular products (high points, good ratings)
+    this.productService
+      .searchProducts({
+        minPoints: 50, // Products with good points
+        pageNumber: 1,
+        pageSize: 12,
+      })
+      .subscribe({
+        next: (result) => {
+          // Filter out current product and enhance the results
+          const filteredProducts = (result.Products || [])
+            .filter((p) => p.Id !== this.product?.Id)
+            .map((p) => this.enhanceProduct(p));
+
+          // Sort by points (popularity indicator)
+          const sortedProducts = filteredProducts.sort((a, b) => {
+            return (b.Points || 0) - (a.Points || 0);
+          });
+
+          this.popularProducts = sortedProducts.slice(0, 4);
+          this.loadingPopular = false;
+        },
+        error: (error) => {
+          console.error('Error loading popular products:', error);
+          this.popularProducts = [];
+          this.loadingPopular = false;
+        },
+      });
+  }
+
+  private loadNewArrivals() {
+    if (!this.product) return;
+
+    this.loadingNewArrivals = true;
+
+    // Search for new arrivals (recently created products)
+    this.productService
+      .searchProducts({
+        pageNumber: 1,
+        pageSize: 12,
+      })
+      .subscribe({
+        next: (result) => {
+          // Filter out current product and enhance the results
+          const filteredProducts = (result.Products || [])
+            .filter((p) => p.Id !== this.product?.Id)
+            .map((p) => this.enhanceProduct(p));
+
+          // Sort by creation date (newest first)
+          const sortedProducts = filteredProducts.sort((a, b) => {
+            const dateA = new Date(a.CreatedAt || 0);
+            const dateB = new Date(b.CreatedAt || 0);
+            return dateB.getTime() - dateA.getTime();
+          });
+
+          // Filter to only show products created in the last 30 days
+          const recentProducts = sortedProducts.filter((p) => {
+            if (!p.CreatedAt) return false;
+            const createdDate = new Date(p.CreatedAt);
+            const now = new Date();
+            const diffInDays =
+              (now.getTime() - createdDate.getTime()) / (1000 * 3600 * 24);
+            return diffInDays <= 30;
+          });
+
+          this.newArrivals = recentProducts.slice(0, 4);
+          this.loadingNewArrivals = false;
+        },
+        error: (error) => {
+          console.error('Error loading new arrivals:', error);
+          this.newArrivals = [];
+          this.loadingNewArrivals = false;
         },
       });
   }
@@ -268,18 +427,16 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     try {
       // TODO: Implement actual wishlist service logic here
       this.WishlistService.addToWishlist(this.product.Id).subscribe({
-        next:(value)=> 
-      {
-        console.log(value);
+        next: (value) => {
+          console.log(value);
           this.showSuccessMessage(`${this.product?.Name} added to wishlist!`);
         },
-        error:(err)=>{
-
+        error: (err) => {
           console.error('Error adding to wishlist:', err);
           this.showErrorMessage(
             'Failed to add item to wishlist. Please try again.'
           );
-        }
+        },
       });
     } catch (error) {
     } finally {
@@ -289,6 +446,24 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
 
   // Navigation methods with error handling
   viewRelatedProduct(productId: number) {
+    if (productId) {
+      this.router.navigate(['/client/products', productId]);
+    }
+  }
+
+  viewSimilarProduct(productId: number) {
+    if (productId) {
+      this.router.navigate(['/client/products', productId]);
+    }
+  }
+
+  viewPopularProduct(productId: number) {
+    if (productId) {
+      this.router.navigate(['/client/products', productId]);
+    }
+  }
+
+  viewNewArrivalProduct(productId: number) {
     if (productId) {
       this.router.navigate(['/client/products', productId]);
     }
