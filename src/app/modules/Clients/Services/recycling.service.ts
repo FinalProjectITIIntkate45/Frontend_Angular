@@ -20,7 +20,7 @@ import {
 export class RecyclingService {
   private baseUrl = `${environment.apiUrl}`;
 
-  // ✅ Add caching for materials (they don't change often)
+  // Add caching for materials (they don't change often)
   private materialsCache$ = new BehaviorSubject<RecyclingMaterial[]>([]);
   private materialsCacheTime = 0;
   private readonly CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
@@ -31,7 +31,7 @@ export class RecyclingService {
   getAllMaterials(): Observable<RecyclingMaterial[]> {
     const now = Date.now();
 
-    // ✅ Return cached data if still valid
+    // Return cached data if still valid
     if (
       this.materialsCache$.value.length > 0 &&
       now - this.materialsCacheTime < this.CACHE_DURATION
@@ -40,7 +40,7 @@ export class RecyclingService {
       return of(this.materialsCache$.value);
     }
 
-    // ✅ Fetch fresh data and cache it
+    // Fetch fresh data and cache it
     return this.http
       .get<APIResponse<RecyclingMaterial[]>>(
         `${this.baseUrl}/RecyclingMaterialsApi/getall`
@@ -48,15 +48,15 @@ export class RecyclingService {
       .pipe(
         map((response) => response.Data || []),
         tap((materials) => {
-          // ✅ Cache the results
+          // Cache the results
           this.materialsCache$.next(materials);
           this.materialsCacheTime = now;
           console.log('Materials cached, count:', materials.length);
         }),
-        shareReplay(1), // ✅ Share the same response with multiple subscribers
+        shareReplay(1), // Share the same response with multiple subscribers
         catchError((error) => {
           console.error('Error fetching materials:', error);
-          // ✅ Return cached data on error if available
+          // Return cached data on error if available
           if (this.materialsCache$.value.length > 0) {
             console.log('Returning cached materials due to error');
             return of(this.materialsCache$.value);
@@ -66,7 +66,7 @@ export class RecyclingService {
       );
   }
 
-  // ✅ Clear cache when needed (e.g., after creating/updating materials)
+  // Clear cache when needed (e.g., after creating/updating materials)
   clearMaterialsCache(): void {
     this.materialsCache$.next([]);
     this.materialsCacheTime = 0;
@@ -74,7 +74,7 @@ export class RecyclingService {
   }
 
   getMaterialById(id: number): Observable<RecyclingMaterial | null> {
-    // ✅ Try to get from cache first
+    // Try to get from cache first
     const cachedMaterial = this.materialsCache$.value.find((m) => m.Id === id);
     if (cachedMaterial) {
       return of(cachedMaterial);
@@ -95,13 +95,15 @@ export class RecyclingService {
 
   // Recycling Requests - Client Operations
   createRequest(request: RecyclingRequestCreateViewModel): Observable<any> {
+    // Create request payload matching the API controller's expected structure
     const requestData = {
-      MaterialId: request.materialId,
-      UnitType: request.unitType,
-      City: request.city,
-      Address: request.address,
-      Quantity: request.quantity,
-      RequestImage: request.requestImage || null,
+      materialId: request.MaterialId,        // Note: camelCase for API
+      unitType: request.UnitType,
+      city: request.City,
+      address: request.Address,
+      quantity: request.Quantity,
+      requestImage: request.RequestImage || null,
+      governorate: request.Governorate,
     };
 
     console.log('Sending recycling request data:', requestData);
@@ -131,28 +133,11 @@ export class RecyclingService {
     const params = `?pageNumber=${pageNumber}&pageSize=${pageSize}`;
 
     return this.http
-      .get<APIResponse<any[]>>(
+      .get<APIResponse<RecyclingRequestListItemViewModel[]>>(
         `${this.baseUrl}/RecyclingRequest/MyRequests${params}`
       )
       .pipe(
-        map((response) => {
-          console.log('API Response for MyRequests:', response);
-          console.log('Raw Data Array:', response.Data);
-
-          // Map PascalCase backend properties to camelCase frontend properties
-          const mappedData = (response.Data || []).map((item) => ({
-            id: item.Id,
-            materialName: item.MaterialName,
-            unitType: item.UnitType,
-            quantity: item.Quantity,
-            status: item.Status,
-            pointsAwarded: item.PointsAwarded,
-            createdAt: item.CreatedAt,
-          }));
-
-          console.log('Mapped Data:', mappedData);
-          return mappedData;
-        }),
+        map((response) => response.Data || []),
         catchError((error) => {
           console.error('Error fetching my requests:', error);
           return of([]);
@@ -165,29 +150,9 @@ export class RecyclingService {
     id: number
   ): Observable<RecyclingRequestDetailsViewModel | null> {
     return this.http
-      .get<APIResponse<any>>(`${this.baseUrl}/RecyclingRequest/${id}`)
+      .get<APIResponse<RecyclingRequestDetailsViewModel>>(`${this.baseUrl}/RecyclingRequest/${id}`)
       .pipe(
-        map((response) => {
-          console.log('Request Details Response:', response);
-
-          if (!response.Data) return null;
-
-          // Map PascalCase backend properties to camelCase frontend properties
-          const mappedData = {
-            id: response.Data.Id,
-            materialName: response.Data.MaterialName,
-            unitType: response.Data.UnitType,
-            quantity: response.Data.Quantity,
-            status: response.Data.Status,
-            pointsAwarded: response.Data.PointsAwarded,
-            requestImage: response.Data.RequestImage,
-            clientUsername: response.Data.ClientUsername,
-            createdAt: response.Data.CreatedAt,
-          };
-
-          console.log('Mapped Request Details:', mappedData);
-          return mappedData;
-        }),
+        map((response) => response.Data || null),
         catchError((error) => {
           console.error('Error fetching request details:', error);
           return of(null);
@@ -197,9 +162,19 @@ export class RecyclingService {
 
   // Update request status (for admin/provider)
   updateRequest(id: number, editData: any): Observable<any> {
+    // Ensure the payload matches the expected EditViewModel structure with Id
+    const updatePayload = {
+      ...editData,
+      Id: id
+    };
+
     return this.http
-      .put(`${this.baseUrl}/RecyclingRequest/${id}`, editData)
+      .put<APIResponse<any>>(`${this.baseUrl}/RecyclingRequest/${id}`, updatePayload)
       .pipe(
+        map((response) => {
+          console.log('Update request response:', response);
+          return response;
+        }),
         catchError((error) => {
           console.error('Error updating request:', error);
           throw error;
@@ -209,7 +184,20 @@ export class RecyclingService {
 
   // Delete a recycling request by ID
   deleteRequest(requestId: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/RecyclingRequest/${requestId}`);
+    // Note: The API controller has a bug - it should be [HttpDelete("{id}")] not [HttpDelete("id")]
+    // For now, we'll use the correct URL format that should work
+    return this.http
+      .delete<APIResponse<any>>(`${this.baseUrl}/RecyclingRequest/${requestId}`)
+      .pipe(
+        map((response) => {
+          console.log('Delete request response:', response);
+          return response;
+        }),
+        catchError((error) => {
+          console.error('Error deleting request:', error);
+          throw error;
+        })
+      );
   }
 
   // Helper method to get unit type display name

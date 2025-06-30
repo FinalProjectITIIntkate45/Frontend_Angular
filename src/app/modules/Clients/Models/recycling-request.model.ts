@@ -31,42 +31,43 @@ export enum Governorate {
 }
 
 export interface RecyclingRequestCreateViewModel {
-  materialId: number;
-  unitType: UnitOfMeasurementType;
-  requestImage?: string;
-  city: string;
-  address: string;
-  quantity: number;
-  governorate: Governorate;
+  MaterialId: number;
+  UnitType: UnitOfMeasurementType;
+  RequestImage?: string;
+  City: string;
+  Address: string;
+  Quantity: number;
+  Governorate: Governorate;
 }
 
 export interface RecyclingRequestListItemViewModel {
-  id: number;
-  materialName: string;
-  unitType: UnitOfMeasurementType;
-  quantity?: number;
-  status: RecyclingRequestStatus;
-  pointsAwarded?: number;
-  createdAt: Date;
+  Id: number;
+  MaterialName: string;
+  UnitType: UnitOfMeasurementType;
+  Quantity: number;
+  Status: RecyclingRequestStatus;
+  PointsAwarded?: number;
+  CreatedAt: Date;
 }
 
 export interface RecyclingRequestDetailsViewModel {
-  id: number;
-  materialName: string;
-  unitType: UnitOfMeasurementType;
-  status: RecyclingRequestStatus;
-  pointsAwarded?: number;
-  requestImage?: string;
-  clientUsername: string;
-  createdAt: Date;
+  Id: number;
+  MaterialName: string;
+  UnitType: UnitOfMeasurementType;
+  Quantity: number;
+  Status: RecyclingRequestStatus;
+  PointsAwarded?: number;
+  RequestImage?: string;
+  ClientUsername: string;
+  CreatedAt: Date;
 }
 
 export interface RecyclingRequestEditViewModel {
-  id: number;
-  status: RecyclingRequestStatus;
-  pointsAwarded?: number;
-  unitType: UnitOfMeasurementType;
-  requestImage?: string;
+  Id: number;
+  Status: RecyclingRequestStatus;
+  PointsAwarded?: number;
+  UnitType: UnitOfMeasurementType;
+  RequestImage?: string;
 }
 
 export enum RecyclingRequestStatus {

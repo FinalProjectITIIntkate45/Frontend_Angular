@@ -23,7 +23,6 @@ import { OfferDetailsComponent } from './components/offer/offer-details/offer-de
 import { OfferListComponent } from './components/offer/offer-list/offer-list.component';
 import { RecyclingSectionComponent } from './components/recycling-section/recycling-section.component';
 
-
 const routes: Routes = [
   {
     path: 'products',
@@ -55,7 +54,7 @@ const routes: Routes = [
 
       { path: 'offers', component: OfferListComponent },
       { path: 'offers/:id', component: OfferDetailsComponent },
-      { path: 'payment-confirmation', component: PaymentConfirmationComponent }
+      { path: 'payment-confirmation', component: PaymentConfirmationComponent },
 
       { path: 'recycling', component: RecyclingSectionComponent },
     ],

@@ -41,6 +41,7 @@ import { OrderConfirmationComponent } from './components/checkout/order-confirma
 import { OrderSummaryComponent } from './components/checkout/order-summary/order-summary.component';
 import { PaymentConfirmationComponent } from './components/checkout/payment-confirmation/payment-confirmation.component';
 import { PaymentInfoComponent } from './components/checkout/payment-info/payment-info.component';
+import { RecyclingSectionComponent } from './components/recycling-section/recycling-section.component';
 
 
 @NgModule({
@@ -75,6 +76,7 @@ import { PaymentInfoComponent } from './components/checkout/payment-info/payment
     CharityDetailsComponent,
     DonateComponent,
     PaymentConfirmationComponent,
+    RecyclingSectionComponent,
   ],
   imports: [
     CommonModule,

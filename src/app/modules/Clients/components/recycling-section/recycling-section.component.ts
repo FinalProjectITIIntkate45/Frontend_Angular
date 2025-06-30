@@ -81,12 +81,16 @@ export class RecyclingSectionComponent implements OnInit {
 
   loadMyRequests(): void {
     this.isLoading = true;
+    this.errorMessage = '';
+    
     this.recyclingService.getMyRequests(this.pageNumber, this.pageSize).subscribe({
       next: (requests) => {
+        console.log('Received requests:', requests);
         this.myRequests = requests;
         this.isLoading = false;
       },
       error: (error) => {
+        console.error('Error loading requests:', error);
         this.errorMessage = 'Error loading requests';
         this.isLoading = false;
       },
@@ -99,14 +103,28 @@ export class RecyclingSectionComponent implements OnInit {
       city: '',
       address: '',
       quantity: '',
+      governorate: null,
     });
     this.showRequestForm = true;
     this.showMaterialsList = false;
+    this.clearMessages();
   }
 
   onFileSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        this.errorMessage = 'File size must be less than 5MB';
+        return;
+      }
+
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        this.errorMessage = 'Only image files are allowed';
+        return;
+      }
+
       this.selectedFile = file;
 
       // Create preview URL
@@ -128,8 +146,9 @@ export class RecyclingSectionComponent implements OnInit {
   }
 
   submitRequest(): void {
-    if (this.requestForm.invalid) {
+    if (this.requestForm.invalid || !this.selectedMaterial) {
       this.markFormGroupTouched();
+      this.errorMessage = 'Please fill in all required fields';
       return;
     }
 
@@ -139,32 +158,49 @@ export class RecyclingSectionComponent implements OnInit {
 
     const formValue = this.requestForm.value;
     const request: RecyclingRequestCreateViewModel = {
-      materialId: this.selectedMaterial!.Id,
-      unitType: this.selectedMaterial!.UnitType,
-      city: formValue.city,
-      address: formValue.address,
-      quantity: formValue.quantity,
-      requestImage: this.imageBase64 || undefined,
-      governorate: formValue.governorate,
+      MaterialId: this.selectedMaterial.Id,
+      UnitType: this.selectedMaterial.UnitType,
+      City: formValue.city,
+      Address: formValue.address,
+      Quantity: parseFloat(formValue.quantity),
+      RequestImage: this.imageBase64 || undefined,
+      Governorate: parseInt(formValue.governorate),
     };
+
+    console.log('Submitting request:', request);
 
     this.recyclingService.createRequest(request).subscribe({
       next: (response) => {
         console.log('Request created successfully:', response);
         this.isLoading = false;
-        this.successMessage = 'Recycling request created successfully!';
-        this.resetForm();
+        
+        if (response.IsSuccess) {
+          this.successMessage = response.Message || 'Recycling request created successfully!';
+          this.resetForm();
+          
+          // Reload requests to show the new one
+          this.loadMyRequests();
 
-        // Reset form and go back to materials list
-        setTimeout(() => {
-          this.showMaterials();
-        }, 2000);
+          // Reset form and go back to materials list after a delay
+          setTimeout(() => {
+            this.showMaterials();
+          }, 2000);
+        } else {
+          this.errorMessage = response.Message || 'Failed to create recycling request';
+        }
       },
       error: (error) => {
         console.error('Error creating request:', error);
         this.isLoading = false;
-        this.errorMessage =
-          'Failed to create recycling request. Please try again.';
+        
+        // Handle different error types
+        if (error.status === 400 && error.error?.Message) {
+          this.errorMessage = error.error.Message;
+        } else if (error.status === 401) {
+          this.errorMessage = 'You are not authorized. Please log in again.';
+        } else {
+          this.errorMessage = 'Failed to create recycling request. Please try again.';
+        }
       },
     });
   }
@@ -188,12 +224,14 @@ export class RecyclingSectionComponent implements OnInit {
     this.showRequestForm = false;
     this.showMaterialsList = true;
     this.resetForm();
+    this.clearMessages();
   }
 
   showRequests(): void {
     this.showMyRequests = true;
     this.showMaterialsList = false;
     this.showRequestForm = false;
+    this.clearMessages();
     this.loadMyRequests();
   }
 
@@ -201,6 +239,7 @@ export class RecyclingSectionComponent implements OnInit {
     this.showMyRequests = false;
     this.showMaterialsList = true;
     this.showRequestForm = false;
+    this.clearMessages();
   }
 
   getStatusBadgeClass(status: RecyclingRequestStatus): string {
@@ -253,15 +292,17 @@ export class RecyclingSectionComponent implements OnInit {
         this.isLoading = false;
 
         if (requestDetails) {
-          // For now, just show the details in a success message
-          // Later we can create a modal or separate page
-          this.successMessage = `Request #${requestDetails.id} Details: ${
-            requestDetails.materialName
-          } - Status: ${this.getStatusText(
-            requestDetails.status
-          )} - Created: ${new Date(
-            requestDetails.createdAt
-          ).toLocaleDateString()}`;
+          // Create a detailed message with request information
+          const statusText = this.getStatusText(requestDetails.Status);
+          const createdDate = new Date(requestDetails.CreatedAt).toLocaleDateString();
+          const pointsText = requestDetails.PointsAwarded ? 
+            ` - Points Awarded: ${requestDetails.PointsAwarded}` : '';
+          
+          this.successMessage = `Request #${requestDetails.Id} Details: 
+            Material: ${requestDetails.MaterialName}, 
+            Quantity: ${requestDetails.Quantity} ${this.getUnitTypeDisplayName(requestDetails.UnitType).toLowerCase()}, 
+            Status: ${statusText}, 
+            Created: ${createdDate}${pointsText}`;
         } else {
           this.errorMessage = 'Request details not found.';
         }
@@ -290,18 +331,33 @@ export class RecyclingSectionComponent implements OnInit {
     if (!confirm('Are you sure you want to delete this request?')) {
       return;
     }
+    
     this.isLoading = true;
     this.errorMessage = '';
     this.successMessage = '';
+    
     this.recyclingService.deleteRequest(requestId).subscribe({
-      next: () => {
-        this.successMessage = 'Request deleted successfully!';
-        this.loadMyRequests();
+      next: (response) => {
         this.isLoading = false;
+        
+        if (response.IsSuccess) {
+          this.successMessage = response.Message || 'Request deleted successfully!';
+          this.loadMyRequests(); // Reload the list
+        } else {
+          this.errorMessage = response.Message || 'Failed to delete request';
+        }
       },
       error: (error) => {
-        this.errorMessage = 'Failed to delete request. Please try again.';
+        console.error('Error deleting request:', error);
         this.isLoading = false;
+        
+        if (error.status === 404) {
+          this.errorMessage = 'Request not found or already deleted.';
+        } else if (error.status === 401) {
+          this.errorMessage = 'You are not authorized to delete this request.';
+        } else {
+          this.errorMessage = 'Failed to delete request. Please try again.';
+        }
       },
     });
   }

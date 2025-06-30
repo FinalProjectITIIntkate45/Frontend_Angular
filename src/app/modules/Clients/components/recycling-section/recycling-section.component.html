@@ -200,8 +200,9 @@
                                     <input type="number" class="form-control" id="quantity" formControlName="quantity"
                                         placeholder="Enter quantity" step="0.1" min="0.1"
                                         [class.is-invalid]="requestForm.get('quantity')?.invalid && requestForm.get('quantity')?.touched">
-                                    <span class="input-group-text">{{ getUnitTypeDisplayName(selectedMaterial?.UnitType
-                                        || 1).toLowerCase() }}</span>
+                                    <span class="input-group-text" *ngIf="selectedMaterial">
+                                        {{ getUnitTypeDisplayName(selectedMaterial.UnitType).toLowerCase() }}
+                                    </span>
                                 </div>
                                 <div *ngIf="requestForm.get('quantity')?.invalid && requestForm.get('quantity')?.touched"
                                     class="invalid-feedback">
@@ -333,41 +334,41 @@
                         <tbody>
                             <tr *ngFor="let request of myRequests">
                                 <td>
-                                    <strong>{{ request.materialName }}</strong>
+                                    <strong>{{ request.MaterialName }}</strong>
                                 </td>
                                 <td>
-                                    <span class="badge bg-info">{{ getUnitTypeDisplayName(request.unitType) }}</span>
+                                    <span class="badge bg-info">{{ getUnitTypeDisplayName(request.UnitType) }}</span>
                                 </td>
                                 <td>
-                                    <span class="text-muted">{{ request.quantity || 'N/A' }}</span>
+                                    <span class="text-muted">{{ request.Quantity || 'N/A' }}</span>
                                 </td>
                                 <td>
-                                    <span [class]="getStatusBadgeClass(request.status)">
-                                        {{ getStatusText(request.status) }}
+                                    <span [class]="getStatusBadgeClass(request.Status)">
+                                        {{ getStatusText(request.Status) }}
                                     </span>
                                 </td>
                                 <td>
-                                    <span *ngIf="request.pointsAwarded" class="text-success fw-bold">
+                                    <span *ngIf="request.PointsAwarded" class="text-success fw-bold">
                                         <i class="fas fa-star me-1"></i>
-                                        {{ request.pointsAwarded }}
+                                        {{ request.PointsAwarded }}
                                     </span>
-                                    <span *ngIf="!request.pointsAwarded" class="text-muted">
+                                    <span *ngIf="!request.PointsAwarded" class="text-muted">
                                         -
                                     </span>
                                 </td>
                                 <td>
                                     <small class="text-muted">
-                                        {{ request.createdAt | date:'short' }}
+                                        {{ request.CreatedAt | date:'short' }}
                                     </small>
                                 </td>
                                 <td>
                                     <button class="btn btn-sm btn-outline-primary"
-                                        (click)="viewRequestDetails(request.id)">
+                                        (click)="viewRequestDetails(request.Id)">
                                         <i class="fas fa-eye me-1"></i>
                                         View
                                     </button>
                                     <button class="btn btn-sm btn-outline-danger ms-1"
-                                        (click)="deleteRequest(request.id)">
+                                        (click)="deleteRequest(request.Id)">
                                         <i class="fas fa-trash-alt me-1"></i>
                                         Delete
                                     </button>
