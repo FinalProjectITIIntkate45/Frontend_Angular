@@ -1,0 +1,16 @@
+.form-section h3 {
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: unset;
+  font-size: 1.5rem; /* كبّر لو عايز */
+  display: block;
+}
+
+
+.form-section {
+  width: 100%;
+  max-width: 600px; /* لو كنت حاطط حجم صغير قلله */
+  margin: auto;
+}
+
+

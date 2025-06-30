@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../../core/services/Auth.service';
+
+import { ToastrService } from 'ngx-toastr';
+
 import { AccountService } from '../../services/account.service';
 import { APIResponse } from '../../../../core/models/APIResponse';
+import { AuthService } from '../../../../core/services/Auth.service';
 
 interface LoginModel {
   Method: string;
@@ -27,7 +30,8 @@ export class LoginComponent {
   constructor(
     private accountService: AccountService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService // Assuming ToastrService is imported and injected
   ) {}
 
   togglePassword() {
@@ -59,12 +63,20 @@ export class LoginComponent {
 
           const role = this.authService.getUserRole();
           if (role === 'Provider') {
+            localStorage.setItem('token', response.Data.token);
+            localStorage.setItem('role', response.Data.role);
+            this.toastr.success("Logged in as provider successfully");
             this.router.navigate(['/provider']);
           } else {
+            localStorage.setItem('token', response.Data.token);
+            localStorage.setItem('role', response.Data.role);
+            this.toastr.success("Logged in as client successfully");
             this.router.navigate(['/client']);
           }
         } else {
           this.errorMessage = response.Message || 'Login failed';
+          this.toastr.error(this.errorMessage);
+          this.loading = false;
           console.error('Login failed:', this.errorMessage);
         }
       },

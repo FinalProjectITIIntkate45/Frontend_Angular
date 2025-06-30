@@ -22,7 +22,10 @@ export class CharityListComponent implements OnInit {
     this.charityService.getAllCharities().subscribe({
       next: (responce) => {
         console.log(responce)
-        this.charities = responce.Data;
+        this.charities = responce.Data.map((charity: Charity) => ({
+          ...charity,
+          images: charity.CharityImages?.map(img => ({ url: img.ImageUrl })) || []
+        }));
       },
       error: (err) => {
         console.error('Error fetching charities:', err);
@@ -31,11 +34,11 @@ export class CharityListComponent implements OnInit {
   }
 
   viewDetails(charityId: number): void {
-    this.router.navigate(['/clients/charity-details', charityId]);
+    this.router.navigate(['/client/charity-details', charityId]);
   }
 
   donate(charityId: number): void {
-    this.router.navigate(['/clients/donate', charityId]);
+    this.router.navigate(['/client/donate', charityId]);
   }
 
 }
