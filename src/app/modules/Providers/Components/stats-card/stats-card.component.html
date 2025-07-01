@@ -1,0 +1,12 @@
+<div class="stats-card">
+  <div class="stats-header">
+    <div>
+      <div class="stats-title">{{ title }}</div>
+    </div>
+    <div class="stats-icon" [ngClass]="{'earnings-icon': title === 'Earnings', 'orders-icon': title === 'Orders', 'customer-icon': title === 'Customer'}">
+      <i class="fas" [ngClass]="{'fa-dollar-sign': title === 'Earnings', 'fa-shopping-cart': title === 'Orders', 'fa-users': title === 'Customer'}"></i>
+    </div>
+  </div>
+  <div class="stats-value">0</div>
+  <div class="stats-subtitle">Sample data</div>
+</div>

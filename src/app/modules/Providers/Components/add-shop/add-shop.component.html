@@ -1,7 +1,7 @@
-<div class="container py-5">
+<div class="dashboard-content">
   <h2>Add New Shop</h2>
-<form [formGroup]="shopForm" (ngSubmit)="onSubmit()">
-      <div class="mb-3">
+  <form [formGroup]="shopForm" (ngSubmit)="onSubmit()" class="p-4 bg-white rounded shadow-sm">
+    <div class="mb-3">
       <label for="shopName" class="form-label">Shop Name</label>
       <input type="text" class="form-control" id="shopName" formControlName="shopName" required>
       <div *ngIf="shopForm.get('shopName')?.invalid && shopForm.get('shopName')?.touched" class="text-danger">

@@ -1,6 +1,6 @@
-<div class="container py-5">
+<div class="dashboard-content">
   <h2>Edit Shop</h2>
-  <form [formGroup]="shopForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="shopForm" (ngSubmit)="onSubmit()" class="p-4 bg-white rounded shadow-sm">
     <div class="mb-3">
       <label for="shopName" class="form-label">Shop Name</label>
       <input type="text" class="form-control" id="shopName" formControlName="shopName" required>
