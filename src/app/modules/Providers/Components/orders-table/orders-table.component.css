@@ -1,0 +1,27 @@
+.orders-table {
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+  }
+  
+  .orders-table h5 {
+    margin-bottom: 15px;
+    font-size: 16px;
+    color: #343a40;
+  }
+  
+  .table {
+    margin-bottom: 0;
+  }
+  
+  .status-badge {
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 12px;
+  }
+  
+  .status-shipped { background-color: #28a745; }
+  .status-pending { background-color: #ffc107; }

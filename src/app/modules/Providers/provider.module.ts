@@ -22,7 +22,7 @@ import { ProductDetailsPageComponent } from './Components/product-details-page/p
 import { ProductFormPageComponent } from './Components/product-form-page/product-form-page.component';
 import { ProductListPageComponent } from './Components/product-list-page/product-list-page.component';
 import { ProviderLayoutComponent } from './Components/provider-layout/provider-layout.component';
-import { ProviderSidebarComponent } from './Components/provider-sidebar/provider-sidebar.component';
+import { SidebarComponent } from './Components/sidebar/sidebar.component';
 import { SafeUrlPipe } from './Services/SafeUrl.pipe';
 import { EditDetailsComponent } from './Components/OfferGroupe/editDetailes/editDetailes.component';
 import { EditOfferComponent } from './Components/OfferGroupe/EditOffer/EditOffer.component';
@@ -32,27 +32,67 @@ import { OfferDetailesComponent } from './Components/OfferGroupe/OfferDetailes/O
 import { MakeOfferComponent } from './Components/OfferGroupe/MakeOffer/MakeOffer.component';
 import { OfferProductManagerComponent } from './Components/OfferGroupe/OfferProductManager/OfferProductManager.component';
 import { ProviderOrdersComponent } from './Components/provider-orders/provider-orders.component';
-
+import { HeaderComponent } from './Components/header/header.component';
+import { SalesOverviewComponent } from './Components/sales-overview/sales-overview.component';
+import { WelcomeBannerComponent } from './Components/welcome-banner/welcome-banner.component';
+import { ChartContainerComponent } from './Components/chart-container/chart-container.component';
+import { NotificationsPanelComponent } from './Components/notifications-panel/notifications-panel.component';
+import { OrdersTableComponent } from './Components/orders-table/orders-table.component';
+import { StatsCardComponent } from './Components/stats-card/stats-card.component';
 
 @NgModule({
   declarations: [
     ProviderLayoutComponent,
+  AddShopComponent,
+  EditShopComponent,
+  ProviderOrdersComponent,
+  SubScrptionComponent,
+  ProductFormPageComponent,
+  ProductDetailsPageComponent,
+  ProductListPageComponent,
+  EditDetailsComponent,
+  EditOfferComponent,
+  ShopProductsComponent,
+  ShopOffersComponent,
+  OfferDetailesComponent,
+  MakeOfferComponent,
+  OfferProductManagerComponent,
+  SidebarComponent,
+  HeaderComponent,
+  WelcomeBannerComponent,
+  SalesOverviewComponent,
+  OrdersTableComponent,
+  NotificationsPanelComponent,
+  ChartContainerComponent,
+  StatsCardComponent,
+  SubScrptionComponent,
+
+
+  ],
+  exports: [
+    ProviderLayoutComponent,
     AddShopComponent,
     EditShopComponent,
-    ProviderSidebarComponent,
     SubScrptionComponent,
+    ProviderLayoutComponent,
+    SidebarComponent,
+    HeaderComponent,
+    WelcomeBannerComponent,
+    SalesOverviewComponent,
+    OrdersTableComponent,
+    NotificationsPanelComponent,
+    ChartContainerComponent,
+    StatsCardComponent,
+    ProviderLayoutComponent,
     ProductFormPageComponent,
     ProductDetailsPageComponent,
     ProductListPageComponent,
-    EditDetailsComponent,
-    EditOfferComponent,
-    ShopProductsComponent,
-    ShopOffersComponent,
-    OfferDetailesComponent,
-    MakeOfferComponent,
-    OfferProductManagerComponent,
     ProviderOrdersComponent,
-
+    SubScrptionComponent,
+    SidebarComponent,
+    ProviderLayoutComponent,
+    HeaderComponent,
+    SubScrptionComponent,
   ],
    imports: [
     CommonModule,

@@ -1,0 +1,29 @@
+.sales-overview {
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+  }
+  
+  .sales-overview h5 {
+    margin-bottom: 15px;
+    font-size: 16px;
+    color: #343a40;
+  }
+  
+  .overview-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .overview-bar {
+    height: 10px;
+    border-radius: 5px;
+  }
+  
+  .profit-bar { background-color: #28a745; }
+  .income-bar { background-color: #007bff; }
+  .expense-bar { background-color: #dc3545; }

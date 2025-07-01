@@ -1,0 +1,41 @@
+.stats-card {
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  
+  .stats-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .stats-title {
+    font-size: 14px;
+    color: #6c757d;
+  }
+  
+  .stats-icon {
+    font-size: 20px;
+    padding: 5px;
+    border-radius: 50%;
+  }
+  
+  .earnings-icon { background-color: #28a745; color: #fff; }
+  .orders-icon { background-color: #007bff; color: #fff; }
+  .customer-icon { background-color: #ffc107; color: #fff; }
+  
+  .stats-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #343a40;
+  }
+  
+  .stats-subtitle {
+    font-size: 12px;
+    color: #6c757d;
+  }
