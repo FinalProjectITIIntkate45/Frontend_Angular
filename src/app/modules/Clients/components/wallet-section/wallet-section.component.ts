@@ -35,10 +35,12 @@ export class WalletSectionComponent implements OnInit {
     this.error = null;
     this.walletService.getWalletView(this.userId).subscribe({
       next: (data: WalletView) => {
+        console.log('data:', data);
         this.wallet = data;
         this.loading = false;
       },
       error: (err: any) => {
+        console.log('err:', err);
         this.error = err?.error?.message || 'Failed to load wallet data.';
         this.loading = false;
       },
@@ -46,6 +48,7 @@ export class WalletSectionComponent implements OnInit {
   }
 
   getCurrentUserId(): string {
+    console.log('getCurrentUserId:', this.authService.getUserId());
     return this.authService.getUserId();
   }
 }

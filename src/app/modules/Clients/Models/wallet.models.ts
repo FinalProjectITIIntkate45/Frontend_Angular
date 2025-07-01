@@ -24,6 +24,6 @@ export interface FreePoint {
 }
 
 export interface WalletView {
-  shopPoints: ShopPoint[];
-  freePoints: FreePoint[];
+  ShopPoints: ShopPoint[];
+  FreePoints: FreePoint[];
 }

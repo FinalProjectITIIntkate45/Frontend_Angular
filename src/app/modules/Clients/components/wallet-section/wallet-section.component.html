@@ -1,5 +1,6 @@
 <div class="wallet-section-container">
     <h2 class="wallet-title">My Wallet</h2>
+    <p>userId: {{ getCurrentUserId() }}</p>
 
     <div *ngIf="loading" class="wallet-loading">
         <mat-spinner></mat-spinner>
@@ -7,7 +8,7 @@
     </div>
 
     <div *ngIf="error" class="wallet-error">
-        <mat-icon color="warn">error</mat-icon>
+        <!-- <mat-icon color="warn">error</mat-icon> -->
         <span>{{ error }}</span>
     </div>
 
@@ -19,8 +20,8 @@
                 <span class="wallet-card-title">Free Points</span>
             </div>
             <div class="wallet-card-content">
-                <div *ngIf="wallet.freePoints.length > 0; else noFreePoints">
-                    <div *ngFor="let fp of wallet.freePoints" class="wallet-point-row">
+                <div *ngIf="wallet.FreePoints && wallet.FreePoints.length > 0; else noFreePoints">
+                    <div *ngFor="let fp of wallet.FreePoints" class="wallet-point-row">
                         <span class="wallet-point-amount">{{ fp.points | number:'1.0-0' }}</span>
                         <span class="wallet-point-source">{{ fp.sourceType }}</span>
                         <span class="wallet-point-expiry">Expires: {{ fp.expireAt | date:'mediumDate' }}</span>
@@ -36,8 +37,8 @@
         <!-- Shop Points Cards -->
         <div class="wallet-shop-points-list">
             <h3 class="wallet-section-subtitle">Shop Points</h3>
-            <div *ngIf="wallet.shopPoints.length > 0; else noShopPoints" class="wallet-shop-cards">
-                <div *ngFor="let sp of wallet.shopPoints" class="wallet-card wallet-shop-card"
+            <div *ngIf="wallet.ShopPoints.length > 0; else noShopPoints" class="wallet-shop-cards">
+                <div *ngFor="let sp of wallet.ShopPoints" class="wallet-card wallet-shop-card"
                     [ngClass]="{'special-shop': sp.shop?.shopType === 'Special', 'regular-shop': sp.shop?.shopType !== 'Special'}">
                     <div class="wallet-card-header">
                         <img *ngIf="sp.shop?.logo" [src]="sp.shop.logo" alt="Shop Logo" class="wallet-shop-logo" />
