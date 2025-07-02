@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 
 import { CookieService } from 'ngx-cookie-service';
 
+import { APIResponse } from '../models/APIResponse';
 import { AuthState, LoginResponse } from '../models/auth.models';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -15,19 +18,24 @@ export class AuthService {
   private readonly ROLE_KEY = 'role';
   private readonly USERNAME_KEY = 'userName';
 
+
+  private readonly apiUrl = `${environment.apiUrl}/Account`;
+
   private authState = new BehaviorSubject<AuthState>({
     isAuthenticated: false,
     user: null,
   });
 
-  constructor(private cookieService: CookieService, private router: Router) {
+  constructor(private cookieService: CookieService, private router: Router,private http: HttpClient) {
     this.initializeAuth();
   }
 
   private initializeAuth() {
     const token = this.getToken();
+    console.log('first token:', token);
     if (token) {
       const user = this.parseJwt(token);
+      console.log('user:', user);
       this.authState.next({
         isAuthenticated: true,
         user: {
@@ -37,18 +45,21 @@ export class AuthService {
           subscriptionType: user?.subscriptionType || 'Basic',
         },
       });
+      console.log('authState:', this.authState);
     }
   }
 
   getAuthState(): Observable<AuthState> {
+    console.log('getAuthState:', this.authState);
     return this.authState.asObservable();
   }
 
   setUserData(response: LoginResponse): void {
     const decoded = this.parseJwt(response.token); // ✅ فك التوكن
-
+    console.log('decoded:', decoded);
+    console.log('response:', response);
     this.cookieService.set(this.TOKEN_KEY, response.token, {
-      secure: true,
+      secure: false,
       sameSite: 'Strict',
     });
     this.cookieService.set(this.ROLE_KEY, response.role);
@@ -63,6 +74,7 @@ export class AuthService {
         subscriptionType: decoded?.subscriptionType || 'Basic',
       },
     });
+    console.log('authState:', this.authState);
   }
 
   getToken(): string | null {
@@ -70,6 +82,7 @@ export class AuthService {
   }
 
   isLoggedUser(): boolean {
+    console.log('isLoggedUser:', this.getToken());
     return !!this.getToken();
   }
 
@@ -87,13 +100,29 @@ export class AuthService {
   }
 
   getUserId(): string {
-  const token = this.getToken();
-  if (token) {
-    const decoded = this.parseJwt(token);
-    return decoded?.nameid || decoded?.sub || '';
+    const token = this.getToken();
+    if (token) {
+      const decoded = this.parseJwt(token);
+      // return decoded?.nameid || decoded?.sub || '';
+      return (
+        decoded?.nameid ||
+        decoded?.sub ||
+        decoded?.[
+          'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
+        ] ||
+        ''
+      );
+    }
+    return '';
   }
-  return '';
-}
+
+
+    // src/app/core/services/Auth.service.ts
+  getUserID(): Observable<string> {
+    return this.http.get<APIResponse<string>>(`${this.apiUrl}/GetId`)
+      .pipe(map((res: APIResponse<string>) => res.Data));
+  }
+
 
 
   logout(): void {
@@ -116,4 +145,7 @@ export class AuthService {
       return null;
     }
   }
+
+
+
 }
