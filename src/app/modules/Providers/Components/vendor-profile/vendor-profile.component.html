@@ -1,44 +1,48 @@
-<div class="main-content">
-  <!-- Check if header component is available before rendering -->
-  <ng-container *ngIf="isHeaderAvailable">
-    <app-header></app-header>
-  </ng-container>
-  <div class="dashboard-content">
-    <!-- Check if welcome banner component is available before rendering -->
-    <ng-container *ngIf="isWelcomeBannerAvailable">
-      <app-welcome-banner></app-welcome-banner>
-    </ng-container>
-    <div class="row">
-      <div class="col-md-4" *ngFor="let stat of ['Earnings', 'Orders', 'Customer']">
-        <app-stats-card [title]="stat"></app-stats-card>
-      </div>
+<div class="profile-container" *ngIf="profile; else loading">
+  <div class="profile-header">
+    <img [src]="profile.profileImg || 'assets/images/default-avatar.png'" class="profile-img" alt="Profile Image" />
+    <div class="profile-info">
+      <h2>{{ profile.userName }}</h2>
+      <p><strong>Email:</strong> {{ profile.email }}</p>
+      <p><strong>Phone:</strong> {{ profile.phoneNumber }}</p>
+      <p><strong>National ID:</strong> {{ profile.nationalID }}</p>
     </div>
-    <div class="row">
-      <div class="col-md-8">
-        <app-chart-container [type]="'revenue'"></app-chart-container>
-      </div>
-      <div class="col-md-4">
-        <app-chart-container [type]="'donut'"></app-chart-container>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-md-4">
-        <app-sales-overview></app-sales-overview>
-      </div>
-      <div class="col-md-8">
-        <app-notifications-panel></app-notifications-panel>
-      </div>
-    </div>
-    <app-orders-table></app-orders-table>
-    <app-product-list-page></app-product-list-page>
-    <app-add-shop></app-add-shop>
-    <app-edit-shop></app-edit-shop>
-    <app-product-form-page></app-product-form-page>
-    <app-product-details-page></app-product-details-page>
-    <app-sub-scrption></app-sub-scrption>
+  </div>
+
+  <div class="section">
+    <h3>Shop Info</h3>
+    <p><strong>Name:</strong> {{ profile.shopName }}</p>
+    <p><strong>Address:</strong> {{ profile.shopAddress }}</p>
+    <p><strong>City:</strong> {{ profile.city }}</p>
+    <p><strong>Street:</strong> {{ profile.street }}</p>
+    <p><strong>Postal Code:</strong> {{ profile.postalCode }}</p>
+    <p><strong>Email:</strong> {{ profile.businessEmail }}</p>
+    <p><strong>Phone:</strong> {{ profile.businessPhone }}</p>
+  </div>
+
+  <div class="section">
+    <h3>Points</h3>
+    <p><strong>Balance Points:</strong> {{ profile.balancePoints }}</p>
+    <p><strong>Shop Points:</strong> {{ profile.totalShopPoints }}</p>
+    <p><strong>Free Points:</strong> {{ profile.totalFreePoints }}</p>
+    <p><strong>Pending Points:</strong> {{ profile.totalPendingPoints }}</p>
+  </div>
+
+  <div class="section">
+    <h3>Subscription</h3>
+    <p><strong>Type:</strong> {{ profile.subscriptionType }}</p>
+    <p><strong>Expires:</strong> {{ profile.subscriptionExpireDate | date }}</p>
+    <p><strong>Active:</strong> <span [class.active]="profile.hasActiveSubscription">{{ profile.hasActiveSubscription ? 'Yes' : 'No' }}</span></p>
+  </div>
+
+  <div class="section">
+    <h3>Analytics</h3>
+    <p><strong>Total Revenue:</strong> {{ profile?.totalRevenue | currency }}</p>
+    <p><strong>Order Count:</strong> {{ profile?.orderCount }}</p>
+    <p><strong>Avg Rating:</strong> {{ profile?.averageCustomerRating | number: '1.1-1' }}</p>
   </div>
 </div>
-<app-sidebar></app-sidebar>
-<button class="buy-now-btn">
-  <i class="fas fa-shopping-cart me-2"></i>Buy Now
-</button>
+
+<ng-template #loading>
+  <p>Loading profile...</p>
+</ng-template>

@@ -78,6 +78,7 @@ import { RecyclingSectionComponent } from './components/recycling-section/recycl
     PaymentConfirmationComponent,
     RecyclingSectionComponent,
   ],
+  
   imports: [
     CommonModule,
     SharedModule,

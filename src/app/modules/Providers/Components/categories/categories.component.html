@@ -1,0 +1,14 @@
+<div class="container mt-4">
+  <h2 class="mb-3">(Categories)</h2>
+  <div class="row">
+    <div class="col-md-4" *ngFor="let cat of categories">
+      <div class="card mb-3 shadow-sm">
+        <img [src]="cat.image" class="card-img-top" alt="{{ cat.name }}">
+        <div class="card-body">
+          <h5 class="card-title">{{ cat.name }}</h5>
+          <p class="card-text">{{ cat.description }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

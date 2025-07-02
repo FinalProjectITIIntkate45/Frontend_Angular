@@ -7,5 +7,6 @@ import { Component } from '@angular/core';
   standalone: false,
 })
 export class SidebarComponent {
+shop: any;
   constructor() { }
 }
