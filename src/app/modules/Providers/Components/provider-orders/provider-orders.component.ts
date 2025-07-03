@@ -6,7 +6,7 @@ import { ProviderOrder } from '../../Models/provider-orders.model';
   selector: 'app-provider-orders',
   templateUrl: './provider-orders.component.html',
   styleUrls: ['./provider-orders.component.css'],
-  standalone: false, 
+  standalone: false,
 })
 export class ProviderOrdersComponent implements OnInit {
   orders: ProviderOrder[] = [];

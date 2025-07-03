@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { WalletService } from '../../Services/wallet.service';
+
 import { WalletView } from '../../Models/wallet.models';
+import { WalletService } from '../../Services/wallet.service';
 import { AuthService } from '../../../../core/services/Auth.service';
 
 @Component({

@@ -22,6 +22,7 @@ import { DonateComponent } from './components/charity/donate/donate.component';
 import { PaymentConfirmationComponent } from './components/checkout/payment-confirmation/payment-confirmation.component';
 import { OfferDetailsComponent } from './components/offer/offer-details/offer-details.component';
 import { OfferListComponent } from './components/offer/offer-list/offer-list.component';
+import { ClientOrderDetailsComponent } from './components/orders-section/client-order-details/client-order-details.component';
 
 const routes: Routes = [
   {
@@ -57,6 +58,9 @@ const routes: Routes = [
       { path: 'payment-confirmation', component: PaymentConfirmationComponent },
 
       { path: 'recycling', component: RecyclingSectionComponent },
+
+      { path: 'orders/:id', component: ClientOrderDetailsComponent }
+
 
     ],
   },

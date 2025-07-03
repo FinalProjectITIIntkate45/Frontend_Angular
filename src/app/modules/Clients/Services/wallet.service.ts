@@ -27,9 +27,9 @@ export class WalletService {
       .pipe(catchError(this.handleError));
   }
 
-  getFreePoints(): Observable<FreePoint[]> {
+  getFreePoints(userId: string): Observable<FreePoint[]> {
     return this.http
-      .get<FreePoint[]>(`${this.apiUrl}/GetFreePoints`)
+      .get<FreePoint[]>(`${this.apiUrl}/${userId}/free-points`)
       .pipe(catchError(this.handleError));
   }
 
