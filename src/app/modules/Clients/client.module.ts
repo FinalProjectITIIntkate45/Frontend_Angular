@@ -20,11 +20,12 @@ import { CartComponent } from './components/cart/cart.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { ClientLayoutComponent } from './components/client-layout/client-layout.component';
 import { FollowSellerComponent } from './components/follow-seller/follow-seller.component';
-import { DrdersSectionComponent } from './components/orders-section/orders-section.component';
+import {  OrdersSectionComponent } from './components/orders-section/orders-section.component';
 import { PointsSectionComponent } from './components/points-section/points-section.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { ProductSearchComponent } from './components/product-search/product-search.component';
 import { ProfileSectionComponent } from './components/profile-section/profile-section.component';
+import { RecyclingSectionComponent } from './components/recycling-section/recycling-section.component';
 import { SettingsSectionComponent } from './components/settings-section/settings-section.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { TopNavigationComponent } from './components/top-navigation/top-navigation.component';
@@ -41,7 +42,6 @@ import { OrderConfirmationComponent } from './components/checkout/order-confirma
 import { OrderSummaryComponent } from './components/checkout/order-summary/order-summary.component';
 import { PaymentConfirmationComponent } from './components/checkout/payment-confirmation/payment-confirmation.component';
 import { PaymentInfoComponent } from './components/checkout/payment-info/payment-info.component';
-import { RecyclingSectionComponent } from './components/recycling-section/recycling-section.component';
 
 
 @NgModule({
@@ -51,7 +51,7 @@ import { RecyclingSectionComponent } from './components/recycling-section/recycl
     SidebarComponent,
     ProfileSectionComponent,
     WalletSectionComponent,
-    DrdersSectionComponent,
+    OrdersSectionComponent,
     PointsSectionComponent,
     AchievementsSectionComponent,
     SettingsSectionComponent,
@@ -77,8 +77,9 @@ import { RecyclingSectionComponent } from './components/recycling-section/recycl
     DonateComponent,
     PaymentConfirmationComponent,
     RecyclingSectionComponent,
+
   ],
-  
+
   imports: [
     CommonModule,
     SharedModule,

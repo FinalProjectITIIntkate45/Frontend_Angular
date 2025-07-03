@@ -6,11 +6,12 @@ import { AchievementsSectionComponent } from './components/achievements-section/
 import { CartComponent } from './components/cart/cart.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { FollowSellerComponent } from './components/follow-seller/follow-seller.component';
-import { DrdersSectionComponent } from './components/orders-section/orders-section.component';
+import { OrdersSectionComponent } from './components/orders-section/orders-section.component';
 import { PointsSectionComponent } from './components/points-section/points-section.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { ProductSearchComponent } from './components/product-search/product-search.component';
 import { ProfileSectionComponent } from './components/profile-section/profile-section.component';
+import { RecyclingSectionComponent } from './components/recycling-section/recycling-section.component';
 import { SettingsSectionComponent } from './components/settings-section/settings-section.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
 import { WalletSectionComponent } from './components/wallet-section/wallet-section.component';
@@ -21,7 +22,6 @@ import { DonateComponent } from './components/charity/donate/donate.component';
 import { PaymentConfirmationComponent } from './components/checkout/payment-confirmation/payment-confirmation.component';
 import { OfferDetailsComponent } from './components/offer/offer-details/offer-details.component';
 import { OfferListComponent } from './components/offer/offer-list/offer-list.component';
-import { RecyclingSectionComponent } from './components/recycling-section/recycling-section.component';
 
 const routes: Routes = [
   {
@@ -38,7 +38,7 @@ const routes: Routes = [
       { path: '', redirectTo: 'profile', pathMatch: 'full' },
       { path: 'profile', component: ProfileSectionComponent },
       { path: 'wallet', component: WalletSectionComponent },
-      { path: 'orders', component: DrdersSectionComponent },
+      { path: 'orders', component: OrdersSectionComponent },
       { path: 'points', component: PointsSectionComponent },
       { path: 'wishlist', component: WishlistSectionComponent },
       { path: 'achievements', component: AchievementsSectionComponent },
@@ -57,6 +57,7 @@ const routes: Routes = [
       { path: 'payment-confirmation', component: PaymentConfirmationComponent },
 
       { path: 'recycling', component: RecyclingSectionComponent },
+
     ],
   },
 ];

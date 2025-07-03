@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-user-profile',
@@ -11,7 +11,7 @@ export class UserProfileComponent {
   constructor(private router: Router) {}
 
   onSectionChange(section: string) {
-    this.router.navigate([`/user-profile/${section}`]);
-      console.log('Routing to:', `/user-profile/${section}`);
+    this.router.navigate([`/client/${section}`]); // ✅ دا الصح
+    console.log('Routing to:', `/client/${section}`);
   }
 }
