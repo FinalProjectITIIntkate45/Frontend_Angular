@@ -8,7 +8,7 @@ import { ShopService } from '../../Services/Shop.service';
   selector: 'app-shops',
   standalone: false,
   templateUrl: './shops.component.html',
-  styleUrls: ['./shops.component.css'],
+  styleUrls: ['./Shops.component.css'],
 })
 export class ShopsComponent implements OnInit {
   loading: boolean = true;

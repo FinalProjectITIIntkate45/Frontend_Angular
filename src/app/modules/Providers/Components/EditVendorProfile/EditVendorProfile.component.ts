@@ -7,7 +7,7 @@ import { EditVendorProfile } from '../../Models/edit-vendor-profile.model';
 @Component({
   selector: 'app-edit-vendor-profile',
   templateUrl: './editvendorprofile.component.html',
-  styleUrls: ['./editvendorprofile.component.css'],
+  styleUrls: ['./EditVendorProfile.component.css'],
   standalone: false,
 })
 
