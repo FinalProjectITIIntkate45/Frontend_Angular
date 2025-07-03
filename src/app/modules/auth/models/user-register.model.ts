@@ -4,7 +4,7 @@ export interface UserRegisterViewModel {
   phoneNumber: string;
   password: string;
   PasswordConfirmed: string;
-  role: 'Client' | 'Provider';
+  role: 'Client' | 'Provider' | 'Recycler';
 }
 
 export interface UserRegisterRequest {
@@ -13,5 +13,5 @@ export interface UserRegisterRequest {
   phoneNumber: string;
   password: string;
   PasswordConfirmed: string;
-  role: 'Client' | 'Provider';
+  role: 'Client' | 'Provider' | 'Recycler';
 }

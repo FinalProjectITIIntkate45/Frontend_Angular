@@ -1,0 +1,29 @@
+.welcome-banner {
+    padding: 20px;
+    background-color: #e9ecef;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .welcome-banner h2 {
+    margin: 0 0 10px;
+    font-size: 24px;
+  }
+  
+  .welcome-banner p {
+    margin: 0 0 15px;
+    color: #6c757d;
+  }
+  
+  .btn-create {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .btn-create:hover {
+    background-color: #0056b3;
+  }

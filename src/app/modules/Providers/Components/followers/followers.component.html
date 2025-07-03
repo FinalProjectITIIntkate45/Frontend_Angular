@@ -1,0 +1,20 @@
+<div class="container mt-4">
+  <h2 class="mb-3">المتابعين</h2>
+  <div *ngIf="followers.length > 0; else noFollowers">
+    <div class="row">
+      <div class="col-md-4" *ngFor="let f of followers">
+        <div class="card shadow-sm mb-3">
+          <img [src]="f.shop.image" class="card-img-top" alt="{{ f.shop.name }}">
+          <div class="card-body">
+            <h5 class="card-title">{{ f.shop.name }}</h5>
+            <p class="card-text">email: {{ f.shop.email }}</p>
+            <p class="card-text">phone number: {{ f.shop.phoneNumber }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #noFollowers>
+    <p>No followers yet.</p>
+  </ng-template>
+</div>

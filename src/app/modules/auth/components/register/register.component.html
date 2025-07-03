@@ -88,7 +88,14 @@
                         <label class="btn btn-outline-primary" for="providerRole">
                             <i class="fas fa-store me-2"></i>Provider
                         </label>
+                        <!-- Add more role options here Recycler  -->
+                        <input type="radio" class="btn-check" name="role" id="RecyclerRole"
+                            [checked]="model.role === 'Recycler'" (change)="setRole('Recycler')" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="RecyclerRole">
+                            <i class="fas fa-recycle me-2"></i>Recycler
+                        </label>
                     </div>
+
                     <div class="invalid-feedback d-block" *ngIf="errorMessage === 'Please select an account type'">
                         Please select an account type
                     </div>

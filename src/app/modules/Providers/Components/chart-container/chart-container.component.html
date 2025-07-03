@@ -1,0 +1,20 @@
+<div class="chart-container">
+  <div class="chart-header">
+    <div>
+      <h5 class="chart-title">{{ type === 'revenue' ? 'Revenue' : 'Total Sales' }}</h5>
+      <small class="text-muted" *ngIf="type === 'revenue'">(+63%) than last year</small>
+    </div>
+    <select class="year-select" *ngIf="type === 'revenue'">
+      <option>2019</option>
+    </select>
+  </div>
+  <div class="chart-area" *ngIf="type === 'revenue'">
+    <div class="chart-line"></div>
+  </div>
+  <div class="donut-chart" *ngIf="type === 'donut'">
+    <div class="donut-center">
+      <h4>9600</h4>
+      <p>Total Sales</p>
+    </div>
+  </div>
+</div>

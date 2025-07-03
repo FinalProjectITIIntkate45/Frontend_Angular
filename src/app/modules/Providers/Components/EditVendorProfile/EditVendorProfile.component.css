@@ -1,0 +1,59 @@
+/* Padding للمحتوى الأساسي */
+.container {
+  padding: 2rem;
+  background-color: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+/* ترويسة كل كارد */
+.card-header {
+  font-weight: bold;
+  font-size: 1.2rem;
+  background-color: #007bff;
+  color: white;
+}
+
+/* الحقول */
+input.form-control,
+select.form-control {
+  border-radius: 8px;
+  box-shadow: none;
+  border: 1px solid #ccc;
+}
+
+/* المسافات بين الكروت */
+.card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+}
+
+/* زر الحفظ */
+button.btn-success {
+  padding: 10px 30px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+button.btn-success:hover {
+  background-color: #28a745;
+}
+
+/* تنسيق عنوان الصفحة */
+h2 {
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #333;
+}
+
+/* Margin بين عناصر الشحن */
+[formArrayName="shippingOptions"] .row {
+  background-color: #f1f1f1;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+}

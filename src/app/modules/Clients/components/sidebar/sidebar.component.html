@@ -1,9 +1,9 @@
 <div class="sidebar bg-light vh-100 d-flex flex-column">
   <!-- Logo -->
   <div class="logo p-3 text-center border-bottom">
-    <img src="../../../../../../public//assets/pointpay2-05[1].png" alt="Pointify Logo" class="img-fluid mb-2"
-      style="max-width: 50px" />
-    <h2 class="h4 mb-0">pointify</h2>
+    <img src="assets/pointpay2-05.png" alt="Pointify Logo" class="img-fluid mb-2" style="max-width: 200px" />
+
+   
   </div>
 
   <!-- Navigation Menu -->
@@ -43,12 +43,20 @@
         <span>Recycling</span>
       </a>
     </li>
-    <li class="nav-item mb-2" [class.active]="selectedSection === 'donations'" (click)="selectSection('donations')">
-      <a class="d-flex align-items-center text-dark text-decoration-none p-2 rounded">
-        <i class="fas fa-hand-holding-heart me-2"></i>
-        <span>Donations</span>
-      </a>
-    </li>
+    <li
+    class="nav-item mb-2"
+    [class.active]="selectedSection === 'donations'"
+    (click)="selectSection('donations')"
+  >
+    <a
+      class="d-flex align-items-center text-dark text-decoration-none p-2 rounded"
+      routerLink="/client/charities"
+    >
+      <i class="fas fa-hand-holding-heart me-2"></i>
+      <span>Donations</span>
+    </a>
+  </li>
+  
     <li class="nav-item mb-2" routerLink="/client/Wishlist">
       <a class="d-flex align-items-center text-dark text-decoration-none p-2 rounded" routerLink="wishlist">
         <i class="fas fa-heart me-2"></i>

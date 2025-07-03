@@ -28,7 +28,7 @@ export class RegisterComponent {
 
   constructor(private accountService: AccountService, private router: Router) {}
 
-  setRole(role: 'Client' | 'Provider') {
+  setRole(role: 'Client' | 'Provider' | 'Recycler') {
     this.model.role = role;
   }
 

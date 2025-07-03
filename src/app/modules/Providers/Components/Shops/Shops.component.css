@@ -1,0 +1,34 @@
+.card {
+  border: none;
+  border-radius: 10px;
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.icon {
+  color: #dc3545;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.card-text {
+  color: #6c757d;
+}
+
+.breadcrumb {
+  background-color: transparent;
+}
+
+.breadcrumb-item a {
+  color: #007bff;
+}
+
+.breadcrumb-item.active {
+  color: #6c757d;
+}
