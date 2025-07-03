@@ -127,4 +127,23 @@ export class AuctionService {
         })
       );
   }
+
+  // Request to join a pending auction
+  requestToJoinAuction(auctionId: number): Observable<APIResponse<string>> {
+    const formData = new FormData();
+    formData.append('AuctionId', auctionId.toString());
+    formData.append('ApprovalTime', new Date().toISOString());
+    return this.http
+      .post<APIResponse<string>>(`${this.baseUrl}/AuctionRequest/asktojoin`, formData)
+      .pipe(
+        map((response) => {
+          console.log('Request to join auction response:', response);
+          return response;
+        }),
+        catchError((error) => {
+          console.error('Error requesting to join auction:', error);
+          throw error;
+        })
+      );
+  }
 } 

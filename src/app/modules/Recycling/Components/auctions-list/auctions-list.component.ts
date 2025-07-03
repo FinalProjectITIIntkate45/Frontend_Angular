@@ -17,6 +17,7 @@ export class AuctionsListComponent implements OnInit {
   isLoading = false;
   errorMessage = '';
   successMessage = '';
+  ScrapAuctionStatus = ScrapAuctionStatus; // Add enum to class for template
   
   // Pagination
   currentPage = 1;
@@ -246,5 +247,17 @@ export class AuctionsListComponent implements OnInit {
 
   trackByAuctionId(index: number, auction: AuctionVM): number {
     return auction.Id;
+  }
+
+  requestToJoinAuction(auction: AuctionVM): void {
+    // Implement your logic here, e.g., call a service to send a join request
+    this.auctionService.requestToJoinAuction(auction.Id).subscribe({
+      next: (response) => {
+        this.successMessage = response.Message || 'Request sent successfully!';
+      },
+      error: (error) => {
+        this.errorMessage = error.error?.Message || 'Failed to send request.';
+      }
+    });
   }
 }

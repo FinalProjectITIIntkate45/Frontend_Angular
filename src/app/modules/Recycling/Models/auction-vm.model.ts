@@ -31,9 +31,11 @@ export enum governorate {
 }
 
 export enum ScrapAuctionStatus {
-  Active = 1,
-  Completed = 2,
-  Canceled = 3
+  Active = 1,     // Open for bidding
+  Completed = 2,  // Auction ended
+  Canceled = 3,   // Auction was canceled
+  failed = 4,     // no bids
+  pending = 5     // wait time start
 }
 
 export interface AuctionVM {
