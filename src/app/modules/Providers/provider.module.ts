@@ -15,6 +15,7 @@ import { LoaderInterceptor } from '../../core/interceptors/loaderInterceptor';
 
 import { ProviderRoutingModule } from './provider-routing.module';
 
+// Components
 import { SubScrptionComponent } from './Components/SubScrption/SubScrption.component';
 import { AddShopComponent } from './Components/add-shop/add-shop.component';
 import { EditShopComponent } from './Components/edit-shop/edit-shop.component';
@@ -40,10 +41,44 @@ import { ChartContainerComponent } from './Components/chart-container/chart-cont
 import { NotificationsPanelComponent } from './Components/notifications-panel/notifications-panel.component';
 import { OrdersTableComponent } from './Components/orders-table/orders-table.component';
 import { StatsCardComponent } from './Components/stats-card/stats-card.component';
+import { EditVendorProfileComponent } from './Components/EditVendorProfile/EditVendorProfile.component';
+import { VendorProfileComponent } from './Components/vendor-profile/vendor-profile.component';
+import { ReviewsComponent } from './Components/reviews/reviews.component';
+import { CategoriesComponent } from './Components/categories/categories.component';
+import { FollowersComponent } from '../Providers/Components/followers/followers.component';
+import { ShopsComponent } from '../Providers/Components/Shops/Shops.component';
 
 @NgModule({
   declarations: [
     ProviderLayoutComponent,
+    AddShopComponent,
+    EditShopComponent,
+    ProviderOrdersComponent,
+    SubScrptionComponent,
+    ProductFormPageComponent,
+    ProductDetailsPageComponent,
+    ProductListPageComponent,
+    EditDetailsComponent,
+    EditOfferComponent,
+    ShopProductsComponent,
+    ShopOffersComponent,
+    OfferDetailesComponent,
+    MakeOfferComponent,
+    OfferProductManagerComponent,
+    SidebarComponent,
+    HeaderComponent,
+    WelcomeBannerComponent,
+    SalesOverviewComponent,
+    OrdersTableComponent,
+    NotificationsPanelComponent,
+    ChartContainerComponent,
+    StatsCardComponent,
+    EditVendorProfileComponent,
+    VendorProfileComponent,
+    ReviewsComponent,
+    CategoriesComponent,
+    FollowersComponent,
+    ShopsComponent,
     AddShopComponent,
     EditShopComponent,
     ProviderOrdersComponent,
@@ -74,7 +109,6 @@ import { StatsCardComponent } from './Components/stats-card/stats-card.component
     AddShopComponent,
     EditShopComponent,
     SubScrptionComponent,
-    ProviderLayoutComponent,
     SidebarComponent,
     HeaderComponent,
     WelcomeBannerComponent,
@@ -83,16 +117,17 @@ import { StatsCardComponent } from './Components/stats-card/stats-card.component
     NotificationsPanelComponent,
     ChartContainerComponent,
     StatsCardComponent,
-    ProviderLayoutComponent,
     ProductFormPageComponent,
     ProductDetailsPageComponent,
     ProductListPageComponent,
     ProviderOrdersComponent,
-    SubScrptionComponent,
-    SidebarComponent,
-    ProviderLayoutComponent,
-    HeaderComponent,
-    SubScrptionComponent,
+    EditDetailsComponent,
+    EditVendorProfileComponent,
+    VendorProfileComponent,
+    ReviewsComponent,
+    CategoriesComponent,
+    FollowersComponent,
+    ShopsComponent,
   ],
   imports: [
     CommonModule,
@@ -102,6 +137,10 @@ import { StatsCardComponent } from './Components/stats-card/stats-card.component
     SafeUrlPipe,
   ],
   providers: [
+    provideHttpClient(
+      withFetch(),
+      withInterceptors([AuthInterceptor, LoaderInterceptor])
+    ),
     provideHttpClient(
       withFetch(),
       withInterceptors([AuthInterceptor, LoaderInterceptor])

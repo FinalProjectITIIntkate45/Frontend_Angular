@@ -1,61 +1,76 @@
 .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 250px;
-    height: 100vh;
-    background-color: #343a40;
-    padding: 20px 0;
-    color: #fff;
-  }
-  
-  .sidebar-brand {
-    padding: 10px 20px;
-    border-bottom: 1px solid #444;
-  }
-  
-  .sidebar-brand h4 {
-    margin: 0;
-    font-size: 18px;
-  }
-  
-  .sidebar-brand i {
-    margin-right: 10px;
-  }
-  
-  .nav {
-    padding-top: 20px;
-  }
-  
-  .nav-item {
-    padding: 10px 20px;
-  }
-  
-  .nav-item .nav-link {
-    color: #ccc;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    font-size: 14px;
-  }
-  
-  .nav-item .nav-link i {
-    margin-right: 10px;
-    width: 20px;
-  }
-  
-  .nav-item .nav-link:hover,
-  .nav-item .nav-link.active {
-    color: #fff;
-    background-color: #495057;
-    border-radius: 4px;
-  }
-  
-  .nav-item span {
-    display: block;
-    padding: 5px 20px;
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: #aaa;
-  }
+  width: 250px;
+  height: 100vh;
+  background-color: white;
+  position: fixed;
+  left: 0;
+  top: 0;
+  border-right: 1px solid #e9ecef;
+  overflow-y: auto;
+}
+
+.sidebar-brand {
+  padding: 20px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.sidebar-brand h4 {
+  color: #023059;
+  font-weight: 700;
+  margin: 0;
+}
+
+.nav-item {
+  border-bottom: 1px solid #f8f9fa;
+}
+
+.nav-link {
+  color: #6c757d;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.3s;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  background-color: #e8f5e8;
+  color: #023059;
+}
+
+.nav-link i {
+  margin-right: 10px;
+  width: 16px;
+}
+
+.sidebar-parent {
+  cursor: pointer;
+}
+
+.sidebar-parent i:last-child {
+  transition: transform 0.3s;
+}
+
+.sidebar-parent[aria-expanded="true"] i:last-child {
+  transform: rotate(180deg);
+}
+
+.sidebar-child {
+  font-size: 13px;
+  padding-left: 30px;
+  color: #6c757d;
+}
+
+.sidebar-child:hover {
+  background-color: #e8f5e8;
+  color: #023059;
+}
+
+.sidebar-section-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 8px 20px;
+}

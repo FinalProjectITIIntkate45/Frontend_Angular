@@ -1,0 +1,44 @@
+<div class="main-content">
+  <!-- Check if header component is available before rendering -->
+  <ng-container *ngIf="isHeaderAvailable">
+    <app-header></app-header>
+  </ng-container>
+  <div class="dashboard-content">
+    <!-- Check if welcome banner component is available before rendering -->
+    <ng-container *ngIf="isWelcomeBannerAvailable">
+      <app-welcome-banner></app-welcome-banner>
+    </ng-container>
+    <div class="row">
+      <div class="col-md-4" *ngFor="let stat of ['Earnings', 'Orders', 'Customer']">
+        <app-stats-card [title]="stat"></app-stats-card>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-8">
+        <app-chart-container [type]="'revenue'"></app-chart-container>
+      </div>
+      <div class="col-md-4">
+        <app-chart-container [type]="'donut'"></app-chart-container>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+        <app-sales-overview></app-sales-overview>
+      </div>
+      <div class="col-md-8">
+        <app-notifications-panel></app-notifications-panel>
+      </div>
+    </div>
+    <app-orders-table></app-orders-table>
+    <app-product-list-page></app-product-list-page>
+    <app-add-shop></app-add-shop>
+    <app-edit-shop></app-edit-shop>
+    <app-product-form-page></app-product-form-page>
+    <app-product-details-page></app-product-details-page>
+    <app-sub-scrption></app-sub-scrption>
+  </div>
+</div>
+<app-sidebar></app-sidebar>
+<button class="buy-now-btn">
+  <i class="fas fa-shopping-cart me-2"></i>Buy Now
+</button>

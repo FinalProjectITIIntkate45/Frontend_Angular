@@ -21,6 +21,13 @@ import { OfferDetailesComponent } from './Components/OfferGroupe/OfferDetailes/O
 import { MakeOfferComponent } from './Components/OfferGroupe/MakeOffer/MakeOffer.component';
 import { EditDetailsComponent } from './Components/OfferGroupe/editDetailes/editDetailes.component';
 import { ProviderOrdersComponent } from './Components/provider-orders/provider-orders.component';
+import { EditVendorProfileComponent } from './Components/EditVendorProfile/EditVendorProfile.component';
+import { VendorProfileComponent } from './Components/vendor-profile/vendor-profile.component';
+import { ReviewsComponent } from './Components/reviews/reviews.component';
+import { CategoriesComponent } from './Components/categories/categories.component';
+import { FollowersComponent } from '../Providers/Components/followers/followers.component';
+import { ShopsComponent } from '../Providers/Components/Shops/Shops.component';
+import { SalesOverviewComponent } from '../Providers/Components/sales-overview/sales-overview.component';
 import { ProviderDashboardComponent } from './Components/provider-dashboard/provider-dashboard.component';
 
 const routes: Routes = [
@@ -38,7 +45,7 @@ const routes: Routes = [
       { path: 'edit-shop/:id', component: EditShopComponent },
       { path: 'subscription', component: SubScrptionComponent },
       { path: 'ShowProductorOffer', component: ShopProductsComponent },
-      { path: 'ShowShopOffer', component: ShopOffersComponent },
+      { path: 'ShowShopOffers', component: ShopOffersComponent },
       { path: 'edit-offer/:id', component: EditDetailsComponent },
       { path: 'edit-offer-products/:id', component: EditOfferComponent },
       {
@@ -48,6 +55,13 @@ const routes: Routes = [
       { path: 'offer-details/:id', component: OfferDetailesComponent },
       { path: 'make-offer', component: MakeOfferComponent },
       { path: 'provider-orders', component: ProviderOrdersComponent },
+      { path: 'edit-vendor-profile', component: EditVendorProfileComponent },
+      { path: 'profile', component: VendorProfileComponent },
+      { path: 'reviews', component: ReviewsComponent },
+      { path: 'categories', component: CategoriesComponent },
+      { path: 'followers', component: FollowersComponent },
+      { path: 'shops', component: ShopsComponent },
+      { path: 'sales-overview', component: SalesOverviewComponent },
     ],
   },
 ];

@@ -4,7 +4,8 @@ export interface UserRegisterViewModel {
   phoneNumber: string;
   password: string;
   PasswordConfirmed: string;
-  role: 'Client' | 'Provider';
+  role: 'Client' | 'Provider' | 'Recycler';
+  recyclingCenterName: string;
 }
 
 export interface UserRegisterRequest {
@@ -13,5 +14,6 @@ export interface UserRegisterRequest {
   phoneNumber: string;
   password: string;
   PasswordConfirmed: string;
-  role: 'Client' | 'Provider';
+  role: 'Client' | 'Provider' | 'Recycler';
+  recyclingCenterName?: string; // Optional for Client and Provider roles
 }

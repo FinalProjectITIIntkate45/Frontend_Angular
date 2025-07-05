@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 
 import { CookieService } from 'ngx-cookie-service';
 
+import { APIResponse } from '../models/APIResponse';
 import { AuthState, LoginResponse } from '../models/auth.models';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -15,12 +18,15 @@ export class AuthService {
   private readonly ROLE_KEY = 'role';
   private readonly USERNAME_KEY = 'userName';
 
+
+  private readonly apiUrl = `${environment.apiUrl}/Account`;
+
   private authState = new BehaviorSubject<AuthState>({
     isAuthenticated: false,
     user: null,
   });
 
-  constructor(private cookieService: CookieService, private router: Router) {
+  constructor(private cookieService: CookieService, private router: Router,private http: HttpClient) {
     this.initializeAuth();
   }
 
@@ -122,6 +128,15 @@ export class AuthService {
   //   return '';
   // }
 
+
+    // src/app/core/services/Auth.service.ts
+  getUserID(): Observable<string> {
+    return this.http.get<APIResponse<string>>(`${this.apiUrl}/GetId`)
+      .pipe(map((res: APIResponse<string>) => res.Data));
+  }
+
+
+
   logout(): void {
     this.cookieService.delete(this.TOKEN_KEY);
     this.cookieService.delete(this.ROLE_KEY);
@@ -142,4 +157,7 @@ export class AuthService {
       return null;
     }
   }
+
+
+
 }

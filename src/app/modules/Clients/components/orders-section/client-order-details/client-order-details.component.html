@@ -1,0 +1,36 @@
+<div *ngIf="loading" class="text-center p-4">
+  <p>Loading order details...</p>
+</div>
+
+<div *ngIf="errorMessage" class="alert alert-danger">
+  {{ errorMessage }}
+</div>
+
+<div *ngIf="order" class="card shadow-sm p-4">
+  <h4>Order #{{ order.id }}</h4>
+  <p>
+    <strong>Status:</strong> {{ order.status }}<br />
+    <strong>Payment Type:</strong> {{ order.paymentType.toString() }}<br />
+    <strong>Paid:</strong> {{ order.isPaid ? 'Yes' : 'No' }}<br />
+    <strong>Created:</strong> {{ order.dateCreated | date:'short' }}<br />
+    <strong>Total Price:</strong> {{ order.totalPrice | currency }}<br />
+    <strong>Points Used:</strong> {{ order.usedPaidPoints + order.usedFreePoints }}<br />
+    <strong>Points Earned:</strong> {{ order.earnedPoints }}
+  </p>
+
+  <hr />
+  <h5>Products:</h5>
+  <div *ngFor="let item of order.items" class="border rounded p-2 mb-2">
+    <div class="d-flex align-items-center">
+      <img [src]="item.image" alt="{{ item.name }}" class="me-3" style="width: 60px; height: 60px;" />
+      <div>
+        <strong>{{ item.name }}</strong><br />
+        <span>{{ item.description }}</span><br />
+        <span>Shop: {{ item.shopName }}</span><br />
+        <span>Quantity: {{ item.quantity }}</span><br />
+        <span>Price After Discount: {{ item.priceAfterDiscount | currency }}</span><br />
+        <span>Points: {{ item.points }}</span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -73,6 +73,18 @@
                         Passwords must match and be at least 6 characters
                     </div>
                 </div>
+                <div *ngIf="model.role === 'Recycler'" class="form-group">
+                      <label for="center">Recycling Center Name</label>
+                      <input
+                        id="center"
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="model.recyclingCenterName"
+                        name="recyclingCenterName"
+                        required
+                      />
+                    </div>
+
 
                 <div class="mb-4">
                     <label class="form-label d-block">Account Type</label>
@@ -88,7 +100,14 @@
                         <label class="btn btn-outline-primary" for="providerRole">
                             <i class="fas fa-store me-2"></i>Provider
                         </label>
+                        <!-- Add more role options here Recycler  -->
+                        <input type="radio" class="btn-check" name="role" id="RecyclerRole"
+                            [checked]="model.role === 'Recycler'" (change)="setRole('Recycler')" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="RecyclerRole">
+                            <i class="fas fa-recycle me-2"></i>Recycler
+                        </label>
                     </div>
+
                     <div class="invalid-feedback d-block" *ngIf="errorMessage === 'Please select an account type'">
                         Please select an account type
                     </div>

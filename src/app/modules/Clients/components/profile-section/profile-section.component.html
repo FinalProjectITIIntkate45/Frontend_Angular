@@ -2,3 +2,28 @@
   <h1>PROFILE</h1>
   <p>Welcome back to your profile! Here's your activity summary.</p>
 </div>
+
+<div class="profile-section-container">
+  <div *ngIf="error" class="error-message">{{ error }}</div>
+  <div *ngIf="profileData" class="profile-content">
+    <div class="profile-img-wrapper">
+      <img [src]="profileData.profileImg ? profileData.profileImg : 'default.png'" alt="Profile Image">
+    </div>
+    <div class="profile-info">
+      <h2>{{ profileData.userName }}</h2>
+      <p><strong>Email:</strong> {{ profileData.email }}</p>
+      <p><strong>Phone:</strong> {{ profileData.phoneNumber }}</p>
+      <div class="profile-balances">
+      
+        <div class="balance-item">
+          <span class="balance-label">Points:</span>
+          <span class="balance-value">{{ profileData.BalancePoints }}</span>
+        </div>
+        <div class="balance-item">
+          <span class="balance-label">Cash:</span>
+          <span class="balance-value">${{ profileData.BalanceCash }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

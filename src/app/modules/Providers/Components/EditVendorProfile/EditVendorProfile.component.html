@@ -1,0 +1,117 @@
+<div class="container mt-4">
+  <h2 class="mb-4">تعديل الملف الشخصي للبائع</h2>
+
+  <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+    <!-- بيانات المستخدم -->
+    <div class="card mb-4">
+      <div class="card-header">بيانات المستخدم</div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label>الاسم</label>
+            <input type="text" class="form-control" formControlName="userName">
+          </div>
+          <div class="col-md-6 mb-3">
+            <label>البريد الإلكتروني</label>
+            <input type="email" class="form-control" formControlName="email">
+          </div>
+          <div class="col-md-6 mb-3">
+            <label>رقم الهاتف</label>
+            <input type="text" class="form-control" formControlName="phoneNumber">
+          </div>
+          <div class="col-md-6 mb-3">
+            <label>الصورة الشخصية (رابط)</label>
+            <input type="text" class="form-control" formControlName="profileImg">
+          </div>
+          <div class="col-md-6 mb-3">
+            <label>الرقم القومي</label>
+            <input type="text" class="form-control" formControlName="nationalID">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- بيانات المتجر -->
+    <div class="card mb-4">
+      <div class="card-header">بيانات المتجر</div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label>اسم المتجر</label>
+            <input type="text" class="form-control" formControlName="shopName">
+          </div>
+          <div class="col-md-6 mb-3">
+            <label>وصف المتجر</label>
+            <input type="text" class="form-control" formControlName="shopDescription">
+          </div>
+          <div class="col-md-6 mb-3">
+            <label>عنوان المتجر</label>
+            <input type="text" class="form-control" formControlName="shopAddress">
+          </div>
+          <div class="col-md-4 mb-3">
+            <label>المدينة</label>
+            <input type="text" class="form-control" formControlName="city">
+          </div>
+          <div class="col-md-4 mb-3">
+            <label>الشارع</label>
+            <input type="text" class="form-control" formControlName="street">
+          </div>
+          <div class="col-md-4 mb-3">
+            <label>الرمز البريدي</label>
+            <input type="text" class="form-control" formControlName="postalCode">
+          </div>
+          <div class="col-md-6 mb-3">
+            <label>تليفون العمل</label>
+            <input type="text" class="form-control" formControlName="businessPhone">
+          </div>
+          <div class="col-md-6 mb-3">
+            <label>البريد الإلكتروني للعمل</label>
+            <input type="text" class="form-control" formControlName="businessEmail">
+          </div>
+          <div class="col-md-6 mb-3">
+            <label>رابط الشعار</label>
+            <input type="text" class="form-control" formControlName="shopLogo">
+          </div>
+          <div class="col-md-3 mb-3">
+            <label>Latitude</label>
+            <input type="number" class="form-control" formControlName="latitude">
+          </div>
+          <div class="col-md-3 mb-3">
+            <label>Longitude</label>
+            <input type="number" class="form-control" formControlName="longitude">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- إعدادات الشحن -->
+    <div class="card mb-4">
+      <div class="card-header">إعدادات الشحن</div>
+      <div class="card-body">
+        <div formArrayName="shippingOptions">
+          <div *ngFor="let option of shippingOptions.controls; let i = index" [formGroupName]="i" class="row mb-3">
+            <div class="col-md-4">
+              <label>رقم الطلب</label>
+              <input type="number" class="form-control" formControlName="orderId">
+            </div>
+            <div class="col-md-4">
+              <label>العنوان</label>
+              <input type="text" class="form-control" formControlName="address">
+            </div>
+            <div class="col-md-4">
+              <label>الحالة</label>
+              <select class="form-control" formControlName="status">
+                <option value="Pending">قيد التنفيذ</option>
+                <option value="Shipped">تم الشحن</option>
+                <option value="Delivered">تم التسليم</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- زر الحفظ -->
+    <button class="btn btn-success" type="submit" [disabled]="profileForm.invalid">حفظ التعديلات</button>
+  </form>
+</div>

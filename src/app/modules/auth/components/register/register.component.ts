@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AccountService } from '../../services/account.service';
+
 import {
   UserRegisterViewModel,
   UserRegisterRequest,
 } from '../../models/user-register.model';
+import { AccountService } from '../../services/account.service';
 
 @Component({
   selector: 'app-register',
@@ -20,6 +21,10 @@ export class RegisterComponent {
     password: '',
     PasswordConfirmed: '',
     role: 'Client',
+    // Default role can be set to 'Client', 'Provider', or 'Recycler'
+
+    recyclingCenterName: ''
+
   };
 
   loading: boolean = false;
@@ -28,7 +33,7 @@ export class RegisterComponent {
 
   constructor(private accountService: AccountService, private router: Router) {}
 
-  setRole(role: 'Client' | 'Provider') {
+  setRole(role: 'Client' | 'Provider' | 'Recycler') {
     this.model.role = role;
   }
 
@@ -77,6 +82,7 @@ export class RegisterComponent {
       password: this.model.password,
       PasswordConfirmed: this.model.PasswordConfirmed,
       role: this.model.role,
+      recyclingCenterName: this.model.recyclingCenterName?.trim() || '', // Optional for Client and Provider roles  
     };
 
     console.log('Sending registration request:', {
@@ -91,21 +97,26 @@ export class RegisterComponent {
           queryParams: { registered: 'true' },
         });
       },
-      error: (error) => {
-        console.error('Registration error:', error);
-        if (error.status === 400) {
-          this.errorMessage =
-            error.error?.message ||
-            error.error?.errors?.join(', ') ||
-            'Invalid registration data';
-        } else if (error.status === 0) {
-          this.errorMessage =
-            'Unable to connect to the server. Please try again later.';
-        } else {
-          this.errorMessage = 'Registration failed. Please try again.';
-        }
-        this.loading = false;
-      },
+     error: (error) => {
+            console.error('Registration error:', error);
+            if (error.status === 400) {
+              if (error.error?.errors) {
+                const errorsObject = error.error.errors;
+                const messages = Object.values(errorsObject).flat().join('\n');
+                this.errorMessage = messages;
+              } else {
+                this.errorMessage =
+                  error.error?.message || 'Invalid registration data';
+              }
+            } else if (error.status === 0) {
+              this.errorMessage =
+                'Unable to connect to the server. Please try again later.';
+            } else {
+              this.errorMessage = 'Registration failed. Please try again.';
+            }
+            this.loading = false;
+          },
+
       complete: () => {
         this.loading = false;
       },

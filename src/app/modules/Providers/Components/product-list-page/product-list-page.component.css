@@ -1,0 +1,60 @@
+/* ====== الجدول ====== */
+table.table {
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  font-size: 0.95rem;
+}
+
+table.table thead tr {
+  background-color: #007bff;
+  color: #fff;
+}
+
+table.table tbody tr:hover {
+  background-color: #f6f9ff;
+  transition: background-color 0.3s;
+}
+
+/* ====== صور المنتجات في الجدول ====== */
+table.table td img {
+  border: 2px solid #e0e0e0;
+  border-radius: 0.5rem;
+}
+
+/* ====== الأزرار داخل الجدول ====== */
+table.table td .btn-sm {
+  font-size: 0.75rem;
+  padding: 0.35rem 0.6rem;
+  border-radius: 0.4rem;
+  transition: transform 0.2s;
+}
+
+table.table td .btn-sm:hover {
+  transform: scale(1.05);
+}
+
+/* ====== الباجينيشن ====== */
+.pagination .page-link {
+  border-radius: 0.4rem;
+  margin: 0 0.2rem;
+  color: #007bff;
+  border: 1px solid #007bff;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.pagination .page-link:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: #fff;
+}
+
+.pagination .page-item.disabled .page-link {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
