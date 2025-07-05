@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { Subscription, filter } from 'rxjs';
+import { CartServicesService } from '../../../modules/Clients/Services/CardServices.service';
 
 @Component({
   selector: 'app-product-navbar',
@@ -15,13 +16,20 @@ export class ProductNavbarComponent implements OnInit, OnDestroy {
 
   private routeSubscription?: Subscription;
   private navigationSubscription?: Subscription;
+  private cartCountSub?: Subscription;
 
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private cartService: CartServicesService
+  ) {}
 
   ngOnInit() {
-    // Initialize cart and wishlist counts
-    this.loadCartCount();
-    this.loadWishlistCount();
+    // Subscribe to cart count from cart service
+    this.cartCountSub = this.cartService.cartItemsCount$.subscribe((count) => {
+      this.cartCount = count;
+    });
+    this.cartService.refreshCartItemsCount(); // Ensure count is up to date on load
 
     // Listen to navigation events to get the current route's query parameters
     this.navigationSubscription = this.router.events
@@ -48,6 +56,7 @@ export class ProductNavbarComponent implements OnInit, OnDestroy {
     if (this.navigationSubscription) {
       this.navigationSubscription.unsubscribe();
     }
+    this.cartCountSub?.unsubscribe();
   }
 
   private subscribeToQueryParams(route: ActivatedRoute) {

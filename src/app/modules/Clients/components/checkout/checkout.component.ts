@@ -57,14 +57,13 @@ export class CheckoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.checkoutModel.clientId = this.authService.getUserId();
+    // this.checkoutModel.clientId = this.authService.getUserId();
 
     this.loadCartData();
 
     console.log('✅ Step:', this.currentStep);
     console.log('🚚 Delivery Method:', this.deliveryMethod);
     console.log('📦 BillingData:', this.checkoutModel.billingData);
-
   }
 
   loadCartData(): void {
@@ -73,11 +72,14 @@ export class CheckoutComponent implements OnInit {
 
     this.cartService.getCartItems().subscribe(
       (cartItems) => {
+        console.log('cartItemssssssssssssssssssssssssss', cartItems);
         this.checkoutModel.orderItems = cartItems.Items.filter(
-          (item: CartItemInterface) => item.productVM !== undefined
+          (item: CartItemInterface) =>
+            item.productVM !== undefined && item.qty !== undefined
         ).map((item: CartItemInterface) => ({
           productId: item.productVM!.Id,
-          quantity: item.productVM!.Stock ,
+          quantity: item.qty as number,
+
           name: item.productVM!.Name,
           shopName: item.productVM!.ShopName,
           description: item.productVM!.Description,
@@ -128,7 +130,9 @@ export class CheckoutComponent implements OnInit {
       return;
     }
 
-    if (this.checkoutModel.billingData?.shippingMethod?.toLowerCase() === 'pickup') {
+    if (
+      this.checkoutModel.billingData?.shippingMethod?.toLowerCase() === 'pickup'
+    ) {
       this.checkoutModel.billingData = null;
     }
 
@@ -166,7 +170,10 @@ export class CheckoutComponent implements OnInit {
             },
             (error) => {
               console.error('Error clearing cart:', error);
-              this.toastr.warning('Order placed but cart not cleared', 'Warning');
+              this.toastr.warning(
+                'Order placed but cart not cleared',
+                'Warning'
+              );
             }
           );
         } else {

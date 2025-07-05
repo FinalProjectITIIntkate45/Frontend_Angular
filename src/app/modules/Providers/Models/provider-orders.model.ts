@@ -1,17 +1,17 @@
 export interface OrderItem {
-  productId: number;
-  productName: string;
-  quantity: number;
-  price: number;
-  providerId: string;
+  ProductId: number;
+  ProductName: string;
+  Quantity: number;
+  Price: number;
+  ProviderId: string;
 }
 
 export interface ProviderOrder {
-  id: number;
-  clientId: string;
-  status: string;
-  creationDateTime: Date;
-  modificationDateTime?: Date;
-  orderItems: OrderItem[];
-  totalAmount: number;
+  Id: number;
+  ClientId: string;
+  Status: string;
+  CreationDateTime: Date;
+  ModificationDateTime?: Date;
+  OrderItems: OrderItem[];
+  TotalAmount: number;
 }

@@ -42,30 +42,31 @@ export class AddShopComponent implements OnInit {
     if (this.shopForm.valid) {
       const formValue = this.shopForm.value;
       const formData = new FormData();
-      formData.append('shopName', formValue.shopName);
-      formData.append('description', formValue.description);
-      formData.append('address', formValue.address);
-      formData.append('city', formValue.city);
-      formData.append('street', formValue.street);
-      formData.append('postalCode', formValue.postalCode || '');
-      formData.append('latitude', formValue.latitude.toString());
-      formData.append('longitude', formValue.longitude.toString());
-      formData.append('businessPhone', formValue.businessPhone);
-      formData.append('businessEmail', formValue.businessEmail);
-      if (formValue.logo) formData.append('logoFile', formValue.logo);
+      formData.append('Name', formValue.shopName);
+      formData.append('Description', formValue.description);
+      formData.append('Address', formValue.address);
+      formData.append('City', formValue.city);
+      formData.append('Street', formValue.street);
+      formData.append('PostalCode', formValue.postalCode || '');
+      formData.append('Latitude', formValue.latitude.toString());
+      formData.append('Longitude', formValue.longitude.toString());
+      formData.append('BusinessPhone', formValue.businessPhone);
+      formData.append('BusinessEmail', formValue.businessEmail);
+      if (formValue.logo) formData.append('LogoFile', formValue.logo);
       if (formValue.images) {
         (formValue.images as File[]).forEach((file, index) => {
-          formData.append(`imagesFiles[${index}]`, file);
+          formData.append(`ImagesFiles[${index}]`, file);
         });
       }
-      formData.append('providerId', this.authService.getUserId() || '');
-      formData.append('shopTypeId', formValue.shopTypeId.toString());
+      // formData.append('providerId', this.authService.getUserId() || '');
+      formData.append('TypeId', formValue.shopTypeId.toString());
 
       console.log('FormData:', Object.fromEntries(formData)); // للتحقق
 
       this.shopService.addShop(formData).subscribe({
         next: (msg: string) => (this.errorMessage = msg),
-        error: (err: any) => (this.errorMessage = `Failed to add shop: ${err.message}`),
+        error: (err: any) =>
+          (this.errorMessage = `Failed to add shop: ${err.message}`),
       });
     } else {
       this.errorMessage = 'Please fill all required fields';

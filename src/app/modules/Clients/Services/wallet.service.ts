@@ -15,13 +15,13 @@ export class WalletService {
 
   getWalletView(userId: string): Observable<WalletView> {
     return this.http
-      .get<WalletView>(`${this.apiUrl}/user/${userId}/wallet`)
+      .get<WalletView>(`${this.apiUrl}/user/wallet`)
       .pipe(catchError(this.handleError));
   }
 
   getShopPoints(userId: string): Observable<ShopPoint[]> {
     return this.http
-      .get<ShopPoint[]>(`${this.apiUrl}/user/${userId}`)
+      .get<ShopPoint[]>(`${this.apiUrl}/user`)
       .pipe(catchError(this.handleError));
   }
 

@@ -47,21 +47,23 @@ export class EditShopComponent implements OnInit {
 
   loadShopDetails() {
     this.shopService.getShopById(this.shopId).subscribe({
-      next: (shop: ShopEditViewModel) => this.shopForm.patchValue({
-        shopName: shop.shopName,
-        description: shop.description,
-        address: shop.address,
-        contactDetails: shop.contactDetails,
-        city: shop.city,
-        street: shop.street,
-        postalCode: shop.postalCode,
-        latitude: shop.latitude,
-        longitude: shop.longitude,
-        businessPhone: shop.businessPhone,
-        businessEmail: shop.businessEmail,
-        shopTypeId: shop.shopTypeId,
-      }),
-      error: (err) => (this.errorMessage = `Failed to load shop details: ${err.message}`),
+      next: (shop: ShopEditViewModel) =>
+        this.shopForm.patchValue({
+          shopName: shop.shopName,
+          description: shop.description,
+          address: shop.address,
+          contactDetails: shop.contactDetails,
+          city: shop.city,
+          street: shop.street,
+          postalCode: shop.postalCode,
+          latitude: shop.latitude,
+          longitude: shop.longitude,
+          businessPhone: shop.businessPhone,
+          businessEmail: shop.businessEmail,
+          shopTypeId: shop.shopTypeId,
+        }),
+      error: (err) =>
+        (this.errorMessage = `Failed to load shop details: ${err.message}`),
     });
   }
 
@@ -83,7 +85,7 @@ export class EditShopComponent implements OnInit {
         businessEmail: formValue.businessEmail,
         logo: formValue.logo instanceof File ? formValue.logo : null,
         shopTypeId: formValue.shopTypeId,
-        providerId: this.authService.getUserId(),
+        // providerId: this.authService.getUserId(),
       };
 
       const formData = new FormData();
@@ -100,11 +102,11 @@ export class EditShopComponent implements OnInit {
       formData.append('businessEmail', model.businessEmail);
       if (model.logo) formData.append('logoFile', model.logo);
       formData.append('shopTypeId', model.shopTypeId.toString());
-      formData.append('providerId', model.providerId);
 
       this.shopService.updateShop(formData).subscribe({
         next: (msg) => (this.errorMessage = msg),
-        error: (err) => (this.errorMessage = `Failed to update shop: ${err.message}`),
+        error: (err) =>
+          (this.errorMessage = `Failed to update shop: ${err.message}`),
       });
     } else {
       this.errorMessage = 'Please fill all required fields';

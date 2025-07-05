@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { WalletService } from '../../Services/wallet.service';
-import { WalletView } from '../../Models/wallet.models';
+import {
+  WalletView,
+  ShopPoint,
+  FreePoint,
+  ShopInfo,
+} from '../../Models/wallet.models';
 import { AuthService } from '../../../../core/services/Auth.service';
 
 @Component({
@@ -22,21 +27,16 @@ export class WalletSectionComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.userId = this.getCurrentUserId();
-    if (this.userId) {
-      this.fetchWallet();
-    } else {
-      this.error = 'User not logged in.';
-    }
+    this.fetchWallet();
   }
 
   fetchWallet(): void {
     this.loading = true;
     this.error = null;
     this.walletService.getWalletView(this.userId).subscribe({
-      next: (data: WalletView) => {
+      next: (data: any) => {
         console.log('data:', data);
-        this.wallet = data;
+        this.wallet = this.mapApiWalletToModel(data?.Data ?? {});
         this.loading = false;
       },
       error: (err: any) => {
@@ -47,8 +47,35 @@ export class WalletSectionComponent implements OnInit {
     });
   }
 
-  getCurrentUserId(): string {
-    console.log('getCurrentUserId:', this.authService.getUserId());
-    return this.authService.getUserId();
+  mapApiWalletToModel(apiData: any): WalletView {
+    return {
+      ShopPoints: (apiData.ShopPoints || []).map(
+        (sp: any): ShopPoint => ({
+          id: sp.Id,
+          points: sp.Points,
+          earnedAt: sp.EarnedAt,
+          expireAt: sp.ExpireAt,
+          shop: sp.Shop
+            ? {
+                id: sp.Shop.Id,
+                name: sp.Shop.Name,
+                logo: sp.Shop.Logo,
+                typeId: sp.Shop.TypeId,
+                shopType: sp.Shop.ShopType,
+              }
+            : { id: 0, name: '', logo: '', typeId: 0, shopType: '' },
+        })
+      ),
+      FreePoints: (apiData.FreePoints || []).map(
+        (fp: any): FreePoint => ({
+          id: fp.Id,
+          points: fp.Points,
+          earnedAt: fp.EarnedAt,
+          expireAt: fp.ExpireAt,
+          sourceType: fp.SourceType,
+          reference: fp.Reference,
+        })
+      ),
+    };
   }
 }

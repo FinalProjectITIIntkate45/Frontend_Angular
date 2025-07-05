@@ -5,7 +5,7 @@ import { AuthService } from '../../../../core/services/Auth.service';
   selector: 'app-sidebar',
   standalone: false,
   templateUrl: './sidebar.component.html',
-  styleUrls: [],
+  styleUrls: ['./sidebar.component.css'],
 })
 export class SidebarComponent {
   @Output() sectionChange = new EventEmitter<string>();

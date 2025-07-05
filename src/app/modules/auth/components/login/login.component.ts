@@ -63,9 +63,7 @@ export class LoginComponent {
 
           const role = this.authService.getUserRole();
           if (role === 'Provider') {
-            localStorage.setItem('token', response.Data.token);
-            localStorage.setItem('role', response.Data.role);
-            this.toastr.success("Logged in as provider successfully");
+            this.toastr.success('Logged in as provider successfully');
             this.router.navigate(['/provider']);
           } else if (role === 'Client') {
             this.router.navigate(['/client']);

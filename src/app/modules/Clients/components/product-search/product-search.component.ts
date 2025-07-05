@@ -372,13 +372,23 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
       return;
     }
 
-    console.log('Adding to cart:', product);
-    // Implement your cart service logic here
-
-    //  this.cardservice.addToCart(product.Id,
-    //                             product.quantity,
-    //                              product.DisplayedPriceAfterDiscount || product.DisplayedPrice,
-    //                               product.Points);
+    // Use the same logic as product-details.component.ts
+    this.cardservice
+      .addToCart(
+        product.Id,
+        1, // Default quantity to 1 in search page
+        product.DisplayedPriceAfterDiscount || product.DisplayedPrice,
+        product.Points
+      )
+      .subscribe(
+        (response) => {
+          alert(`Added 1 ${product.Name} to cart!`);
+        },
+        (error) => {
+          console.error('Error adding product to cart:', error);
+          alert('Failed to add item to cart. Please try again.');
+        }
+      );
   }
 
   // Pagination helper methods

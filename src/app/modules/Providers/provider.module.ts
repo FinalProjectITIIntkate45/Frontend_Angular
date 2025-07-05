@@ -32,6 +32,7 @@ import { OfferDetailesComponent } from './Components/OfferGroupe/OfferDetailes/O
 import { MakeOfferComponent } from './Components/OfferGroupe/MakeOffer/MakeOffer.component';
 import { OfferProductManagerComponent } from './Components/OfferGroupe/OfferProductManager/OfferProductManager.component';
 import { ProviderOrdersComponent } from './Components/provider-orders/provider-orders.component';
+import { ProviderDashboardComponent } from './Components/provider-dashboard/provider-dashboard.component';
 import { HeaderComponent } from './Components/header/header.component';
 import { SalesOverviewComponent } from './Components/sales-overview/sales-overview.component';
 import { WelcomeBannerComponent } from './Components/welcome-banner/welcome-banner.component';
@@ -43,31 +44,30 @@ import { StatsCardComponent } from './Components/stats-card/stats-card.component
 @NgModule({
   declarations: [
     ProviderLayoutComponent,
-  AddShopComponent,
-  EditShopComponent,
-  ProviderOrdersComponent,
-  SubScrptionComponent,
-  ProductFormPageComponent,
-  ProductDetailsPageComponent,
-  ProductListPageComponent,
-  EditDetailsComponent,
-  EditOfferComponent,
-  ShopProductsComponent,
-  ShopOffersComponent,
-  OfferDetailesComponent,
-  MakeOfferComponent,
-  OfferProductManagerComponent,
-  SidebarComponent,
-  HeaderComponent,
-  WelcomeBannerComponent,
-  SalesOverviewComponent,
-  OrdersTableComponent,
-  NotificationsPanelComponent,
-  ChartContainerComponent,
-  StatsCardComponent,
-  SubScrptionComponent,
-
-
+    AddShopComponent,
+    EditShopComponent,
+    ProviderOrdersComponent,
+    ProviderDashboardComponent,
+    SubScrptionComponent,
+    ProductFormPageComponent,
+    ProductDetailsPageComponent,
+    ProductListPageComponent,
+    EditDetailsComponent,
+    EditOfferComponent,
+    ShopProductsComponent,
+    ShopOffersComponent,
+    OfferDetailesComponent,
+    MakeOfferComponent,
+    OfferProductManagerComponent,
+    SidebarComponent,
+    HeaderComponent,
+    WelcomeBannerComponent,
+    SalesOverviewComponent,
+    OrdersTableComponent,
+    NotificationsPanelComponent,
+    ChartContainerComponent,
+    StatsCardComponent,
+    SubScrptionComponent,
   ],
   exports: [
     ProviderLayoutComponent,
@@ -94,16 +94,18 @@ import { StatsCardComponent } from './Components/stats-card/stats-card.component
     HeaderComponent,
     SubScrptionComponent,
   ],
-   imports: [
+  imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     ProviderRoutingModule,
     SafeUrlPipe,
-],
-  providers: [
-    provideHttpClient(withFetch(), withInterceptors([AuthInterceptor, LoaderInterceptor])),
   ],
-})export class ProviderModule {}
-
-
+  providers: [
+    provideHttpClient(
+      withFetch(),
+      withInterceptors([AuthInterceptor, LoaderInterceptor])
+    ),
+  ],
+})
+export class ProviderModule {}

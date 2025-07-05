@@ -21,12 +21,15 @@ import { OfferDetailesComponent } from './Components/OfferGroupe/OfferDetailes/O
 import { MakeOfferComponent } from './Components/OfferGroupe/MakeOffer/MakeOffer.component';
 import { EditDetailsComponent } from './Components/OfferGroupe/editDetailes/editDetailes.component';
 import { ProviderOrdersComponent } from './Components/provider-orders/provider-orders.component';
+import { ProviderDashboardComponent } from './Components/provider-dashboard/provider-dashboard.component';
 
 const routes: Routes = [
   {
     path: '',
     component: ProviderLayoutComponent,
     children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: ProviderDashboardComponent },
       { path: 'products', component: ProductListPageComponent },
       { path: 'products/add', component: ProductFormPageComponent },
       { path: 'products/edit/:id', component: ProductFormPageComponent },
@@ -38,7 +41,10 @@ const routes: Routes = [
       { path: 'ShowShopOffer', component: ShopOffersComponent },
       { path: 'edit-offer/:id', component: EditDetailsComponent },
       { path: 'edit-offer-products/:id', component: EditOfferComponent },
-      { path: 'offer-product-manager/:offerId', component: OfferProductManagerComponent },
+      {
+        path: 'offer-product-manager/:offerId',
+        component: OfferProductManagerComponent,
+      },
       { path: 'offer-details/:id', component: OfferDetailesComponent },
       { path: 'make-offer', component: MakeOfferComponent },
       { path: 'provider-orders', component: ProviderOrdersComponent },
@@ -50,5 +56,3 @@ const routes: Routes = [
   exports: [RouterModule],
 })
 export class ProviderRoutingModule {}
-
-
