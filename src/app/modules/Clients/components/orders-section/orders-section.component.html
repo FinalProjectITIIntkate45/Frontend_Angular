@@ -1,1 +1,31 @@
-<p>orders-section works!</p>
+
+<div *ngIf="loading" class="text-center p-3">
+  <p>Loading orders...</p>
+</div>
+
+<div *ngIf="errorMessage" class="alert alert-danger">
+  {{ errorMessage }}
+</div>
+
+<div *ngIf="!loading && orders.length === 0" class="alert alert-warning">
+  You have no orders yet.
+</div>
+
+<div class="row" *ngIf="orders.length > 0">
+  <div class="col-md-6 mb-4" *ngFor="let order of orders">
+    <div class="order-card card shadow-sm p-3">
+      <h5 class="card-title">Order #{{ order.id }}</h5>
+      <p class="card-text">
+        <strong>Status:</strong> {{ order.status }}<br />
+        <strong>Created On:</strong> {{ order.dateCreated | date:'short' }}<br />
+        <strong>Total Amount:</strong> {{ order.totalPrice | currency }}<br />
+        <strong>Payment Method:</strong> {{ order.paymentType }}<br />
+        <strong>Points Earned:</strong> {{ order.earnedPoints }}<br />
+        <strong>Points Used:</strong> {{ order.usedPaidPoints + order.usedFreePoints }}
+      </p>
+      <button class="General-outlined-btn" [routerLink]="['/orders', order.id]">
+        View Details
+      </button>
+    </div>
+  </div>
+</div>

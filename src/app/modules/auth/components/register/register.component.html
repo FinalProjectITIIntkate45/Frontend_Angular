@@ -73,6 +73,18 @@
                         Passwords must match and be at least 6 characters
                     </div>
                 </div>
+                <div *ngIf="model.role === 'Recycler'" class="form-group">
+                      <label for="center">Recycling Center Name</label>
+                      <input
+                        id="center"
+                        type="text"
+                        class="form-control"
+                        [(ngModel)]="model.recyclingCenterName"
+                        name="recyclingCenterName"
+                        required
+                      />
+                    </div>
+
 
                 <div class="mb-4">
                     <label class="form-label d-block">Account Type</label>

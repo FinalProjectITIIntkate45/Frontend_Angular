@@ -44,12 +44,12 @@ export class OrderSummaryComponent implements OnInit {
       }
     });
     this.authService.getUserID().subscribe(userId => {
-    this.walletService.getShopPoints(userId).subscribe(points => {
+    this.walletService.getShopPoints().subscribe(points => {
       this.shopPoints = points;
       this.totalShopPoints = points.reduce((sum, p) => sum + p.points, 0);
     });
 
-    this.walletService.getFreePoints(userId).subscribe(points => {
+    this.walletService.getFreePoints().subscribe(points => {
       this.freePoints = points;
       this.totalFreePoints = points.reduce((sum, p) => sum + p.points, 0);
     });
