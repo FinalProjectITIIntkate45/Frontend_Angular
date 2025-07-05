@@ -1,0 +1,159 @@
+.wallet-section-container {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 1.25rem;
+  box-shadow: 0 2px 24px 0 rgba(60, 72, 88, 0.08);
+}
+
+.wallet-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2b2d42;
+  margin-bottom: 1.5rem;
+  letter-spacing: 0.5px;
+}
+
+.wallet-loading,
+.wallet-error {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2rem 0;
+  color: #e63946;
+  font-size: 1.1rem;
+}
+
+.wallet-card {
+  background: #f8f9fa;
+  border-radius: 1rem;
+  box-shadow: 0 1px 8px 0 rgba(60, 72, 88, 0.06);
+  margin-bottom: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  transition: box-shadow 0.2s;
+}
+.wallet-card:hover {
+  box-shadow: 0 4px 24px 0 rgba(60, 72, 88, 0.12);
+}
+.wallet-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.wallet-card-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #22223b;
+}
+.wallet-icon.info {
+  color: #2196f3;
+  font-size: 2rem;
+}
+.wallet-shop-logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  border-radius: 0.5rem;
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  margin-right: 0.5rem;
+}
+.wallet-shop-type-badge {
+  margin-left: auto;
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #fff;
+  background: #6c757d;
+  letter-spacing: 0.5px;
+}
+.wallet-shop-type-badge.special {
+  background: #e63946;
+}
+.wallet-shop-type-badge.regular {
+  background: #2196f3;
+}
+.wallet-card-content {
+  padding-left: 0.5rem;
+}
+.wallet-point-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+.wallet-point-amount {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #2196f3;
+}
+.wallet-point-amount.primary {
+  color: #2196f3;
+}
+.wallet-point-label {
+  color: #6c757d;
+  font-size: 1rem;
+  margin-left: 0.25rem;
+}
+.wallet-point-source {
+  color: #43aa8b;
+  font-weight: 500;
+}
+.wallet-point-expiry {
+  color: #adb5bd;
+  font-size: 0.95rem;
+}
+.wallet-point-ref {
+  color: #b5838d;
+  font-size: 0.95rem;
+}
+.wallet-point-meta {
+  display: flex;
+  gap: 2rem;
+  color: #adb5bd;
+  font-size: 0.98rem;
+  margin-top: 0.25rem;
+}
+.wallet-no-points {
+  color: #adb5bd;
+  font-size: 1.05rem;
+  margin: 1rem 0;
+}
+.wallet-shop-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+.wallet-shop-card {
+  flex: 1 1 260px;
+  min-width: 260px;
+  max-width: 320px;
+}
+.wallet-free-points {
+  border-left: 5px solid #2196f3;
+}
+.special-shop .wallet-card-header {
+  border-left: 5px solid #e63946;
+  padding-left: 0.5rem;
+}
+.regular-shop .wallet-card-header {
+  border-left: 5px solid #2196f3;
+  padding-left: 0.5rem;
+}
+@media (max-width: 700px) {
+  .wallet-section-container {
+    padding: 0.5rem;
+  }
+  .wallet-shop-cards {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .wallet-shop-card {
+    min-width: 0;
+    max-width: 100%;
+  }
+}
