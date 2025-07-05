@@ -1,14 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../../../../core/services/Auth.service';
+import { AccountService } from '../../../../modules/auth/services/account.service';
+import { ProfileViewModel } from '../../../../modules/Clients/Models/profile-view.model';
 
 @Component({
   selector: 'app-profile-section',
   standalone:false,
-  templateUrl: './profile-section.component.html',
+  templateUrl:'./profile-section.component.html',
   styleUrls: ['./profile-section.component.css'],
 })
 export class ProfileSectionComponent implements OnInit {
-  profile: any = null;
+  profileData: ProfileViewModel | null = null;
+  error: string | null = null;
   ordersCount: number = 3;
   recyclingPoints: number = 320;
   stats = {
@@ -25,11 +27,18 @@ export class ProfileSectionComponent implements OnInit {
     { name: 'Kitchen Knife Set', category: 'Home & Kitchen', icon: 'fas fa-utensils' },
   ];
 
-  constructor(private authService: AuthService) {}
+  constructor(private accountService: AccountService) {}
 
   ngOnInit() {
-    // this.authService.getProfile().subscribe((data: any) => {
-    //   this.profile = data;
-    // });
+    this.accountService.getProfile().subscribe({
+      next: (data) => {
+        this.profileData = data;
+        this.error = null;
+      },
+      error: (err) => {
+        this.error = 'Failed to load profile.';
+        this.profileData = null;
+      }
+    });
   }
 }
