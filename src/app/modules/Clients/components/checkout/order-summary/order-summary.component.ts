@@ -4,8 +4,8 @@ import { CartInterface } from '../../../Models/CartInterface';
 import { OrderCreateViewModel } from '../../../Models/OrderCreateViewModel';
 import { CartServicesService } from '../../../Services/CardServices.service';
 import { Point } from '../../../../../core/models/point.model';
-import { AuthService } from '../../../../../core/services/Auth.service';
 import { WalletService } from '../../../../../core/services/wallet.service';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-order-summary',
@@ -28,33 +28,40 @@ export class OrderSummaryComponent implements OnInit {
 
   constructor(private cartService: CartServicesService ,
               private walletService: WalletService,
-              private authService: AuthService) {
+              ) {
 
   }
 
-  ngOnInit(): void {
-    this.cartService.getCartItems().subscribe({
-      next: (data) => {
-        this.cartData = data;
-        this.isLoading = false;
-      },
-      error: (err) => {
-        console.error('Error loading cart data:', err);
-        this.isLoading = false;
-      }
-    });
-    this.authService.getUserID().subscribe(userId => {
-    this.walletService.getShopPoints().subscribe(points => {
-      this.shopPoints = points;
-      this.totalShopPoints = points.reduce((sum, p) => sum + p.points, 0);
-    });
-
-    this.walletService.getFreePoints().subscribe(points => {
-      this.freePoints = points;
-      this.totalFreePoints = points.reduce((sum, p) => sum + p.points, 0);
-    });
-    this.totalPoints = this.totalShopPoints + this.totalFreePoints;
+ ngOnInit(): void {
+  this.cartService.getCartItems().subscribe({
+    next: (data) => {
+      this.cartData = data;
+      this.isLoading = false;
+    },
+    error: (err) => {
+      console.error('Error loading cart data:', err);
+      this.isLoading = false;
+    }
   });
 
-  }
+  forkJoin({
+    shop: this.walletService.getShopPoints(),
+    free: this.walletService.getFreePoints()
+  }).subscribe(({ shop, free }) => {
+    this.shopPoints = shop;
+    this.freePoints = free;
+
+    this.totalShopPoints = shop.reduce((sum, p) => sum + p.Points, 0);
+    this.totalFreePoints = free.reduce((sum, p) => sum + p.Points, 0);
+    this.totalPoints = this.totalShopPoints + this.totalFreePoints;
+  });
+}
+
+// ⬇️ تابع لحساب الإجمالي من الاثنين
+updateTotalPoints() {
+  this.totalPoints = this.totalShopPoints + this.totalFreePoints;
+}
+
+
+
 }

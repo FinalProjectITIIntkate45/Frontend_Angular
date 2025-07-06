@@ -20,7 +20,7 @@ import { CartComponent } from './components/cart/cart.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { ClientLayoutComponent } from './components/client-layout/client-layout.component';
 import { FollowSellerComponent } from './components/follow-seller/follow-seller.component';
-import {  OrdersSectionComponent } from './components/orders-section/orders-section.component';
+import { OrdersSectionComponent } from './components/orders-section/orders-section.component';
 import { PointsSectionComponent } from './components/points-section/points-section.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { ProductSearchComponent } from './components/product-search/product-search.component';
@@ -43,7 +43,6 @@ import { OrderSummaryComponent } from './components/checkout/order-summary/order
 import { PaymentConfirmationComponent } from './components/checkout/payment-confirmation/payment-confirmation.component';
 import { PaymentInfoComponent } from './components/checkout/payment-info/payment-info.component';
 import { ClientOrderDetailsComponent } from './components/orders-section/client-order-details/client-order-details.component';
-
 
 @NgModule({
   declarations: [
@@ -78,8 +77,8 @@ import { ClientOrderDetailsComponent } from './components/orders-section/client-
     DonateComponent,
     PaymentConfirmationComponent,
     RecyclingSectionComponent,
-    ClientOrderDetailsComponent
-
+    OrdersSectionComponent,
+    ClientOrderDetailsComponent,
   ],
 
   imports: [
@@ -95,5 +94,5 @@ import { ClientOrderDetailsComponent } from './components/orders-section/client-
       withInterceptors([AuthInterceptor, LoaderInterceptor])
     ),
   ],
-
-})export class ClientModule {}
+})
+export class ClientModule {}

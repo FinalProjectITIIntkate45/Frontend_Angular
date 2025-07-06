@@ -58,10 +58,9 @@ const routes: Routes = [
       { path: 'payment-confirmation', component: PaymentConfirmationComponent },
 
       { path: 'recycling', component: RecyclingSectionComponent },
+      { path: 'orders', component: OrdersSectionComponent },
 
-      { path: 'orders/:id', component: ClientOrderDetailsComponent }
-
-
+      { path: 'orders/:id', component: ClientOrderDetailsComponent },
     ],
   },
 ];
