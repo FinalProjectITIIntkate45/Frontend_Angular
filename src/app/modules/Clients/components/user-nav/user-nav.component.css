@@ -1,39 +1,223 @@
+/* Modern Professional Navigation Bar */
 .navbar {
-    background-color: #023059;
-    padding: 1rem 2rem;
-    color: #F7F7F8;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #FFFFFF;
+  height: 80px;
+  padding: 0 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 12px rgba(2, 48, 89, 0.08);
+  border-bottom: 1px solid rgba(2, 48, 89, 0.05);
+  transition: all 0.3s ease;
+}
+
+.navbar:hover {
+  box-shadow: 0 4px 20px rgba(2, 48, 89, 0.12);
+}
+
+.nav-container {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.logo {
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.logo img {
+  max-height: 200px;
+  height: auto;
+  width: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* Center nav links horizontally */
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+  align-items: center;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.nav-links li {
+  position: relative;
+}
+
+.nav-links a {
+  color: #023059;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  position: relative;
+  letter-spacing: 0.01em;
+  background-color: transparent;
+}
+
+.nav-links a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #F7F7F8;
+  border-radius: 8px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+
+.nav-links a:hover {
+  color: #EFB036;
+  transform: translateY(-1px);
+}
+
+.nav-links a:hover::before {
+  opacity: 1;
+}
+
+.nav-links a:active {
+  transform: translateY(0);
+}
+
+.nav-links a.active {
+  color: #EFB036;
+  background-color: rgba(239, 176, 54, 0.1);
+  font-weight: 600;
+}
+
+/* Hamburger button (mobile only) */
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.75rem;
+  color: #023059;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+/* Mobile Responsive Design */
+@media (max-width: 768px) {
+  .navbar {
+    height: auto;
+    padding: 1rem 1.5rem;
   }
-  
+
   .nav-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: auto;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
   }
-  
-  .logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #EFB036;
+
+  .logo img {
+    max-height: 50px;
   }
-  
+
+  .menu-toggle {
+    display: block;
+  }
+
   .nav-links {
-    list-style: none;
+    display: none;
+    flex-direction: column;
+    position: static;
+    transform: none;
+    width: 100%;
+    padding-top: 1rem;
+    border-top: 1px solid #ddd;
+  }
+
+  .nav-links.show {
     display: flex;
-    gap: 1.5rem;
-    margin: 0;
-    padding: 0;
   }
-  
+
   .nav-links a {
-    color: #F7F7F8;
-    text-decoration: none;
-    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
   }
-  
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 1rem;
+  }
+
+  .logo img {
+    max-height: 45px;
+  }
+
+  .nav-links {
+    gap: 0.5rem;
+  }
+
+  .nav-links a {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+  }
+}
+
+/* Subtle Scroll Effect */
+.navbar.scrolled {
+  box-shadow: 0 4px 24px rgba(2, 48, 89, 0.15);
+}
+
+@media (max-width: 768px) {
+  .navbar.scrolled {
+    padding: 0.75rem 1.5rem;
+  }
+}
+
+/* Accessibility Enhancements */
+.nav-links a:focus {
+  outline: 2px solid #EFB036;
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .navbar {
+    border-bottom: 2px solid #023059;
+  }
+
+  .nav-links a {
+    border: 1px solid transparent;
+  }
+
   .nav-links a:hover {
-    color: #EFB036;
+    border-color: #EFB036;
   }
-  
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .navbar,
+  .logo,
+  .nav-links a,
+  .nav-links a::before {
+    transition: none;
+  }
+
+  .nav-links a:hover {
+    transform: none;
+  }
+}
