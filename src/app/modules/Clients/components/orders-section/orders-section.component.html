@@ -1,11 +1,14 @@
+<!-- ✅ أثناء التحميل -->
 <div *ngIf="loading" class="text-center p-3">
   <p>Loading orders...</p>
 </div>
 
+<!-- ✅ رسالة الخطأ العامة -->
 <div *ngIf="errorMessage" class="alert alert-danger">
   {{ errorMessage }}
 </div>
 
+<!-- ✅ رسائل إلغاء الطلب -->
 <div *ngIf="cancelErrorMessage" class="alert alert-danger">
   {{ cancelErrorMessage }}
 </div>
@@ -14,47 +17,65 @@
   {{ cancelSuccessMessage }}
 </div>
 
-<div *ngIf="!loading && orders.length === 0" class="alert alert-warning">
-  You have no orders yet.
-</div>
+<!-- ✅ التأكد من وجود orders -->
+<ng-container *ngIf="orders">
 
-<table *ngIf="orders.length > 0" class="table table-striped table-hover">
-  <thead>
-    <tr>
-      <th>Order ID</th>
-      <th>Status</th>
-      <th>Created On</th>
-      <th>Total Amount</th>
-      <th>Payment Method</th>
-      <th>Points Earned</th>
-      <th>Points Used</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let order of orders">
-      <td>{{ order.Id }}</td>
-      <td>{{ getStatusText(order.Status) }}</td>
-      <td>{{ order.DateCreated | date : "short" }}</td>
-      <td>{{ order.TotalPrice | currency }}</td>
-      <td>{{ getPaymentTypeText(order.PaymentType) }}</td>
-      <td>{{ order.EarnedPoints }}</td>
-      <td>{{ order.UsedPaidPoints + order.UsedFreePoints }}</td>
-      <td>
-        <button
-          class="btn btn-sm btn-primary"
-          [routerLink]="['/client/orders', order.Id]"
-        >
-          View Details
-        </button>
-        <button
-          *ngIf="canCancel(order)"
-          class="btn btn-sm btn-danger ms-2"
-          (click)="cancelOrder(order.Id)"
-        >
-          Cancel
-        </button>
-      </td>
-    </tr>
-  </tbody>
-</table>
+  <!-- ✅ رسالة لا توجد طلبات -->
+  <div *ngIf="!loading && orders.length === 0" class="alert alert-warning">
+    You have no orders yet.
+  </div>
+
+  <!-- ✅ جدول الطلبات -->
+  <table *ngIf="orders.length > 0" class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>Status</th>
+        <th>Created On</th>
+        <th>Total Amount</th>
+        <th>Payment Method</th>
+        <th>Points Earned</th>
+        <th>Points Used</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of orders">
+        <td>{{ order.Id }}</td>
+        <td>{{ getStatusText(order.Status) }}</td>
+        <td>{{ order.DateCreated | date : "short" }}</td>
+        <td>{{ order.TotalPrice | currency }}</td>
+        <td>{{ getPaymentTypeText(order.PaymentType) }}</td>
+        <td>{{ order.EarnedPoints }}</td>
+        <td>{{ order.UsedPaidPoints + order.UsedFreePoints }}</td>
+        <td>
+          <button
+            class="btn btn-sm btn-primary"
+            [routerLink]="['/client/orders', order.Id]">
+            View Details
+          </button>
+          <button
+            *ngIf="canCancel(order)"
+            class="btn btn-sm btn-danger ms-2"
+            (click)="cancelOrder(order.Id)">
+            Cancel
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ✅ أزرار التنقل بين الصفحات -->
+  <div *ngIf="orders.length > 0 && totalPages > 1" class="d-flex justify-content-between align-items-center mt-3">
+    <button class="btn btn-outline-primary" (click)="prevPage()" [disabled]="pageNumber === 1">
+      ⬅ Previous
+    </button>
+
+    <span>Page {{ pageNumber }} of {{ totalPages }}</span>
+
+    <button class="btn btn-outline-primary" (click)="nextPage()" [disabled]="pageNumber === totalPages">
+      Next ➡
+    </button>
+  </div>
+
+</ng-container>
