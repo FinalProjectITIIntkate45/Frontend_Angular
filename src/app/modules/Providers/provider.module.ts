@@ -49,8 +49,7 @@ import { FollowersComponent } from '../Providers/Components/followers/followers.
 import { ShopsComponent } from '../Providers/Components/Shops/Shops.component';
 import { ProviderOrderDetailsComponent } from './Components/provider-order-details/provider-order-details.component';
 import { ShopInfoComponent } from './Components/shop-info/shop-info.component';
-
-
+import { ProviderOrdersSectionComponent } from './Components/provider-orders-section/provider-orders-section.component';
 
 @NgModule({
   declarations: [
@@ -108,6 +107,7 @@ import { ShopInfoComponent } from './Components/shop-info/shop-info.component';
     StatsCardComponent,
     SubScrptionComponent,
     ShopInfoComponent,
+    ProviderOrdersSectionComponent,
   ],
   exports: [
     ProviderLayoutComponent,

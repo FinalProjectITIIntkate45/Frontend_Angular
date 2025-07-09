@@ -1,0 +1,119 @@
+<div class="container-fluid mt-4">
+  <!-- Filters -->
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Search by client name or ID"
+        [formControl]="searchControl"
+      />
+    </div>
+    <div class="col-md-3">
+      <select class="form-select" (change)="onStatusFilterChange($event)">
+        <option value="">All Status</option>
+        <option value="pending">Pending</option>
+        <option value="confirmed">Confirmed</option>
+        <option value="processing">Processing</option>
+        <option value="shipped">Shipped</option>
+        <option value="cancelled">Cancelled</option>
+      </select>
+    </div>
+    <div class="col-md-3 text-end">
+      <button class="btn btn-outline-secondary" (click)="clearFilters()">
+        Clear Filters
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading / Error -->
+  <div *ngIf="loading" class="text-center py-4">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="mt-2">Loading orders...</p>
+  </div>
+
+  <div *ngIf="errorMessage && !loading" class="alert alert-danger">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Orders Table -->
+  <table
+    class="table table-striped table-bordered"
+    *ngIf="!loading && filteredOrders.length"
+  >
+    <thead>
+      <tr>
+        <th>Order ID</th>
+        <th>Client</th>
+        <th>Status</th>
+        <th>Total</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let order of paginatedOrders">
+        <td>#{{ order.id }}</td>
+        <td>{{ order.CustomerInfoS?.Name || order.clientId }}</td>
+        <td>
+          <span [class]="getStatusClass(order.status)">{{ order.status }}</span>
+        </td>
+        <td>${{ order.totalAmount.toFixed(2) }}</td>
+        <td>
+          <button
+            class="btn btn-sm btn-success me-1"
+            *ngIf="order.status?.toLowerCase() === 'pending'"
+            (click)="updateOrderStatus(order.id, OrderStatus.Confirmed)"
+          >
+            Confirm
+          </button>
+          <button
+            class="btn btn-sm btn-danger"
+            *ngIf="order.status?.toLowerCase() !== 'cancelled'"
+            (click)="updateOrderStatus(order.id, OrderStatus.Canceled)"
+          >
+            Cancel
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- No Orders Message -->
+  <div *ngIf="!loading && !filteredOrders.length" class="text-center py-5">
+    <h5 class="text-muted">No orders match your search or filters.</h5>
+  </div>
+
+  <!-- Pagination -->
+  <nav *ngIf="totalPages > 1" class="mt-4">
+    <ul class="pagination justify-content-center">
+      <li class="page-item" [class.disabled]="currentPage === 1">
+        <a
+          class="page-link"
+          href="#"
+          (click)="previousPage(); $event.preventDefault()"
+          >Previous</a
+        >
+      </li>
+      <li
+        *ngFor="let page of [].constructor(totalPages); let i = index"
+        class="page-item"
+        [class.active]="currentPage === i + 1"
+      >
+        <a
+          class="page-link"
+          href="#"
+          (click)="goToPage(i + 1); $event.preventDefault()"
+          >{{ i + 1 }}</a
+        >
+      </li>
+      <li class="page-item" [class.disabled]="currentPage === totalPages">
+        <a
+          class="page-link"
+          href="#"
+          (click)="nextPage(); $event.preventDefault()"
+          >Next</a
+        >
+      </li>
+    </ul>
+  </nav>
+</div>
