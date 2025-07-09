@@ -32,6 +32,7 @@ import { ProviderDashboardComponent } from './Components/provider-dashboard/prov
 import { ProviderOrderDetailsComponent } from './Components/provider-order-details/provider-order-details.component';
 import { ProviderWalletSectionComponent } from './Components/provider-wallet-section/provider-wallet-section.component';
 import { ProviderWalletSuccessComponent } from './Components/provider-wallet-success/provider-wallet-success.component';
+import { ShopInfoComponent } from './Components/shop-info/shop-info.component';
 
 const routes: Routes = [
   {
@@ -68,6 +69,7 @@ const routes: Routes = [
       { path: 'sales-overview', component: SalesOverviewComponent },
       { path: 'wallet', component: ProviderWalletSectionComponent },
       { path: 'wallet/success', component: ProviderWalletSuccessComponent },
+      {path : 'shop-info' , component : ShopInfoComponent },
     ],
   },
 ];
