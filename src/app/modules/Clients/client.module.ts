@@ -100,5 +100,3 @@ import { WalletSuccessComponent } from './components/wallet-success/wallet-succe
   ],
 })
 export class ClientModule {}
-})
-export class ClientModule {}
