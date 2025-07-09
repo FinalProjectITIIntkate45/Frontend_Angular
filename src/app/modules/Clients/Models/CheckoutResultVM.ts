@@ -1,12 +1,12 @@
 export interface CheckoutResultVM {
-  success: boolean;
-  message: string;
-  finalAmount: number;
-  usedPaidPoints: number;
-  usedFreePoints: number;
-  earnedPoints: number;
-  paymentUrl?: string;
-  orderId?: number;
+  Success: boolean;
+  Message: string;
+  FinalAmount: number;
+  UsedPaidPoints: number;
+  UsedFreePoints: number;
+  EarnedPoints: number;
+  PaymentUrl?: string;
+  OrderId?: number;
 }
 export enum PaymentType {
   PointsOnly = 0,

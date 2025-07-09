@@ -21,6 +21,7 @@ import { CheckoutComponent } from './components/checkout/checkout.component';
 import { ClientLayoutComponent } from './components/client-layout/client-layout.component';
 import { FollowSellerComponent } from './components/follow-seller/follow-seller.component';
 import { OrdersSectionComponent } from './components/orders-section/orders-section.component';
+import { OrdersSectionComponent } from './components/orders-section/orders-section.component';
 import { PointsSectionComponent } from './components/points-section/points-section.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { ProductSearchComponent } from './components/product-search/product-search.component';
@@ -97,5 +98,7 @@ import { WalletSuccessComponent } from './components/wallet-success/wallet-succe
       withInterceptors([AuthInterceptor, LoaderInterceptor])
     ),
   ],
+})
+export class ClientModule {}
 })
 export class ClientModule {}

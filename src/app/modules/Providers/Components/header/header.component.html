@@ -17,8 +17,12 @@
   </div>
   <div class="custom-dropdown position-absolute end-0 mt-2 shadow"
        *ngIf="isDropdownOpen">
-    <a class="dropdown-item" routerLink="/profile"><i class="fas fa-user me-2"></i> Profile</a>
-    <a class="dropdown-item" routerLink="/edit-vendor-profile"><i class="fas fa-edit me-2"></i> Edit Profile</a>
+    <a class="dropdown-item" [routerLink]="['/provider/profile']"><i class="fas fa-user me-2"></i> Profile</a>
+    <a class="dropdown-item" [routerLink]="['/provider/edit-vendor-profile']"><i class="fas fa-edit me-2"></i> Edit Profile</a>
+    <a class="dropdown-item text-danger" [routerLink]="['/Login']" (click)="logout()">
+  <i class="fas fa-sign-out-alt me-2"></i> Log out
+</a>
+
   </div>
 </div>
 

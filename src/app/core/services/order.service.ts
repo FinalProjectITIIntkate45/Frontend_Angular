@@ -3,38 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 
 import { APIResponse } from '../models/APIResponse';
+import { PaginatedResponse } from '../models/PaginatedResponse';
 import { environment } from '../../../environments/environment';
+import { OrderUpdateViewModel } from '../../shared/models/OrderUpdateViewModel';
 import { OrderResponseViewModel } from '../../modules/Clients/Models/OrderResponseViewModel';
 import { OrderItemViewModel } from '../../modules/Clients/Models/OrderItemViewModel';
 import { ProviderOrderViewModel } from '../../modules/Providers/Models/ProviderOrderViewModel';
-
-// Backend response interfaces (PascalCase)
-interface BackendOrderResponseViewModel {
-  Id: number;
-  ClientId: string;
-  DateCreated: string;
-  TotalPrice: number;
-  Status: any;
-  IsPaid: boolean;
-  PaymentType: any;
-  UsedPaidPoints: number;
-  UsedFreePoints: number;
-  EarnedPoints: number;
-  Items: BackendOrderItemResponseViewModel[];
-}
-
-interface BackendOrderItemResponseViewModel {
-  ProductId: number;
-  Quantity: number;
-  Price?: number;
-  Name?: string;
-  ShopName?: string;
-  Description?: string;
-  PriceAfterDiscount?: number;
-  Image?: string;
-  Points?: number;
-  ProductName?: string;
-}
 
 @Injectable({
   providedIn: 'root',
@@ -44,84 +18,47 @@ export class OrderService {
 
   constructor(private http: HttpClient) {}
 
-  // Helper method to map backend response to frontend model
-  private mapBackendToFrontendOrder(
-    backendOrder: BackendOrderResponseViewModel
-  ): OrderResponseViewModel {
-    return {
-      id: backendOrder.Id,
-      clientId: backendOrder.ClientId,
-      dateCreated: backendOrder.DateCreated,
-      totalPrice: backendOrder.TotalPrice,
-      status: backendOrder.Status,
-      isPaid: backendOrder.IsPaid,
-      paymentType: backendOrder.PaymentType,
-      usedPaidPoints: backendOrder.UsedPaidPoints,
-      usedFreePoints: backendOrder.UsedFreePoints,
-      earnedPoints: backendOrder.EarnedPoints,
-      items:
-        backendOrder.Items?.map((item) =>
-          this.mapBackendToFrontendOrderItem(item)
-        ) || [],
-    };
+  // Get all orders for current logged-in client with pagination
+  getClientOrders(
+    pageNumber: number = 1,
+    pageSize: number = 10
+  ): Observable<APIResponse<PaginatedResponse<OrderResponseViewModel[]>>> {
+    return this.http.get<
+      APIResponse<PaginatedResponse<OrderResponseViewModel[]>>
+    >(`${this.baseUrl}/client?pageNumber=${pageNumber}&pageSize=${pageSize}`);
   }
 
-  private mapBackendToFrontendOrderItem(
-    backendItem: BackendOrderItemResponseViewModel
-  ): OrderItemViewModel {
-    return {
-      productId: backendItem.ProductId,
-      quantity: backendItem.Quantity,
-      price: backendItem.Price,
-      name: backendItem.Name,
-      shopName: backendItem.ShopName,
-      description: backendItem.Description,
-      priceAfterDiscount: backendItem.PriceAfterDiscount,
-      image: backendItem.Image,
-      points: backendItem.Points,
-      productName: backendItem.ProductName,
-    };
+  // Get all orders for provider with pagination
+  getProviderOrders(
+    pageNumber: number = 1,
+    pageSize: number = 10
+  ): Observable<APIResponse<PaginatedResponse<ProviderOrderViewModel[]>>> {
+    return this.http.get<
+      APIResponse<PaginatedResponse<ProviderOrderViewModel[]>>
+    >(`${this.baseUrl}/provider?pageNumber=${pageNumber}&pageSize=${pageSize}`);
   }
 
-  // ✅ Get all orders for current logged-in client
-  getClientOrders(): Observable<APIResponse<OrderResponseViewModel[]>> {
-    return this.http
-      .get<APIResponse<BackendOrderResponseViewModel[]>>(
-        `${this.baseUrl}/client`
-      )
-      .pipe(
-        map((response) => ({
-          ...response,
-          Data:
-            response.Data?.map((order) =>
-              this.mapBackendToFrontendOrder(order)
-            ) || [],
-        }))
-      );
-  }
-
-  // ✅ Get all orders for current logged-in provider
-  getProviderOrders(): Observable<APIResponse<ProviderOrderViewModel[]>> {
-    return this.http.get<APIResponse<ProviderOrderViewModel[]>>(
-      `${this.baseUrl}/provider`
+  // Get orders by status with pagination
+  getOrdersByStatus(
+    status: string, // أو يمكن تستخدم enum أو number حسب تعريفك في الـ API
+    pageNumber: number = 1,
+    pageSize: number = 10
+  ): Observable<APIResponse<PaginatedResponse<OrderResponseViewModel[]>>> {
+    return this.http.get<
+      APIResponse<PaginatedResponse<OrderResponseViewModel[]>>
+    >(
+      `${this.baseUrl}/status/${status}?pageNumber=${pageNumber}&pageSize=${pageSize}`
     );
   }
 
-  // ✅ Get specific order (for either client or provider)
+  // Get specific order details
   getOrderById(id: number): Observable<APIResponse<OrderResponseViewModel>> {
-    return this.http
-      .get<APIResponse<BackendOrderResponseViewModel>>(`${this.baseUrl}/${id}`)
-      .pipe(
-        map((response) => ({
-          ...response,
-          Data: response.Data
-            ? this.mapBackendToFrontendOrder(response.Data)
-            : ({} as OrderResponseViewModel),
-        }))
-      );
+    return this.http.get<APIResponse<OrderResponseViewModel>>(
+      `${this.baseUrl}/${id}`
+    );
   }
 
-  // ✅ Confirm a specific order (client or provider)
+  // Confirm order (POST)
   confirmOrder(id: number): Observable<APIResponse<string>> {
     return this.http.post<APIResponse<string>>(
       `${this.baseUrl}/${id}/confirm`,
@@ -129,18 +66,44 @@ export class OrderService {
     );
   }
 
-  // ✅ Update order status (for provider/admin)
-  updateOrderStatus(
-    id: number,
-    status: number | string
-  ): Observable<APIResponse<string>> {
-    return this.http.patch<APIResponse<string>>(
-      `${this.baseUrl}/${id}/status`,
-      { status }
+  // Mark order as paid (POST)
+  markOrderAsPaid(id: number): Observable<APIResponse<string>> {
+    return this.http.post<APIResponse<string>>(
+      `${this.baseUrl}/${id}/paid`,
+      {}
     );
   }
 
-  // ✅ Delete order (for admin or client)
+  // Update order status (PATCH) - ترسل JSON مع خاصية status
+  updateOrderStatus(
+    id: number,
+    model: OrderUpdateViewModel
+  ): Observable<APIResponse<string>> {
+    return this.http.patch<APIResponse<string>>(
+      `${this.baseUrl}/${id}/status`,
+      model
+    );
+  }
+
+  changeOrderStatus(
+    id: number,
+    newStatus: string // أو number
+  ): Observable<APIResponse<string>> {
+    return this.http.patch<APIResponse<string>>(
+      `${this.baseUrl}/${id}/change-status?newStatus=${newStatus}`,
+      {}
+    );
+  }
+
+  // Cancel order (POST)
+  cancelOrder(id: number): Observable<APIResponse<string>> {
+    return this.http.post<APIResponse<string>>(
+      `${this.baseUrl}/${id}/cancel`,
+      {}
+    );
+  }
+
+  // Delete order (DELETE)
   deleteOrder(id: number): Observable<APIResponse<string>> {
     return this.http.delete<APIResponse<string>>(`${this.baseUrl}/${id}`);
   }

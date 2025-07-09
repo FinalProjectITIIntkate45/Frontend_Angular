@@ -1,3 +1,17 @@
+ <div class="segmented-toggle">
+                    <button class="segmented-btn active" [routerLink]="['/provider/profile']">
+                        <i class="fas fa-table me-2"></i>Shop info
+                    </button>
+                    <button class="segmented-btn" [routerLink]="['/provider/edit-shop/1']">
+                        <i class="fas fa-th-large me-2"></i>Edit your shop
+                    </button>
+                </div>
+<br> 
+<br> 
+
+
+
+
 <div class="dashboard-content">
   <h2>Edit Shop</h2>
   <form [formGroup]="shopForm" (ngSubmit)="onSubmit()" class="p-4 bg-white rounded shadow-sm">

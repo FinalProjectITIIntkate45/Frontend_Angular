@@ -11,7 +11,9 @@ import { OrderStatus } from '../../Models/order-status.enum';
 @Component({
   selector: 'app-orders-section',
   standalone: false,
+  standalone: false,
   templateUrl: './orders-section.component.html',
+  styleUrls: ['./orders-section.component.css'],
   styleUrls: ['./orders-section.component.css'],
 })
 export class OrdersSectionComponent implements OnInit {

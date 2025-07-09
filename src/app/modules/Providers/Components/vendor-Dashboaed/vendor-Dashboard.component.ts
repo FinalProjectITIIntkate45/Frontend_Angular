@@ -34,24 +34,4 @@ isWelcomeBannerAvailable: any;
 isHeaderAvailable: any;
   constructor() { }
 }
-@NgModule({
-  declarations: [
-  VendorDashboardComponent,
-
-
-  // ...other components
-],
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    ProviderRoutingModule,
-    SafeUrlPipe,
-    
-],
-  exports: [
-    VendorDashboardComponent,
-
-  ],
-})
 export class VendorDashboardModule {}

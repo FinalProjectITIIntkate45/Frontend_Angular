@@ -1,12 +1,11 @@
 export interface OrderItemViewModel {
-  productId: number;
-  quantity: number;
-  price?: number;
-  name?: string;
-  shopName?: string;
-  description?: string;
-  priceAfterDiscount?: number;
-  image?: string;
-  points?: number;
-  productName?: string;
+  ProductId: number;
+  ProductName: string; // <-- ضروري
+  Quantity: number;
+  Price?: number;
+  ShopName?: string;
+  Description?: string;
+  PriceAfterDiscount?: number;
+  Image?: string;
+  Points?: number;
 }
