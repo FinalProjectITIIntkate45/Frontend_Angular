@@ -23,6 +23,8 @@ import { PaymentConfirmationComponent } from './components/checkout/payment-conf
 import { OfferDetailsComponent } from './components/offer/offer-details/offer-details.component';
 import { OfferListComponent } from './components/offer/offer-list/offer-list.component';
 import { ClientOrderDetailsComponent } from './components/orders-section/client-order-details/client-order-details.component';
+import { WalletRechargeComponent } from './components/wallet-recharge/wallet-recharge.component';
+import { WalletSuccessComponent } from './components/wallet-success/wallet-success.component';
 
 const routes: Routes = [
   {
@@ -59,9 +61,9 @@ const routes: Routes = [
 
       { path: 'recycling', component: RecyclingSectionComponent },
 
-      { path: 'orders/:id', component: ClientOrderDetailsComponent }
-
-
+      { path: 'orders/:id', component: ClientOrderDetailsComponent },
+      { path: 'wallet-recharge', component: WalletRechargeComponent },
+      { path: 'wallet/success', component: WalletSuccessComponent },
     ],
   },
 ];

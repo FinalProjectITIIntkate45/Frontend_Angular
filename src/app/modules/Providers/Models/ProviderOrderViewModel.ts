@@ -1,8 +1,22 @@
-
-
 import { PaymentType } from '../../Clients/Models/CheckoutResultVM';
+import {
+  CustomerInfoViewModel,
+  ShippingAddressViewModel,
+} from '../../Clients/Models/OrderResponseViewModel';
 
-import { ProviderOrderItemViewModel } from './ProviderOrderItemViewModel';
+export interface ProviderOrderItemViewModel {
+  productId: number;
+  productName: string;
+  quantity: number;
+  providerId?: string;
+  price: number;
+  name?: string;
+  description?: string;
+  shopName?: string;
+  priceAfterDiscount?: number;
+  image?: string;
+  points?: number;
+}
 
 export interface ProviderOrderViewModel {
   id: number;
@@ -10,11 +24,12 @@ export interface ProviderOrderViewModel {
   status: string;
   creationDateTime: string;
   modificationDateTime?: string;
-
-  orderItems: ProviderOrderItemViewModel[];
   totalAmount: number;
-
   isPaid: boolean;
-  paymentType: PaymentType;
+  paymentType: any;
   usedPaidPoints: number;
+  orderItems: ProviderOrderItemViewModel[];
+  CustomerInfoS?: CustomerInfoViewModel;
+  paymentMethodDisplay?: string;
+  shippingAddress?: ShippingAddressViewModel;
 }

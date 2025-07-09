@@ -372,6 +372,12 @@ export class ProductSearchComponent implements OnInit, OnDestroy {
       return;
     }
 
+    console.log('[AddToCart-Search] Sending:', {
+      productId: product.Id,
+      quantity: 1,
+      price: product.DisplayedPriceAfterDiscount || product.DisplayedPrice,
+      points: product.Points,
+    });
     // Use the same logic as product-details.component.ts
     this.cardservice
       .addToCart(

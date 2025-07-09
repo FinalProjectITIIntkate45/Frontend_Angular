@@ -47,6 +47,7 @@ import { ReviewsComponent } from './Components/reviews/reviews.component';
 import { CategoriesComponent } from './Components/categories/categories.component';
 import { FollowersComponent } from '../Providers/Components/followers/followers.component';
 import { ShopsComponent } from '../Providers/Components/Shops/Shops.component';
+import { ProviderOrderDetailsComponent } from './Components/provider-order-details/provider-order-details.component';
 
 @NgModule({
   declarations: [
@@ -79,6 +80,7 @@ import { ShopsComponent } from '../Providers/Components/Shops/Shops.component';
     CategoriesComponent,
     FollowersComponent,
     ShopsComponent,
+    ProviderOrderDetailsComponent,
     AddShopComponent,
     EditShopComponent,
     ProviderOrdersComponent,

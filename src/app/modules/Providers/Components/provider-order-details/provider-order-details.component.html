@@ -1,0 +1,306 @@
+<div class="container-fluid mt-4">
+    <!-- Header Section -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <button class="btn btn-outline-secondary" (click)="goBack()">
+                        <i class="fas fa-arrow-left me-2"></i>
+                        Back to all orders
+                    </button>
+                </div>
+                <div class="d-flex gap-2">
+                    <button class="btn btn-outline-primary" (click)="downloadInvoice()" [disabled]="!order">
+                        <i class="fas fa-download me-2"></i>
+                        Download Invoice
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="loading" class="row">
+        <div class="col-12">
+            <div class="text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-3 text-muted">Loading order details...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="errorMessage && !loading" class="row">
+        <div class="col-12">
+            <div class="alert alert-danger" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                {{ errorMessage }}
+                <button class="btn btn-outline-danger btn-sm ms-3" (click)="loadOrder()">
+                    Try Again
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Notification -->
+    <div *ngIf="showSuccessMessage" class="row mb-3">
+        <div class="col-12">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-2"></i>
+                {{ notificationMessage }}
+                <button type="button" class="btn-close" (click)="showSuccessMessage = false"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Notification -->
+    <div *ngIf="showErrorMessage" class="row mb-3">
+        <div class="col-12">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                {{ notificationMessage }}
+                <button type="button" class="btn-close" (click)="showErrorMessage = false"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Details -->
+    <div *ngIf="order && !loading" class="row">
+        <!-- Order Header -->
+        <div class="col-12 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-6">
+                            <h2 class="mb-1">Order ID: #{{ order?.Id }}</h2>
+                            <p class="text-muted mb-0">Order Date: {{ order?.DateCreated | date:'longDate' }}</p>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <span [class]="getStatusClass(order?.Status)" class="fs-6">
+                                {{ getStatusText(order?.Status) }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-lg-8">
+            <!-- Order Items -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Order Details</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="border-0">Products</th>
+                                    <th class="border-0 text-end">Price</th>
+                                    <th class="border-0 text-center">Quantity</th>
+                                    <th class="border-0 text-end">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of order?.Items" class="align-middle">
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img [src]="getProductImage(item)" (error)="onImageError($event)"
+                                                class="rounded me-3"
+                                                style="width: 60px; height: 60px; object-fit: cover;" alt="Product">
+                                            <div>
+                                                <h6 class="mb-1">{{ item.ProductName || item.Name }}</h6>
+                                                <small class="text-muted">{{ item.ShopName }}</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="text-end">
+                                        <span class="fw-bold">${{ (item.Price || 0).toFixed(2) }}</span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span class="badge bg-light text-dark fs-6">{{ item.Quantity }}</span>
+                                    </td>
+                                    <td class="text-end">
+                                        <span class="fw-bold text-success">${{ ((item.Price || 0) *
+                                            item.Quantity).toFixed(2) }}</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer bg-white">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted">Sub Total:</span>
+                                <span class="fw-bold">${{ order?.TotalPrice?.toFixed(2) }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-2">
+                                <span class="text-muted">Shipping Cost:</span>
+                                <span class="fw-bold">${{ getShippingCost().toFixed(2) }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span class="fw-bold fs-5">Grand Total:</span>
+                                <span class="fw-bold fs-5 text-success">${{ getGrandTotal().toFixed(2) }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notes Section -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Notes</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <textarea class="form-control" rows="4" placeholder="Add notes about this order..."
+                            [formControl]="notesControl"></textarea>
+                    </div>
+                    <button class="btn btn-primary" (click)="saveNotes()" [disabled]="isSavingNotes">
+                        <i class="fas fa-save me-2"></i>
+                        {{ isSavingNotes ? 'Saving...' : 'Save Notes' }}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Customer Details -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h6 class="mb-0">Customer Details</h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center mb-3">
+                        <div
+                            class="avatar-lg bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3">
+                            <img *ngIf="order?.CustomerInfo?.ProfileImg"
+                                [src]="order.CustomerInfo?.ProfileImg || 'assets/user-avatar.png'" alt="Profile"
+                                style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover;">
+                            <i *ngIf="!order?.CustomerInfo?.ProfileImg" class="fas fa-user fa-2x"></i>
+                        </div>
+                        <div>
+                            <h6 class="mb-1">{{ order?.CustomerInfo?.Name || order?.ClientId }}</h6>
+                            <small class="text-muted">{{ order?.CustomerInfo?.Email }}</small><br>
+                            <small class="text-muted">{{ order?.CustomerInfo?.PhoneNumber }}</small>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline-primary btn-sm w-100" *ngIf="order?.CustomerInfo?.Id"
+                        [routerLink]="order.CustomerInfo ? ['/clients', order.CustomerInfo.Id] : null">
+                        <i class="fas fa-user me-2"></i>
+                        View Profile
+                    </button>
+                </div>
+            </div>
+
+            <!-- Shipping Address -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h6 class="mb-0">Shipping Address</h6>
+                </div>
+                <div class="card-body">
+                    <p class="mb-1"><strong>Address:</strong> {{ order?.ShippingAddress?.Address || 'N/A' }}</p>
+                    <p class="mb-0 text-muted">Contact: {{ order?.CustomerInfo?.PhoneNumber || 'N/A' }}</p>
+                </div>
+            </div>
+
+            <!-- Payment Info -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h6 class="mb-0">Payment Info</h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <i class="fas fa-credit-card me-2"></i>
+                        <span>{{ order?.PaymentMethodDisplay || getPaymentMethodText(order?.PaymentType) }}</span>
+                    </div>
+                    <div class="mt-2">
+                        <small class="text-muted">
+                            <i class="fas fa-star text-warning me-1"></i>
+                            {{ order?.UsedPaidPoints }} points used
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Actions -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h6 class="mb-0">Order Actions</h6>
+                </div>
+                <div class="card-body">
+                    <!-- Status Update -->
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Update Order Status</label>
+
+                        <!-- Current Status Display -->
+                        <div class="alert alert-info mb-3" *ngIf="order">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-info-circle me-2"></i>
+                                <div>
+                                    <strong>Current Status:</strong>
+                                    <span [class]="getStatusClass(order?.Status)" class="ms-2">
+                                        {{ getStatusText(order?.Status) }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-2 mb-2">
+                            <select class="form-select" [formControl]="statusControl">
+                                <option *ngFor="let status of availableStatuses" [value]="status.value">
+                                    {{ status.label }}
+                                </option>
+                            </select>
+                            <button class="btn btn-primary" (click)="updateOrderStatus()"
+                                [disabled]="isUpdatingStatus || statusControl.value === order?.Status">
+                                <i class="fas fa-save me-1"></i>
+                                {{ isUpdatingStatus ? 'Updating...' : 'Update' }}
+                            </button>
+                        </div>
+                        <small class="text-muted">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Select a new status and click Update to change the order status
+                        </small>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-success" (click)="confirmOrder()"
+                            [disabled]="order?.Status === 'confirmed' || isUpdatingStatus">
+                            <i class="fas fa-check me-2"></i>
+                            Confirm Order
+                        </button>
+                        <button class="btn btn-info" (click)="markAsShipped()"
+                            [disabled]="order?.Status === 'shipped' || isUpdatingStatus">
+                            <i class="fas fa-shipping-fast me-2"></i>
+                            Mark as Shipped
+                        </button>
+                        <button class="btn btn-success" (click)="markAsDelivered()"
+                            [disabled]="order?.Status === 'delivered' || isUpdatingStatus">
+                            <i class="fas fa-box-open me-2"></i>
+                            Mark as Delivered
+                        </button>
+                        <button class="btn btn-danger" (click)="cancelOrder()"
+                            [disabled]="order?.Status === 'canceled' || isUpdatingStatus">
+                            <i class="fas fa-times me-2"></i>
+                            Cancel Order
+                        </button>
+                        <button class="btn btn-outline-secondary">
+                            <i class="fas fa-print me-2"></i>
+                            Print Order
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

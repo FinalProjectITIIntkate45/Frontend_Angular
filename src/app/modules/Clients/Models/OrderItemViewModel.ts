@@ -8,4 +8,5 @@ export interface OrderItemViewModel {
   priceAfterDiscount?: number;
   image?: string;
   points?: number;
+  productName?: string;
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ProviderOrdersService } from '../../Services/provider-orders.service';
-import { ProviderOrder } from '../../Models/provider-orders.model';
+import { ProviderOrder, OrderStatus } from '../../Models/provider-orders.model';
 
 @Component({
   selector: 'app-provider-orders',
@@ -9,13 +10,48 @@ import { ProviderOrder } from '../../Models/provider-orders.model';
   standalone: false,
 })
 export class ProviderOrdersComponent implements OnInit {
+  public OrderStatus = OrderStatus;
   orders: ProviderOrder[] = [];
   loading = false;
   error: string | null = null;
   selectedOrder: ProviderOrder | null = null;
   showOrderDetails = false;
+  pageSize = 7;
+  currentPage = 1;
+  statusFilter: string = '';
+  get filteredOrders(): ProviderOrder[] {
+    if (!this.statusFilter) return this.orders;
+    return this.orders.filter(
+      (order) => order.Status?.toLowerCase() === this.statusFilter.toLowerCase()
+    );
+  }
+  get paginatedOrders(): ProviderOrder[] {
+    const start = (this.currentPage - 1) * this.pageSize;
+    return this.filteredOrders.slice(start, start + this.pageSize);
+  }
+  get totalPages(): number {
+    return Math.ceil(this.filteredOrders.length / this.pageSize);
+  }
+  setPage(page: number) {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
+  }
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+    }
+  }
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
+  }
 
-  constructor(private providerOrdersService: ProviderOrdersService) {}
+  constructor(
+    private providerOrdersService: ProviderOrdersService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.loadOrders();
@@ -33,7 +69,15 @@ export class ProviderOrdersComponent implements OnInit {
         console.log('Response Message:', response?.Message);
 
         if (response && response.IsSuccess && response.Data) {
-          this.orders = response.Data;
+          // Map CustomerInfo to customerInfo for template compatibility
+          this.orders = response.Data.map((order: any) => ({
+            ...order,
+            customerInfo: order.CustomerInfo,
+          })).sort(
+            (a: ProviderOrder, b: ProviderOrder) =>
+              new Date(b.CreationDateTime).getTime() -
+              new Date(a.CreationDateTime).getTime()
+          );
           console.log('Orders loaded successfully:', this.orders);
           console.log('Number of orders:', this.orders.length);
         } else {
@@ -115,8 +159,7 @@ export class ProviderOrdersComponent implements OnInit {
   }
 
   viewOrderDetails(order: ProviderOrder): void {
-    this.selectedOrder = order;
-    this.showOrderDetails = true;
+    this.router.navigate(['/provider/provider-orders', order.Id]);
   }
 
   closeOrderDetails(): void {
@@ -124,10 +167,18 @@ export class ProviderOrdersComponent implements OnInit {
     this.showOrderDetails = false;
   }
 
-  updateOrderStatus(orderId: number, newStatus: string): void {
-    // TODO: Implement order status update
+  updateOrderStatus(orderId: number, newStatus: OrderStatus): void {
     console.log(`Updating order ${orderId} to status: ${newStatus}`);
-    // You would call a service method here to update the order status
+    this.providerOrdersService.updateOrderStatus(orderId, newStatus).subscribe({
+      next: (response) => {
+        console.log('Order status updated:', response);
+        this.refreshOrders();
+      },
+      error: (err) => {
+        console.error('Failed to update order status:', err);
+        // Optionally show error to user
+      },
+    });
   }
 
   refreshOrders(): void {

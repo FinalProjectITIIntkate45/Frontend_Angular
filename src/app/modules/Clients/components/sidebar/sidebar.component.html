@@ -14,9 +14,17 @@
         <span>Profile</span>
       </a>
     </li>
-    <li class="nav-item mb-2" [class.active]="selectedSection === 'wallet'" (click)="selectSection('wallet')">
+    <!-- <li class="nav-item mb-2" [class.active]="selectedSection === 'wallet-recharge'"
+      (click)="selectSection('wallet-recharge')">
       <a class="d-flex align-items-center text-dark text-decoration-none p-2 rounded">
         <i class="fas fa-wallet me-2"></i>
+        <span>My Wallet</span>
+      </a>
+    </li> -->
+    <li class="nav-item mb-2" [class.active]="selectedSection === 'wallet-recharge'"
+      (click)="selectSection('wallet-recharge')">
+      <a class="d-flex align-items-center text-dark text-decoration-none p-2 rounded">
+        <i class="fas fa-credit-card me-2"></i>
         <span>My Wallet</span>
       </a>
     </li>

@@ -18,3 +18,18 @@ export interface OrderResponseViewModel {
 
   items: OrderItemViewModel[];
 }
+
+export interface CustomerInfoViewModel {
+  Id: string;
+  Name: string;
+  Email: string;
+  PhoneNumber: string;
+  ProfileImg: string;
+}
+
+export interface ShippingAddressViewModel {
+  address: string;
+  city: string;
+  street: string;
+  postalCode: string;
+}

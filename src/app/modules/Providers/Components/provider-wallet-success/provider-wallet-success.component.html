@@ -1,0 +1,7 @@
+<div class="provider-wallet-success">
+    <h2 *ngIf="!loading && !error" class="mb-3">Wallet Recharge Successful!</h2>
+    <div *ngIf="loading" class="alert alert-info">Confirming your payment, please wait...</div>
+    <div *ngIf="message && !loading" class="alert alert-success">{{ message }}</div>
+    <div *ngIf="error && !loading" class="alert alert-danger">{{ error }}</div>
+    <button class="btn btn-primary mt-3" (click)="goToWallet()">Back to Wallet</button>
+</div>

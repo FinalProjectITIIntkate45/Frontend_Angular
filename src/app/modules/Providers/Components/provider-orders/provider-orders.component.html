@@ -53,7 +53,7 @@
           <div class="d-flex justify-content-between align-items-center">
             <h5 class="mb-0">Orders ({{ orders.length }})</h5>
             <div class="d-flex gap-2">
-              <select class="form-select form-select-sm" style="width: auto;">
+              <select class="form-select form-select-sm" style="width: auto;" [(ngModel)]="statusFilter">
                 <option value="">All Status</option>
                 <option value="pending">Pending</option>
                 <option value="confirmed">Confirmed</option>
@@ -79,21 +79,22 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let order of orders" class="align-middle">
+                <tr *ngFor="let order of paginatedOrders" class="align-middle">
                   <td>
                     <span class="fw-bold">#{{ order.Id }}</span>
                   </td>
                   <td>
                     <div class="d-flex align-items-center">
-                      <div
-                        class="avatar-sm bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2">
-                        <i class="fas fa-user"></i>
-                      </div>
-                      <span>{{ order.ClientId }}</span>
+                      <img *ngIf="order.CustomerInfo"
+                        [src]="order.CustomerInfo.ProfileImg ? order.CustomerInfo.ProfileImg : './assets/default-profile.png'"
+                        class="avatar-sm rounded-circle me-2" style="width: 32px; height: 32px; object-fit: cover;"
+                        alt="Profile">
+                      <!--  -->
+                      <span>{{ order.CustomerInfo?.Name || order.ClientId }}</span>
                     </div>
                   </td>
                   <td>
-                    <span class="badge bg-light text-dark">{{ order.OrderItems?.length || 0 }} items</span>
+                    <span class="badge bg-light text-dark">{{ order.OrderItems.length || 0 }} items</span>
                   </td>
                   <td>
                     <div class="d-flex flex-column">
@@ -107,7 +108,7 @@
                     </span>
                   </td>
                   <td>
-                    <span class="fw-bold text-success">${{ order.TotalAmount?.toFixed(2) || '0.00' }}</span>
+                    <span class="fw-bold text-success">${{ order.TotalAmount.toFixed(2) || '0.00' }}</span>
                   </td>
                   <td>
                     <div class="btn-group" role="group">
@@ -116,7 +117,7 @@
                         View
                       </button>
                       <button class="btn btn-outline-success btn-sm" *ngIf="order.Status?.toLowerCase() === 'pending'"
-                        (click)="updateOrderStatus(order.Id, 'confirmed')">
+                        (click)="updateOrderStatus(order.Id,OrderStatus.Confirmed)">
                         <i class="fas fa-check me-1"></i>
                         Confirm
                       </button>
@@ -139,6 +140,22 @@
       </div>
     </div>
   </div>
+
+  <!-- Pagination Controls -->
+  <nav *ngIf="totalPages > 1" class="mt-3 d-flex justify-content-center">
+    <ul class="pagination pagination-sm">
+      <li class="page-item" [class.disabled]="currentPage === 1">
+        <button class="page-link" (click)="prevPage()" [disabled]="currentPage === 1">&laquo;</button>
+      </li>
+      <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index"
+        [class.active]="currentPage === i + 1">
+        <button class="page-link" (click)="setPage(i + 1)">{{ i + 1 }}</button>
+      </li>
+      <li class="page-item" [class.disabled]="currentPage === totalPages">
+        <button class="page-link" (click)="nextPage()" [disabled]="currentPage === totalPages">&raquo;</button>
+      </li>
+    </ul>
+  </nav>
 </div>
 
 <!-- Order Details Modal -->
@@ -169,9 +186,9 @@
           <div class="col-md-6">
             <h6 class="text-muted mb-2">Client Information</h6>
             <p class="mb-1"><strong>Client ID:</strong> {{ selectedOrder.ClientId }}</p>
-            <p class="mb-1"><strong>Total Items:</strong> {{ selectedOrder.OrderItems?.length || 0 }}</p>
+            <p class="mb-1"><strong>Total Items:</strong> {{ selectedOrder.OrderItems.length || 0 }}</p>
             <p class="mb-1"><strong>Total Amount:</strong>
-              <span class="fw-bold text-success">${{ selectedOrder.TotalAmount?.toFixed(2) || '0.00' }}</span>
+              <span class="fw-bold text-success">${{ selectedOrder.TotalAmount.toFixed(2) || '0.00' }}</span>
             </p>
           </div>
         </div>
@@ -204,8 +221,8 @@
                   <td>
                     <span class="badge bg-primary">{{ item.Quantity }}</span>
                   </td>
-                  <td>${{ item.Price?.toFixed(2) || '0.00' }}</td>
-                  <td>${{ (item.Price * item.Quantity)?.toFixed(2) || '0.00' }}</td>
+                  <td>${{ item.Price.toFixed(2) || '0.00' }}</td>
+                  <td>${{ (item.Price * item.Quantity).toFixed(2) || '0.00' }}</td>
                 </tr>
               </tbody>
             </table>

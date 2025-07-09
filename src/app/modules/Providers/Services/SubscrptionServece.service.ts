@@ -5,7 +5,7 @@ import { environment } from '../../../../environments/environment.development';
 import { SubscriptionChangeRequest } from '../Models/SubscriptionChangeRequest';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SubscriptionService {
   private baseUrl = `${environment.apiUrl}/subscription`;
@@ -16,7 +16,13 @@ export class SubscriptionService {
     return this.http.post(`${this.baseUrl}/start-change`, request);
   }
 
- confirmSubscriptionChange(request: SubscriptionChangeRequest): Observable<any> {
-  return this.http.post(`${this.baseUrl}/confirm-change`, request);
-}
+  confirmSubscriptionChange(
+    request: SubscriptionChangeRequest
+  ): Observable<any> {
+    return this.http.post(`${this.baseUrl}/confirm-change`, request);
+  }
+
+  payForVIPWithWallet(): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/provider/wallet-pay`, {});
+  }
 }

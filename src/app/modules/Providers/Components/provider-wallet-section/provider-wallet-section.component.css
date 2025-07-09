@@ -1,0 +1,75 @@
+.provider-wallet-section-container {
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e9ecef;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(2, 48, 89, 0.04);
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+.card:hover {
+  box-shadow: 0 4px 16px rgba(2, 48, 89, 0.1);
+  border-color: #b6d0fe;
+}
+
+.wallet-section-title {
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #6c757d;
+  padding: 8px 0 16px 0;
+  font-weight: 700;
+}
+
+.card-title,
+.fw-bold {
+  color: #023059 !important;
+  font-weight: 700;
+}
+
+.balance-amount {
+  color: #1976d2 !important;
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.btn-primary {
+  background-color: #023059;
+  border-color: #023059;
+  color: #fff;
+  font-weight: 700;
+  transition: background 0.2s, color 0.2s;
+}
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: #e8f5e8;
+  color: #023059;
+  border-color: #023059;
+}
+
+/* Recharge card tweaks */
+.provider-wallet-recharge .btn-outline-primary {
+  color: #023059;
+  border-color: #023059;
+  background: #f8f9fa;
+  font-weight: 700;
+  transition: background 0.2s, color 0.2s;
+}
+.provider-wallet-recharge .btn-outline-primary:hover,
+.provider-wallet-recharge .btn-outline-primary:focus {
+  background: #e8f5e8;
+  color: #023059;
+  border-color: #1976d2;
+}
+
+.form-label,
+label {
+  color: #6c757d;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}

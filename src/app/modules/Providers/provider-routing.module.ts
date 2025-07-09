@@ -29,6 +29,9 @@ import { FollowersComponent } from '../Providers/Components/followers/followers.
 import { ShopsComponent } from '../Providers/Components/Shops/Shops.component';
 import { SalesOverviewComponent } from '../Providers/Components/sales-overview/sales-overview.component';
 import { ProviderDashboardComponent } from './Components/provider-dashboard/provider-dashboard.component';
+import { ProviderOrderDetailsComponent } from './Components/provider-order-details/provider-order-details.component';
+import { ProviderWalletSectionComponent } from './Components/provider-wallet-section/provider-wallet-section.component';
+import { ProviderWalletSuccessComponent } from './Components/provider-wallet-success/provider-wallet-success.component';
 
 const routes: Routes = [
   {
@@ -55,6 +58,7 @@ const routes: Routes = [
       { path: 'offer-details/:id', component: OfferDetailesComponent },
       { path: 'make-offer', component: MakeOfferComponent },
       { path: 'provider-orders', component: ProviderOrdersComponent },
+      { path: 'provider-orders/:id', component: ProviderOrderDetailsComponent },
       { path: 'edit-vendor-profile', component: EditVendorProfileComponent },
       { path: 'profile', component: VendorProfileComponent },
       { path: 'reviews', component: ReviewsComponent },
@@ -62,6 +66,8 @@ const routes: Routes = [
       { path: 'followers', component: FollowersComponent },
       { path: 'shops', component: ShopsComponent },
       { path: 'sales-overview', component: SalesOverviewComponent },
+      { path: 'wallet', component: ProviderWalletSectionComponent },
+      { path: 'wallet/success', component: ProviderWalletSuccessComponent },
     ],
   },
 ];

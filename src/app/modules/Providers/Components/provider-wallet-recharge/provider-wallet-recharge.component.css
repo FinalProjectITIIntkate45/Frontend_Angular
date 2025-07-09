@@ -1,0 +1,48 @@
+/* Bootstrap handles most styling. Add only minimal tweaks if needed. */
+.provider-wallet-recharge {
+  padding: 0;
+  margin: 0;
+}
+
+.btn-outline-primary {
+  color: #023059 !important;
+  border-color: #023059 !important;
+  background: #f8f9fa !important;
+  font-weight: 700;
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
+}
+.btn-outline-primary:hover,
+.btn-outline-primary:focus {
+  background: #e8f5e8 !important;
+  color: #023059 !important;
+  border-color: #1976d2 !important;
+}
+
+.btn-primary {
+  background-color: #023059 !important;
+  border-color: #023059 !important;
+  color: #fff !important;
+  font-weight: 700;
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
+}
+.btn-primary:hover,
+.btn-primary:focus {
+  background-color: #e8f5e8 !important;
+  color: #023059 !important;
+  border-color: #023059 !important;
+}
+
+.form-label,
+label {
+  color: #6c757d;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+.status {
+  min-height: 1.5rem;
+}
