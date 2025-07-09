@@ -1,4 +1,4 @@
-   .dashboard-content {
+ .dashboard-content {
             padding: 30px;
         }
         
@@ -250,49 +250,20 @@
             height: 6px;
             border-radius: 3px;
             flex: 1;
-            margin-right: 15px;
+            margin: 0 15px;
+            position: relative;
+            background-color: #e9ecef;
         }
         
-        .profit-bar { background-color: #28a745; }
-        .income-bar { background-color: #17a2b8; }
-        .expense-bar { background-color: #dc3545; }
-        
-        .orders-table {
-            background: white;
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            border: 1px solid #f1f3f4;
+        .overview-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.3s ease;
         }
         
-        .table th {
-            border: none;
-            font-weight: 600;
-            color: #6c757d;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            padding: 15px 0;
-        }
-        
-        .table td {
-            border: none;
-            padding: 15px 0;
-            vertical-align: middle;
-        }
-        
-        .status-badge {
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 500;
-            text-transform: uppercase;
-        }
-        
-        .status-shipped { background-color: #d4edda; color: #155724; }
-        .status-pending { background-color: #fff3cd; color: #856404; }
-        .status-cancel { background-color: #f8d7da; color: #721c24; }
-        .status-processing { background-color: #cce7ff; color: #004085; }
+        .profit-bar .overview-bar-fill { background-color: #28a745; }
+        .income-bar .overview-bar-fill { background-color: #17a2b8; }
+        .expense-bar .overview-bar-fill { background-color: #dc3545; }
         
         .notifications-panel {
             background: white;
@@ -327,15 +298,14 @@
         .notification-new { background-color: #023059; }
         .notification-sales { background-color: #17a2b8; }
         
-        .buy-now-btn {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #2d3436;
-            color: white;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-weight: 500;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        .loading-state {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            color: #6c757d;
+        }
+        
+        .hidden {
+            display: none;
         }
