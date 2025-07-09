@@ -7,13 +7,12 @@ import { OrderItemViewModel } from '../../Models/OrderItemViewModel';
 import { APIResponse } from '../../../../core/models/APIResponse';
 import { OrderService } from '../../../../core/services/order.service';
 import { OrderStatus } from '../../Models/order-status.enum';
+import { PaginatedResponse } from '../../../../core/models/PaginatedResponse';
 
 @Component({
   selector: 'app-orders-section',
   standalone: false,
-  standalone: false,
   templateUrl: './orders-section.component.html',
-  styleUrls: ['./orders-section.component.css'],
   styleUrls: ['./orders-section.component.css'],
 })
 export class OrdersSectionComponent implements OnInit {
@@ -62,12 +61,12 @@ export class OrdersSectionComponent implements OnInit {
     this.errorMessage = '';
 
     this.orderService.getClientOrders().subscribe({
-      next: (res: APIResponse<OrderResponseViewModel[]>) => {
+      next: (res: APIResponse<PaginatedResponse<OrderResponseViewModel[]>>) => {
         console.log('Orders API Response:', res);
         if (res.IsSuccess) {
-          this.orders = res.Data;
+          this.orders = res.Data.data;
           console.log('Orders loaded:', this.orders);
-          this.totalItems = this.orders.length;
+          this.totalItems = res.Data.totalCount;
           this.applyFilters();
         } else {
           this.errorMessage = res.Message || 'Failed to load orders';
@@ -91,11 +90,11 @@ export class OrdersSectionComponent implements OnInit {
     if (searchTerm) {
       filtered = filtered.filter(
         (order) =>
-          order.id.toString().includes(searchTerm) ||
-          order.items.some(
+          order.Id.toString().includes(searchTerm) ||
+          order.Items.some(
             (item) =>
-              item.name?.toLowerCase().includes(searchTerm) ||
-              item.shopName?.toLowerCase().includes(searchTerm)
+              item.ProductName?.toLowerCase().includes(searchTerm) ||
+              item.ShopName?.toLowerCase().includes(searchTerm)
           )
       );
     }
@@ -104,11 +103,11 @@ export class OrdersSectionComponent implements OnInit {
     if (this.selectedStatus) {
       console.log('Filtering by status:', this.selectedStatus);
       filtered = filtered.filter((order) => {
-        const orderStatusText = OrderStatus[order.status];
+        const orderStatusText = OrderStatus[order.Status];
         const matches =
           orderStatusText.toLowerCase() === this.selectedStatus.toLowerCase();
         console.log(
-          `Order ${order.id}: status=${order.status}, statusText="${orderStatusText}", matches=${matches}`
+          `Order ${order.Id}: status=${order.Status}, statusText="${orderStatusText}", matches=${matches}`
         );
         return matches;
       });
@@ -230,19 +229,19 @@ export class OrdersSectionComponent implements OnInit {
 
   getProductImage(order: OrderResponseViewModel): string {
     // Get the first product image from the order items
-    const firstItem = order.items?.[0];
-    return firstItem?.image || '';
+    const firstItem = order.Items?.[0];
+    return firstItem?.Image || '';
   }
 
   getProductName(order: OrderResponseViewModel): string {
-    const firstItem = order.items?.[0];
-    return firstItem?.name || `Product #${firstItem?.productId}`;
+    const firstItem = order.Items?.[0];
+    return firstItem?.ProductName || `Product #${firstItem?.ProductId}`;
   }
 
   getTotalItems(order: OrderResponseViewModel): number {
     return (
-      order.items?.reduce(
-        (total: number, item: OrderItemViewModel) => total + item.quantity,
+      order.Items?.reduce(
+        (total: number, item: OrderItemViewModel) => total + item.Quantity,
         0
       ) || 0
     );
@@ -309,9 +308,9 @@ export class OrdersSectionComponent implements OnInit {
   }
 
   cancelOrder(order: OrderResponseViewModel): void {
-    if (order.status !== OrderStatus.Pending) return;
+    if (order.Status !== OrderStatus.Pending) return;
     this.orderService
-      .updateOrderStatus(order.id, OrderStatus.Canceled)
+      .updateOrderStatus(order.Id, { status: OrderStatus.Canceled })
       .subscribe({
         next: (res) => {
           this.loadOrders();

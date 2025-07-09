@@ -125,7 +125,7 @@
                   </td>
                   <td>
                     <div class="d-flex flex-column">
-                      <span class="fw-bold">#{{ order.id }}</span>
+                      <span class="fw-bold">#{{ order.Id }}</span>
                       <small class="text-muted">{{ getProductName(order) }}</small>
                     </div>
                   </td>
@@ -134,37 +134,37 @@
                   </td>
                   <td>
                     <div class="d-flex flex-column">
-                      <small class="text-muted">{{ order.dateCreated | date:'MMM dd, yyyy' }}</small>
-                      <small class="text-muted">{{ order.dateCreated | date:'HH:mm' }}</small>
+                      <small class="text-muted">{{ order.DateCreated | date:'MMM dd, yyyy' }}</small>
+                      <small class="text-muted">{{ order.DateCreated | date:'HH:mm' }}</small>
                     </div>
                   </td>
                   <td>
-                    <span [class]="getPaymentMethodClass(order.paymentType)">
+                    <span [class]="getPaymentMethodClass(order.PaymentType)">
                       <i class="fas fa-credit-card me-1"></i>
-                      {{ getPaymentMethodText(order.paymentType) }}
+                      {{ getPaymentMethodText(order.PaymentType) }}
                     </span>
                   </td>
                   <td>
-                    <span [class]="getStatusClass(order.status)">
-                      {{ getStatusText(order.status) }}
+                    <span [class]="getStatusClass(order.Status)">
+                      {{ getStatusText(order.Status) }}
                     </span>
                   </td>
                   <td>
                     <div class="d-flex flex-column">
-                      <span class="fw-bold text-success">${{ order.totalPrice.toFixed(2) || '0.00' }}</span>
+                      <span class="fw-bold text-success">${{ order.TotalPrice.toFixed(2) || '0.00' }}</span>
                       <small class="text-muted">
                         <i class="fas fa-star text-warning me-1"></i>
-                        {{ order.earnedPoints }} pts earned
+                        {{ order.EarnedPoints }} pts earned
                       </small>
                     </div>
                   </td>
                   <td>
                     <div class="btn-group" role="group">
-                      <button class="btn btn-outline-primary btn-sm" [routerLink]="['/client/orders', order.id]">
+                      <button class="btn btn-outline-primary btn-sm" [routerLink]="['/client/orders', order.Id]">
                         <i class="fas fa-eye me-1"></i>
                         View
                       </button>
-                      <button *ngIf="order.status === 0" class="btn btn-outline-danger btn-sm ms-1"
+                      <button *ngIf="order.Status === 0" class="btn btn-outline-danger btn-sm ms-1"
                         (click)="cancelOrder(order)">
                         <i class="fas fa-times me-1"></i> Cancel
                       </button>
