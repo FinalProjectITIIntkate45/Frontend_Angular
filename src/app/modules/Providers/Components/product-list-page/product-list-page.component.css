@@ -59,7 +59,6 @@ table.table td .btn-sm:hover {
   cursor: not-allowed;
 }
 
-
   .segmented-toggle {
             display: inline-flex;
             background: #f8f9fa;
@@ -74,7 +73,7 @@ table.table td .btn-sm:hover {
             border: none;
             padding: 10px 20px;
             border-radius: 8px;
-            color: #6c757d;
+            color: #113b64;
             font-weight: 500;
             transition: all 0.3s ease;
             position: relative;
@@ -83,10 +82,10 @@ table.table td .btn-sm:hover {
 
         .segmented-btn.active {
             background: white;
-            color: #007bff;
+            color: #ffc107;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
         .segmented-btn:hover:not(.active) {
-            color: #495057;
+            color: #113b64;
         }

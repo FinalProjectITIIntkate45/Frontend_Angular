@@ -1,0 +1,37 @@
+
+
+ <div class="segmented-toggle">
+                    <button class="segmented-btn active" [routerLink]="['/provider/shop-info']">
+                        <i class="fas fa-table me-2"></i>Shop info
+                    </button>
+                    <button class="segmented-btn" [routerLink]="['/provider/edit-shop/1']">
+                        <i class="fas fa-th-large me-2"></i>Edit your shop
+                    </button>
+                </div>
+<br> 
+<br> 
+
+
+
+
+
+
+<div class="shop-info-container" *ngIf="shopData; else loading">
+  <div class="shop-header">
+    <img [src]="shopData.shopLogo || 'assets/images/default-logo.png'" alt="Shop Logo" />
+    <h2>{{ shopData.shopName }}</h2>
+  </div>
+
+  <div class="shop-details">
+    <p><strong>Address:</strong> {{ shopData.shopAddress }}</p>
+    <p><strong>City:</strong> {{ shopData.city }}</p>
+    <p><strong>Street:</strong> {{ shopData.street }}</p>
+    <p><strong>Postal Code:</strong> {{ shopData.postalCode }}</p>
+    <p><strong>Email:</strong> {{ shopData.businessEmail }}</p>
+    <p><strong>Phone:</strong> {{ shopData.businessPhone }}</p>
+  </div>
+</div>
+
+<ng-template #loading>
+  <p>Loading shop info...</p>
+</ng-template>

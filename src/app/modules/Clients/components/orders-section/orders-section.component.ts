@@ -1,13 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  OrderHubService,
+  OrderUpdate,
+} from '../../../../core/services/order-hub.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 import { OrderResponseViewModel } from '../../Models/OrderResponseViewModel';
-import { OrderItemViewModel } from '../../Models/OrderItemViewModel';
 import { APIResponse } from '../../../../core/models/APIResponse';
 import { OrderService } from '../../../../core/services/order.service';
 import { OrderStatus } from '../../Models/order-status.enum';
 import { PaginatedResponse } from '../../../../core/models/PaginatedResponse';
+import { AuthService } from '../../../../core/services/Auth.service';
+import { OrderItemViewModel } from '../../Models/OrderItemViewModel';
 
 @Component({
   selector: 'app-orders-section',
@@ -15,7 +21,7 @@ import { PaginatedResponse } from '../../../../core/models/PaginatedResponse';
   templateUrl: './orders-section.component.html',
   styleUrls: ['./orders-section.component.css'],
 })
-export class OrdersSectionComponent implements OnInit {
+export class OrdersSectionComponent implements OnInit, OnDestroy {
   orders: OrderResponseViewModel[] = [];
   filteredOrders: OrderResponseViewModel[] = [];
   loading = true;
@@ -41,52 +47,115 @@ export class OrdersSectionComponent implements OnInit {
     { value: 'Canceled', label: 'Canceled' },
   ];
 
-  constructor(private orderService: OrderService) {}
+  private orderUpdatesSubscription!: Subscription;
+  private authSubscription!: Subscription;
+  private currentUserId: string = '';
+
+  constructor(
+    private orderService: OrderService,
+    private orderHubService: OrderHubService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
+    this.authSubscription = this.authService
+      .getAuthState()
+      .subscribe((authState) => {
+        if (authState.isAuthenticated && authState.user) {
+          this.currentUserId = authState.user.userName || '';
+
+          // بدء اتصال SignalR والانضمام للمجموعة
+          this.orderHubService.startConnection();
+          this.orderHubService.joinGroup(`user_${this.currentUserId}`);
+
+          // الاشتراك في التحديثات الحية
+          this.orderUpdatesSubscription =
+            this.orderHubService.orderUpdates$.subscribe((update) => {
+              if (update) {
+                this.handleOrderUpdate(update);
+              }
+            });
+        }
+      });
+
     this.loadOrders();
     this.setupSearchListener();
   }
 
+  ngOnDestroy(): void {
+    if (this.orderUpdatesSubscription)
+      this.orderUpdatesSubscription.unsubscribe();
+    if (this.authSubscription) this.authSubscription.unsubscribe();
+    if (this.currentUserId)
+      this.orderHubService.leaveGroup(`user_${this.currentUserId}`);
+    this.orderHubService.stopConnection();
+  }
+
+  private handleOrderUpdate(update: OrderUpdate): void {
+    const index = this.orders.findIndex((o) => o.Id === update.orderId);
+    if (index !== -1) {
+      // تحديث حالة الطلب
+      this.orders[index].Status = this.mapStatusFromString(update.status);
+      this.applyFilters();
+    }
+  }
+
+  private mapStatusFromString(status: string): OrderStatus {
+    switch (status.toLowerCase()) {
+      case 'pending':
+        return OrderStatus.Pending;
+      case 'confirmed':
+        return OrderStatus.Confirmed;
+      case 'shipped':
+        return OrderStatus.Shipped;
+      case 'delivered':
+        return OrderStatus.Delivered;
+      case 'canceled':
+        return OrderStatus.Canceled;
+      default:
+        return OrderStatus.Pending;
+    }
+  }
+
+  // ... (باقي الكود كما هو مع التحديثات والفلاتر)
+
   private setupSearchListener(): void {
     this.searchControl.valueChanges
       .pipe(debounceTime(300), distinctUntilChanged())
-      .subscribe(() => {
-        this.applyFilters();
-      });
+      .subscribe(() => this.applyFilters());
   }
 
   loadOrders(): void {
     this.loading = true;
     this.errorMessage = '';
 
-    this.orderService.getClientOrders().subscribe({
-      next: (res: APIResponse<PaginatedResponse<OrderResponseViewModel[]>>) => {
-        console.log('Orders API Response:', res);
-        if (res.IsSuccess) {
-          this.orders = res.Data.data;
-          console.log('Orders loaded:', this.orders);
-          this.totalItems = res.Data.totalCount;
-          this.applyFilters();
-        } else {
-          this.errorMessage = res.Message || 'Failed to load orders';
-          console.error('API Error:', res.Message);
-        }
-        this.loading = false;
-      },
-      error: (error) => {
-        console.error('HTTP Error:', error);
-        this.errorMessage = 'حدث خطأ أثناء تحميل الطلبات';
-        this.loading = false;
-      },
-    });
+    this.orderService
+      .getClientOrders(this.currentPage, this.pageSize)
+      .subscribe({
+        next: (
+          res: APIResponse<PaginatedResponse<OrderResponseViewModel[]>>
+        ) => {
+          if (res.IsSuccess) {
+            this.orders = res.Data.data;
+            this.totalItems = res.Data.totalCount;
+            this.applyFilters();
+          } else {
+            this.errorMessage = res.Message || 'Failed to load orders';
+          }
+          this.loading = false;
+        },
+        error: () => {
+          this.errorMessage = 'حدث خطأ أثناء تحميل الطلبات';
+          this.loading = false;
+        },
+      });
   }
 
   applyFilters(): void {
+    // تطبيق الفلاتر حسب البحث والحالة مع إعادة تحميل الصفحة إلى 1 عند التغيير
     let filtered = [...this.orders];
-
-    // Apply search filter
     const searchTerm = this.searchControl.value?.toLowerCase();
+
     if (searchTerm) {
       filtered = filtered.filter(
         (order) =>
@@ -99,23 +168,17 @@ export class OrdersSectionComponent implements OnInit {
       );
     }
 
-    // Apply status filter
     if (this.selectedStatus) {
-      console.log('Filtering by status:', this.selectedStatus);
-      filtered = filtered.filter((order) => {
-        const orderStatusText = OrderStatus[order.Status];
-        const matches =
-          orderStatusText.toLowerCase() === this.selectedStatus.toLowerCase();
-        console.log(
-          `Order ${order.Id}: status=${order.Status}, statusText="${orderStatusText}", matches=${matches}`
-        );
-        return matches;
-      });
+      filtered = filtered.filter(
+        (order) =>
+          OrderStatus[order.Status].toLowerCase() ===
+          this.selectedStatus.toLowerCase()
+      );
     }
 
     this.filteredOrders = filtered;
     this.totalItems = filtered.length;
-    this.currentPage = 1; // Reset to first page when filtering
+    this.currentPage = 1;
   }
 
   onStatusFilterChange(event: any): void {

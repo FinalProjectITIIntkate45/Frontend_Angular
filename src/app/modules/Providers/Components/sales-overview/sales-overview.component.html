@@ -1,226 +1,175 @@
-  <!-- Dashboard Content -->
-        <div class="dashboard-content">
-            <!-- Welcome Banner -->
-            <div class="welcome-banner">
-                <h2>Welcome back! PointPay</h2>
-                <p>PointPay is simple & clean design for developer and designer.</p>
-            </div>
+<div class="dashboard-content" *ngIf="overviewData as data">
+  <!-- Welcome Banner -->
+  <div class="welcome-banner">
+    <h2>Welcome back! PointPay</h2>
+    <p>PointPay is simple & clean design for developer and designer.</p>
+  </div>
 
-            <!-- Stats Cards -->
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="stats-card">
-                        <div class="stats-header">
-                            <div>
-                                <div class="stats-title">Earnings</div>
-                            </div>
-                            <div class="stats-icon earnings-icon">
-                                <i class="fas fa-dollar-sign"></i>
-                            </div>
-                        </div>
-                        <div class="stats-value">$93,438.78</div>
-                        <div class="stats-subtitle">Monthly revenue</div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="stats-card">
-                        <div class="stats-header">
-                            <div>
-                                <div class="stats-title">Orders</div>
-                            </div>
-                            <div class="stats-icon orders-icon">
-                                <i class="fas fa-shopping-cart"></i>
-                            </div>
-                        </div>
-                        <div class="stats-value">42,339</div>
-                        <div class="stats-subtitle">35+ <span class="stats-change">New Sales</span></div>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="stats-card">
-                        <div class="stats-header">
-                            <div>
-                                <div class="stats-title">Customer</div>
-                            </div>
-                            <div class="stats-icon customer-icon">
-                                <i class="fas fa-users"></i>
-                            </div>
-                        </div>
-                        <div class="stats-value">39,354</div>
-                        <div class="stats-subtitle">30+ <span class="stats-change">new in 2 days</span></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <!-- Revenue Chart -->
-                <div class="col-md-8">
-                    <div class="chart-container">
-                        <div class="chart-header">
-                            <div>
-                                <h5 class="chart-title">Revenue</h5>
-                                <small class="text-muted">(+63%) than last year</small>
-                            </div>
-                            <select class="year-select">
-                                <option>2019</option>
-                            </select>
-                        </div>
-                        <div class="chart-legend">
-                            <div class="legend-item">
-                                <div class="legend-color" style="background-color: #28a745;"></div>
-                                <span>Total Income</span>
-                            </div>
-                            <div class="legend-item">
-                                <div class="legend-color" style="background-color: #ffc107;"></div>
-                                <span>Total Expense</span>
-                            </div>
-                        </div>
-                        <div class="chart-area">
-                            <div class="chart-line"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Total Sales Donut Chart -->
-                <div class="col-md-4">
-                    <div class="chart-container">
-                        <h5 class="chart-title mb-3">Total Sales</h5>
-                        <div class="donut-chart">
-                            <div class="donut-center">
-                                <h4>9600</h4>
-                                <p>Total Sales</p>
-                            </div>
-                        </div>
-                        <div class="donut-legend">
-                            <div class="donut-legend-item">
-                                <span>
-                                    <div class="legend-color" style="background-color: #28a745;"></div>
-                                    Shippings $32.98 (2%)
-                                </span>
-                            </div>
-                            <div class="donut-legend-item">
-                                <span>
-                                    <div class="legend-color" style="background-color: #ffc107;"></div>
-                                    Refunds $11.00 (11%)
-                                </span>
-                            </div>
-                            <div class="donut-legend-item">
-                                <span>
-                                    <div class="legend-color" style="background-color: #dc3545;"></div>
-                                    Order $14.97 (1%)
-                                </span>
-                            </div>
-                            <div class="donut-legend-item">
-                                <span>
-                                    <div class="legend-color" style="background-color: #17a2b8;"></div>
-                                    Income $12.00 (86%)
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <!-- Sales Overview -->
-                <div class="col-md-4">
-                    <div class="sales-overview">
-                        <h5 class="mb-3">Sales Overview</h5>
-                        <div class="overview-item">
-                            <span>Total Profit</span>
-                            <div class="overview-bar profit-bar" style="width: 65%;"></div>
-                            <span>$1,619 (6.5%)</span>
-                        </div>
-                        <div class="overview-item">
-                            <span>Total Income</span>
-                            <div class="overview-bar income-bar" style="width: 86%;"></div>
-                            <span>$3,571 (86.4%)</span>
-                        </div>
-                        <div class="overview-item">
-                            <span>Total Expenses</span>
-                            <div class="overview-bar expense-bar" style="width: 74%;"></div>
-                            <span>$3,430 (74.5%)</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Notifications -->
-                <div class="col-md-8">
-                    <div class="notifications-panel">
-                        <div class="notification-item">
-                            <div class="notification-icon notification-new">
-                                <i class="fas fa-bell"></i>
-                            </div>
-                            <div>
-                                <h6 class="mb-1">Start your day with New Notification.</h6>
-                                <small class="text-muted">You have 2 new notification</small>
-                            </div>
-                        </div>
-                        <div class="notification-item">
-                            <div class="notification-icon notification-sales">
-                                <i class="fas fa-chart-line"></i>
-                            </div>
-                            <div>
-                                <h6 class="mb-1">Monitor your Sales and Profitability</h6>
-                                <small class="text-muted">You have <a href="#" class="text-primary">View Performance</a></small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Recent Orders Table -->
-            <div class="orders-table">
-                <h5 class="mb-3">Recent Order</h5>
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Order Number</th>
-                                <th>Product Name</th>
-                                <th>Order Date</th>
-                                <th>Price</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>#FC0005</td>
-                                <td>Haldiram's Sev Bhujia</td>
-                                <td>28 March 2023</td>
-                                <td>$18.00</td>
-                                <td><span class="status-badge status-shipped">Shipped</span></td>
-                            </tr>
-                            <tr>
-                                <td>#FC0004</td>
-                                <td>NutriChoice Digestive</td>
-                                <td>24 March 2023</td>
-                                <td>$24.00</td>
-                                <td><span class="status-badge status-pending">Pending</span></td>
-                            </tr>
-                            <tr>
-                                <td>#FC0003</td>
-                                <td>Onion Flavour Potato</td>
-                                <td>8 Feb 2023</td>
-                                <td>$9.00</td>
-                                <td><span class="status-badge status-cancel">Cancel</span></td>
-                            </tr>
-                            <tr>
-                                <td>#FC0002</td>
-                                <td>Blueberry Greek Yogurt</td>
-                                <td>20 Jan 2023</td>
-                                <td>$12.00</td>
-                                <td><span class="status-badge status-pending">Pending</span></td>
-                            </tr>
-                            <tr>
-                                <td>#FC0001</td>
-                                <td>Slurrp Millet Chocolate</td>
-                                <td>14 Jan 2023</td>
-                                <td>$8.00</td>
-                                <td><span class="status-badge status-processing">Processing</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+  <!-- Stats Cards -->
+  <div class="row">
+    <div class="col-md-4">
+      <div class="stats-card">
+        <div class="stats-header">
+          <div>
+            <div class="stats-title">Earnings</div>
+          </div>
+          <div class="stats-icon earnings-icon">
+            <i class="fas fa-dollar-sign"></i>
+          </div>
         </div>
+        <div class="stats-value">${{ data.totalEarnings | number: '1.0-2' }}</div>
+        <div class="stats-subtitle">Monthly revenue</div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="stats-card">
+        <div class="stats-header">
+          <div>
+            <div class="stats-title">Orders</div>
+          </div>
+          <div class="stats-icon orders-icon">
+            <i class="fas fa-shopping-cart"></i>
+          </div>
+        </div>
+        <div class="stats-value">{{ data.totalOrders }}</div>
+        <div class="stats-subtitle">35+ <span class="stats-change">New Sales</span></div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="stats-card">
+        <div class="stats-header">
+          <div>
+            <div class="stats-title">Customers</div>
+          </div>
+          <div class="stats-icon customer-icon">
+            <i class="fas fa-users"></i>
+          </div>
+        </div>
+        <div class="stats-value">{{ data.totalCustomers }}</div>
+        <div class="stats-subtitle">{{ data.newCustomers }} <span class="stats-change">new in 2 days</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Revenue Chart Placeholder -->
+  <div class="row">
+    <div class="col-md-8">
+      <div class="chart-container">
+        <div class="chart-header">
+          <div>
+            <h5 class="chart-title">Revenue</h5>
+            <small class="text-muted">(+63%) than last year</small>
+          </div>
+          <select class="year-select">
+            <option>2025</option>
+          </select>
+        </div>
+        <div class="chart-legend">
+          <div class="legend-item">
+            <div class="legend-color" style="background-color: #28a745;"></div>
+            <span>Total Income</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background-color: #ffc107;"></div>
+            <span>Total Expense</span>
+          </div>
+        </div>
+        <div class="chart-area">
+          <div class="chart-line"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total Sales Donut Chart Placeholder -->
+    <div class="col-md-4">
+      <div class="chart-container">
+        <h5 class="chart-title mb-3">Total Sales</h5>
+        <div class="donut-chart">
+          <div class="donut-center">
+            <h4>{{ data.totalOrders }}</h4>
+            <p>Total Sales</p>
+          </div>
+        </div>
+        <div class="donut-legend">
+          <div class="donut-legend-item">
+            <span>
+              <div class="legend-color" style="background-color: #28a745;"></div>
+              Earnings ${{ data.totalEarnings | number:'1.0-2' }}
+            </span>
+          </div>
+          <div class="donut-legend-item">
+            <span>
+              <div class="legend-color" style="background-color: #ffc107;"></div>
+              Returns {{ data.totalReturns }}
+            </span>
+          </div>
+          <div class="donut-legend-item">
+            <span>
+              <div class="legend-color" style="background-color: #dc3545;"></div>
+              Transactions {{ data.totalTransactions }}
+            </span>
+          </div>
+          <div class="donut-legend-item">
+            <span>
+              <div class="legend-color" style="background-color: #17a2b8;"></div>
+              Notifications {{ data.totalNotifications }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sales Overview Bar Chart -->
+  <div class="row">
+    <div class="col-md-4">
+      <div class="sales-overview">
+        <h5 class="mb-3">Sales Overview</h5>
+        <div class="overview-item">
+          <span>Total Profit</span>
+          <div class="overview-bar profit-bar" [style.width.%]="data.totalEarnings / 100000 * 100"></div>
+          <span>${{ data.totalEarnings | number: '1.0-0' }}</span>
+        </div>
+        <div class="overview-item">
+          <span>Total Orders</span>
+          <div class="overview-bar income-bar" [style.width.%]="data.totalOrders / 1000 * 100"></div>
+          <span>{{ data.totalOrders }} Orders</span>
+        </div>
+        <div class="overview-item">
+          <span>Total Customers</span>
+          <div class="overview-bar expense-bar" [style.width.%]="data.totalCustomers / 1000 * 100"></div>
+          <span>{{ data.totalCustomers }} Customers</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notifications -->
+    <div class="col-md-8">
+      <div class="notifications-panel">
+        <div class="notification-item">
+          <div class="notification-icon notification-new">
+            <i class="fas fa-bell"></i>
+          </div>
+          <div>
+            <h6 class="mb-1">You have {{ data.totalNotifications }} new notifications.</h6>
+            <small class="text-muted">Check your dashboard for updates.</small>
+          </div>
+        </div>
+        <div class="notification-item">
+          <div class="notification-icon notification-sales">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <div>
+            <h6 class="mb-1">Monitor your Sales and Profitability</h6>
+            <small class="text-muted">{{ data.newSales }} new sales</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading State -->
+<div *ngIf="!overviewData">
+  <p>Loading dashboard data...</p>
+</div>

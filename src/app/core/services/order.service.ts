@@ -107,4 +107,12 @@ export class OrderService {
   deleteOrder(id: number): Observable<APIResponse<string>> {
     return this.http.delete<APIResponse<string>>(`${this.baseUrl}/${id}`);
   }
+
+  getOrderByIdProvider(
+    orderId: number
+  ): Observable<APIResponse<ProviderOrderViewModel>> {
+    return this.http.get<APIResponse<ProviderOrderViewModel>>(
+      `${this.baseUrl}/details/${orderId}`
+    );
+  }
 }

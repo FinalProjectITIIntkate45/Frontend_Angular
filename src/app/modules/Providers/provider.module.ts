@@ -48,6 +48,9 @@ import { CategoriesComponent } from './Components/categories/categories.componen
 import { FollowersComponent } from '../Providers/Components/followers/followers.component';
 import { ShopsComponent } from '../Providers/Components/Shops/Shops.component';
 import { ProviderOrderDetailsComponent } from './Components/provider-order-details/provider-order-details.component';
+import { ShopInfoComponent } from './Components/shop-info/shop-info.component';
+import { ProviderOrdersSectionComponent } from './Components/provider-orders-section/provider-orders-section.component';
+import { OrderDetailsComponent } from './Components/provider-orders-section/order-details/order-details.component';
 
 @NgModule({
   declarations: [
@@ -99,12 +102,14 @@ import { ProviderOrderDetailsComponent } from './Components/provider-order-detai
     SidebarComponent,
     HeaderComponent,
     WelcomeBannerComponent,
-    SalesOverviewComponent,
     OrdersTableComponent,
     NotificationsPanelComponent,
     ChartContainerComponent,
     StatsCardComponent,
     SubScrptionComponent,
+    ShopInfoComponent,
+    ProviderOrdersSectionComponent,
+    OrderDetailsComponent,
   ],
   exports: [
     ProviderLayoutComponent,
@@ -130,6 +135,7 @@ import { ProviderOrderDetailsComponent } from './Components/provider-order-detai
     CategoriesComponent,
     FollowersComponent,
     ShopsComponent,
+    ShopInfoComponent,
   ],
   imports: [
     CommonModule,
