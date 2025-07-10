@@ -1,11 +1,7 @@
-<div class="sidebar bg-light vh-100 d-flex flex-column">
-  <!-- Logo -->
-  <div class="logo p-3 text-center border-bottom">
-    <img src="assets/pointpay2-05.png" alt="Pointify Logo" class="img-fluid mb-2" style="max-width: 200px" />
+<div class="sidebar d-flex flex-column">
+  <div class="sidebar-main">
 
-
-  </div>
-
+  
   <!-- Navigation Menu -->
   <ul class="nav-menu list-unstyled flex-grow-1 p-3">
     <li class="nav-item mb-2" [class.active]="selectedSection === 'profile'" (click)="selectSection('profile')">
@@ -93,7 +89,7 @@
       </a>
     </li>
   </ul>
-
+  </div>
   <!-- Sidebar Footer -->
   <div class="sidebar-footer p-3 border-top">
     <div class="help-center mb-2">
