@@ -12,7 +12,7 @@ export interface ShopEditViewModel {
   businessEmail: string;
   logo?: string | File;
   shopTypeId: number;
-  providerId: string;
+  providerId?: string;
   contactDetails?: string;
 }
 export interface ShopViewModel {

@@ -16,6 +16,7 @@ import { AuthService } from '../../../../core/services/Auth.service';
 })
 export class CheckoutComponent implements OnInit {
   checkoutModel: OrderCreateViewModel;
+
   currentStep: number = 1;
   deliveryMethod: string = 'ship';
   isLoading: boolean = false;
@@ -57,14 +58,13 @@ export class CheckoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.checkoutModel.clientId = this.authService.getUserId();
+    // this.checkoutModel.clientId = this.authService.getUserId();
 
     this.loadCartData();
 
     console.log('✅ Step:', this.currentStep);
     console.log('🚚 Delivery Method:', this.deliveryMethod);
     console.log('📦 BillingData:', this.checkoutModel.billingData);
-
   }
 
   loadCartData(): void {
@@ -73,18 +73,21 @@ export class CheckoutComponent implements OnInit {
 
     this.cartService.getCartItems().subscribe(
       (cartItems) => {
+        console.log('cartItemssssssssssssssssssssssssss', cartItems);
         this.checkoutModel.orderItems = cartItems.Items.filter(
-          (item: CartItemInterface) => item.productVM !== undefined
+          (item: CartItemInterface) =>
+            item.productVM !== undefined && item.qty !== undefined
         ).map((item: CartItemInterface) => ({
-          productId: item.productVM!.Id,
-          quantity: item.productVM!.Stock ,
-          name: item.productVM!.Name,
-          shopName: item.productVM!.ShopName,
-          description: item.productVM!.Description,
-          price: item.productVM!.DisplayedPrice,
-          priceAfterDiscount: item.productVM!.DisplayedPriceAfterDiscount || 0,
-          image: item.productVM!.Images[0] || '',
-          points: item.productVM!.Points,
+          ProductId: item.productVM!.Id,
+          Quantity: item.qty as number,
+
+          ProductName: item.productVM!.Name, // << هنا غير 'name' إلى 'productName'
+          ShopName: item.productVM!.ShopName,
+          Description: item.productVM!.Description,
+          Price: item.productVM!.DisplayedPrice,
+          PriceAfterDiscount: item.productVM!.DisplayedPriceAfterDiscount || 0,
+          Image: item.productVM!.Images[0] || '',
+          Points: item.productVM!.Points,
         }));
 
         this.checkoutModel.totalPrice = cartItems.CartTotalPrice;
@@ -128,7 +131,9 @@ export class CheckoutComponent implements OnInit {
       return;
     }
 
-    if (this.checkoutModel.billingData?.shippingMethod?.toLowerCase() === 'pickup') {
+    if (
+      this.checkoutModel.billingData?.shippingMethod?.toLowerCase() === 'pickup'
+    ) {
       this.checkoutModel.billingData = null;
     }
 
@@ -147,13 +152,19 @@ export class CheckoutComponent implements OnInit {
           const result = res.Data;
 
           const confirmed = confirm(
-            `✅ Final Amount: ${result.finalAmount} EGP\n🎯 Earned Points: ${result.earnedPoints}\n\nDo you want to confirm the order?`
+            `✅ Final Amount: ${result.FinalAmount} EGP\n
+            🎯 Earned Points: ${result.EarnedPoints} \n
+            🎯 Used Points: ${result.UsedFreePoints} \n
+            🎯 Used Paid Points: ${result.UsedPaidPoints}
+            \n\n
+
+            Do you want to confirm the order?`
           );
 
           if (!confirmed) return;
 
-          if (result.paymentUrl) {
-            window.location.href = result.paymentUrl;
+          if (result.PaymentUrl) {
+            window.location.href = result.PaymentUrl;
             return;
           }
 
@@ -166,7 +177,10 @@ export class CheckoutComponent implements OnInit {
             },
             (error) => {
               console.error('Error clearing cart:', error);
-              this.toastr.warning('Order placed but cart not cleared', 'Warning');
+              this.toastr.warning(
+                'Order placed but cart not cleared',
+                'Warning'
+              );
             }
           );
         } else {

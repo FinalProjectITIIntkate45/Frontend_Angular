@@ -2,3 +2,93 @@
   <h1>PROFILE</h1>
   <p>Welcome back to your profile! Here's your activity summary.</p>
 </div>
+
+<div class="profile-section-container">
+
+  <!-- Personal Info Section -->
+  <mat-card class="profile-card">
+    <mat-card-title>Personal Info</mat-card-title>
+    <mat-divider></mat-divider>
+    <form [formGroup]="personalInfoForm" (ngSubmit)="savePersonalInfo()">
+      <div class="profile-img-upload">
+        <img [src]="profileImgPreview" alt="Profile Image" class="profile-img-preview" />
+        <input *ngIf="editPersonalInfo" type="file" (change)="onProfileImgChange($event)" accept="image/*" />
+      </div>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Full Name</mat-label>
+        <input matInput formControlName="fullName" [readonly]="!editPersonalInfo" />
+      </mat-form-field>
+      <div class="button-row" *ngIf="editPersonalInfo">
+        <button mat-raised-button color="primary" type="submit">Save Changes</button>
+        <button mat-button type="button" (click)="closePersonalInfo()">Close</button>
+      </div>
+      <div class="button-row" *ngIf="!editPersonalInfo">
+        <button mat-stroked-button color="primary" type="button" (click)="editPersonal()">Edit</button>
+      </div>
+    </form>
+  </mat-card>
+
+  <!-- Contact Info Section -->
+  <mat-card class="profile-card">
+    <mat-card-title>Contact Info</mat-card-title>
+    <mat-divider></mat-divider>
+    <form [formGroup]="contactInfoForm" (ngSubmit)="saveContactInfo()">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email" [readonly]="!editContactInfo" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Phone Number</mat-label>
+        <input matInput formControlName="phoneNumber" [readonly]="!editContactInfo" />
+      </mat-form-field>
+      <div class="button-row" *ngIf="editContactInfo">
+        <button mat-raised-button color="primary" type="submit">Save Changes</button>
+        <button mat-button type="button" (click)="closeContactInfo()">Close</button>
+      </div>
+      <div class="button-row" *ngIf="!editContactInfo">
+        <button mat-stroked-button color="primary" type="button" (click)="editContact()">Edit</button>
+      </div>
+    </form>
+  </mat-card>
+
+  <!-- Change Password Section -->
+  <mat-card class="profile-card">
+    <mat-card-title>Change Password</mat-card-title>
+    <mat-divider></mat-divider>
+    <form [formGroup]="passwordForm" (ngSubmit)="savePassword()">
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Current Password</mat-label>
+        <input matInput type="password" formControlName="currentPassword" [readonly]="!editPassword" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>New Password</mat-label>
+        <input matInput type="password" formControlName="newPassword" [readonly]="!editPassword" />
+      </mat-form-field>
+      <div class="button-row" *ngIf="editPassword">
+        <button mat-raised-button color="primary" type="submit">Save Changes</button>
+        <button mat-button type="button" (click)="closePassword()">Close</button>
+      </div>
+      <div class="button-row" *ngIf="!editPassword">
+        <button mat-stroked-button color="primary" type="button" (click)="editPass()">Edit</button>
+      </div>
+    </form>
+  </mat-card>
+
+  <!-- Delete Account Section -->
+  <mat-card class="profile-card delete-section">
+    <mat-card-title>Delete Account</mat-card-title>
+    <mat-divider></mat-divider>
+    <div class="delete-warning">
+      When you delete your account, your public profile will be deactivated immediately. If you change your mind before 14 days, just sign in again and we’ll send you a reactivation link.
+    </div>
+    <button mat-raised-button color="warn" (click)="openDeleteDialog()">Delete Account</button>
+    <mat-dialog-content *ngIf="isDeleting">
+      <div class="delete-dialog">
+        <p>Are you sure you want to delete your account? This action cannot be undone.</p>
+        <button mat-raised-button color="warn" (click)="confirmDeleteAccount()">Yes, Delete</button>
+        <button mat-button (click)="closeDeleteDialog()">Cancel</button>
+      </div>
+    </mat-dialog-content>
+  </mat-card>
+
+</div>

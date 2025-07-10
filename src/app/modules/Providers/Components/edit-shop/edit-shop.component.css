@@ -1,3 +1,97 @@
-.container {
-  max-width: 600px;
+/* ======== Profile-style Themed CSS for Edit Shop Component ======== */
+
+body {
+  background-color: #f8f9fa;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+  .segmented-toggle {
+            display: inline-flex;
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 4px;
+            border: 1px solid #e9ecef;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .segmented-btn {
+            background: transparent;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            color: #113b64;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .segmented-btn.active {
+            background: white;
+            color: #ffc107;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .segmented-btn:hover:not(.active) {
+            color: #113b64;
+        }
+
+.dashboard-content {
+  max-width: 700px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+}
+
+.dashboard-content h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 25px;
+}
+
+.form-label {
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.form-control {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 14px;
+  transition: border-color 0.15s ease-in-out;
+}
+
+.form-control:focus {
+  border-color: #ffc107;
+  box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+}
+
+textarea.form-control {
+  resize: vertical;
+}
+
+.btn-primary {
+  background: #ffc107;
+  color: #000;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background: #e0a800;
+  color: #000;
+}
+
+.text-danger {
+  font-size: 13px;
+  margin-top: 4px;
 }

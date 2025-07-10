@@ -1,48 +1,55 @@
 <div class="profile-container" *ngIf="profile; else loading">
   <div class="profile-header">
-    <img [src]="profile.profileImg || 'assets/images/default-avatar.png'" class="profile-img" alt="Profile Image" />
+    <div class="profile-icon">
+      <i class="fas fa-user"></i>
+    </div>
+    <h1 class="profile-title">Profile Information</h1>
+  </div>
+
+  <div class="d-flex align-items-center mb-4">
+    <img [src]="profile.profileImg || 'assets/images/default-avatar.png'" class="profile-img me-3" alt="Profile Image" />
     <div class="profile-info">
-      <h2>{{ profile.userName }}</h2>
-      <p><strong>Email:</strong> {{ profile.email }}</p>
-      <p><strong>Phone:</strong> {{ profile.phoneNumber }}</p>
-      <p><strong>National ID:</strong> {{ profile.nationalID }}</p>
+      <h4 class="mb-1">{{ profile.userName }}</h4>
+      <p class="mb-1"><strong>Email:</strong> {{ profile.email }}</p>
+      <p class="mb-1"><strong>Phone Number:</strong> {{ profile.phoneNumber }}</p>
+      <p class="mb-0"><strong>National ID:</strong> {{ profile.nationalID }}</p>
     </div>
   </div>
 
-  <div class="section">
-    <h3>Shop Info</h3>
+  <div class="section mb-4">
+    <h5 class="section-title">Shop Information</h5>
     <p><strong>Name:</strong> {{ profile.shopName }}</p>
     <p><strong>Address:</strong> {{ profile.shopAddress }}</p>
     <p><strong>City:</strong> {{ profile.city }}</p>
     <p><strong>Street:</strong> {{ profile.street }}</p>
     <p><strong>Postal Code:</strong> {{ profile.postalCode }}</p>
-    <p><strong>Email:</strong> {{ profile.businessEmail }}</p>
-    <p><strong>Phone:</strong> {{ profile.businessPhone }}</p>
+    <p><strong>Business Email:</strong> {{ profile.businessEmail }}</p>
+    <p><strong>Business Phone:</strong> {{ profile.businessPhone }}</p>
   </div>
 
-  <div class="section">
-    <h3>Points</h3>
+  <div class="section mb-4">
+    <h5 class="section-title">Points</h5>
     <p><strong>Balance Points:</strong> {{ profile.balancePoints }}</p>
     <p><strong>Shop Points:</strong> {{ profile.totalShopPoints }}</p>
     <p><strong>Free Points:</strong> {{ profile.totalFreePoints }}</p>
     <p><strong>Pending Points:</strong> {{ profile.totalPendingPoints }}</p>
   </div>
 
-  <div class="section">
-    <h3>Subscription</h3>
+  <div class="section mb-4">
+    <h5 class="section-title">Subscription</h5>
     <p><strong>Type:</strong> {{ profile.subscriptionType }}</p>
-    <p><strong>Expires:</strong> {{ profile.subscriptionExpireDate | date }}</p>
-    <p><strong>Active:</strong> <span [class.active]="profile.hasActiveSubscription">{{ profile.hasActiveSubscription ? 'Yes' : 'No' }}</span></p>
+    <p><strong>Expires On:</strong> {{ profile.subscriptionExpireDate | date }}</p>
+    <p><strong>Active:</strong> <span [class.text-success]="profile.hasActiveSubscription" [class.text-danger]="!profile.hasActiveSubscription">{{ profile.hasActiveSubscription ? 'Yes' : 'No' }}</span></p>
   </div>
 
   <div class="section">
-    <h3>Analytics</h3>
+    <h5 class="section-title">Statistics</h5>
     <p><strong>Total Revenue:</strong> {{ profile.totalRevenue | currency }}</p>
     <p><strong>Order Count:</strong> {{ profile.orderCount }}</p>
-    <p><strong>Avg Rating:</strong> {{ profile.averageCustomerRating | number: '1.1-1' }}</p>
+    <p><strong>Average Rating:</strong> {{ profile.averageCustomerRating | number: '1.1-1' }}</p>
   </div>
 </div>
 
 <ng-template #loading>
-  <p>Loading profile...</p>
+  <p>Loading...</p>
 </ng-template>

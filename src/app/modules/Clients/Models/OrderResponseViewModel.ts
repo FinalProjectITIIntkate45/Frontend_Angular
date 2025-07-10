@@ -1,12 +1,34 @@
-
-import { OrderItemResponseViewModel } from './order-item-response';
+// shared/models/client/OrderResponseViewModel.ts
+import { PaymentType } from './CheckoutResultVM';
+import { OrderItemViewModel } from './OrderItemViewModel';
 import { OrderStatus } from './order-status.enum';
 
 export interface OrderResponseViewModel {
-  id: number;
-  clientId: string;
-  dateCreated: string; // لو جاية كـ string ISO Date من الباك
-  totalPrice: number;
-  status: OrderStatus;
-  items: OrderItemResponseViewModel[];
+  Id: number;
+  ClientId: string;
+  DateCreated: string;
+  TotalPrice: number;
+  Status: OrderStatus;
+
+  IsPaid: boolean;
+  PaymentType: PaymentType;
+  UsedPaidPoints: number;
+  UsedFreePoints: number;
+  EarnedPoints: number;
+
+  Items: OrderItemViewModel[];
+}
+
+export interface CustomerInfoViewModel {
+  Id: string;
+  Name: string;
+  Email: string;
+  PhoneNumber: string;
+  ProfileImg: string;
+}
+
+export interface ShippingAddressViewModel {
+  Address: string;
+  City: string;
+  Street: string;
 }

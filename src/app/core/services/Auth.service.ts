@@ -18,7 +18,6 @@ export class AuthService {
   private readonly ROLE_KEY = 'role';
   private readonly USERNAME_KEY = 'userName';
 
-
   private readonly apiUrl = `${environment.apiUrl}/Account`;
 
   private authState = new BehaviorSubject<AuthState>({
@@ -26,16 +25,20 @@ export class AuthService {
     user: null,
   });
 
-  constructor(private cookieService: CookieService, private router: Router,private http: HttpClient) {
+  constructor(
+    private cookieService: CookieService,
+    private router: Router,
+    private http: HttpClient
+  ) {
     this.initializeAuth();
   }
 
   private initializeAuth() {
     const token = this.getToken();
-    console.log('first token:', token);
+    // console.log('first token:', token);
     if (token) {
       const user = this.parseJwt(token);
-      console.log('user:', user);
+      // console.log('user:', user);
       this.authState.next({
         isAuthenticated: true,
         user: {
@@ -45,25 +48,29 @@ export class AuthService {
           subscriptionType: user?.subscriptionType || 'Basic',
         },
       });
-      console.log('authState:', this.authState);
+      // console.log('authState:', this.authState);
+    } else {
+      this.authState.next({
+        isAuthenticated: false,
+        user: null,
+      });
     }
   }
 
   getAuthState(): Observable<AuthState> {
-    console.log('getAuthState:', this.authState);
+    // console.log('getAuthState:', this.authState);
     return this.authState.asObservable();
   }
 
   setUserData(response: LoginResponse): void {
-    const decoded = this.parseJwt(response.token); // ✅ فك التوكن
-    console.log('decoded:', decoded);
-    console.log('response:', response);
-    this.cookieService.set(this.TOKEN_KEY, response.token, {
-      secure: false,
-      sameSite: 'Strict',
-    });
+    // const decoded = this.parseJwt(response.token); // ✅ فك التوكن
+    // console.log('decoded:', decoded);
+    // console.log('response:', response);
+    this.cookieService.set(this.TOKEN_KEY, response.token);
     this.cookieService.set(this.ROLE_KEY, response.role);
     this.cookieService.set(this.USERNAME_KEY, response.username);
+    localStorage.setItem(this.TOKEN_KEY, response.token);
+    localStorage.setItem(this.ROLE_KEY, response.role);
 
     this.authState.next({
       isAuthenticated: true,
@@ -71,23 +78,31 @@ export class AuthService {
         userName: response.username,
         email: response.email,
         role: response.role,
-        subscriptionType: decoded?.subscriptionType || 'Basic',
+        // subscriptionType: decoded?.subscriptionType || 'Basic',
       },
     });
-    console.log('authState:', this.authState);
+    // console.log('authState:', this.authState);
   }
 
   getToken(): string | null {
-    return this.cookieService.get(this.TOKEN_KEY) || null;
+    return (
+      this.cookieService.get(this.TOKEN_KEY) ||
+      localStorage.getItem(this.TOKEN_KEY) ||
+      null
+    );
   }
 
   isLoggedUser(): boolean {
-    console.log('isLoggedUser:', this.getToken());
+    // console.log('auth Service isLoggedUser:', this.getToken());
     return !!this.getToken();
   }
 
   getUserRole(): string {
-    return this.cookieService.get(this.ROLE_KEY) || '';
+    return (
+      this.cookieService.get(this.ROLE_KEY) ||
+      localStorage.getItem(this.ROLE_KEY) ||
+      ''
+    );
   }
 
   getUserSubscriptionType(): string {
@@ -99,42 +114,73 @@ export class AuthService {
     return 'Basic';
   }
 
-  getUserId(): string {
-    const token = this.getToken();
-    if (token) {
-      const decoded = this.parseJwt(token);
-      // return decoded?.nameid || decoded?.sub || '';
-      return (
-        decoded?.nameid ||
-        decoded?.sub ||
-        decoded?.[
-          'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
-        ] ||
-        ''
-      );
-    }
-    return '';
-  }
+  // getUserId(): string {
+  //   const token = this.getToken();
+  //   if (token) {
+  //     const decoded = this.parseJwt(token);
+  //     // return decoded?.nameid || decoded?.sub || '';
+  //     return (
+  //       decoded?.nameid ||
+  //       decoded?.sub ||
+  //       decoded?.[
+  //         'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'
+  //       ] ||
+  //       ''
+  //     );
+  //   }
+  //   return '';
+  // }
 
-
-    // src/app/core/services/Auth.service.ts
+  // src/app/core/services/Auth.service.ts
   getUserID(): Observable<string> {
-    return this.http.get<APIResponse<string>>(`${this.apiUrl}/GetId`)
+    return this.http
+      .get<APIResponse<string>>(`${this.apiUrl}/GetId`)
       .pipe(map((res: APIResponse<string>) => res.Data));
   }
 
-
-
   logout(): void {
+    // Clear cookies
     this.cookieService.delete(this.TOKEN_KEY);
     this.cookieService.delete(this.ROLE_KEY);
     this.cookieService.delete(this.USERNAME_KEY);
 
+    // Clear localStorage
+    localStorage.removeItem(this.TOKEN_KEY);
+    localStorage.removeItem(this.ROLE_KEY);
+    localStorage.removeItem(this.USERNAME_KEY);
+
+    // Clear all auth-related data from localStorage (in case there are other keys)
+    const keysToRemove = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (
+        key &&
+        (key.includes('auth') || key.includes('token') || key.includes('user'))
+      ) {
+        keysToRemove.push(key);
+      }
+    }
+    keysToRemove.forEach((key) => localStorage.removeItem(key));
+
+    // Clear all auth-related cookies
+    const allCookies = this.cookieService.getAll();
+    Object.keys(allCookies).forEach((cookieName) => {
+      if (
+        cookieName.includes('auth') ||
+        cookieName.includes('token') ||
+        cookieName.includes('user')
+      ) {
+        this.cookieService.delete(cookieName);
+      }
+    });
+
+    // Reset auth state
     this.authState.next({
       isAuthenticated: false,
       user: null,
     });
 
+    // Navigate to login
     this.router.navigate(['/account/login']);
   }
 
@@ -145,7 +191,4 @@ export class AuthService {
       return null;
     }
   }
-
-
-
 }

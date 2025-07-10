@@ -4,6 +4,17 @@
   </div>
 </div>
 
+
+ <div class="segmented-toggle">
+                    <button class="segmented-btn active" [routerLink]="['/provider/products']">
+                        <i class="fas fa-table me-2"></i>Table
+                    </button>
+                    <button class="segmented-btn" [routerLink]="['/provider/ShowProductorOffer']">
+                        <i class="fas fa-th-large me-2"></i>Cards
+                    </button>
+                </div>
+<br> 
+<br> 
 <table *ngIf="!isLoading" class="table table-hover table-bordered">
   <thead class="table-primary">
     <tr>

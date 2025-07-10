@@ -372,19 +372,14 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     this.isAddingToCart = true;
 
     try {
-      // Simulate API call delay
-      console.log('Adding to cart:', {
+      console.log('[AddToCart] Sending:', {
         productId: this.product.Id,
-        productName: this.product.Name,
         quantity: this.quantity,
         price:
           this.product.DisplayedPriceAfterDiscount ||
           this.product.DisplayedPrice,
-        totalPrice:
-          (this.product.DisplayedPriceAfterDiscount ||
-            this.product.DisplayedPrice) * this.quantity,
+        points: this.product.Points,
       });
-
       // TODO: Implement actual cart service logic here
       // await this.cartService.addToCart(this.product, this.quantity);
       //productId: number, quantity: number, price: number, points: number
@@ -398,6 +393,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
         )
         .subscribe(
           (response) => {
+            this.cardsercive.refreshCartItemsCount(); // Ensure cart count is updated
             this.showSuccessMessage(
               `Added ${this.quantity} ${this.product?.Name}(s) to cart!`
             );

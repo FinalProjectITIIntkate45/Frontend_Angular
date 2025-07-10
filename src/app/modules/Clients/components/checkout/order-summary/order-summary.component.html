@@ -1,40 +1,63 @@
-<div class="General-card p-3" *ngIf="!isLoading && cartData">
-  <h5 class="fw-bold mb-3 text-center">🧾 Order Summary</h5>
+<div
+  class="General-card p-4 shadow-sm rounded bg-white"
+  *ngIf="!isLoading && cartData"
+>
+  <h5 class="fw-bold text-center text-primary mb-4">🧾 Order Summary</h5>
 
   <!-- Optional: Show shop name -->
-  <div *ngIf="shopName" class="text-center text-muted mb-2">
+  <div *ngIf="shopName" class="text-center text-muted mb-3">
     <small>Shop: {{ shopName }}</small>
   </div>
 
-  <div class="mb-3" *ngFor="let item of cartData.Items">
-    <div class="d-flex justify-content-between align-items-center">
-      <div class="text-truncate">
-        <span class="fw-medium">{{ item.productVM?.Name }}</span>
-        <small class="text-muted d-block">Qty: 1</small>
+  <!-- Cart items -->
+  <div class="mb-4">
+    <div *ngFor="let item of cartData.Items" class="mb-2 pb-2 border-bottom">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="text-truncate">
+          <span class="fw-medium">{{ item.productVM?.Name }}</span>
+          <small class="text-muted d-block"
+            >Earned Points : {{ item.productVM?.EarnedPoints }}</small
+          >
+        </div>
+        <span class="fw-semibold"
+          >{{ item.productVM?.DisplayedPrice }} EGP</span
+        >
       </div>
-      <span>{{ item.productVM?.DisplayedPrice }} EGP</span>
     </div>
   </div>
 
-  <hr>
-
-  <div class="d-flex justify-content-between">
+  <!-- Subtotal -->
+  <div class="d-flex justify-content-between align-items-center mb-3">
     <span class="fw-semibold">Subtotal:</span>
-    <span>{{ cartData.CartTotalPrice | currency:'EGP':'symbol' }}</span>
+    <span class="fw-bold">{{
+      cartData.CartTotalPrice | currency : "EGP" : "symbol"
+    }}</span>
   </div>
 
-  <div class="alert alert-info p-2 my-3">
-    <strong>Note:</strong>
-    You have <strong>{{totalShopPoints}}</strong> Shop Points and <strong>{{ totalFreePoints }}</strong> Free Points
-    available to use.
+  <!-- Points Summary -->
+  <div class="bg-light p-3 rounded border">
+    <h6 class="fw-bold mb-3 text-dark">🎯 Your Points Summary</h6>
+
+    <div class="d-flex justify-content-between mb-1">
+      <span>Total Points:</span>
+      <span class="fw-semibold text-success">{{
+        totalPoints | number : "1.2-2"
+      }}</span>
+    </div>
+
+    <div class="d-flex justify-content-between text-muted small mb-1">
+      <span>🔹 Shop Points:</span>
+      <span>{{ totalShopPoints | number : "1.2-2" }}</span>
+    </div>
+
+    <div class="d-flex justify-content-between text-muted small">
+      <span>🔸 Free Points:</span>
+      <span>{{ totalFreePoints | number : "1.2-2" }}</span>
+    </div>
   </div>
 
-  <div class="d-flex justify-content-between">
-    <strong>Total Points:</strong>
-    <strong>{{ cartData.CartTotalPoints }}</strong>
+  <!-- Loading Spinner -->
+  <div *ngIf="isLoading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status"></div>
   </div>
-</div>
-
-<div *ngIf="isLoading" class="text-center">
-  <div class="spinner-border text-primary" role="status"></div>
 </div>

@@ -1,6 +1,6 @@
 // src/app/services/account.service.ts
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 
 import { Observable, catchError, throwError } from 'rxjs';
 
@@ -9,6 +9,7 @@ import { UserRegisterRequest } from '../models/user-register.model';
 import { environment } from '../../../../environments/environment.development';
 import { APIResponse } from '../../../core/models/APIResponse';
 import { LoginRequest, LoginResponse } from '../../../core/models/auth.models';
+import { ProfileViewModel } from '../../Clients/Models/profile-view.model';
 
 @Injectable({
   providedIn: 'root',
@@ -53,5 +54,56 @@ export class AccountService {
     })
   );
 }
+
+/**
+ * Gets the profile of the current user with JWT token in Authorization header
+ */
+getProfile(): Observable<ProfileViewModel> {
+  const token = localStorage.getItem('token');
+  let headers = new HttpHeaders();
+  if (token) {
+    headers = headers.set('Authorization', `Bearer ${token}`);
+  }
+  return this.http.get<ProfileViewModel>(`${this.apiUrl}/GetProfile`, { headers }).pipe(
+    catchError((error: HttpErrorResponse) => {
+      console.error('API Error:', error);
+      return throwError(() => error);
+    })
+  );
+}
+
+  /**
+   * Updates the vendor profile with the provided data
+   */
+  updateVendorProfile(data: any): Observable<any> {
+    const token = localStorage.getItem('token');
+    let headers = new HttpHeaders();
+    if (token) {
+      headers = headers.set('Authorization', `Bearer ${token}`);
+    }
+    return this.http.put(`${this.apiUrl}/UpdateVendorProfile`, data, { headers }).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('API Error:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  /**
+   * Updates the client profile with the provided data
+   */
+  updateClientProfile(data: any): Observable<any> {
+    const token = localStorage.getItem('token');
+    let headers = new HttpHeaders();
+    if (token) {
+      headers = headers.set('Authorization', `Bearer ${token}`);
+    }
+    return this.http.put(`${this.apiUrl}/UpdateClientProfile`, data, { headers }).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('API Error:', error);
+        return throwError(() => error);
+      })
+    );
+  }
 
 }

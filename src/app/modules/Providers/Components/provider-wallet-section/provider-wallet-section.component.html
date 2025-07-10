@@ -1,0 +1,20 @@
+<div
+    class="container-fluid provider-wallet-section-container d-flex flex-column align-items-center justify-content-center py-5">
+    <div class="card shadow-sm mb-4 w-100" style="max-width: 500px;">
+        <div class="card-body text-center">
+            <h2 class="mb-3 fw-bold">Provider Wallet</h2>
+            <h5 class="card-title mb-2">Current Balance</h5>
+            <p class="balance-amount display-4 fw-bold text-primary mb-0">
+                ${{ wallet?.balancecash | number:'1.2-2' }}
+            </p>
+        </div>
+    </div>
+    <div class="card shadow-sm w-100" style="max-width: 500px;">
+        <div class="card-body">
+            <app-provider-wallet-recharge (recharged)="loadWallet()"></app-provider-wallet-recharge>
+        </div>
+    </div>
+    <div *ngIf="loading" class="alert alert-info text-center mt-4 w-100" style="max-width: 500px;">Loading wallet
+        info...</div>
+    <div *ngIf="error" class="alert alert-danger text-center mt-4 w-100" style="max-width: 500px;">{{ error }}</div>
+</div>

@@ -1,1 +1,115 @@
-<p>points-section works!</p>
+<div class="points-container">
+    <div class="points-header">
+        <h2>My Points</h2>
+        <button class="refresh-btn" (click)="refreshData()" [disabled]="loading">
+            <span>🔄</span> Refresh
+        </button>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading-state">
+        <div class="spinner"></div>
+        <p>Loading your points...</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error && !loading" class="error-state">
+        <p>{{ error }}</p>
+        <button (click)="loadWalletData()">Try Again</button>
+    </div>
+
+    <!-- Wallet Summary -->
+    <div *ngIf="walletSummary && !loading && !error" class="wallet-summary">
+        <div class="summary-card">
+            <div class="summary-item">
+                <span class="summary-label">Total Points:</span>
+                <span class="summary-value">{{ walletSummary?.balancePoints || walletSummary?.BalancePoints || 0
+                    }}</span>
+            </div>
+            <div class="summary-item">
+                <span class="summary-label">Cash Balance:</span>
+                <span class="summary-value">${{ walletSummary?.balanceCash || walletSummary?.BalanceCash || 0 }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Three Cards Layout -->
+    <div *ngIf="!loading && !error" class="points-cards">
+
+        <!-- Free Points Card -->
+        <div class="point-card free-points" (click)="loadFreePoints()">
+            <div class="card-header">
+                <div class="card-icon">🎁</div>
+                <div class="card-title">Free Points</div>
+                <div class="card-total">{{ getTotalFreePoints() }}</div>
+            </div>
+            <div class="card-content">
+                <p class="card-description">Points earned from promotions, referrals, and bonuses</p>
+                <div *ngIf="freePointsSummary && freePointsSummary.length > 0" class="recent-points">
+                    <h4>Recent Activity:</h4>
+                    <div *ngFor="let point of getRecentFreePoints()" class="point-item">
+                        <span class="point-amount">+{{ point.points || point.Points }}</span>
+                        <span class="point-source">{{ point.sourceType || point.SourceType }}</span>
+                        <span class="point-date">{{ (point.earnedAt || point.EarnedAt) | date:'short' }}</span>
+                    </div>
+                </div>
+                <div *ngIf="!freePointsSummary" class="load-more">
+                    Click to load details
+                </div>
+            </div>
+        </div>
+
+        <!-- Shop Points Card -->
+        <div class="point-card shop-points" (click)="loadShopPoints()">
+            <div class="card-header">
+                <div class="card-icon">🏪</div>
+                <div class="card-title">Shop Points</div>
+                <div class="card-total">{{ getTotalShopPoints() }}</div>
+            </div>
+            <div class="card-content">
+                <p class="card-description">Points earned from purchases at specific shops</p>
+                <div *ngIf="shopPointsSummary && shopPointsSummary.length > 0" class="recent-points">
+                    <h4>Recent Activity:</h4>
+                    <div *ngFor="let point of getRecentShopPoints()" class="point-item">
+                        <span class="point-amount">+{{ point.points || point.Points }}</span>
+                        <span class="point-source">{{ (point.shop?.name || point.Shop?.Name) || 'Unknown Shop' }}</span>
+                        <span class="point-date">{{ (point.earnedAt || point.EarnedAt) | date:'short' }}</span>
+                    </div>
+                </div>
+                <div *ngIf="!shopPointsSummary" class="load-more">
+                    Click to load details
+                </div>
+            </div>
+        </div>
+
+        <!-- Pending Points Card -->
+        <div class="point-card pending-points" (click)="loadPendingPoints()">
+            <div class="card-header">
+                <div class="card-icon">⏳</div>
+                <div class="card-title">Pending Points</div>
+                <div class="card-total">{{ getTotalPendingPoints() }}</div>
+            </div>
+            <div class="card-content">
+                <p class="card-description">Points waiting to be activated from recent orders</p>
+                <div *ngIf="pendingPointsSummary && pendingPointsSummary.length > 0" class="recent-points">
+                    <h4>Recent Activity:</h4>
+                    <div *ngFor="let point of getRecentPendingPoints()" class="point-item">
+                        <span class="point-amount">+{{ point.points || point.Points }}</span>
+                        <span class="point-source">{{ (point.shop?.name || point.Shop?.Name) || 'Unknown Shop' }}</span>
+                        <span class="point-status">{{ point.status || point.Status }}</span>
+                    </div>
+                </div>
+                <div *ngIf="!pendingPointsSummary" class="load-more">
+                    Click to load details
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!loading && !error && !walletSummary" class="empty-state">
+        <p>No wallet information available.</p>
+        <button (click)="loadWalletData()">Load Wallet</button>
+    </div>
+</div>

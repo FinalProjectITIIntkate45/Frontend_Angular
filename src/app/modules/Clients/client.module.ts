@@ -20,7 +20,7 @@ import { CartComponent } from './components/cart/cart.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { ClientLayoutComponent } from './components/client-layout/client-layout.component';
 import { FollowSellerComponent } from './components/follow-seller/follow-seller.component';
-import {  OrdersSectionComponent } from './components/orders-section/orders-section.component';
+import { OrdersSectionComponent } from './components/orders-section/orders-section.component';
 import { PointsSectionComponent } from './components/points-section/points-section.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { ProductSearchComponent } from './components/product-search/product-search.component';
@@ -42,7 +42,15 @@ import { OrderConfirmationComponent } from './components/checkout/order-confirma
 import { OrderSummaryComponent } from './components/checkout/order-summary/order-summary.component';
 import { PaymentConfirmationComponent } from './components/checkout/payment-confirmation/payment-confirmation.component';
 import { PaymentInfoComponent } from './components/checkout/payment-info/payment-info.component';
-
+import { ClientOrderDetailsComponent } from './components/orders-section/client-order-details/client-order-details.component';
+import { WalletRechargeComponent } from './components/wallet-recharge/wallet-recharge.component';
+import { WalletSuccessComponent } from './components/wallet-success/wallet-success.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -51,6 +59,8 @@ import { PaymentInfoComponent } from './components/checkout/payment-info/payment
     SidebarComponent,
     ProfileSectionComponent,
     WalletSectionComponent,
+    WalletRechargeComponent,
+    WalletSuccessComponent,
     OrdersSectionComponent,
     PointsSectionComponent,
     AchievementsSectionComponent,
@@ -77,7 +87,7 @@ import { PaymentInfoComponent } from './components/checkout/payment-info/payment
     DonateComponent,
     PaymentConfirmationComponent,
     RecyclingSectionComponent,
-
+    ClientOrderDetailsComponent,
   ],
 
   imports: [
@@ -86,6 +96,12 @@ import { PaymentInfoComponent } from './components/checkout/payment-info/payment
     ClientRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatDividerModule,
+    MatDialogModule,
   ],
   providers: [
     provideHttpClient(
@@ -93,5 +109,5 @@ import { PaymentInfoComponent } from './components/checkout/payment-info/payment
       withInterceptors([AuthInterceptor, LoaderInterceptor])
     ),
   ],
-
-})export class ClientModule {}
+})
+export class ClientModule {}

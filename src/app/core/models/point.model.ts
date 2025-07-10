@@ -1,7 +1,7 @@
 export interface Point {
-  points: number;
-  createdAt: string;
-  expireAt?: string;
-  source?: string;
-  status?: string;
+  Points: number;
+  CreatedAt: string;
+  ExpireAt?: string;
+  Source?: string;
+  Status?: string;
 }

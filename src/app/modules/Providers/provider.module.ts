@@ -1,4 +1,3 @@
-
 import { CommonModule } from '@angular/common';
 import {
   provideHttpClient,
@@ -34,6 +33,7 @@ import { OfferDetailesComponent } from './Components/OfferGroupe/OfferDetailes/O
 import { MakeOfferComponent } from './Components/OfferGroupe/MakeOffer/MakeOffer.component';
 import { OfferProductManagerComponent } from './Components/OfferGroupe/OfferProductManager/OfferProductManager.component';
 import { ProviderOrdersComponent } from './Components/provider-orders/provider-orders.component';
+import { ProviderDashboardComponent } from './Components/provider-dashboard/provider-dashboard.component';
 import { HeaderComponent } from './Components/header/header.component';
 import { SalesOverviewComponent } from './Components/sales-overview/sales-overview.component';
 import { WelcomeBannerComponent } from './Components/welcome-banner/welcome-banner.component';
@@ -46,8 +46,11 @@ import { VendorProfileComponent } from './Components/vendor-profile/vendor-profi
 import { ReviewsComponent } from './Components/reviews/reviews.component';
 import { CategoriesComponent } from './Components/categories/categories.component';
 import { FollowersComponent } from '../Providers/Components/followers/followers.component';
-import{ ShopsComponent } from '../Providers/Components/Shops/Shops.component';
-
+import { ShopsComponent } from '../Providers/Components/Shops/Shops.component';
+import { ProviderOrderDetailsComponent } from './Components/provider-order-details/provider-order-details.component';
+import { ShopInfoComponent } from './Components/shop-info/shop-info.component';
+import { ProviderOrdersSectionComponent } from './Components/provider-orders-section/provider-orders-section.component';
+import { OrderDetailsComponent } from './Components/provider-orders-section/order-details/order-details.component';
 
 @NgModule({
   declarations: [
@@ -80,6 +83,33 @@ import{ ShopsComponent } from '../Providers/Components/Shops/Shops.component';
     CategoriesComponent,
     FollowersComponent,
     ShopsComponent,
+    ProviderOrderDetailsComponent,
+    AddShopComponent,
+    EditShopComponent,
+    ProviderOrdersComponent,
+    ProviderDashboardComponent,
+    SubScrptionComponent,
+    ProductFormPageComponent,
+    ProductDetailsPageComponent,
+    ProductListPageComponent,
+    EditDetailsComponent,
+    EditOfferComponent,
+    ShopProductsComponent,
+    ShopOffersComponent,
+    OfferDetailesComponent,
+    MakeOfferComponent,
+    OfferProductManagerComponent,
+    SidebarComponent,
+    HeaderComponent,
+    WelcomeBannerComponent,
+    OrdersTableComponent,
+    NotificationsPanelComponent,
+    ChartContainerComponent,
+    StatsCardComponent,
+    SubScrptionComponent,
+    ShopInfoComponent,
+    ProviderOrdersSectionComponent,
+    OrderDetailsComponent,
   ],
   exports: [
     ProviderLayoutComponent,
@@ -105,7 +135,7 @@ import{ ShopsComponent } from '../Providers/Components/Shops/Shops.component';
     CategoriesComponent,
     FollowersComponent,
     ShopsComponent,
-    
+    ShopInfoComponent,
   ],
   imports: [
     CommonModule,
@@ -115,8 +145,14 @@ import{ ShopsComponent } from '../Providers/Components/Shops/Shops.component';
     SafeUrlPipe,
   ],
   providers: [
-    provideHttpClient(withFetch(), withInterceptors([AuthInterceptor, LoaderInterceptor]))
+    provideHttpClient(
+      withFetch(),
+      withInterceptors([AuthInterceptor, LoaderInterceptor])
+    ),
+    provideHttpClient(
+      withFetch(),
+      withInterceptors([AuthInterceptor, LoaderInterceptor])
+    ),
   ],
 })
 export class ProviderModule {}
-

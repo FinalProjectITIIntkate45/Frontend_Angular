@@ -1,59 +1,68 @@
-/* Padding للمحتوى الأساسي */
-.container {
-  padding: 2rem;
-  background-color: #f9f9f9;
+.profile-container {
+  max-width: 800px;
+  margin: 40px auto;
+  background: white;
   border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  padding: 30px;
 }
 
-/* ترويسة كل كارد */
-.card-header {
-  font-weight: bold;
-  font-size: 1.2rem;
-  background-color: #007bff;
+.profile-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.profile-icon {
+  background: #ffc107;
   color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 12px;
+  font-size: 18px;
 }
 
-/* الحقول */
-input.form-control,
-select.form-control {
-  border-radius: 8px;
-  box-shadow: none;
-  border: 1px solid #ccc;
-}
-
-/* المسافات بين الكروت */
-.card {
-  border: none;
-  border-radius: 12px;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
-}
-
-/* زر الحفظ */
-button.btn-success {
-  padding: 10px 30px;
-  font-weight: bold;
-  font-size: 1.1rem;
-  border-radius: 8px;
-  transition: background-color 0.3s ease;
-}
-
-button.btn-success:hover {
-  background-color: #28a745;
-}
-
-/* تنسيق عنوان الصفحة */
-h2 {
-  font-weight: bold;
-  margin-bottom: 1.5rem;
-  text-align: center;
+.profile-title {
+  font-size: 24px;
+  font-weight: 600;
   color: #333;
+  margin: 0;
 }
 
-/* Margin بين عناصر الشحن */
-[formArrayName="shippingOptions"] .row {
-  background-color: #f1f1f1;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  border-radius: 8px;
+.form-label {
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 8px;
+}
+
+.form-control, .form-select {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 14px;
+  transition: border-color 0.15s ease-in-out;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #ffc107;
+  box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+}
+
+.btn-success {
+  background: #ffc107 !important;
+  color: #000;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.btn-success:hover {
+  background: #e0a800 !important;
+  color: #000;
 }

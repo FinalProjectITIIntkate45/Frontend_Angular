@@ -22,6 +22,9 @@ import { DonateComponent } from './components/charity/donate/donate.component';
 import { PaymentConfirmationComponent } from './components/checkout/payment-confirmation/payment-confirmation.component';
 import { OfferDetailsComponent } from './components/offer/offer-details/offer-details.component';
 import { OfferListComponent } from './components/offer/offer-list/offer-list.component';
+import { ClientOrderDetailsComponent } from './components/orders-section/client-order-details/client-order-details.component';
+import { WalletRechargeComponent } from './components/wallet-recharge/wallet-recharge.component';
+import { WalletSuccessComponent } from './components/wallet-success/wallet-success.component';
 
 const routes: Routes = [
   {
@@ -57,7 +60,11 @@ const routes: Routes = [
       { path: 'payment-confirmation', component: PaymentConfirmationComponent },
 
       { path: 'recycling', component: RecyclingSectionComponent },
+      { path: 'orders', component: OrdersSectionComponent },
 
+      { path: 'orders/:id', component: ClientOrderDetailsComponent },
+      { path: 'wallet-recharge', component: WalletRechargeComponent },
+      { path: 'wallet/success', component: WalletSuccessComponent },
     ],
   },
 ];

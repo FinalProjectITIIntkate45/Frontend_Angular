@@ -1,27 +1,97 @@
 <div class="container py-5">
   <h2 class="mb-4 text-center">Choose Your Subscription</h2>
 
-    <!-- VIP Plan -->
-    <div class="card col-md-5 border-warning">
+  <!-- Subscription Status Section -->
+  <div *ngIf="loadingProfile" class="alert alert-info text-center">Loading subscription info...</div>
+  <div *ngIf="profileError" class="alert alert-danger text-center">{{ profileError }}</div>
+  <div *ngIf="vendorProfile && !loadingProfile" class="mb-4">
+    <div class="card border-primary">
       <div class="card-body text-center">
-        <h4 class="card-title text-warning">VIP Plan</h4>
-        <p class="card-text">Full access to all features, premium support, and more.</p>
-        <button class="btn btn-warning" (click)="selectPlan('VIP')">Select VIP</button>
+        <h5 class="card-title">Current Subscription</h5>
+        <p class="mb-1">
+          <strong>Status:</strong>
+          <span [ngClass]="vendorProfile.hasActiveSubscription ? 'text-success' : 'text-danger'">
+            {{ vendorProfile.hasActiveSubscription ? 'Active' : 'Inactive' }}
+          </span>
+        </p>
+        <p class="mb-1"><strong>Type:</strong> {{ vendorProfile.subscriptionType || 'No Subscription' }}</p>
+        <!-- Current Subscription Expiry -->
+        <p class="mb-0">
+          <strong>Expiry:</strong>
+          <span *ngIf="vendorProfile.subscriptionType === 'VIP'">
+            <span *ngIf="vendorProfile.subscriptionExpireDate; else noVipExpiry">
+              {{ vendorProfile.subscriptionExpireDate | date:'mediumDate' }}
+            </span>
+            <ng-template #noVipExpiry>1 month from activation</ng-template>
+          </span>
+          <span *ngIf="vendorProfile.subscriptionType === 'Basic'">
+            Never
+          </span>
+        </p>
+      </div>
+    </div>
+  </div>
 
-        <!-- Payment options shown only when VIP is selected -->
-        <div *ngIf="showPaymentOptions" class="mt-3">
-          <h6>Select Payment Method:</h6>
+  <!-- Plans Row -->
+  <div class="row justify-content-center g-4 mb-4">
+    <!-- Basic Plan Card -->
+    <div class="col-md-5">
+      <div class="card border-secondary h-100">
+        <div class="card-body text-center">
+          <h4 class="card-title text-secondary">Basic Plan</h4>
+          <div class="mb-2 text-muted">Free Forever</div>
+          <div class="mb-2"><strong>Expiration:</strong> Never</div>
+          <ul class="list-unstyled text-start mx-auto mb-3" style="max-width: 300px;">
+            <li><i class="fas fa-check text-success me-2"></i>Access to essential features</li>
+            <li><i class="fas fa-check text-success me-2"></i>Unlimited product listings</li>
+            <li><i class="fas fa-check text-success me-2"></i>Basic analytics</li>
+            <li><i class="fas fa-times text-danger me-2"></i><span class="text-muted">Premium support</span></li>
+            <li><i class="fas fa-times text-danger me-2"></i><span class="text-muted">Priority listing</span></li>
+          </ul>
+          <span *ngIf="vendorProfile?.subscriptionType === 'Basic'" class="badge bg-success">Current Plan</span>
+          <button *ngIf="vendorProfile?.subscriptionType === 'VIP'" class="btn btn-outline-secondary mt-2"
+            (click)="switchToBasic()">Switch to Basic</button>
+        </div>
+      </div>
+    </div>
+    <!-- VIP Plan Card -->
+    <div class="col-md-5">
+      <div class="card border-warning h-100">
+        <div class="card-body text-center">
+          <h4 class="card-title text-warning">VIP Plan</h4>
+          <div class="mb-2 text-warning fw-bold">$ 99 / month</div>
+          <div class="mb-2"><strong>Expiration:</strong>
+            <span
+              *ngIf="vendorProfile?.subscriptionType === 'VIP' && vendorProfile?.subscriptionExpireDate; else noVipExpiry">
+              {{ vendorProfile?.subscriptionExpireDate | date:'mediumDate' }}
+            </span>
+            <ng-template #noVipExpiry>1 month from activation</ng-template>
+          </div>
+          <ul class="list-unstyled text-start mx-auto mb-3" style="max-width: 300px;">
+            <li><i class="fas fa-check text-success me-2"></i>All Basic features</li>
+            <li><i class="fas fa-check text-success me-2"></i>Premium support</li>
+            <li><i class="fas fa-check text-success me-2"></i>Priority listing</li>
+            <li><i class="fas fa-check text-success me-2"></i>Advanced analytics</li>
+          </ul>
+          <span *ngIf="vendorProfile?.subscriptionType === 'VIP'" class="badge bg-success">Current Plan</span>
+          <button *ngIf="vendorProfile?.subscriptionType !== 'VIP'" class="btn btn-warning"
+            (click)="selectPlan('VIP')">Select VIP</button>
 
-          <select [(ngModel)]="paymentType" class="form-select" aria-label="Payment Method Selection">
-            <option value="">-- Choose --</option>
-            <option [ngValue]="5044395">Online Card</option>
-            <option [ngValue]="789012">Mobile Wallet</option>
-            <option [ngValue]="5044433">PayPal</option>
-            <option [ngValue]="123456">Cash Collection</option>
-            <option [ngValue]="654321">Accept Kiosk</option>
-          </select>
-
-          <button class="btn btn-success mt-3" (click)="submitPlan()">Continue to Payment</button>
+          <!-- Payment options shown only when VIP is selected -->
+          <div *ngIf="showPaymentOptions" class="mt-3">
+            <h6>Select Payment Method:</h6>
+            <select [(ngModel)]="paymentType" class="form-select" aria-label="Payment Method Selection">
+              <option value="">-- Choose --</option>
+              <option [ngValue]="5044395">Online Card</option>
+              <option [ngValue]="789012">Mobile Wallet</option>
+              <option [ngValue]="5044433">PayPal</option>
+              <option [ngValue]="123456">Cash Collection</option>
+              <option [ngValue]="654321">Accept Kiosk</option>
+              <option [ngValue]="-1">Pay with Wallet</option>
+            </select>
+            <div *ngIf="validationMessage" class="alert alert-danger mt-2">{{ validationMessage }}</div>
+            <button class="btn btn-success mt-3" (click)="submitPlan()">Continue to Payment</button>
+          </div>
         </div>
       </div>
     </div>
@@ -31,12 +101,7 @@
   <div *ngIf="paymentUrl" class="card mt-4">
     <div class="card-body">
       <h5 class="card-title">Payment</h5>
-      <iframe
-        [src]="paymentUrl | SafeUrl"
-        width="100%"
-        height="600"
-        frameborder="0"
-        allowfullscreen
+      <iframe [src]="paymentUrl | SafeUrl" width="100%" height="600" frameborder="0" allowfullscreen
         title="Payment iframe">
       </iframe>
     </div>
@@ -46,4 +111,4 @@
   <div *ngIf="statusMessage" class="alert alert-info mt-4 text-center">
     {{ statusMessage }}
   </div>
-
+</div>

@@ -26,14 +26,23 @@ import { VendorProfileComponent } from './Components/vendor-profile/vendor-profi
 import { ReviewsComponent } from './Components/reviews/reviews.component';
 import { CategoriesComponent } from './Components/categories/categories.component';
 import { FollowersComponent } from '../Providers/Components/followers/followers.component';
-import{ ShopsComponent } from '../Providers/Components/Shops/Shops.component';
+import { ShopsComponent } from '../Providers/Components/Shops/Shops.component';
 import { SalesOverviewComponent } from '../Providers/Components/sales-overview/sales-overview.component';
+import { ProviderDashboardComponent } from './Components/provider-dashboard/provider-dashboard.component';
+import { ProviderOrderDetailsComponent } from './Components/provider-order-details/provider-order-details.component';
+import { ProviderWalletSectionComponent } from './Components/provider-wallet-section/provider-wallet-section.component';
+import { ProviderWalletSuccessComponent } from './Components/provider-wallet-success/provider-wallet-success.component';
+import { ShopInfoComponent } from './Components/shop-info/shop-info.component';
+import { ProviderOrdersSectionComponent } from './Components/provider-orders-section/provider-orders-section.component';
+import { OrderDetailsComponent } from './Components/provider-orders-section/order-details/order-details.component';
 
 const routes: Routes = [
   {
     path: '',
     component: ProviderLayoutComponent,
     children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: ProviderDashboardComponent },
       { path: 'products', component: ProductListPageComponent },
       { path: 'products/add', component: ProductFormPageComponent },
       { path: 'products/edit/:id', component: ProductFormPageComponent },
@@ -45,10 +54,14 @@ const routes: Routes = [
       { path: 'ShowShopOffers', component: ShopOffersComponent },
       { path: 'edit-offer/:id', component: EditDetailsComponent },
       { path: 'edit-offer-products/:id', component: EditOfferComponent },
-      { path: 'offer-product-manager/:offerId', component: OfferProductManagerComponent },
+      {
+        path: 'offer-product-manager/:offerId',
+        component: OfferProductManagerComponent,
+      },
       { path: 'offer-details/:id', component: OfferDetailesComponent },
       { path: 'make-offer', component: MakeOfferComponent },
       { path: 'provider-orders', component: ProviderOrdersComponent },
+      { path: 'provider-orders/:id', component: ProviderOrderDetailsComponent },
       { path: 'edit-vendor-profile', component: EditVendorProfileComponent },
       { path: 'profile', component: VendorProfileComponent },
       { path: 'reviews', component: ReviewsComponent },
@@ -56,8 +69,11 @@ const routes: Routes = [
       { path: 'followers', component: FollowersComponent },
       { path: 'shops', component: ShopsComponent },
       { path: 'sales-overview', component: SalesOverviewComponent },
-
-
+      { path: 'wallet', component: ProviderWalletSectionComponent },
+      { path: 'wallet/success', component: ProviderWalletSuccessComponent },
+      { path: 'shop-info', component: ShopInfoComponent },
+      { path: 'orders', component: ProviderOrdersSectionComponent },
+      { path: 'orders/:id', component: OrderDetailsComponent },
     ],
   },
 ];
@@ -66,5 +82,3 @@ const routes: Routes = [
   exports: [RouterModule],
 })
 export class ProviderRoutingModule {}
-
-
