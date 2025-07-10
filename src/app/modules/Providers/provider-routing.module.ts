@@ -74,7 +74,6 @@ const routes: Routes = [
       { path: 'shop-info', component: ShopInfoComponent },
       { path: 'orders', component: ProviderOrdersSectionComponent },
       { path: 'orders/:id', component: OrderDetailsComponent },
-      { path: '**', redirectTo: 'dashboard' },
     ],
   },
 ];
