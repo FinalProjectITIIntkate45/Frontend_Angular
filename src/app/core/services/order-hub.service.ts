@@ -2,6 +2,7 @@
 import { Injectable, NgZone } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export interface OrderUpdate {
   orderId: number;
@@ -15,7 +16,6 @@ export interface OrderUpdate {
 export class OrderHubService {
   private hubConnection!: signalR.HubConnection;
 
-  // BehaviorSubject ليقدر المكونات يشتركوا ويستقبلوا التحديثات
   private orderUpdatesSubject = new BehaviorSubject<OrderUpdate | null>(null);
   public orderUpdates$: Observable<OrderUpdate | null> =
     this.orderUpdatesSubject.asObservable();
@@ -24,20 +24,20 @@ export class OrderHubService {
 
   public startConnection(): void {
     this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl('/orderHub') // رابط الهب على السيرفر
+      .withUrl(`${environment.apiUrl}/orderHub`, {
+        withCredentials: true,
+      })
       .withAutomaticReconnect()
       .build();
 
     this.hubConnection
       .start()
-      .then(() => console.log('SignalR OrderHub connected'))
+      .then(() => console.log('✅ SignalR OrderHub connected'))
       .catch((err) =>
-        console.error('Error while starting SignalR connection: ', err)
+        console.error('❌ Error while starting SignalR connection: ', err)
       );
 
-    // استماع لتحديثات الطلبات من السيرفر
     this.hubConnection.on('ReceiveOrderUpdate', (data: OrderUpdate) => {
-      // لتحديث Angular zone لضمان التحديث الصحيح للـ UI
       this.ngZone.run(() => {
         this.orderUpdatesSubject.next(data);
       });
@@ -49,21 +49,40 @@ export class OrderHubService {
       this.hubConnection
         .stop()
         .catch((err) =>
-          console.error('Error stopping SignalR connection:', err)
+          console.error('❌ Error stopping SignalR connection:', err)
         );
     }
   }
 
-  // للاشتراك في مجموعة معينة (مثلاً مجموعة المستخدم أو المتجر)
   public joinGroup(groupName: string): void {
+    if (
+      !this.hubConnection ||
+      this.hubConnection.state !== signalR.HubConnectionState.Connected
+    ) {
+      console.error('⚠️ Cannot join group: not connected yet');
+      return;
+    }
+
     this.hubConnection
       .invoke('JoinGroup', groupName)
-      .catch((err) => console.error(`Error joining group ${groupName}:`, err));
+      .catch((err) =>
+        console.error(`❌ Error joining group ${groupName}:`, err)
+      );
   }
 
   public leaveGroup(groupName: string): void {
+    if (
+      !this.hubConnection ||
+      this.hubConnection.state !== signalR.HubConnectionState.Connected
+    ) {
+      console.error('⚠️ Cannot leave group: not connected yet');
+      return;
+    }
+
     this.hubConnection
       .invoke('LeaveGroup', groupName)
-      .catch((err) => console.error(`Error leaving group ${groupName}:`, err));
+      .catch((err) =>
+        console.error(`❌ Error leaving group ${groupName}:`, err)
+      );
   }
 }

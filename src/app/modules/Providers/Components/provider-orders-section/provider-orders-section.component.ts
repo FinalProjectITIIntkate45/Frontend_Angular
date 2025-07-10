@@ -1,95 +1,126 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  computed,
+  effect,
+  signal,
+} from '@angular/core';
+import {
+  OrderHubService,
+  OrderUpdate,
+} from '../../../../core/services/order-hub.service';
+import { VendorService } from '../../Services/vendor.service';
 import { OrderService } from '../../../../core/services/order.service';
 import { ProviderOrderViewModel } from '../../Models/ProviderOrderViewModel';
-
 import { APIResponse } from '../../../../core/models/APIResponse';
 import { PaginatedResponse } from '../../../../core/models/PaginatedResponse';
 import { OrderStatus } from '../../Models/provider-orders.model';
 
 @Component({
   selector: 'app-provider-orders-section',
-
   templateUrl: './provider-orders-section.component.html',
   styleUrls: ['./provider-orders-section.component.css'],
   standalone: false,
 })
-export class ProviderOrdersSectionComponent implements OnInit {
-  orders: ProviderOrderViewModel[] = [];
-  filteredOrders: ProviderOrderViewModel[] = [];
-
-  searchControl = new FormControl('');
-  statusFilter = new FormControl('');
-  selectedStatus: string = '';
-
-  currentPage = 1;
-  pageSize = 10;
-  totalItems = 0;
-  loading = false;
-  errorMessage = '';
+export class ProviderOrdersSectionComponent implements OnInit, OnDestroy {
+  // Signals
+  orders = signal<ProviderOrderViewModel[]>([]);
+  search = signal('');
+  statusFilter = signal('');
+  currentPage = signal(1);
+  pageSize = signal(10);
+  errorMessage = signal('');
+  loading = signal(false);
 
   OrderStatus = OrderStatus;
 
-  constructor(private orderService: OrderService) {}
+  private shopId: number = 0;
+
+  // ====== Computed Signals ======
+  filteredOrders = computed(() => {
+    const term = this.search().toLowerCase();
+    const status = this.statusFilter().toLowerCase();
+
+    return this.orders().filter((order) => {
+      const matchesSearch =
+        order.Id.toString().includes(term) ||
+        order.CustomerInfo?.Name?.toLowerCase().includes(term);
+
+      const matchesStatus = status
+        ? order.Status?.toLowerCase() === status
+        : true;
+
+      return matchesSearch && matchesStatus;
+    });
+  });
+
+  paginatedOrders = computed(() => {
+    const start = (this.currentPage() - 1) * this.pageSize();
+    return this.filteredOrders().slice(start, start + this.pageSize());
+  });
+
+  totalPages = computed(() =>
+    Math.ceil(this.filteredOrders().length / this.pageSize())
+  );
+
+  constructor(
+    private orderService: OrderService,
+    private vendorService: VendorService,
+    private orderHubService: OrderHubService
+  ) {}
 
   ngOnInit(): void {
     this.loadOrders();
-    this.setupSearchListener();
+
+    this.vendorService.getVendorProfile().subscribe({
+      next: (profile) => {
+        this.shopId = profile.shopId;
+        this.orderHubService.startConnection();
+        this.orderHubService.joinGroup(`shop_${this.shopId}`);
+
+        this.orderHubService.orderUpdates$.subscribe((update) => {
+          if (update) this.handleOrderUpdate(update);
+        });
+      },
+      error: () => {
+        this.errorMessage.set('❌ Failed to load vendor profile');
+      },
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.orderHubService.leaveGroup(`shop_${this.shopId}`);
+    this.orderHubService.stopConnection();
   }
 
   loadOrders(): void {
-    this.loading = true;
+    this.loading.set(true);
     this.orderService
-      .getProviderOrders(this.currentPage, this.pageSize)
+      .getProviderOrders(this.currentPage(), this.pageSize())
       .subscribe({
         next: (
           res: APIResponse<PaginatedResponse<ProviderOrderViewModel[]>>
         ) => {
           if (res.IsSuccess) {
-            this.orders = res.Data.data;
-            this.totalItems = res.Data.totalCount;
-            this.applyFilters();
+            this.orders.set(res.Data.data);
           } else {
-            this.errorMessage = res.Message || 'Failed to load orders.';
+            this.errorMessage.set(res.Message || 'فشل في تحميل الطلبات');
           }
-          this.loading = false;
+          this.loading.set(false);
         },
         error: () => {
-          this.errorMessage = 'حدث خطأ أثناء تحميل الطلبات.';
-          this.loading = false;
+          this.errorMessage.set('حدث خطأ أثناء تحميل الطلبات.');
+          this.loading.set(false);
         },
       });
   }
 
-  setupSearchListener(): void {
-    this.searchControl.valueChanges
-      .pipe(debounceTime(300), distinctUntilChanged())
-      .subscribe(() => this.applyFilters());
-  }
-
-  applyFilters(): void {
-    let filtered = [...this.orders];
-    const searchTerm = this.searchControl.value?.toLowerCase();
-
-    if (searchTerm) {
-      filtered = filtered.filter(
-        (order) =>
-          order.id.toString().includes(searchTerm) ||
-          order.CustomerInfoS?.Name?.toLowerCase().includes(searchTerm)
-      );
-    }
-
-    if (this.selectedStatus) {
-      filtered = filtered.filter(
-        (order) =>
-          order.status?.toLowerCase() === this.selectedStatus.toLowerCase()
-      );
-    }
-
-    this.filteredOrders = filtered;
-    this.totalItems = filtered.length;
-    this.currentPage = 1;
+  handleOrderUpdate(update: OrderUpdate): void {
+    const updated = this.orders().map((order) =>
+      order.Id === update.orderId ? { ...order, Status: update.status } : order
+    );
+    this.orders.set(updated);
   }
 
   updateOrderStatus(orderId: number, status: OrderStatus): void {
@@ -100,36 +131,26 @@ export class ProviderOrdersSectionComponent implements OnInit {
   }
 
   clearFilters(): void {
-    this.searchControl.setValue('');
-    this.statusFilter.setValue('');
-    this.selectedStatus = '';
-    this.applyFilters();
-  }
-
-  onStatusFilterChange(event: any): void {
-    this.selectedStatus = event.target.value;
-    this.applyFilters();
-  }
-
-  get paginatedOrders(): ProviderOrderViewModel[] {
-    const startIndex = (this.currentPage - 1) * this.pageSize;
-    return this.filteredOrders.slice(startIndex, startIndex + this.pageSize);
-  }
-
-  get totalPages(): number {
-    return Math.ceil(this.totalItems / this.pageSize);
+    this.search.set('');
+    this.statusFilter.set('');
   }
 
   goToPage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) this.currentPage = page;
+    if (page >= 1 && page <= this.totalPages()) {
+      this.currentPage.set(page);
+    }
   }
 
   previousPage(): void {
-    if (this.currentPage > 1) this.currentPage--;
+    if (this.currentPage() > 1) {
+      this.currentPage.update((v) => v - 1);
+    }
   }
 
   nextPage(): void {
-    if (this.currentPage < this.totalPages) this.currentPage++;
+    if (this.currentPage() < this.totalPages()) {
+      this.currentPage.update((v) => v + 1);
+    }
   }
 
   getStatusClass(status: string): string {

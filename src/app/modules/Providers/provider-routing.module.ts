@@ -34,6 +34,7 @@ import { ProviderWalletSectionComponent } from './Components/provider-wallet-sec
 import { ProviderWalletSuccessComponent } from './Components/provider-wallet-success/provider-wallet-success.component';
 import { ShopInfoComponent } from './Components/shop-info/shop-info.component';
 import { ProviderOrdersSectionComponent } from './Components/provider-orders-section/provider-orders-section.component';
+import { OrderDetailsComponent } from './Components/provider-orders-section/order-details/order-details.component';
 
 const routes: Routes = [
   {
@@ -72,6 +73,7 @@ const routes: Routes = [
       { path: 'wallet/success', component: ProviderWalletSuccessComponent },
       { path: 'shop-info', component: ShopInfoComponent },
       { path: 'orders', component: ProviderOrdersSectionComponent },
+      { path: 'orders/:id', component: OrderDetailsComponent },
       { path: '**', redirectTo: 'dashboard' },
     ],
   },
