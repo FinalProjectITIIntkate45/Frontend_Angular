@@ -1,0 +1,20 @@
+<div class="container mt-4">
+  <div class="input-group mb-3">
+    <input type="text" class="form-control" placeholder="City" [(ngModel)]="city">
+    <button class="btn btn-primary" (click)="loadAuctions()">Search</button>
+  </div>
+
+  <div *ngFor="let auction of auctions" class="card mb-3">
+    <div class="card-body">
+      <h5>{{ auction.matrialname }}</h5>
+      <p>City: {{ auction.governorateName }}</p>
+      <p>Status: {{ auction.auctionStatus }}</p>
+      <a [routerLink]="['/auction', auction.id]">Details</a>
+    </div>
+  </div>
+
+  <nav class="d-flex justify-content-between">
+    <button class="btn btn-secondary" (click)="prevPage()">Previous</button>
+    <button class="btn btn-secondary" (click)="nextPage()">Next</button>
+  </nav>
+</div>

@@ -1,0 +1,26 @@
+<h3 class="mt-4">🏆 Top 3 Bids</h3>
+<ul class="list-group mb-4">
+  <li *ngFor="let bid of topThreeBids" class="list-group-item d-flex justify-content-between align-items-center">
+    💰 {{ bid.bidAmount }}
+    <span class="badge bg-primary">
+      {{ bid.status }}
+    </span>
+  </li>
+</ul>
+
+<h3>📋 All Bids</h3>
+<ul class="list-group">
+  <li *ngFor="let bid of bids" class="list-group-item">
+    💰 {{ bid.bidAmount }} | 🕒 {{ bid.createdAt | date:'short' }} | 🧾 {{ bid.recyclerId }}
+  </li>
+</ul>
+<div class="mt-4">
+  <h3>📈 Place a Bid</h3>
+  <form (ngSubmit)="placeBid()" #bidForm="ngForm">
+    <div class="mb-3">
+      <label for="bidAmount" class="form-label">Bid Amount</label>
+      <input type="number" id="bidAmount" class="form-control" [(ngModel)]="newBidAmount" name="bidAmount" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Place Bid</button>
+  </form>
+</div>

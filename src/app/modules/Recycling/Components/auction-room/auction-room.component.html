@@ -1,0 +1,192 @@
+<app-RecyclerLayout>
+  <div class="auction-room-container">
+    <!-- معلومات المزاد -->
+    <div class="auction-info-section" *ngIf="auction">
+      <h2>مزاد إعادة التدوير</h2>
+      <div class="auction-stats">
+        <span class="stat-item">
+          <i class="fas fa-users"></i>
+          {{ bidHistory.length }} مزايدة
+        </span>
+        <span class="stat-item">
+          <i class="fas fa-clock"></i>
+          {{ countdown }}
+        </span>
+        <span class="stat-item" *ngIf="userRank > 0">
+          <i class="fas fa-trophy"></i>
+          ترتيبك: {{ userRank }}
+        </span>
+      </div>
+    </div>
+
+    <!-- أعلى مزايدة -->
+    <div class="max-bid-section" [class.bid-flash]="bidFlash">
+      <h3>أعلى مزايدة حالية</h3>
+      <div class="max-bid-value">{{ highestBid | number }} جنيه</div>
+      <div class="bid-count" *ngIf="bidHistory.length > 0">
+        إجمالي المزايدات: {{ bidHistory.length }}
+      </div>
+    </div>
+
+    <!-- فورم تقديم مزايدة جديدة -->
+    <div class="place-bid-section">
+      <form (ngSubmit)="placeBid()" #bidForm="ngForm" autocomplete="off">
+        <label for="bidAmount" class="form-label">أدخل قيمة المزايدة الجديدة:</label>
+        <input
+          type="number"
+          id="bidAmount"
+          name="bidAmount"
+          class="form-control"
+          [(ngModel)]="bidAmount"
+          [min]="highestBid + 1"
+          required
+          [disabled]="isPlacingBid"
+          placeholder="مثال: {{ highestBid + 10 }}"
+        />
+        <button
+          type="submit"
+          class="btn btn-primary"
+          [disabled]="isPlacingBid || !bidForm.form.valid"
+        >
+          <span *ngIf="!isPlacingBid">تقديم المزايدة</span>
+          <span *ngIf="isPlacingBid">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            جاري التقديم...
+          </span>
+        </button>
+      </form>
+      <div class="bid-message">
+        <span class="success" *ngIf="bidSuccess">{{ bidSuccess }}</span>
+        <span class="error" *ngIf="bidError">{{ bidError }}</span>
+      </div>
+    </div>
+
+    <!-- الفيدباك المباشر -->
+    <div class="live-feedback-section" *ngIf="liveFeedback.length > 0">
+      <h4>
+        <i class="fas fa-broadcast-tower"></i>
+        النشاط المباشر
+      </h4>
+      <div class="live-feedback-list">
+        <div class="feedback-item" *ngFor="let feedback of liveFeedback; trackBy: trackByFeedback">
+          {{ feedback }}
+        </div>
+      </div>
+    </div>
+
+    <!-- الجداول الثلاثة جنب بعض -->
+    <div class="bids-tables-row">
+      <!-- أعلى 3 مزايدات -->
+      <div class="top3-bids-section">
+        <h4>
+          <i class="fas fa-medal"></i>
+          أعلى 3 مزايدات
+        </h4>
+        <table class="bids-table">
+          <thead>
+            <tr>
+              <th>الترتيب</th>
+              <th>المزايد</th>
+              <th>القيمة</th>
+              <th>الوقت</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let bid of top3Bids; trackBy: trackByBid" [class]="getPositionClass(bid.position)">
+              <td>
+                <span class="position-badge" [class]="getPositionClass(bid.position)">
+                  {{ bid.position }}
+                </span>
+              </td>
+              <td>{{ bid.recyclingName }}</td>
+              <td>{{ bid.bid | number }}</td>
+              <td>{{ getTimeAgo(bid.timestamp) }}</td>
+            </tr>
+            <tr *ngIf="top3Bids.length === 0">
+              <td colspan="4" class="no-data">لا توجد مزايدات بعد</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- كل المزايدات السابقة -->
+      <div class="all-bids-section">
+        <h4>
+          <i class="fas fa-history"></i>
+          كل المزايدات السابقة
+        </h4>
+        <div style="max-height: 300px; overflow-y: auto;">
+          <table class="bids-table">
+            <thead>
+              <tr>
+                <th>المزايد</th>
+                <th>القيمة</th>
+                <th>الوقت</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let bid of bidHistory; trackBy: trackByBid">
+                <td>{{ bid.recyclerName }}</td>
+                <td>{{ bid.bidAmount | number }}</td>
+                <td>{{ getTimeAgo(bid.createdAt) }}</td>
+              </tr>
+              <tr *ngIf="bidHistory.length === 0">
+                <td colspan="3" class="no-data">لا توجد مزايدات بعد</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- مزايداتي أنا فقط -->
+      <div class="my-bids-section">
+        <h4>
+          <i class="fas fa-user"></i>
+          مزايداتي
+        </h4>
+        <div style="max-height: 300px; overflow-y: auto;">
+          <table class="bids-table">
+            <thead>
+              <tr>
+                <th>القيمة</th>
+                <th>الوقت</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let bid of myBids; trackBy: trackByBid">
+                <td>{{ bid.bidAmount | number }}</td>
+                <td>{{ getTimeAgo(bid.createdAt) }}</td>
+              </tr>
+              <tr *ngIf="myBids.length === 0">
+                <td colspan="2" class="no-data">لم تضع أي مزايدة بعد</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ترتيب المستخدم -->
+    <div class="user-rank-section" *ngIf="userRank > 0">
+      <h4>ترتيبك الحالي</h4>
+      <div class="user-rank-display">
+        <span class="rank-number">{{ userRank }}</span>
+        <span class="rank-text">في قائمة أعلى المزايدين</span>
+      </div>
+    </div>
+
+    <!-- معلومات إضافية -->
+    <div class="additional-info" *ngIf="auction">
+      <div class="info-grid">
+        <div class="info-item">
+          <i class="fas fa-calendar"></i>
+          <span>تاريخ البداية: {{ auction.StartTime | date:'short' }}</span>
+        </div>
+        <div class="info-item">
+          <i class="fas fa-calendar-check"></i>
+          <span>تاريخ النهاية: {{ auction.EndTime | date:'short' }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-RecyclerLayout>

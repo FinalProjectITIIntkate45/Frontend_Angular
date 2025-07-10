@@ -5,7 +5,7 @@ export interface Wallet {
   lastUpdated: string;
   usertId: string;
 
-  // ✅ الخصائص المحسوبة من AppUser
+  // Calculated properties for points breakdown
   totalShopPoints: number;
   totalFreePoints: number;
   totalPendingPoints: number;

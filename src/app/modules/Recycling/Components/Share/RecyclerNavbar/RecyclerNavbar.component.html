@@ -1,0 +1,113 @@
+<!-- Header -->
+<div class="header">
+  <div class="header-content">
+    <h1>Recycler Dashboard</h1>
+    <p>Monitor your recycling activities and auction performance</p>
+  </div>
+  <div class="header-actions">
+    <!-- Recycler Info Display -->
+    <div class="recycler-info" *ngIf="recycler && !recyclerLoading">
+      <div class="recycler-modern-card">
+        <div class="recycler-avatar">
+          <i class="fas fa-user-circle"></i>
+        </div>
+        <div class="recycler-details">
+          <div class="recycler-main-name">{{ recycler.name }}</div>
+          <div class="recycler-center"><i class="fas fa-building"></i> {{ recycler.recyclingCenterName }}</div>
+          <div class="recycler-requests"><i class="fas fa-tasks"></i> Requests: <span>{{ recycler.requestcount }}</span></div>
+        </div>
+      </div>
+      <div class="recycler-status" [class]="getRecyclerStatusClass()">
+        <i class="fas fa-circle"></i>
+        <span>{{ getRecyclerStatusText() }}</span>
+      </div>
+      <div class="recycler-penalties">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span>{{ recycler.penalties }} Penalties</span>
+      </div>
+      <div class="recycler-flags">
+        <span *ngIf="recycler.isdeleted" class="badge badge-danger">Deleted</span>
+        <span *ngIf="!recycler.isdeleted && recycler.ispaid" class="badge badge-success">Paid</span>
+      </div>
+      <button class="refresh-recycler-btn" (click)="refreshRecyclerData()" title="Refresh recycler data">
+        <i class="fas fa-sync-alt"></i>
+      </button>
+    </div>
+    
+    <!-- Recycler Loading -->
+    <div class="recycler-loading" *ngIf="recyclerLoading">
+      <i class="fas fa-spinner fa-spin"></i>
+      <span>Loading recycler data...</span>
+    </div>
+
+    <!-- Wallet Display -->
+    <div class="wallet-display" *ngIf="wallet && !walletLoading">
+      <div class="wallet-item">
+        <i class="fas fa-coins"></i>
+        <span class="wallet-value">{{ formatPoints(wallet.balancePoints) }}</span>
+        <span class="wallet-label">Points</span>
+      </div>
+      <div class="wallet-item">
+        <i class="fas fa-dollar-sign"></i>
+        <span class="wallet-value">{{ formatCurrency(wallet.balancecash) }}</span>
+        <span class="wallet-label">Cash</span>
+      </div>
+      <button class="refresh-wallet-btn" (click)="refreshWallet()" title="Refresh wallet">
+        <i class="fas fa-sync-alt"></i>
+      </button>
+    </div>
+    
+    <!-- Wallet Loading -->
+    <div class="wallet-loading" *ngIf="walletLoading">
+      <i class="fas fa-spinner fa-spin"></i>
+      <span>Loading wallet...</span>
+    </div>
+
+    <button class="notification-btn" (click)="toggleNotificationPanel()">
+      <i class="fas fa-bell"></i>
+      <span class="notification-badge" *ngIf="notificationCount > 0">{{notificationCount}}</span>
+    </button>
+    <button class="logout-btn" (click)="logout()">
+      <i class="fas fa-sign-out-alt"></i>
+      Logout
+    </button>
+  </div>
+</div>
+
+<!-- Notification Panel -->
+<div class="notification-panel" [class.active]="showNotificationPanel">
+  <div class="notification-header">
+    <h4>Notifications</h4>
+    <button class="close-panel" (click)="toggleNotificationPanel()">
+      <i class="fas fa-times"></i>
+    </button>
+  </div>
+  <div class="notification-list">
+    <div *ngIf="notifications.length === 0" class="empty-state">
+      <i class="fas fa-bell-slash"></i>
+      <p>No notifications yet</p>
+    </div>
+    <div *ngFor="let notification of notifications" class="notification-item">
+      <div class="notification-icon">
+        <i class="fas fa-info-circle"></i>
+      </div>
+      <div class="notification-content">
+        <div class="notification-title">{{ notification.notificationType }}</div>
+        <div class="notification-text">{{ notification.message }}</div>
+        <div class="notification-time">
+          <i class="fas fa-flag"></i>
+          <span>{{ notification.status }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="notification-actions" *ngIf="notifications.length > 0">
+    <button class="clear-btn" (click)="clearNotifications()">
+      <i class="fas fa-trash"></i>
+      Clear All
+    </button>
+  </div>
+</div>
+
+<!-- Overlay for notification panel -->
+<div class="overlay" [class.active]="showNotificationPanel" (click)="toggleNotificationPanel()"></div>

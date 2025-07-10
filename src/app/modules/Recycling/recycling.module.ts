@@ -2,32 +2,75 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-
 import { RecyclingRoutingModule } from './recycling-routing.module';
+
+// Components
+import { NotificationComponent } from './Components/notification/notification.component';
 import { RecyclerDashboardComponent } from './Components/recycler-dashboard/recycler-dashboard.component';
-import { AuctionsListComponent } from './Components/auctions-list/auctions-list.component';
+import { AuctionDetailComponent } from './Components/auction-detail/auction-detail.component';
+import { AuctionListComponent } from './Components/GetAllAuctions/GetAllAuctions';
+import { AuctionRoomComponent } from './Components/auction-room/auction-room.component';
+import { ActiveAuctionsComponent } from './Components/get-active-auctions/active-auctions.component';
+import { RecyclerRequestsComponent } from './Components/recycler-requests/recycler-requests.component';
 import { WalletDisplayComponent } from './Components/wallet-display/wallet-display.component';
 
+// Shared Components
+import { RecyclerNavbarComponent } from './Components/Share/RecyclerNavbar/RecyclerNavbar.component';
+import { RecyclerSideBarComponent } from './Components/Share/RecyclerSideBar/RecyclerSideBar.component';
+import { RecyclerLayoutComponent } from './Components/Share/RecyclerLayout/RecyclerLayout.component';
+import { RecyclerDemoComponent } from './Components/Share/RecyclerDemo/RecyclerDemo.component';
+
 // Services
+import { RecyclerService } from './Services/recycler.service';
 import { AuctionService } from './Services/auction.service';
-import { WalletService } from './Services/wallet.service';
+import { AuctionRequestService } from './Services/auction-request.service';
+import { RecyclerRequestService } from './Services/RecyclerRequest.service';
+import { NotificationService } from './Services/notification.service.service';
+import { ActiveAuctionsService } from './Services/active-auctions.service';
+import { AuctionBidService } from './Services/auction-bid.service';
+import { AuctionBidSignalrService } from './Services/auction-bid-signalr.service';
 
 @NgModule({
   declarations: [
+    // Main Components
+    AuctionListComponent,
+    AuctionDetailComponent,
+    AuctionRoomComponent,
+    NotificationComponent,
     RecyclerDashboardComponent,
-    AuctionsListComponent,
-    WalletDisplayComponent
+    ActiveAuctionsComponent,
+    RecyclerRequestsComponent,
+    WalletDisplayComponent,
+    
+    // Shared Components
+    RecyclerNavbarComponent,
+    RecyclerSideBarComponent,
+    RecyclerLayoutComponent,
+    RecyclerDemoComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    RecyclingRoutingModule,
-    
+    RouterModule,
+    RecyclingRoutingModule
   ],
   providers: [
+    // Services
+    RecyclerService,
     AuctionService,
-    WalletService,
+    AuctionRequestService,
+    RecyclerRequestService,
+    NotificationService,
+    ActiveAuctionsService,
+    AuctionBidService,
+    AuctionBidSignalrService
   ],
+  exports: [
+    // Export shared components if needed by other modules
+    RecyclerLayoutComponent,
+    RecyclerNavbarComponent,
+    RecyclerSideBarComponent
+  ]
 })
-export class RecyclingModule {} 
+export class RecyclingModule {}

@@ -1,0 +1,15 @@
+<div class="recycler-layout">
+  <!-- Sidebar -->
+  <app-RecyclerSideBar (sectionChange)="onSectionChange($event)"></app-RecyclerSideBar>
+  
+  <!-- Main Content Area -->
+  <div class="main-content">
+    <!-- Navbar -->
+    <app-RecyclerNavbar></app-RecyclerNavbar>
+    
+    <!-- Content Area -->
+    <div class="content-area">
+      <ng-content></ng-content>
+    </div>
+  </div>
+</div> 

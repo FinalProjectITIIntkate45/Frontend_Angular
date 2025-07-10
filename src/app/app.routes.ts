@@ -20,4 +20,10 @@ export const routes: Routes = [
     loadChildren: () =>
       import('./modules/Providers/provider.module').then((m) => m.ProviderModule),
   },
+  {
+    path: 'Recycling',
+    canActivate: [authGuard],
+    loadChildren: () =>
+      import('./modules/Recycling/recycling.module').then((m) => m.RecyclingModule),
+  },
 ];
