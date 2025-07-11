@@ -1,121 +1,291 @@
+/* Container for entire profile section */
 .profile-section-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 2rem;
   padding: 1rem;
+  background-color: #f7f7f8;
+  min-height: 100vh;
 }
 
+/* Main profile card container */
 .profile-content {
   display: flex;
   flex-direction: row;
   align-items: center;
-  background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  padding: 2rem 3rem;
-  max-width: 600px;
+  background-color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(2, 48, 89, 0.08);
+  padding: 2.5rem 3rem;
+  max-width: 650px;
   width: 100%;
-  gap: 2rem;
-  transition: box-shadow 0.3s ease;
+  gap: 2.5rem;
+  border: 1px solid rgba(2, 48, 89, 0.06);
+  position: relative;
+  overflow: hidden;
+  transition: 
+    box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.profile-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #efb036, #023059);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .profile-content:hover {
-  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 12px 48px rgba(2, 48, 89, 0.12);
+  transform: translateY(-2px);
 }
 
+.profile-content:hover::before {
+  opacity: 1;
+}
+
+/* Profile image wrapper and hover effect */
 .profile-img-wrapper {
   flex-shrink: 0;
   position: relative;
 }
 
+.profile-img-wrapper::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: -4px;
+  right: -4px;
+  bottom: -4px;
+  background: linear-gradient(135deg, #efb036, #023059);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.profile-img-wrapper:hover::before {
+  opacity: 1;
+}
+
+/* Profile image style and hover scaling */
 .profile-img {
   width: 120px;
   height: 120px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid #efb036; 
-  transition: transform 0.3s ease;
+  border: 3px solid #efb036;
+  box-shadow: 0 4px 16px rgba(239, 176, 54, 0.25);
+  position: relative;
+  z-index: 2;
+  transition: 
+    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .profile-img:hover {
   transform: scale(1.05);
+  border-color: #023059;
+  box-shadow: 0 8px 24px rgba(2, 48, 89, 0.3);
 }
 
+/* Profile information container */
 .profile-info {
   flex: 1;
 }
 
 .profile-info h2 {
-  margin: 0 0 0.5rem;
-  font-size: 1.8rem;
+  margin: 0 0 0.75rem;
+  font-size: 2rem;
   color: #023059;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  transition: color 0.3s ease;
+  cursor: default;
+}
+
+.profile-info h2:hover {
+  color: #efb036;
 }
 
 .profile-info p {
-  margin: 0.3rem 0;
-  color: #444;
-  font-size: 0.95rem;
+  margin: 0.4rem 0;
+  color: #9197b3;
+  font-size: 1rem;
+  line-height: 1.6;
+  font-weight: 400;
+  transition: color 0.3s ease;
 }
 
+.profile-info p:hover {
+  color: #023059;
+}
+
+/* Balances section */
 .profile-balances {
   display: flex;
   flex-wrap: wrap;
-  gap: 2rem;
-  margin-top: 1.2rem;
+  gap: 2.5rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(145, 151, 179, 0.2);
 }
 
 .balance-item {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  padding: 1rem 1.5rem;
+  background-color: rgba(247, 247, 248, 0.5);
+  border-radius: 12px;
+  border: 1px solid rgba(145, 151, 179, 0.1);
+  min-width: 120px;
+  transition: 
+    background-color 0.3s ease, 
+    border-color 0.3s ease, 
+    transform 0.3s ease;
+  cursor: default;
+}
+
+.balance-item:hover {
+  background-color: rgba(239, 176, 54, 0.05);
+  border-color: rgba(239, 176, 54, 0.2);
+  transform: translateY(-1px);
 }
 
 .balance-label {
-  font-size: 0.9rem;
-  color: #757575;
-  margin-bottom: 0.3rem;
+  font-size: 0.875rem;
+  color: #9197b3;
+  margin-bottom: 0.4rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  transition: color 0.3s ease;
+}
+
+.balance-item:hover .balance-label {
+  color: #023059;
 }
 
 .balance-value {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #2a7ae4;
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: #023059;
+  letter-spacing: -0.01em;
+  transition: 
+    color 0.3s ease, 
+    transform 0.3s ease;
 }
 
+.balance-item:hover .balance-value {
+  color: #efb036;
+  transform: scale(1.05);
+}
+
+/* Error message style */
 .error-message {
-  color: #d32f2f;
-  background: #fff0f0;
-  border: 1px solid #f8d7da;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  margin-bottom: 1.2rem;
-  max-width: 600px;
+  max-width: 650px;
   width: 100%;
+  margin-bottom: 1.5rem;
+  padding: 1rem 1.5rem;
+  border-radius: 12px;
+  border: 1px solid rgba(211, 47, 47, 0.3);
+  background: linear-gradient(135deg, #fff0f0, #ffeaea);
+  color: #d32f2f;
+  font-weight: 500;
+  box-shadow: 0 4px 16px rgba(211, 47, 47, 0.1);
+  transition: box-shadow 0.3s ease;
+  cursor: default;
 }
 
+.error-message:hover {
+  box-shadow: 0 6px 24px rgba(211, 47, 47, 0.15);
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
+  .profile-section-container {
+    padding: 0.5rem;
+  }
+
   .profile-content {
     flex-direction: column;
-    padding: 1.5rem;
-    gap: 1.5rem;
+    padding: 2rem 1.5rem;
+    gap: 2rem;
+    border-radius: 16px;
+    margin: 0 0.5rem;
   }
 
   .profile-img {
-    width: 90px;
-    height: 90px;
+    width: 100px;
+    height: 100px;
   }
 
   .profile-info h2 {
-    font-size: 1.4rem;
+    font-size: 1.625rem;
     text-align: center;
+    margin-bottom: 1rem;
   }
 
   .profile-info p {
+    font-size: 0.95rem;
     text-align: center;
   }
 
   .profile-balances {
     justify-content: center;
+    gap: 1.5rem;
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+  }
+
+  .balance-item {
+    min-width: 100px;
+    padding: 0.75rem 1rem;
+    text-align: center;
+    align-items: center;
+  }
+
+  .balance-label {
+    font-size: 0.8rem;
+  }
+
+  .balance-value {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-content {
+    padding: 1.5rem 1rem;
+    gap: 1.5rem;
+  }
+
+  .profile-img {
+    width: 80px;
+    height: 80px;
+  }
+
+  .profile-info h2 {
+    font-size: 1.375rem;
+  }
+
+  .profile-balances {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .balance-item {
+    width: 100%;
+    max-width: 200px;
   }
 }
