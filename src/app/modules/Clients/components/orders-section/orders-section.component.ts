@@ -19,6 +19,7 @@ import { PaginatedResponse } from '../../../../core/models/PaginatedResponse';
   selector: 'app-orders-section',
   templateUrl: './orders-section.component.html',
   styleUrls: ['./orders-section.component.css'],
+  standalone: false,
 })
 export class OrdersSectionComponent implements OnInit, OnDestroy {
   orders: OrderResponseViewModel[] = [];
