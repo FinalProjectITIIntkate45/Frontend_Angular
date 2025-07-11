@@ -76,11 +76,13 @@ export class ProviderOrdersSectionComponent implements OnInit, OnDestroy {
     this.vendorService.getVendorProfile().subscribe({
       next: (profile) => {
         this.shopId = profile.shopId;
-        this.orderHubService.startConnection();
-        this.orderHubService.joinGroup(`shop_${this.shopId}`);
+        this.orderHubService.startConnection(`shop_${this.shopId}`);
 
         this.orderHubService.orderUpdates$.subscribe((update) => {
-          if (update) this.handleOrderUpdate(update);
+          if (update) {
+            console.log('📥 update received in component:', update);
+            this.handleOrderUpdate(update);
+          }
         });
       },
       error: () => {
