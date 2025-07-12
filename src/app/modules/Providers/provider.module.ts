@@ -51,6 +51,7 @@ import { ProviderOrderDetailsComponent } from './Components/provider-order-detai
 import { ShopInfoComponent } from './Components/shop-info/shop-info.component';
 import { ProviderOrdersSectionComponent } from './Components/provider-orders-section/provider-orders-section.component';
 import { OrderDetailsComponent } from './Components/provider-orders-section/order-details/order-details.component';
+import { NotificationComponent } from './Components/notification/notification.component';
 
 @NgModule({
   declarations: [
@@ -84,32 +85,13 @@ import { OrderDetailsComponent } from './Components/provider-orders-section/orde
     FollowersComponent,
     ShopsComponent,
     ProviderOrderDetailsComponent,
-    AddShopComponent,
-    EditShopComponent,
-    ProviderOrdersComponent,
+
     ProviderDashboardComponent,
-    SubScrptionComponent,
-    ProductFormPageComponent,
-    ProductDetailsPageComponent,
-    ProductListPageComponent,
-    EditDetailsComponent,
-    EditOfferComponent,
-    ShopProductsComponent,
-    ShopOffersComponent,
-    OfferDetailesComponent,
-    MakeOfferComponent,
-    OfferProductManagerComponent,
-    SidebarComponent,
-    HeaderComponent,
-    WelcomeBannerComponent,
-    OrdersTableComponent,
-    NotificationsPanelComponent,
-    ChartContainerComponent,
-    StatsCardComponent,
-    SubScrptionComponent,
+
     ShopInfoComponent,
     ProviderOrdersSectionComponent,
     OrderDetailsComponent,
+    NotificationComponent,
   ],
   exports: [
     ProviderLayoutComponent,
@@ -136,6 +118,7 @@ import { OrderDetailsComponent } from './Components/provider-orders-section/orde
     FollowersComponent,
     ShopsComponent,
     ShopInfoComponent,
+    NotificationComponent,
   ],
   imports: [
     CommonModule,
@@ -145,10 +128,6 @@ import { OrderDetailsComponent } from './Components/provider-orders-section/orde
     SafeUrlPipe,
   ],
   providers: [
-    provideHttpClient(
-      withFetch(),
-      withInterceptors([AuthInterceptor, LoaderInterceptor])
-    ),
     provideHttpClient(
       withFetch(),
       withInterceptors([AuthInterceptor, LoaderInterceptor])
