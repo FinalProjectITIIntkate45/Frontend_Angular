@@ -1,127 +1,622 @@
-<div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center bg-light">
-    <div class="row w-75 shadow rounded overflow-hidden">
-        <!-- Left Column (Image) -->
-        <div class="col-md-6 d-none d-md-block p-0">
-            <img src="assets/register-side.jpg" alt="Register" class="img-fluid h-100 w-100 object-fit-cover">
-        </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Modern Registration Template</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+    <style>
+        :root {
+            --primary-blue: #023059;
+            --accent-orange: #efb036;
+            --light-bg: #f7f7f8;
+            --cool-gray: #9197b3;
+            --white: #ffffff;
+        }
 
-        <!-- Right Column (Form) -->
-        <div class="col-md-6 bg-white p-5">
-            <h3 class="mb-4 text-center">Create an Account</h3>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--light-bg) 0%, #e8eaf6 100%);
+            min-height: 100vh;
+        }
 
-            <div *ngIf="errorMessage" class="alert alert-danger">
-                {{ errorMessage }}
-            </div>
+        .registration-container {
+            min-height: 100vh;
+            padding: 2rem 0;
+        }
 
-            <form (ngSubmit)="register()" #registerForm="ngForm">
-                <div class="mb-3">
-                    <label for="username" class="form-label">Full Name</label>
-                    <input type="text" id="username" name="username" class="form-control" [(ngModel)]="model.userName"
-                        #userName="ngModel" required minlength="3"
-                        [ngClass]="{'is-invalid': userName.invalid && userName.touched}"
-                        placeholder="Enter your full name" />
-                    <div class="invalid-feedback" *ngIf="userName.invalid && userName.touched">
-                        Please enter a valid name (minimum 3 characters)
-                    </div>
-                </div>
+        .registration-card {
+            background: var(--white);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(2, 48, 89, 0.1);
+            overflow: hidden;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email address</label>
-                    <input type="email" id="email" name="email" class="form-control" [(ngModel)]="model.email"
-                        #email="ngModel" required email [ngClass]="{'is-invalid': email.invalid && email.touched}"
-                        placeholder="Enter your email" />
-                    <div class="invalid-feedback" *ngIf="email.invalid && email.touched">
-                        Please enter a valid email address
-                    </div>
-                </div>
+        .logo-section {
+            position: relative;
+            z-index: 2;
+        }
 
-                <div class="mb-3">
-                    <label for="phone" class="form-label">Phone Number</label>
-                    <input type="tel" id="phone" name="phone" class="form-control" [(ngModel)]="model.phoneNumber"
-                        #phone="ngModel" required pattern="^01[0-2,5]{1}[0-9]{8}$"
-                        [ngClass]="{'is-invalid': phone.invalid && phone.touched}"
-                        placeholder="Enter your phone number" />
-                    <div class="invalid-feedback" *ngIf="phone.invalid && phone.touched">
-                        Please enter a valid Egyptian phone number
-                    </div>
-                </div>
+        /* شيلت المسافات عند اللوجو واللي تحته */
+        .logo-placeholder {
+            margin-bottom: 0;
+        }
 
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <div class="input-group">
-                        <input [type]="showPassword ? 'text' : 'password'" id="password" name="password"
-                            class="form-control" [(ngModel)]="model.password" #password="ngModel" required minlength="6"
-                            [ngClass]="{'is-invalid': password.invalid && (password.dirty || password.touched)}"
-                            placeholder="Enter your password" />
-                        <span class="input-group-text" (click)="togglePassword()">
-                            <i [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
-                        </span>
-                        <div class="invalid-feedback" *ngIf="password.invalid && (password.dirty || password.touched)">
-                            Password must be at least 6 characters long
+        .logo-box {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 1rem 1.5rem;
+            display: inline-block;
+            min-width: 200px;
+        }
+
+        .logo-text {
+            color: var(--white);
+            font-size: 0.9rem;
+            font-weight: 500;
+            opacity: 0.7;
+            letter-spacing: 1px;
+        }
+
+        .benefits-section {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #034a73 100%);
+            color: var(--white);
+            padding: 3rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .benefits-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(239, 176, 54, 0.1) 0%, transparent 70%);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%,
+            100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            50% {
+                transform: translate(-10px, -10px) rotate(3deg);
+            }
+        }
+
+        .benefits-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--white);
+        }
+
+        .benefits-subtitle {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2.5rem;
+        }
+
+        .benefit-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .benefit-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--accent-orange);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .benefit-card:hover .benefit-icon {
+            transform: scale(1.1);
+            background: #ffc947;
+        }
+
+        .benefit-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 0.5rem;
+        }
+
+        .benefit-text {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.4;
+        }
+
+        .form-section {
+            padding: 3rem 2.5rem;
+            background: var(--white);
+        }
+
+        .form-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .form-subtitle {
+            color: var(--cool-gray);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: var(--primary-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control {
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: var(--light-bg);
+        }
+
+        .form-control:focus {
+            border-color: var(--accent-orange);
+            box-shadow: 0 0 0 0.2rem rgba(239, 176, 54, 0.25);
+            background: var(--white);
+        }
+
+        .form-control.is-invalid {
+            border-color: #dc3545;
+            background: #fff5f5;
+        }
+
+        .input-group-text {
+            background: var(--light-bg);
+            border: 2px solid #e1e5e9;
+            border-left: none;
+            border-radius: 0 12px 12px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .input-group-text:hover {
+            background: var(--accent-orange);
+            color: var(--white);
+        }
+
+        .btn-group .btn-outline-primary {
+            border: 2px solid var(--primary-blue);
+            color: var(--primary-blue);
+            border-radius: 12px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-group .btn-outline-primary:hover,
+        .btn-group .btn-outline-primary.active {
+            background: var(--primary-blue);
+            border-color: var(--primary-blue);
+            color: var(--white);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #034a73 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(2, 48, 89, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .alert-danger {
+            background: #fff5f5;
+            border: 1px solid #fecaca;
+            color: #dc2626;
+            border-radius: 12px;
+            padding: 1rem;
+        }
+
+        .invalid-feedback {
+            color: #dc2626;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .login-link {
+            color: var(--primary-blue);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .login-link:hover {
+            color: var(--accent-orange);
+        }
+
+        @media (max-width: 768px) {
+            .registration-card {
+                border-radius: 0;
+                box-shadow: none;
+            }
+
+            .benefits-section {
+                padding: 2rem 1.5rem;
+            }
+
+            .benefits-title {
+                font-size: 2rem;
+            }
+
+            .form-section {
+                padding: 2rem 1.5rem;
+            }
+
+            .form-title {
+                font-size: 1.8rem;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+
+            .btn-group .btn-outline-primary {
+                margin-bottom: 0.5rem;
+                border-radius: 12px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- This is your redesigned Angular template -->
+    <div class="container-fluid registration-container d-flex align-items-center justify-content-center">
+        <div class="registration-card w-100">
+            <div class="row g-0 min-vh-100">
+                <!-- Left Column (Benefits) -->
+                <div class="col-lg-5 d-none d-lg-block">
+                    <div class="benefits-section h-100 d-flex flex-column justify-content-center">
+                        <!-- Logo Placeholder Section -->
+                        <div class="logo-section text-center mb-4">
+                            <div class="logo-placeholder">
+                                <!-- INSERT POINTPAY LOGO HERE -->
+                                <img src="assets/pointpay-05.png" alt="" class="img-fluid" />
+                                <div class="logo-box">
+                                    <span class="logo-text"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="benefits-content">
+                            <p class="benefits-subtitle">
+                                Join the recycling movement and make a difference with every action
+                            </p>
+
+                            <div class="benefit-card">
+                                <div class="benefit-icon">
+                                    <svg
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                    >
+                                        <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" />
+                                        <line x1="4" y1="22" x2="4" y2="15" />
+                                        <path d="M12 8l2 2 4-4" />
+                                    </svg>
+                                </div>
+                                <h4 class="benefit-title">Track Your Recycling</h4>
+                                <p class="benefit-text">
+                                    Get real-time updates on your impact and monitor your recycling journey with detailed
+                                    progress reports
+                                </p>
+                            </div>
+
+                            <div class="benefit-card">
+                                <div class="benefit-icon">
+                                    <svg
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                    >
+                                        <circle cx="12" cy="12" r="3" />
+                                        <path d="M12 1v6M12 17v6M4.22 4.22l4.24 4.24M15.54 15.54l4.24 4.24M1 12h6M17 12h6M4.22 19.78l4.24-4.24M15.54 8.46l4.24-4.24" />
+                                        <circle cx="12" cy="12" r="8" opacity="0.3" />
+                                    </svg>
+                                </div>
+                                <h4 class="benefit-title">Earn Points</h4>
+                                <p class="benefit-text">
+                                    Collect rewards for recycling actions and redeem them for exclusive benefits and discounts
+                                </p>
+                            </div>
+
+                            <div class="benefit-card">
+                                <div class="benefit-icon">
+                                    <svg
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                    >
+                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                                        <circle cx="12" cy="16" r="1" />
+                                    </svg>
+                                </div>
+                                <h4 class="benefit-title">Secure & Fast</h4>
+                                <p class="benefit-text">
+                                    Your data is protected with enterprise-level security and lightning-fast processing
+                                </p>
+                            </div>
+
+                            <div class="benefit-card">
+                                <div class="benefit-icon">
+                                    <svg
+                                        width="24"
+                                        height="24"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        stroke="currentColor"
+                                        stroke-width="2"
+                                    >
+                                        <circle cx="12" cy="12" r="10" />
+                                        <path d="M8 12h8" />
+                                        <path d="M12 8v8" />
+                                        <path d="M16 8h-8l4 4 4-4z" opacity="0.3" />
+                                        <path d="M8 16h8l-4-4-4 4z" opacity="0.3" />
+                                    </svg>
+                                </div>
+                                <h4 class="benefit-title">Environmental Impact</h4>
+                                <p class="benefit-text">
+                                    Help reduce waste and protect the environment while making a positive impact on our planet
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="mb-3">
-                    <label for="PasswordConfirmed" class="form-label">Confirm Password</label>
-                    <input type="password" id="PasswordConfirmed" name="PasswordConfirmed" class="form-control"
-                        [(ngModel)]="model.PasswordConfirmed" #PasswordConfirmed="ngModel" required
-                        [ngClass]="{'is-invalid': (PasswordConfirmed.dirty || PasswordConfirmed.touched) && !validatePasswords()}"
-                        placeholder="Confirm your password" />
-                    <div class="invalid-feedback"
-                        *ngIf="(PasswordConfirmed.dirty || PasswordConfirmed.touched) && !validatePasswords()">
-                        Passwords must match and be at least 6 characters
+                <!-- Right Column (Form) - KEEPING ALL ANGULAR LOGIC INTACT -->
+                <div class="col-lg-7">
+                    <div class="form-section">
+                        <h3 class="form-title">Create an Account</h3>
+                        <p class="form-subtitle">Join thousands of users making a positive impact</p>
+
+                        <div *ngIf="errorMessage" class="alert alert-danger">
+                            {{ errorMessage }}
+                        </div>
+
+                        <form (ngSubmit)="register()" #registerForm="ngForm">
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Full Name</label>
+                                <input
+                                    type="text"
+                                    id="username"
+                                    name="username"
+                                    class="form-control"
+                                    [(ngModel)]="model.userName"
+                                    #userName="ngModel"
+                                    required
+                                    minlength="3"
+                                    [ngClass]="{ 'is-invalid': userName.invalid && userName.touched }"
+                                    placeholder="Enter your full name"
+                                />
+                                <div class="invalid-feedback" *ngIf="userName.invalid && userName.touched">
+                                    Please enter a valid name (minimum 3 characters)
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email address</label>
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    class="form-control"
+                                    [(ngModel)]="model.email"
+                                    #email="ngModel"
+                                    required
+                                    email
+                                    [ngClass]="{ 'is-invalid': email.invalid && email.touched }"
+                                    placeholder="Enter your email"
+                                />
+                                <div class="invalid-feedback" *ngIf="email.invalid && email.touched">
+                                    Please enter a valid email address
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input
+                                    type="tel"
+                                    id="phone"
+                                    name="phone"
+                                    class="form-control"
+                                    [(ngModel)]="model.phoneNumber"
+                                    #phone="ngModel"
+                                    required
+                                    pattern="^01[0-2,5]{1}[0-9]{8}$"
+                                    [ngClass]="{ 'is-invalid': phone.invalid && phone.touched }"
+                                    placeholder="Enter your phone number"
+                                />
+                                <div class="invalid-feedback" *ngIf="phone.invalid && phone.touched">
+                                    Please enter a valid Egyptian phone number
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <div class="input-group">
+                                    <input
+                                        [type]="showPassword ? 'text' : 'password'"
+                                        id="password"
+                                        name="password"
+                                        class="form-control"
+                                        [(ngModel)]="model.password"
+                                        #password="ngModel"
+                                        required
+                                        minlength="6"
+                                        [ngClass]="{ 'is-invalid': password.invalid && (password.dirty || password.touched) }"
+                                        placeholder="Enter your password"
+                                    />
+                                    <span class="input-group-text" (click)="togglePassword()">
+                                        <i [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                                    </span>
+                                    <div
+                                        class="invalid-feedback"
+                                        *ngIf="password.invalid && (password.dirty || password.touched)"
+                                    >
+                                        Password must be at least 6 characters long
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="PasswordConfirmed" class="form-label">Confirm Password</label>
+                                <input
+                                    type="password"
+                                    id="PasswordConfirmed"
+                                    name="PasswordConfirmed"
+                                    class="form-control"
+                                    [(ngModel)]="model.PasswordConfirmed"
+                                    #PasswordConfirmed="ngModel"
+                                    required
+                                    [ngClass]="{ 'is-invalid': (PasswordConfirmed.dirty || PasswordConfirmed.touched) && !validatePasswords() }"
+                                    placeholder="Confirm your password"
+                                />
+                                <div
+                                    class="invalid-feedback"
+                                    *ngIf="(PasswordConfirmed.dirty || PasswordConfirmed.touched) && !validatePasswords()"
+                                >
+                                    Passwords must match and be at least 6 characters
+                                </div>
+                            </div>
+
+                            <div *ngIf="model.role === 'Recycler'" class="form-group mb-3">
+                                <label for="center" class="form-label">Recycling Center Name</label>
+                                <input
+                                    id="center"
+                                    type="text"
+                                    class="form-control"
+                                    [(ngModel)]="model.recyclingCenterName"
+                                    name="recyclingCenterName"
+                                    required
+                                    placeholder="Enter recycling center name"
+                                />
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label d-block">Account Type</label>
+                                <div class="btn-group w-100" role="group">
+                                    <input
+                                        type="radio"
+                                        class="btn-check"
+                                        name="role"
+                                        id="clientRole"
+                                        [checked]="model.role === 'Client'"
+                                        (change)="setRole('Client')"
+                                        autocomplete="off"
+                                    />
+                                    <label class="btn btn-outline-primary" for="clientRole">
+                                        <i class="fas fa-user me-2"></i>Client
+                                    </label>
+
+                                    <input
+                                        type="radio"
+                                        class="btn-check"
+                                        name="role"
+                                        id="providerRole"
+                                        [checked]="model.role === 'Provider'"
+                                        (change)="setRole('Provider')"
+                                        autocomplete="off"
+                                    />
+                                    <label class="btn btn-outline-primary" for="providerRole">
+                                        <i class="fas fa-store me-2"></i>Provider
+                                    </label>
+
+                                    <input
+                                        type="radio"
+                                        class="btn-check"
+                                        name="role"
+                                        id="RecyclerRole"
+                                        [checked]="model.role === 'Recycler'"
+                                        (change)="setRole('Recycler')"
+                                        autocomplete="off"
+                                    />
+                                    <label class="btn btn-outline-primary" for="RecyclerRole">
+                                        <i class="fas fa-recycle me-2"></i>Recycler
+                                    </label>
+                                </div>
+
+                                <div
+                                    class="invalid-feedback d-block"
+                                    *ngIf="errorMessage === 'Please select an account type'"
+                                >
+                                    Please select an account type
+                                </div>
+                            </div>
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary w-100 mb-3"
+                                [disabled]="registerForm.invalid || loading || !validatePasswords()"
+                            >
+                                {{ loading ? 'Creating Account...' : 'Register' }}
+                            </button>
+                        </form>
+
+                        <div class="text-center mt-3">
+                            <a routerLink="/account/login" class="login-link">Already have an account? Login</a>
+                        </div>
                     </div>
                 </div>
-                <div *ngIf="model.role === 'Recycler'" class="form-group">
-                      <label for="center">Recycling Center Name</label>
-                      <input
-                        id="center"
-                        type="text"
-                        class="form-control"
-                        [(ngModel)]="model.recyclingCenterName"
-                        name="recyclingCenterName"
-                        required
-                      />
-                    </div>
-
-
-                <div class="mb-4">
-                    <label class="form-label d-block">Account Type</label>
-                    <div class="btn-group w-100" role="group">
-                        <input type="radio" class="btn-check" name="role" id="clientRole"
-                            [checked]="model.role === 'Client'" (change)="setRole('Client')" autocomplete="off">
-                        <label class="btn btn-outline-primary" for="clientRole">
-                            <i class="fas fa-user me-2"></i>Client
-                        </label>
-
-                        <input type="radio" class="btn-check" name="role" id="providerRole"
-                            [checked]="model.role === 'Provider'" (change)="setRole('Provider')" autocomplete="off">
-                        <label class="btn btn-outline-primary" for="providerRole">
-                            <i class="fas fa-store me-2"></i>Provider
-                        </label>
-                        <!-- Add more role options here Recycler  -->
-                        <input type="radio" class="btn-check" name="role" id="RecyclerRole"
-                            [checked]="model.role === 'Recycler'" (change)="setRole('Recycler')" autocomplete="off">
-                        <label class="btn btn-outline-primary" for="RecyclerRole">
-                            <i class="fas fa-recycle me-2"></i>Recycler
-                        </label>
-                    </div>
-
-                    <div class="invalid-feedback d-block" *ngIf="errorMessage === 'Please select an account type'">
-                        Please select an account type
-                    </div>
-                </div>
-
-                <button type="submit" class="btn btn-primary w-100 mb-3"
-                    [disabled]="registerForm.invalid || loading || !validatePasswords()">
-                    {{ loading ? 'Creating Account...' : 'Register' }}
-                </button>
-            </form>
-
-            <div class="text-center mt-3">
-                <a routerLink="/account/login">Already have an account? Login</a>
             </div>
         </div>
     </div>
-</div>
+</body>
+</html>
