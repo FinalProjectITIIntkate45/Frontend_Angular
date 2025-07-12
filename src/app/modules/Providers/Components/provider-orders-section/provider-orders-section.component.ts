@@ -1,11 +1,4 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy,
-  computed,
-  effect,
-  signal,
-} from '@angular/core';
+import { Component, OnInit, OnDestroy, computed, signal } from '@angular/core';
 import {
   OrderHubService,
   OrderUpdate,
@@ -24,7 +17,6 @@ import { OrderStatus } from '../../Models/provider-orders.model';
   standalone: false,
 })
 export class ProviderOrdersSectionComponent implements OnInit, OnDestroy {
-  // Signals
   orders = signal<ProviderOrderViewModel[]>([]);
   search = signal('');
   statusFilter = signal('');
@@ -34,10 +26,8 @@ export class ProviderOrdersSectionComponent implements OnInit, OnDestroy {
   loading = signal(false);
 
   OrderStatus = OrderStatus;
-
   private shopId: number = 0;
 
-  // ====== Computed Signals ======
   filteredOrders = computed(() => {
     const term = this.search().toLowerCase();
     const status = this.statusFilter().toLowerCase();
@@ -77,7 +67,6 @@ export class ProviderOrdersSectionComponent implements OnInit, OnDestroy {
       next: (profile) => {
         this.shopId = profile.shopId;
         this.orderHubService.startConnection(`shop_${this.shopId}`);
-
         this.orderHubService.orderUpdates$.subscribe((update) => {
           if (update) {
             console.log('📥 update received in component:', update);
