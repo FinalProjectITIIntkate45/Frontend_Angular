@@ -25,6 +25,7 @@ import { OfferListComponent } from './components/offer/offer-list/offer-list.com
 import { ClientOrderDetailsComponent } from './components/orders-section/client-order-details/client-order-details.component';
 import { WalletRechargeComponent } from './components/wallet-recharge/wallet-recharge.component';
 import { WalletSuccessComponent } from './components/wallet-success/wallet-success.component';
+import { AboutUsComponent } from './components/about-us/about-us.component';
 
 const routes: Routes = [
   {
@@ -38,6 +39,7 @@ const routes: Routes = [
     path: '',
     component: UserProfileComponent,
     children: [
+       { path: 'about-us', component: AboutUsComponent },
       { path: '', redirectTo: 'profile', pathMatch: 'full' },
       { path: 'profile', component: ProfileSectionComponent },
       { path: 'wallet', component: WalletSectionComponent },
