@@ -1,0 +1,39 @@
+<div class="sidebar">
+  <!-- Sidebar Header -->
+  <div class="sidebar-header">
+    <div class="logo">
+      <i class="fas fa-recycle"></i>
+      <span>Recycler</span>
+    </div>
+  </div>
+
+  <!-- Navigation Menu -->
+  <nav class="sidebar-nav">
+    <ul class="nav-list">
+      <li *ngFor="let item of menuItems" class="nav-item">
+        <a class="nav-link" 
+           [class.active]="isActive(item.id)"
+           (click)="selectSection(item.id)">
+          <i [class]="item.icon"></i>
+          <span>{{ item.label }}</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Sidebar Footer -->
+  <div class="sidebar-footer">
+    <div class="help-center">
+      <a class="help-link">
+        <i class="fas fa-question-circle"></i>
+        <span>Help Center</span>
+      </a>
+    </div>
+    <div class="logout" (click)="logout()">
+      <a class="logout-link">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>Log out</span>
+      </a>
+    </div>
+  </div>
+</div>

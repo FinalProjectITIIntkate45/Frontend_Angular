@@ -28,8 +28,7 @@ export interface CustomerInfoViewModel {
 }
 
 export interface ShippingAddressViewModel {
-  address: string;
-  city: string;
-  street: string;
-  postalCode: string;
+  Address: string;
+  City: string;
+  Street: string;
 }

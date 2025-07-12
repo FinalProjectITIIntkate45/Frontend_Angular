@@ -1,20 +1,19 @@
 <div class="notifications-panel">
-  <div class="notification-item">
+  <div *ngIf="notifications.length === 0" class="notification-item text-center text-muted">
+    No new product notifications yet.
+  </div>
+  <div *ngFor="let notif of notifications" class="notification-item">
     <div class="notification-icon notification-new">
       <i class="fas fa-bell"></i>
     </div>
     <div>
-      <h6 class="mb-1">Start your day with New Notification.</h6>
-      <small class="text-muted">You have 2 new notification</small>
-    </div>
-  </div>
-  <div class="notification-item">
-    <div class="notification-icon notification-sales">
-      <i class="fas fa-chart-line"></i>
-    </div>
-    <div>
-      <h6 class="mb-1">Monitor your Sales and Profitability</h6>
-      <small class="text-muted">You have <a href="#" class="text-primary">View Performance</a></small>
+      <h6 class="mb-1">
+        New product from <span class="fw-bold">{{ notif.Data.ShopName }}</span>:
+        <span class="fw-bold">{{ notif.Data.ProductName }}</span>
+      </h6>
+      <small class="text-muted">
+        Product ID: {{ notif.Data.ProductId }} | Price: {{ notif.Data.ProductPrice }}
+      </small>
     </div>
   </div>
 </div>

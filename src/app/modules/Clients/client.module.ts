@@ -45,6 +45,14 @@ import { PaymentInfoComponent } from './components/checkout/payment-info/payment
 import { ClientOrderDetailsComponent } from './components/orders-section/client-order-details/client-order-details.component';
 import { WalletRechargeComponent } from './components/wallet-recharge/wallet-recharge.component';
 import { WalletSuccessComponent } from './components/wallet-success/wallet-success.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ShopDetailsModalComponent } from './components/shop-details-modal/shop-details-modal.component';
+import { ClientNotificationsPanelComponent } from './components/notifications-panel/notifications-panel.component';
 
 @NgModule({
   declarations: [
@@ -82,6 +90,8 @@ import { WalletSuccessComponent } from './components/wallet-success/wallet-succe
     PaymentConfirmationComponent,
     RecyclingSectionComponent,
     ClientOrderDetailsComponent,
+    ShopDetailsModalComponent,
+    ClientNotificationsPanelComponent,
   ],
 
   imports: [
@@ -90,6 +100,12 @@ import { WalletSuccessComponent } from './components/wallet-success/wallet-succe
     ClientRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatDividerModule,
+    MatDialogModule,
   ],
   providers: [
     provideHttpClient(

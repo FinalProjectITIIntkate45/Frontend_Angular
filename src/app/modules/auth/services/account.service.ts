@@ -72,4 +72,38 @@ getProfile(): Observable<ProfileViewModel> {
   );
 }
 
+  /**
+   * Updates the vendor profile with the provided data
+   */
+  updateVendorProfile(data: any): Observable<any> {
+    const token = localStorage.getItem('token');
+    let headers = new HttpHeaders();
+    if (token) {
+      headers = headers.set('Authorization', `Bearer ${token}`);
+    }
+    return this.http.put(`${this.apiUrl}/UpdateVendorProfile`, data, { headers }).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('API Error:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  /**
+   * Updates the client profile with the provided data
+   */
+  updateClientProfile(data: any): Observable<any> {
+    const token = localStorage.getItem('token');
+    let headers = new HttpHeaders();
+    if (token) {
+      headers = headers.set('Authorization', `Bearer ${token}`);
+    }
+    return this.http.put(`${this.apiUrl}/UpdateClientProfile`, data, { headers }).pipe(
+      catchError((error: HttpErrorResponse) => {
+        console.error('API Error:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
 }

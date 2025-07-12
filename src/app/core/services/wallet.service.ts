@@ -71,7 +71,7 @@ export class WalletService {
   // 🔹 Get all ShopPoints (لا يحتاج userId)
   getShopPoints(): Observable<Point[]> {
     return this.http
-      .get<APIResponse<Point[]>>(`${this.baseUrl}/GetShopPoints`)
+      .get<APIResponse<Point[]>>(`${this.baseUrl}/ShopPoints`)
       .pipe(map((res) => res.Data));
   }
 

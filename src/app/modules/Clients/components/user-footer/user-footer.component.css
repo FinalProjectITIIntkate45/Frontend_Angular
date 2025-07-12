@@ -3,9 +3,11 @@
   background-color: #023059;
   color: #FFFFFF;
   padding: 3rem 1.5rem 2rem;
-  position: relative;
+  position: fixed;
+  left: 0;
   bottom: 0;
   width: 100%;
+  z-index: 1050;
   margin-top: auto;
   border-top: 1px solid rgba(239, 176, 54, 0.1);
   background-image: linear-gradient(135deg, #023059 0%, #01253f 100%);

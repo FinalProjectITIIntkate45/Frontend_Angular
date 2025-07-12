@@ -1,27 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
+
+import {
+  OrderHubService,
+  OrderUpdate,
+} from '../../../../core/services/order-hub.service';
+import { OrderService } from '../../../../core/services/order.service';
+import { AuthService } from '../../../../core/services/Auth.service';
 
 import { OrderResponseViewModel } from '../../Models/OrderResponseViewModel';
 import { OrderItemViewModel } from '../../Models/OrderItemViewModel';
-import { APIResponse } from '../../../../core/models/APIResponse';
-import { OrderService } from '../../../../core/services/order.service';
 import { OrderStatus } from '../../Models/order-status.enum';
+import { APIResponse } from '../../../../core/models/APIResponse';
 import { PaginatedResponse } from '../../../../core/models/PaginatedResponse';
 
 @Component({
   selector: 'app-orders-section',
-  standalone: false,
   templateUrl: './orders-section.component.html',
   styleUrls: ['./orders-section.component.css'],
+  standalone: false,
 })
-export class OrdersSectionComponent implements OnInit {
+export class OrdersSectionComponent implements OnInit, OnDestroy {
   orders: OrderResponseViewModel[] = [];
   filteredOrders: OrderResponseViewModel[] = [];
   loading = true;
   errorMessage = '';
 
-  // Filtering and search
+  // Filters
   searchControl = new FormControl('');
   statusFilter = new FormControl('');
   selectedStatus: string = '';
@@ -31,7 +37,6 @@ export class OrdersSectionComponent implements OnInit {
   pageSize = 10;
   totalItems = 0;
 
-  // Available statuses for filtering
   availableStatuses = [
     { value: '', label: 'All Status' },
     { value: 'Pending', label: 'Pending' },
@@ -41,52 +46,119 @@ export class OrdersSectionComponent implements OnInit {
     { value: 'Canceled', label: 'Canceled' },
   ];
 
-  constructor(private orderService: OrderService) {}
+  private orderUpdatesSubscription!: Subscription;
+  private authSubscription!: Subscription;
+  private currentUserId: string = '';
+
+  constructor(
+    private orderService: OrderService,
+    private orderHubService: OrderHubService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
-    this.loadOrders();
+    // Get user ID and start OrderHub connection
+    this.authService.getUserID().subscribe({
+      next: (userId: string) => {
+        this.currentUserId = userId;
+        this.loadOrders();
+
+        // Start OrderHub connection
+        this.orderHubService
+          .startConnection(`user_${this.currentUserId}`)
+          .then(() => {
+            console.log('✅ OrderHub connection started successfully');
+          })
+          .catch((error) => {
+            console.error('❌ Failed to start OrderHub connection:', error);
+          });
+      },
+      error: (error) => {
+        console.error('❌ Failed to get user ID:', error);
+        this.loadOrders(); // Still load orders even if we can't get user ID
+      },
+    });
+
+    this.orderHubService.orderUpdates$.subscribe((update) => {
+      if (update) {
+        console.log('📡 Order update received:', update);
+        this.loadOrders(); // Reload orders when update received
+      }
+    });
     this.setupSearchListener();
+  }
+
+  ngOnDestroy(): void {
+    if (this.orderUpdatesSubscription)
+      this.orderUpdatesSubscription.unsubscribe();
+    if (this.authSubscription) this.authSubscription.unsubscribe();
+    if (this.currentUserId)
+      this.orderHubService.leaveGroup(`user_${this.currentUserId}`);
+    this.orderHubService.stopConnection();
+  }
+
+  private handleOrderUpdate(update: OrderUpdate): void {
+    console.log('🔧 handleOrderUpdate called', update);
+    const index = this.orders.findIndex((o) => o.Id === update.orderId);
+    if (index !== -1) {
+      this.orders[index].Status = this.mapStatusFromString(update.status);
+      this.applyFilters();
+    }
+  }
+
+  private mapStatusFromString(status: string): OrderStatus {
+    switch (status.toLowerCase()) {
+      case 'pending':
+        return OrderStatus.Pending;
+      case 'confirmed':
+        return OrderStatus.Confirmed;
+      case 'shipped':
+        return OrderStatus.Shipped;
+      case 'delivered':
+        return OrderStatus.Delivered;
+      case 'canceled':
+        return OrderStatus.Canceled;
+      default:
+        return OrderStatus.Pending;
+    }
   }
 
   private setupSearchListener(): void {
     this.searchControl.valueChanges
       .pipe(debounceTime(300), distinctUntilChanged())
-      .subscribe(() => {
-        this.applyFilters();
-      });
+      .subscribe(() => this.applyFilters());
   }
 
   loadOrders(): void {
     this.loading = true;
     this.errorMessage = '';
 
-    this.orderService.getClientOrders().subscribe({
-      next: (res: APIResponse<PaginatedResponse<OrderResponseViewModel[]>>) => {
-        console.log('Orders API Response:', res);
-        if (res.IsSuccess) {
-          this.orders = res.Data.data;
-          console.log('Orders loaded:', this.orders);
-          this.totalItems = res.Data.totalCount;
-          this.applyFilters();
-        } else {
-          this.errorMessage = res.Message || 'Failed to load orders';
-          console.error('API Error:', res.Message);
-        }
-        this.loading = false;
-      },
-      error: (error) => {
-        console.error('HTTP Error:', error);
-        this.errorMessage = 'حدث خطأ أثناء تحميل الطلبات';
-        this.loading = false;
-      },
-    });
+    this.orderService
+      .getClientOrders(this.currentPage, this.pageSize)
+      .subscribe({
+        next: (
+          res: APIResponse<PaginatedResponse<OrderResponseViewModel[]>>
+        ) => {
+          if (res.IsSuccess) {
+            this.orders = res.Data.data;
+            this.totalItems = res.Data.totalCount;
+            this.applyFilters();
+          } else {
+            this.errorMessage = res.Message || 'Failed to load orders';
+          }
+          this.loading = false;
+        },
+        error: () => {
+          this.errorMessage = 'حدث خطأ أثناء تحميل الطلبات';
+          this.loading = false;
+        },
+      });
   }
 
   applyFilters(): void {
     let filtered = [...this.orders];
-
-    // Apply search filter
     const searchTerm = this.searchControl.value?.toLowerCase();
+
     if (searchTerm) {
       filtered = filtered.filter(
         (order) =>
@@ -99,23 +171,17 @@ export class OrdersSectionComponent implements OnInit {
       );
     }
 
-    // Apply status filter
     if (this.selectedStatus) {
-      console.log('Filtering by status:', this.selectedStatus);
-      filtered = filtered.filter((order) => {
-        const orderStatusText = OrderStatus[order.Status];
-        const matches =
-          orderStatusText.toLowerCase() === this.selectedStatus.toLowerCase();
-        console.log(
-          `Order ${order.Id}: status=${order.Status}, statusText="${orderStatusText}", matches=${matches}`
-        );
-        return matches;
-      });
+      filtered = filtered.filter(
+        (order) =>
+          OrderStatus[order.Status].toLowerCase() ===
+          this.selectedStatus.toLowerCase()
+      );
     }
 
     this.filteredOrders = filtered;
     this.totalItems = filtered.length;
-    this.currentPage = 1; // Reset to first page when filtering
+    this.currentPage = 1;
   }
 
   onStatusFilterChange(event: any): void {
@@ -156,8 +222,103 @@ export class OrdersSectionComponent implements OnInit {
     }
   }
 
+  getProductImage(order: OrderResponseViewModel): string {
+    const firstItem = order.Items?.[0];
+    return firstItem?.Image || '';
+  }
+
+  getProductName(order: OrderResponseViewModel): string {
+    const firstItem = order.Items?.[0];
+    return firstItem?.ProductName || `Product #${firstItem?.ProductId}`;
+  }
+
+  getTotalItems(order: OrderResponseViewModel): number {
+    return (
+      order.Items?.reduce(
+        (total: number, item: OrderItemViewModel) => total + item.Quantity,
+        0
+      ) || 0
+    );
+  }
+
+  // Pagination
+  get paginatedOrders(): OrderResponseViewModel[] {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    return this.filteredOrders.slice(startIndex, startIndex + this.pageSize);
+  }
+
+  get totalPages(): number {
+    return Math.ceil(this.totalItems / this.pageSize);
+  }
+
+  get pageNumbers(): number[] {
+    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+  goToPage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+    }
+  }
+
+  previousPage(): void {
+    if (this.currentPage > 1) this.currentPage--;
+  }
+
+  nextPage(): void {
+    if (this.currentPage < this.totalPages) this.currentPage++;
+  }
+
+  refreshOrders(): void {
+    this.loadOrders();
+  }
+
+  clearFilters(): void {
+    this.searchControl.setValue('');
+    this.selectedStatus = '';
+    this.statusFilter.setValue('');
+    this.applyFilters();
+  }
+
+  getEndIndex(): number {
+    return Math.min(this.currentPage * this.pageSize, this.totalItems);
+  }
+
+  onImageError(event: Event) {
+    const imgElement = event.target as HTMLImageElement;
+    imgElement.src = 'data:image/svg+xml;base64,...'; // placeholder الصيغة مضغوطة
+    imgElement.onerror = null;
+  }
+
+  cancelOrder(order: OrderResponseViewModel): void {
+    if (order.Status !== OrderStatus.Pending) return;
+    this.orderService
+      .updateOrderStatus(order.Id, { status: OrderStatus.Canceled })
+      .subscribe({
+        next: () => this.loadOrders(),
+        error: (err) => {
+          console.error('Failed to cancel order:', err);
+        },
+      });
+  }
+  getPaymentMethodClass(paymentType: any): string {
+    const type = paymentType?.toString()?.toLowerCase();
+    switch (type) {
+      case 'paypal':
+        return 'text-primary';
+      case 'stripe':
+        return 'text-success';
+      case 'cod':
+      case 'cashondelivery':
+        return 'text-warning';
+      case 'wallet':
+        return 'text-info';
+      default:
+        return 'text-secondary';
+    }
+  }
+
   getPaymentMethodText(paymentType: any): string {
-    // Handle both number and string types
     if (typeof paymentType === 'number') {
       switch (paymentType) {
         case 123456:
@@ -184,6 +345,7 @@ export class OrdersSectionComponent implements OnInit {
           return paymentType.toString();
       }
     }
+
     const type = paymentType?.toString()?.toLowerCase();
     switch (type) {
       case 'cashcollection':
@@ -199,6 +361,7 @@ export class OrdersSectionComponent implements OnInit {
       case 'paymob':
         return 'Paymob';
       case 'cashondelivery':
+      case 'cod':
         return 'Cash on Delivery';
       case 'pointsonly':
         return 'Points Only';
@@ -209,115 +372,5 @@ export class OrdersSectionComponent implements OnInit {
       default:
         return paymentType?.toString() || 'Unknown';
     }
-  }
-
-  getPaymentMethodClass(paymentType: any): string {
-    const type = paymentType?.toString()?.toLowerCase();
-    switch (type) {
-      case 'paypal':
-        return 'text-primary';
-      case 'stripe':
-        return 'text-success';
-      case 'cod':
-        return 'text-warning';
-      case 'wallet':
-        return 'text-info';
-      default:
-        return 'text-secondary';
-    }
-  }
-
-  getProductImage(order: OrderResponseViewModel): string {
-    // Get the first product image from the order items
-    const firstItem = order.Items?.[0];
-    return firstItem?.Image || '';
-  }
-
-  getProductName(order: OrderResponseViewModel): string {
-    const firstItem = order.Items?.[0];
-    return firstItem?.ProductName || `Product #${firstItem?.ProductId}`;
-  }
-
-  getTotalItems(order: OrderResponseViewModel): number {
-    return (
-      order.Items?.reduce(
-        (total: number, item: OrderItemViewModel) => total + item.Quantity,
-        0
-      ) || 0
-    );
-  }
-
-  // Pagination methods
-  get paginatedOrders(): OrderResponseViewModel[] {
-    const startIndex = (this.currentPage - 1) * this.pageSize;
-    const endIndex = startIndex + this.pageSize;
-    return this.filteredOrders.slice(startIndex, endIndex);
-  }
-
-  get totalPages(): number {
-    return Math.ceil(this.totalItems / this.pageSize);
-  }
-
-  get pageNumbers(): number[] {
-    const pages: number[] = [];
-    for (let i = 1; i <= this.totalPages; i++) {
-      pages.push(i);
-    }
-    return pages;
-  }
-
-  goToPage(page: number): void {
-    if (page >= 1 && page <= this.totalPages) {
-      this.currentPage = page;
-    }
-  }
-
-  previousPage(): void {
-    if (this.currentPage > 1) {
-      this.currentPage--;
-    }
-  }
-
-  nextPage(): void {
-    if (this.currentPage < this.totalPages) {
-      this.currentPage++;
-    }
-  }
-
-  refreshOrders(): void {
-    this.loadOrders();
-  }
-
-  clearFilters(): void {
-    this.searchControl.setValue('');
-    this.selectedStatus = '';
-    this.statusFilter.setValue('');
-    this.applyFilters();
-  }
-
-  getEndIndex(): number {
-    return Math.min(this.currentPage * this.pageSize, this.totalItems);
-  }
-
-  onImageError(event: Event) {
-    const imgElement = event.target as HTMLImageElement;
-    // Use a simple data URL for placeholder instead of external file
-    imgElement.src =
-      'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjUwIiBoZWlnaHQ9IjUwIiBmaWxsPSIjRjVGNUY1Ii8+CjxwYXRoIGQ9Ik0yNSAyNUMyNy43NjE0IDI1IDMwIDIyLjc2MTQgMzAgMjBDMzAgMTcuMjM4NiAyNy43NjE0IDE1IDI1IDE1QzIyLjIzODYgMTUgMjAgMTcuMjM4NiAyMCAyMEMyMCAyMi43NjE0IDIyLjIzODYgMjUgMjUgMjVaIiBmaWxsPSIjQ0NDIi8+CjxwYXRoIGQ9Ik0yNSAzNUMyNy43NjE0IDM1IDMwIDMyLjc2MTQgMzAgMzBDMzAgMjcuMjM4NiAyNy43NjE0IDI1IDI1IDI1QzIyLjIzODYgMjUgMjAgMjcuMjM4NiAyMCAzMEMyMCAzMi43NjE0IDIyLjIzODYgMzUgMjUgMzVaIiBmaWxsPSIjQ0NDIi8+Cjwvc3ZnPgo=';
-    imgElement.onerror = null; // Prevent infinite loop
-  }
-
-  cancelOrder(order: OrderResponseViewModel): void {
-    if (order.Status !== OrderStatus.Pending) return;
-    this.orderService
-      .updateOrderStatus(order.Id, { status: OrderStatus.Canceled })
-      .subscribe({
-        next: (res) => {
-          this.loadOrders();
-        },
-        error: (err) => {
-          console.error('Failed to cancel order:', err);
-        },
-      });
   }
 }

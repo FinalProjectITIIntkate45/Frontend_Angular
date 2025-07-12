@@ -1,0 +1,21 @@
+<div class="modal-backdrop" (click)="onClose()"></div>
+<div class="modal-dialog-centered shop-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">{{ shop?.Name }}</h5>
+            <button type="button" class="btn-close" aria-label="Close" (click)="onClose()"></button>
+        </div>
+        <div class="modal-body text-center">
+            <img [src]="shop?.Logo || 'assets/default-shop.png'" class="rounded-circle mb-3 shop-modal-logo"
+                alt="{{ shop?.Name }}">
+            <p class="mb-1"><span class="badge bg-primary">{{ shop?.TypeName }}</span></p>
+            <p class="text-muted">{{ shop?.Description }}</p>
+            <p><i class="bi bi-geo-alt"></i> {{ shop?.City }}</p>
+            <p *ngIf="shop?.BusinessEmail"><i class="bi bi-envelope"></i> {{ shop?.BusinessEmail }}</p>
+            <p *ngIf="shop?.BusinessPhone"><i class="bi bi-telephone"></i> {{ shop?.BusinessPhone }}</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="onClose()">Close</button>
+        </div>
+    </div>
+</div>

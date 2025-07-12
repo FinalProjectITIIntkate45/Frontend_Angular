@@ -1,0 +1,64 @@
+<app-RecyclerLayout (sectionChange)="onSectionChange($event)">
+  <div class="dashboard-content">
+    <!-- Notifications List -->
+    <div class="notifications-container">
+      <!-- All Notifications -->
+      <div class="notifications-list content-card">
+        <div class="card-header">
+          <h3><i class="fas fa-bell"></i> جميع الإشعارات</h3>
+          <span class="notification-count">{{ notifications.length }} إشعار</span>
+        </div>
+        <div class="card-body">
+          <div *ngIf="notifications.length === 0" class="empty-notifications">
+            <div class="empty-icon">
+              <i class="fas fa-bell-slash"></i>
+            </div>
+            <h4>لا توجد إشعارات</h4>
+            <p>ستظهر هنا الإشعارات الجديدة عند وصولها</p>
+          </div>
+          
+          <div *ngFor="let notification of notifications; let i = index" 
+               class="notification-item" 
+               [class.recent]="i === 0">
+            <div class="notification-icon">
+              <i class="fas fa-info-circle"></i>
+            </div>
+            <div class="notification-content">
+              <div class="notification-title">{{ notification.notificationType }}</div>
+              <div class="notification-text">
+                {{ notification.message }}
+              </div>
+              <div class="notification-time">
+                <i class="fas fa-flag"></i>
+                <span>{{ notification.status }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="quick-actions content-card">
+        <div class="card-header">
+          <h3><i class="fas fa-bolt"></i> إجراءات سريعة</h3>
+        </div>
+        <div class="card-body">
+          <div class="actions-grid">
+            <button class="action-btn" [routerLink]="['../auction-list']">
+              <i class="fas fa-search"></i>
+              تصفح المزادات
+            </button>
+            <button class="action-btn" [routerLink]="['../']">
+              <i class="fas fa-home"></i>
+              العودة للداشبورد
+            </button>
+            <button class="action-btn" (click)="clearNotifications()">
+              <i class="fas fa-trash"></i>
+              مسح الإشعارات
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-RecyclerLayout>

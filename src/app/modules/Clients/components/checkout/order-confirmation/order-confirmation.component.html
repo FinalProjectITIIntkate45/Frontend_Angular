@@ -18,7 +18,21 @@
     <tr *ngFor="let item of checkoutModel.orderItems; let i = index">
       <td>{{ i + 1 }}</td>
       <td>
-        <img [src]="item.Image" width="50" height="50" alt="Product Image" *ngIf="item.Image">
+        <img
+          [src]="item.Image"
+          width="50"
+          height="50"
+          alt="Product Image"
+          *ngIf="item.Image"
+        />
+      </td>
+      <td>{{ item.ProductName }}</td>
+      <td>{{ item.Description }}</td>
+      <td>{{ item.Quantity }}</td>
+      <td>{{ item.Price | currency }}</td>
+      <td>{{ item.PriceAfterDiscount | currency }}</td>
+      <td>
+        {{ (item.PriceAfterDiscount ?? 0) * item.Quantity | currency }}
       </td>
     </tr>
   </tbody>

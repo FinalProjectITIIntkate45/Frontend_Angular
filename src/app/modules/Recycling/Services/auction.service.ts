@@ -1,149 +1,151 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
-import { environment } from '../../../../environments/environment';
+import { map } from 'rxjs/operators';
+import { AuctionVM } from '../Models/AuctionVM';
+import { RecyclerVM } from '../Models/RecyclerVM';
+import { AuctionRoomVM } from '../Models/auction-room-vm';
 import { APIResponse } from '../../../core/models/APIResponse';
-import { AuctionVM } from '../Models/auction-vm.model';
-import { AuctionRecyclingRequestVM } from '../Models/auction-recycling-request.model';
-import { JoinAuctionViewModel } from '../Models/scrap-auction.model';
-import { AuctionRecyclingRequestDisplyVM } from '../Models/auction-recycling-request-display.model';
-import { AuctionRecyclingStatus } from '../Models/auction-recycling-status.model';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable({ providedIn: 'root' })
 export class AuctionService {
-  private baseUrl = `${environment.apiUrl}`;
+  private api = 'http://localhost:5037/api/auction';
+  private baseUrl = 'http://localhost:5037/api';
 
   constructor(private http: HttpClient) {}
 
-  // Get all auctions for Recyclers
-  getAllAuctions(city: string, pageSize: number = 10, pageNumber: number = 1): Observable<AuctionVM[]> {
-    const params = {
-      city: city,
-      pageSize: pageSize.toString(),
-      pageNumber: pageNumber.toString()
-    };
-
-    return this.http
-      .get<APIResponse<AuctionVM[]>>(`${this.baseUrl}/AuctionRequest/GetAuctions`, { params })
-      .pipe(
-        map((response) => {
-          console.log('Auctions response:', response);
-          return response.Data || [];
-        }),
-        catchError((error) => {
-          console.error('Error fetching auctions:', error);
-          throw error;
-        })
-      );
+  getActiveAuctions(): Observable<APIResponse<AuctionVM[]>> {
+    return this.http.get<APIResponse<AuctionVM[]>>(`${this.baseUrl}/Auction/active`);
   }
 
-  // Join an auction with insurance payment from wallet
-  joinAuctionWithInsurance(auctionId: number): Observable<APIResponse<string>> {
-    const formData = new FormData();
-    formData.append('AuctionId', auctionId.toString());
+  // New method to get all auctions in the system
+  getAllAuctions(): Observable<APIResponse<AuctionVM[]>> {
+    return this.http.get<APIResponse<AuctionVM[]>>(`${this.baseUrl}/Auction/AllAuctions`);
+  }
+
+  // New method to get auctions with pagination and filters
+  getAuctionsWithFilters(city?: string, pageSize: number = 10, pageNumber: number = 1): Observable<APIResponse<AuctionVM[]>> {
+    let params = new HttpParams()
+      .set('pageSize', pageSize.toString())
+      .set('pageNumber', pageNumber.toString());
     
-    return this.http
-      .post<APIResponse<string>>(`${this.baseUrl}/AuctionRequest/asktojoin`, formData)
-      .pipe(
-        map((response) => {
-          console.log('Join auction with insurance response:', response);
-          return response;
-        }),
-        catchError((error) => {
-          console.error('Error joining auction with insurance:', error);
-          throw error;
-        })
-      );
+    if (city) {
+      params = params.set('city', city);
+    }
+    
+    return this.http.get<APIResponse<AuctionVM[]>>(`${this.baseUrl}/AuctionRequest/GetAuctions`, { params });
   }
 
-  // Withdraw request from auction
-  withdrawRequest(recyclingRequestId: number, auctionId: number): Observable<APIResponse<boolean>> {
-    const withdrawRequest: JoinAuctionViewModel = {
-      recyclingRequestId: recyclingRequestId,
-      auctionId: auctionId
-    };
-
-    return this.http
-      .post<APIResponse<boolean>>(`${this.baseUrl}/AuctionRequest/withdraw`, withdrawRequest)
-      .pipe(
-        map((response) => {
-          console.log('Withdraw request response:', response);
-          return response;
-        }),
-        catchError((error) => {
-          console.error('Error withdrawing request:', error);
-          throw error;
-        })
-      );
+  getAuctionById(id: number): Observable<AuctionVM> {
+    return this.http.get<{ data: AuctionVM }>(`${this.api}/${id}`).pipe(map(res => res.data));
   }
 
-  // Get requests by recycler
-  getRequestsByRecycler(): Observable<AuctionRecyclingRequestDisplyVM[]> {
-    return this.http
-      .get<AuctionRecyclingRequestDisplyVM[]>(`${this.baseUrl}/AuctionRequest/RecyclerRequestes`)
-      .pipe(
-        map((response) => {
-          console.log('Recycler requests response:', response);
-          return response || [];
-        }),
-        catchError((error) => {
-          console.error('Error fetching recycler requests:', error);
-          throw error;
-        })
-      );
+  // New method to get auction details using the new API endpoint
+  getAuctionDetails(id: number): Observable<APIResponse<AuctionRoomVM>> {
+    return this.http.get<APIResponse<AuctionRoomVM>>(`${this.baseUrl}/Auction/${id}`);
   }
 
-  // Get request status
-  getRequestStatus(recyclingRequestId: number): Observable<APIResponse<AuctionRecyclingStatus>> {
-    return this.http
-      .get<APIResponse<AuctionRecyclingStatus>>(`${this.baseUrl}/AuctionRequest/status/${recyclingRequestId}`)
-      .pipe(
-        map((response) => {
-          console.log('Request status response:', response);
-          return response;
-        }),
-        catchError((error) => {
-          console.error('Error fetching request status:', error);
-          throw error;
-        })
-      );
+  
+  getAuctionWinner(id: number): Observable<RecyclerVM> {
+    return this.http.get<{ data: RecyclerVM }>(`${this.api}/${id}/winner`).pipe(map(res => res.data));
   }
 
-  // Check if user has requests for specific auction
-  getRequestsWithAuction(auctionId: number): Observable<boolean> {
-    return this.http
-      .get<boolean>(`${this.baseUrl}/AuctionRequest/GetRequestswithauction?auctionid=${auctionId}`)
-      .pipe(
-        map((response) => {
-          console.log('Requests with auction response:', response);
-          return response;
-        }),
-        catchError((error) => {
-          console.error('Error checking requests with auction:', error);
-          throw error;
-        })
-      );
+  /**
+   * Get active auctions count
+   * @returns Observable of number of active auctions
+   */
+  getActiveAuctionsCount(): Observable<number> {
+    return new Observable(observer => {
+      this.getActiveAuctions().subscribe({
+        next: (result) => {
+          if (result.IsSuccess) {
+            observer.next(result.Data.length);
+          } else {
+            observer.next(0);
+          }
+          observer.complete();
+        },
+        error: (error) => {
+          console.error('Error getting active auctions count:', error);
+          observer.next(0);
+          observer.complete();
+        }
+      });
+    });
   }
 
-  // Request to join a pending auction
-  requestToJoinAuction(auctionId: number): Observable<APIResponse<string>> {
-    const formData = new FormData();
-    formData.append('AuctionId', auctionId.toString());
-    formData.append('ApprovalTime', new Date().toISOString());
-    return this.http
-      .post<APIResponse<string>>(`${this.baseUrl}/AuctionRequest/asktojoin`, formData)
-      .pipe(
-        map((response) => {
-          console.log('Request to join auction response:', response);
-          return response;
-        }),
-        catchError((error) => {
-          console.error('Error requesting to join auction:', error);
-          throw error;
-        })
-      );
+  /**
+   * Get active auctions by material type
+   * @param materialId - The material ID to filter by
+   * @returns Observable of APIResponse containing filtered active auctions
+   */
+  getActiveAuctionsByMaterial(materialId: number): Observable<APIResponse<AuctionVM[]>> {
+    return new Observable(observer => {
+      this.getActiveAuctions().subscribe({
+        next: (result) => {
+          if (result.IsSuccess) {
+            const filteredAuctions = result.Data.filter((auction: AuctionVM) => auction.materialId === materialId);
+            observer.next({
+              IsSuccess: true,
+              Data: filteredAuctions,
+              Message: `Found ${filteredAuctions.length} active auctions for material ${materialId}`,
+              StatusCode: 200
+            });
+          } else {
+            observer.next(result);
+          }
+          observer.complete();
+        },
+        error: (error) => {
+          observer.error(error);
+        }
+      });
+    });
   }
-} 
+
+  /**
+   * Get active auctions by governorate
+   * @param governorate - The governorate to filter by
+   * @returns Observable of APIResponse containing filtered active auctions
+   */
+  getActiveAuctionsByGovernorate(governorate: string): Observable<APIResponse<AuctionVM[]>> {
+    return new Observable(observer => {
+      this.getActiveAuctions().subscribe({
+        next: (result) => {
+          if (result.IsSuccess) {
+            const filteredAuctions = result.Data.filter((auction: AuctionVM) => 
+              auction.governorateName === governorate
+            );
+            observer.next({
+              IsSuccess: true,
+              Data: filteredAuctions,
+              Message: `Found ${filteredAuctions.length} active auctions in ${governorate}`,
+              StatusCode: 200
+            });
+          } else {
+            observer.next(result);
+          }
+          observer.complete();
+        },
+        error: (error) => {
+          observer.error(error);
+        }
+      });
+    });
+  }
+
+  // New method to get total auction count
+  getAllAuctionCount(): Observable<APIResponse<number>> {
+    return this.http.get<APIResponse<number>>(`${this.baseUrl}/Auction/AllAuctionCount`);
+  }
+
+  // New method to get active auction count
+  getActiveAuctionCount(): Observable<APIResponse<number>> {
+    return this.http.get<APIResponse<number>>(`${this.baseUrl}/Auction/AllActiveAuctionCount`);
+  }
+
+  // New method to get won auction count for current recycler
+  getWonAuctionCount(): Observable<APIResponse<number>> {
+    return this.http.get<APIResponse<number>>(`${this.baseUrl}/Auction/countAuctionwin`);
+  }
+}

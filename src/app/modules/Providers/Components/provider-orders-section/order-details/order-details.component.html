@@ -1,0 +1,104 @@
+<div class="container py-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold">Order #{{ order?.Id }}</h2>
+    <a routerLink="/provider/orders" class="btn btn-outline-secondary">
+      <i class="fas fa-arrow-left"></i> Back to Orders
+    </a>
+  </div>
+
+  <div *ngIf="loading" class="text-center my-5">
+    <div class="spinner-border text-primary"></div>
+    <p class="mt-3">Loading order details...</p>
+  </div>
+
+  <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+
+  <div *ngIf="order && !loading">
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <h5>Client Info</h5>
+        <p><strong>Name:</strong> {{ order.CustomerInfo?.Name || "N/A" }}</p>
+        <p>
+          <strong>Phone:</strong> {{ order.CustomerInfo?.PhoneNumber || "N/A" }}
+        </p>
+        <p><strong>Email:</strong> {{ order.CustomerInfo?.Email || "N/A" }}</p>
+      </div>
+      <div class="col-md-6">
+        <h5>Order Summary</h5>
+        <p>
+          <strong>Status:</strong>
+          <span [class]="getStatusClass(order.Status)">{{ order.Status }}</span>
+        </p>
+        <p>
+          <strong>Paid:</strong>
+          <span
+            [ngClass]="order.IsPaid ? 'text-success fw-bold' : 'text-danger'"
+          >
+            {{ order.IsPaid ? "Paid" : "Unpaid" }}</span
+          >
+        </p>
+        <p>
+          <strong>Payment Method:</strong>
+          {{ order.PaymentMethodDisplay || "N/A" }}
+        </p>
+        <p>
+          <strong>Total Amount:</strong>
+          {{
+            order.TotalAmount | currency : "USD" : "symbol" : "1.2-2" : "en-US"
+          }}
+        </p>
+        <p><strong>Used Points:</strong> {{ order.UsedPaidPoints || 0 }}</p>
+      </div>
+    </div>
+
+    <div class="mb-4">
+      <h5>Shipping Address</h5>
+      <p *ngIf="order.ShippingAddress && order.ShippingAddress.Address">
+        {{ order.ShippingAddress.Address }}<br />
+        {{ order.ShippingAddress.City }}, {{ order.ShippingAddress.Street }} -
+      </p>
+      <p *ngIf="!order.ShippingAddress?.Address">N/A</p>
+    </div>
+
+    <div>
+      <h5>Order Items</h5>
+      <table class="table table-bordered table-hover">
+        <thead class="table-light">
+          <tr>
+            <th>Product</th>
+            <th>Shop</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Discounted Price</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of order.OrderItems">
+            <td>
+              <div class="d-flex align-items-center gap-2">
+                <img
+                  *ngIf="item.Image"
+                  [src]="item.Image"
+                  class="img-thumbnail"
+                  style="width: 50px; height: 50px; object-fit: cover"
+                />
+                <span>{{ item.ProductName }}</span>
+              </div>
+            </td>
+            <td>{{ item.ShopName || "N/A" }}</td>
+            <td>{{ item.Quantity }}</td>
+            <td>{{ item.Price | currency }}</td>
+            <td>{{ item.PriceAfterDiscount || item.Price | currency }}</td>
+            <td>
+              {{
+                (item.PriceAfterDiscount || item.Price) * item.Quantity
+                  | currency
+              }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

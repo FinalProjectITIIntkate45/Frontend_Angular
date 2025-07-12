@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { WalletService } from '../../Services/wallet.service';
-import { Wallet } from '../../Models/wallet.model';
+import { Wallet } from '../../../../core/models/wallet.model';
 
 @Component({
   selector: 'app-wallet-display',
@@ -19,11 +19,16 @@ export class WalletDisplayComponent implements OnInit {
     this.loadWallet();
   }
 
+  onSectionChange(section: string) {
+    console.log('Section changed to:', section);
+    // Handle section changes if needed
+  }
+
   loadWallet(): void {
     this.loading = true;
     this.error = null;
 
-    this.walletService.getUserWallet().subscribe({
+    this.walletService.getCompleteWallet().subscribe({
       next: (wallet) => {
         this.wallet = wallet;
         this.loading = false;

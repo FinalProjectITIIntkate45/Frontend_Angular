@@ -1,0 +1,264 @@
+<app-RecyclerLayout (sectionChange)="onSectionChange($event)">
+  <div class="dashboard-content">
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="loading-state content-card">
+      <div class="loading-spinner">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>جاري تحميل تفاصيل المزاد...</p>
+      </div>
+    </div>
+
+    <!-- Auction Details -->
+    <div *ngIf="!isLoading && auction" class="auction-details-container">
+      <!-- Main Auction Info -->
+      <div class="auction-main-info content-card">
+        <div class="card-header">
+          <div class="auction-header">
+            <h2>{{ auction.Matrialname }}</h2>
+            <span class="auction-status" 
+                  [class.active]="auction.AuctionStatus === 'Active'"
+                  [class.pending]="auction.AuctionStatus === 'Pending'"
+                  [class.closed]="auction.AuctionStatus === 'Closed'">
+              {{ auction.AuctionStatus }}
+            </span>
+          </div>
+        </div>
+        
+        <div class="card-body">
+          <div class="auction-info-grid">
+            <!-- Material Information -->
+            <div class="info-item">
+              <i class="fas fa-recycle"></i>
+              <div class="info-content">
+                <label>نوع المادة</label>
+                <span>{{ auction.Matrialname }}</span>
+              </div>
+            </div>
+
+            <div class="info-item">
+              <i class="fas fa-hashtag"></i>
+              <div class="info-content">
+                <label>رقم المادة</label>
+                <span>{{ auction.MaterialId }}</span>
+              </div>
+            </div>
+            
+            <!-- Location Information -->
+            <div class="info-item">
+              <i class="fas fa-map-marker-alt"></i>
+              <div class="info-content">
+                <label>المحافظة</label>
+                <span>{{ auction.GovernorateName }}</span>
+              </div>
+            </div>
+            
+            <!-- Quantity Information -->
+            <div class="info-item">
+              <i class="fas fa-weight-hanging"></i>
+              <div class="info-content">
+                <label>الكمية</label>
+                <span>{{ auction.quantity }} {{ getUnitTypeDisplayName(auction.UnitType) }}</span>
+              </div>
+            </div>
+
+            <!-- Unit Type Information -->
+            <div class="info-item">
+              <i class="fas fa-ruler"></i>
+              <div class="info-content">
+                <label>وحدة القياس</label>
+                <span>{{ getUnitTypeDisplayName(auction.UnitType) }}</span>
+              </div>
+            </div>
+            
+            <!-- Time Information -->
+            <div class="info-item">
+              <i class="fas fa-calendar-alt"></i>
+              <div class="info-content">
+                <label>تاريخ البداية</label>
+                <span>{{ auction.StartTime | date:'fullDate' }}</span>
+              </div>
+            </div>
+            
+            <div class="info-item">
+              <i class="fas fa-clock"></i>
+              <div class="info-content">
+                <label>تاريخ الانتهاء</label>
+                <span>{{ auction.EndTime | date:'fullDate' }}</span>
+              </div>
+            </div>
+            
+            <!-- Financial Information -->
+            <div class="info-item">
+              <i class="fas fa-money-bill-wave"></i>
+              <div class="info-content">
+                <label>مبلغ التأمين</label>
+                <span>{{ auction.InsuranceAmount | currency:'EGP':'symbol':'1.2-2' }}</span>
+              </div>
+            </div>
+
+            <!-- Requests Count -->
+            <div class="info-item">
+              <i class="fas fa-users"></i>
+              <div class="info-content">
+                <label>عدد الطلبات</label>
+                <span>{{ auction.RequestsCount }} طلب</span>
+              </div>
+            </div>
+
+            <!-- Creation Date -->
+            <div class="info-item">
+              <i class="fas fa-calendar-plus"></i>
+              <div class="info-content">
+                <label>تاريخ الإنشاء</label>
+                <span>{{ auction.CreatedAt | date:'fullDate' }}</span>
+              </div>
+            </div>
+
+            <!-- Auction ID -->
+            <div class="info-item">
+              <i class="fas fa-tag"></i>
+              <div class="info-content">
+                <label>رقم المزاد</label>
+                <span>#{{ auction.Id }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Auction Actions -->
+      <div class="auction-actions content-card">
+        <div class="card-header">
+          <h3>إجراءات المزاد</h3>
+        </div>
+        <div class="card-body">
+          <div class="actions-grid">
+            <button class="action-btn primary" 
+                    [routerLink]="['room', auction.Id]"
+                    [disabled]="!isJoined">
+              <i class="fas fa-sign-in-alt"></i>
+              انضم لغرفة المزاد
+            </button>
+            
+            <button class="action-btn secondary" 
+                    [routerLink]="['../auction-list']">
+              <i class="fas fa-arrow-left"></i>
+              العودة لقائمة المزادات
+            </button>
+            
+            <button *ngIf="!isJoined" 
+                    class="action-btn success" 
+                    (click)="createRequestToJoin()"
+                    [disabled]="creatingRequest">
+              <i class="fas fa-handshake"></i>
+              {{ creatingRequest ? 'جاري إنشاء الطلب...' : 'طلب الانضمام للمزاد' }}
+            </button>
+            
+            <button *ngIf="isJoined" 
+                    class="action-btn danger" 
+                    (click)="withdrawRequest()"
+                    [disabled]="withdrawingRequest">
+              <i class="fas fa-times"></i>
+              {{ withdrawingRequest ? 'جاري الانسحاب...' : 'الانسحاب من المزاد' }}
+            </button>
+          </div>
+          
+          <div *ngIf="!isJoined" class="join-info">
+            <i class="fas fa-info-circle"></i>
+            <p>يجب عليك طلب الانضمام للمزاد أولاً قبل الدخول لغرفة المزاد</p>
+          </div>
+
+          <!-- Request Status Info -->
+          <div *ngIf="currentRequest" class="request-status-info">
+            <div class="status-card" [ngClass]="getStatusClass(currentRequest.status)">
+              <i class="fas fa-info-circle"></i>
+              <div class="status-content">
+                <h4>حالة الطلب</h4>
+                <p>{{ getStatusText(currentRequest.status) }}</p>
+                <small>رقم الطلب: #{{ currentRequest.recyclingRequestId }}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Winner Info (if auction completed) -->
+      <div *ngIf="auction.AuctionStatus === 'Completed' && winner" class="winner-info content-card">
+        <div class="card-header">
+          <h3>الفائز بالمزاد</h3>
+        </div>
+        <div class="card-body">
+          <div class="winner-details">
+            <div class="winner-avatar">
+              <i class="fas fa-trophy"></i>
+            </div>
+            <div class="winner-info">
+              <h4>{{ winner.recyclingCenterName || 'مستخدم' }}</h4>
+              <p>مبروك! فاز بالمزاد</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bidding Section -->
+      <div class="bidding-section content-card">
+        <div class="card-header">
+          <h3>المزايدات</h3>
+        </div>
+        <div class="card-body">
+          <!-- Max Bid Display -->
+          <div *ngIf="maxBid" class="max-bid-info">
+            <div class="max-bid-card">
+              <i class="fas fa-crown"></i>
+              <div class="max-bid-content">
+                <h4>أعلى مزايدة حالية</h4>
+                <span class="max-bid-amount">{{ maxBid.bidAmount | currency:'EGP':'symbol':'1.2-2' }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bidding Form -->
+          <div *ngIf="isJoined && auction.AuctionStatus === 'Active'" class="bidding-form">
+            <div class="form-group">
+              <label for="bidAmount">قيمة المزايدة (جنيه مصري)</label>
+              <input 
+                type="number" 
+                id="bidAmount"
+                [(ngModel)]="bidAmount" 
+                class="form-control"
+                placeholder="أدخل قيمة المزايدة"
+                min="0"
+                step="0.01">
+            </div>
+            <button 
+              class="action-btn primary" 
+              (click)="placeBid()"
+              [disabled]="!bidAmount || bidAmount <= 0">
+              <i class="fas fa-gavel"></i>
+              تقديم المزايدة
+            </button>
+            <div *ngIf="message" class="message" [class.error]="message.includes('خطأ')">
+              {{ message }}
+            </div>
+          </div>
+
+          <!-- Bids List -->
+          <div class="bids-list">
+            <h4>سجل المزايدات</h4>
+            <div *ngIf="bids.length === 0" class="no-bids">
+              <i class="fas fa-info-circle"></i>
+              <p>لا توجد مزايدات بعد</p>
+            </div>
+            <div *ngIf="bids.length > 0" class="bids-container">
+              <div *ngFor="let bid of bids" class="bid-item">
+                <div class="bid-amount">{{ bid.bidAmount | currency:'EGP':'symbol':'1.2-2' }}</div>
+                <div class="bid-status">{{ bid.status }}</div>
+                <div class="bid-date">{{ bid.createdAt | date:'short' }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-RecyclerLayout>
