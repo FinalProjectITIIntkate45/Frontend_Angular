@@ -1,28 +1,506 @@
-<div class="profile-header">
-  <h1>PROFILE</h1>
-  <p>Welcome back to your profile! Here's your activity summary.</p>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Profile Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-navy: #023059;
+            --accent-gold: #efb036;
+            --bg-light: #f7f7f8;
+            --text-secondary: #9197b3;
+            --white: #ffffff;
+            --shadow-light: rgba(2, 48, 89, 0.08);
+            --shadow-medium: rgba(2, 48, 89, 0.12);
+            --shadow-heavy: rgba(2, 48, 89, 0.16);
+            --border-light: rgba(145, 151, 179, 0.12);
+            --gradient-primary: linear-gradient(135deg, #023059 0%, #034975 50%, #efb036 100%);
+            --gradient-card: linear-gradient(145deg, #ffffff 0%, #f7f7f8 100%);
+        }
 
-<div class="profile-section-container" *ngIf="profileData; else loadingOrError">
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  <div class="card profile-card text-center">
-    <div class="profile-img-upload mb-3">
-      <img [src]="profileImgPreview || 'https://via.placeholder.com/150'" alt="Profile Image" class="profile-img-preview rounded-circle" style="width:150px; height:150px; object-fit:cover;" />
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: var(--bg-light);
+            color: var(--primary-navy);
+            line-height: 1.5;
+            font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        .dashboard-wrapper {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f7f7f8 0%, #ffffff 100%);
+            padding: 2rem 1rem;
+        }
+
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        /* Enhanced Header Section */
+        .profile-header {
+            background: var(--gradient-primary);
+            border-radius: 24px;
+            padding: 4rem 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 60px var(--shadow-heavy);
+        }
+
+        .profile-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="a" cx="50%" cy="0%" r="100%"><stop offset="0%" stop-color="rgba(239,176,54,0.1)"/><stop offset="100%" stop-color="rgba(2,48,89,0.1)"/></radialGradient></defs><rect width="100%" height="100%" fill="url(%23a)"/></svg>');
+            pointer-events: none;
+        }
+
+        .profile-header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .profile-header h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            color: var(--white);
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .profile-header .subtitle {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 400;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Professional Card Layout */
+        .profile-main {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .profile-card {
+            background: var(--gradient-card);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 40px var(--shadow-light);
+            border: 1px solid var(--border-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        /* User Info Section */
+        .user-section {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .avatar-container {
+            position: relative;
+            margin-right: 2rem;
+        }
+
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid var(--accent-gold);
+            object-fit: cover;
+            box-shadow: 0 8px 32px rgba(239, 176, 54, 0.25);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .avatar:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 40px rgba(239, 176, 54, 0.35);
+        }
+
+        .status-indicator {
+            position: absolute;
+            bottom: 8px;
+            right: 8px;
+            width: 24px;
+            height: 24px;
+            background: #10b981;
+            border-radius: 50%;
+            border: 3px solid var(--white);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .user-info h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-navy);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.01em;
+        }
+
+        .user-info .title {
+            font-size: 1rem;
+            color: var(--accent-gold);
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .user-info .email {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+            font-weight: 400;
+        }
+
+        .user-info .phone {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        /* Enhanced Wallet Section */
+        .wallet-card {
+            background: var(--gradient-card);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 40px var(--shadow-light);
+            border: 1px solid var(--border-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .wallet-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-primary);
+        }
+
+        .wallet-header {
+            margin-bottom: 2rem;
+        }
+
+        .wallet-header h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-navy);
+            margin-bottom: 0.5rem;
+        }
+
+        .wallet-header p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .wallet-items {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .wallet-item {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid var(--border-light);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .wallet-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px var(--shadow-medium);
+            border-color: rgba(239, 176, 54, 0.3);
+        }
+
+        .wallet-item-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .wallet-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .wallet-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--accent-gold);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+
+        .wallet-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary-navy);
+            letter-spacing: -0.02em;
+            margin-bottom: 0.5rem;
+        }
+
+        .wallet-value .currency {
+            color: var(--accent-gold);
+            margin-right: 0.25rem;
+        }
+
+        .wallet-change {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #10b981;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .wallet-change.negative {
+            color: #ef4444;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.875rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--primary-navy);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: #034975;
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px var(--shadow-medium);
+        }
+
+        .btn-secondary {
+            background: var(--white);
+            color: var(--primary-navy);
+            border: 1px solid var(--border-light);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-light);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px var(--shadow-light);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .profile-main {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .wallet-card {
+                order: -1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-wrapper {
+                padding: 1rem 0.5rem;
+            }
+
+            .profile-header {
+                padding: 2.5rem 1.5rem;
+            }
+
+            .profile-header h1 {
+                font-size: 2.5rem;
+            }
+
+            .profile-card, .wallet-card {
+                padding: 1.5rem;
+            }
+
+            .user-section {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .avatar-container {
+                margin-right: 0;
+                margin-bottom: 1.5rem;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .profile-header h1 {
+                font-size: 2rem;
+            }
+
+            .profile-header .subtitle {
+                font-size: 1rem;
+            }
+
+            .wallet-value {
+                font-size: 2rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .profile-header {
+            animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .profile-card {
+            animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.1s both;
+        }
+
+        .wallet-card {
+            animation: fadeInUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-wrapper">
+        <div class="dashboard-container">
+            <!-- Enhanced Header -->
+            <div class="profile-header">
+                <div class="profile-header-content">
+                    <h1>PROFILE</h1>
+                    <p class="subtitle">Manage your account settings and view your financial overview</p>
+                </div>
+            </div>
+
+            <!-- Main Content Grid -->
+            <div class="profile-main">
+                <!-- Profile Information Card -->
+                <div class="profile-card">
+                    <div class="user-section">
+                        <div class="avatar-container">
+                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" 
+                                 alt="Profile Avatar" class="avatar">
+                            <div class="status-indicator"></div>
+                        </div>
+                        <div class="user-info">
+                            <h2>Alexander Chen</h2>
+                            <div class="title">Premium Member</div>
+<div class="email">alexander.chen&#64;email.com</div>
+                            <div class="phone">+1 (555) 123-4567</div>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn btn-primary">
+                            <span>Edit Profile</span>
+                        </button>
+                        <button class="btn btn-secondary">
+                            <span>Account Settings</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Wallet Information Card -->
+                <div class="wallet-card">
+                    <div class="wallet-header">
+                        <h3>Wallet Overview</h3>
+                        <p>Your current balance and rewards</p>
+                    </div>
+                    
+                    <div class="wallet-items">
+                        <div class="wallet-item">
+                            <div class="wallet-item-header">
+                                <span class="wallet-label">Points Balance</span>
+                                <div class="wallet-icon">P</div>
+                            </div>
+                            <div class="wallet-value">2,450</div>
+                            <div class="wallet-change">+125 this month</div>
+                        </div>
+
+                        <div class="wallet-item">
+                            <div class="wallet-item-header">
+                                <span class="wallet-label">Cash Balance</span>
+                                <div class="wallet-icon">$</div>
+                            </div>
+                            <div class="wallet-value">
+                                <span class="currency">$</span>1,247.50
+                            </div>
+                            <div class="wallet-change">+$47.50 this week</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <h2>{{ profileData.userName }}</h2>
-    <hr />
-    <p><strong>Email:</strong> {{ profileData.email }}</p>
-    <p><strong>Phone Number:</strong> {{ profileData.phoneNumber }}</p>
-
-    <div class="wallet-info mt-4">
-      <p><strong>Points Balance:</strong> {{ profileData.BalancePoints }}</p>
-      <p><strong>Cash Balance:</strong> {{ profileData.BalanceCash | currency:'USD':'symbol' }}</p>
-    </div>
-  </div>
-
-</div>
-
-<ng-template #loadingOrError>
-  <p *ngIf="error" class="text-danger">{{ error }}</p>
-  <p *ngIf="!error">Loading profile...</p>
-</ng-template>
+</body>
+</html>

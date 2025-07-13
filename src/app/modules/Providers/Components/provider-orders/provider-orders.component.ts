@@ -63,27 +63,45 @@ export class ProviderOrdersComponent implements OnInit {
 
     this.providerOrdersService.getProviderOrders().subscribe({
       next: (response: any) => {
-        console.log('Orders response:', response);
-        console.log('Response IsSuccess:', response?.IsSuccess);
-        console.log('Response Data:', response?.Data);
-        console.log('Response Message:', response?.Message);
+        // Try to extract the orders array from various possible response shapes
+        let ordersArray = null;
+        if (response?.data && Array.isArray(response.data)) {
+          ordersArray = response.data;
+        } else if (response?.Data && Array.isArray(response.Data)) {
+          ordersArray = response.Data;
+        } else if (response?.Data?.data && Array.isArray(response.Data.data)) {
+          ordersArray = response.Data.data;
+        }
 
-        if (response && response.IsSuccess && response.Data) {
-          // Map CustomerInfo to customerInfo for template compatibility
-          this.orders = response.Data.map((order: any) => ({
-            ...order,
-            customerInfo: order.CustomerInfo,
-          })).sort(
-            (a: ProviderOrder, b: ProviderOrder) =>
-              new Date(b.CreationDateTime).getTime() -
-              new Date(a.CreationDateTime).getTime()
-          );
-          console.log('Orders loaded successfully:', this.orders);
-          console.log('Number of orders:', this.orders.length);
+        if (ordersArray) {
+          this.orders = ordersArray
+            .map((order: any) => ({
+              ...order,
+              customerInfo: order.CustomerInfo,
+            }))
+            .sort(
+              (a: ProviderOrder, b: ProviderOrder) =>
+                new Date(b.CreationDateTime).getTime() -
+                new Date(a.CreationDateTime).getTime()
+            );
         } else {
+          // Only warn if we got an object instead of an array
+          if (
+            (response?.data &&
+              typeof response.data === 'object' &&
+              !Array.isArray(response.data)) ||
+            (response?.Data &&
+              typeof response.Data === 'object' &&
+              !Array.isArray(response.Data))
+          ) {
+            console.warn(
+              'Expected array for orders but got object:',
+              response.data || response.Data
+            );
+          }
           this.orders = [];
-          this.error = response?.Message || 'No orders found';
-          console.log('No orders found or error:', this.error);
+          this.error =
+            response?.Message || response?.message || 'No orders found';
         }
 
         this.loading = false;

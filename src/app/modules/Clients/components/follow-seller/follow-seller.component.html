@@ -1,31 +1,47 @@
-<div class="follow-seller-container">
-  <h2>Followed Shops</h2>
-
-  <div *ngIf="followedShops.length > 0; else noShops">
-    <ul>
-      <li *ngFor="let shop of followedShops" class="shop-item">
-        <span class="shop-name">🛍️ Shop ID: {{ shop }}</span>
-        <button class="btn unfollow-btn" (click)="unfollow(shop)">Unfollow</button>
-      </li>
-    </ul>
+<div class="container mt-4">
+  <h2 class="mb-4 text-center">All Shops</h2>
+  <div class="row mb-3">
+    <div class="col-md-4">
+      <input type="text" class="form-control" placeholder="Search by name, type, or city..." [(ngModel)]="shopSearch"
+        (input)="filterShops()">
+    </div>
   </div>
-
-  <ng-template #noShops>
-    <p class="no-shops-message">You are not following any shops yet.</p>
-  </ng-template>
-
-  <hr />
-
-  <h3>Follow a New Shop</h3>
-  <div class="follow-form">
-    <input
-      type="number"
-      min="1"
-      placeholder="Enter Shop ID"
-      [(ngModel)]="newShopId"
-      (keydown.enter)="follow()"
-      class="shop-input"
-    />
-    <button class="btn follow-btn" (click)="follow()">Follow</button>
+  <div class="row g-4">
+    <div class="col-md-6 col-lg-4" *ngFor="let shop of filteredShops">
+      <div class="card h-100 border-0 shadow-sm shop-card">
+        <div class="row g-0 align-items-center">
+          <div class="col-4 text-center">
+            <img [src]="shop.Logo || 'assets/default-shop.png'" class="img-fluid rounded-circle shop-logo"
+              alt="{{ shop.Name }}">
+          </div>
+          <div class="col-8">
+            <div class="card-body p-2">
+              <h5 class="card-title mb-1">{{ shop.Name }}</h5>
+              <span class="badge bg-primary mb-2">{{ shop.TypeName }}</span>
+              <p class="card-text small text-muted mb-1">{{ shop.Description }}</p>
+              <p class="card-text small text-secondary mb-2">
+                <i class="bi bi-geo-alt"></i> {{ shop.City }}
+              </p>
+              <!-- <p class="card-text small text-info mb-2" *ngIf="shop.followerCount !== undefined">
+                <i class="bi bi-people"></i> {{ shop.followerCount }} followers
+              </p> -->
+              <button *ngIf="!isFollowing(shop.Id)" class="btn btn-success btn-sm me-2" [disabled]="isLoading(shop.Id)"
+                (click)="follow(shop.Id)">
+                <span *ngIf="isLoading(shop.Id)" class="spinner-border spinner-border-sm me-1" role="status"></span>
+                {{ isLoading(shop.Id) ? 'Following...' : 'Follow' }}
+              </button>
+              <button *ngIf="isFollowing(shop.Id)" class="btn btn-outline-danger btn-sm me-2"
+                [disabled]="isLoading(shop.Id)" (click)="unfollow(shop.Id)">
+                <span *ngIf="isLoading(shop.Id)" class="spinner-border spinner-border-sm me-1" role="status"></span>
+                {{ isLoading(shop.Id) ? 'Unfollowing...' : 'Unfollow' }}
+              </button>
+              <button class="btn btn-outline-primary btn-sm" (click)="viewShop(shop)">View Shop</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+  <app-shop-details-modal *ngIf="showShopModal" [shop]="selectedShop"
+    (close)="closeShopModal()"></app-shop-details-modal>
 </div>

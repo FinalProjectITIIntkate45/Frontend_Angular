@@ -5,22 +5,15 @@
       <div class="col-md-6">
         <div class="General-input-wrapper">
           <i class="fas fa-search"></i>
-          <input
-            type="text"
-            class="General-custom-input General-light-input"
-            placeholder="Search by client name or order ID"
-            [value]="search()"
-            (input)="search.set($any($event.target).value)"
-          />
+          <input type="text" class="General-custom-input General-light-input"
+            placeholder="Search by client name or order ID" [value]="search()"
+            (input)="search.set($any($event.target).value)" />
         </div>
       </div>
 
       <div class="col-md-3">
-        <select
-          class="General-custom-input General-light-input"
-          [value]="statusFilter()"
-          (change)="statusFilter.set($any($event.target).value)"
-        >
+        <select class="General-custom-input General-light-input" [value]="statusFilter()"
+          (change)="statusFilter.set($any($event.target).value)">
           <option value="">Filter by Status</option>
           <option value="pending">Pending</option>
           <option value="confirmed">Confirmed</option>
@@ -46,10 +39,7 @@
       {{ errorMessage() }}
     </div>
 
-    <table
-      class="table table-striped table-bordered"
-      *ngIf="!loading() && filteredOrders().length"
-    >
+    <table class="table table-striped table-bordered" *ngIf="!loading() && filteredOrders().length">
       <thead class="table-primary">
         <tr>
           <th>#</th>
@@ -68,10 +58,7 @@
       <tbody>
         <tr *ngFor="let order of paginatedOrders(); let i = index">
           <td>
-            <a
-              [routerLink]="['/orders', order.Id]"
-              class="text-decoration-none fw-bold"
-            >
+            <a [routerLink]="['/orders', order.Id]" class="text-decoration-none fw-bold">
               #{{ order.Id }}
             </a>
           </td>
@@ -85,16 +72,14 @@
           </td>
           <td>
             {{
-              order.TotalAmount != null
-                ? (order.TotalAmount
-                  | currency : "USD" : "symbol" : "1.2-2" : "en-US")
-                : "N/A"
+            order.TotalAmount != null
+            ? (order.TotalAmount
+            | currency : "USD" : "symbol" : "1.2-2" : "en-US")
+            : "N/A"
             }}
           </td>
           <td>
-            <span
-              [ngClass]="order.IsPaid ? 'text-success fw-bold' : 'text-danger'"
-            >
+            <span [ngClass]="order.IsPaid ? 'text-success fw-bold' : 'text-danger'">
               {{ order.IsPaid ? "Paid" : "Unpaid" }}
             </span>
           </td>
@@ -103,25 +88,19 @@
           <td>{{ order.CreationDateTime | date : "short" }}</td>
           <td>
             {{
-              order.ModificationDateTime
-                ? (order.ModificationDateTime | date : "short")
-                : "—"
+            order.ModificationDateTime
+            ? (order.ModificationDateTime | date : "short")
+            : "—"
             }}
           </td>
           <td>
-            <button
-              class="btn btn-sm General-hover-btn me-1"
-              *ngIf="order.Status?.toLowerCase() === 'pending'"
-              (click)="updateOrderStatus(order.Id, OrderStatus.Confirmed)"
-            >
+            <button class="btn btn-sm General-hover-btn me-1" *ngIf="order.Status?.toLowerCase() === 'pending'"
+              (click)="updateOrderStatus(order.Id, OrderStatus.Confirmed)">
               Confirm
             </button>
 
-            <button
-              class="btn btn-sm btn-danger"
-              *ngIf="order.Status?.toLowerCase() !== 'cancelled'"
-              (click)="updateOrderStatus(order.Id, OrderStatus.Canceled)"
-            >
+            <button class="btn btn-sm btn-danger" *ngIf="order.Status?.toLowerCase() !== 'cancelled'"
+              (click)="updateOrderStatus(order.Id, OrderStatus.Canceled)">
               Cancel
             </button>
           </td>
@@ -129,10 +108,7 @@
       </tbody>
     </table>
 
-    <div
-      *ngIf="!loading() && !filteredOrders().length"
-      class="text-center py-5"
-    >
+    <div *ngIf="!loading() && !filteredOrders().length" class="text-center py-5">
       <h5 class="text-muted">
         No orders found for the current search or filters.
       </h5>
@@ -141,33 +117,18 @@
     <nav *ngIf="totalPages() > 1" class="mt-4">
       <ul class="pagination justify-content-center">
         <li class="page-item" [class.disabled]="currentPage() === 1">
-          <a
-            class="page-link"
-            href="#"
-            (click)="previousPage(); $event.preventDefault()"
-          >
+          <a class="page-link" href="#" (click)="previousPage(); $event.preventDefault()">
             Previous
           </a>
         </li>
-        <li
-          *ngFor="let page of [].constructor(totalPages()); let i = index"
-          class="page-item"
-          [class.active]="currentPage() === i + 1"
-        >
-          <a
-            class="page-link"
-            href="#"
-            (click)="goToPage(i + 1); $event.preventDefault()"
-          >
+        <li *ngFor="let page of [].constructor(totalPages()); let i = index" class="page-item"
+          [class.active]="currentPage() === i + 1">
+          <a class="page-link" href="#" (click)="goToPage(i + 1); $event.preventDefault()">
             {{ i + 1 }}
           </a>
         </li>
         <li class="page-item" [class.disabled]="currentPage() === totalPages()">
-          <a
-            class="page-link"
-            href="#"
-            (click)="nextPage(); $event.preventDefault()"
-          >
+          <a class="page-link" href="#" (click)="nextPage(); $event.preventDefault()">
             Next
           </a>
         </li>

@@ -51,7 +51,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatDialogModule } from '@angular/material/dialog';
-import { AboutUsComponent } from  './components/about-us/about-us.component';
+import { AboutUsComponent } from './components/about-us/about-us.component';
+import { ShopDetailsModalComponent } from './components/shop-details-modal/shop-details-modal.component';
+import { ClientNotificationsPanelComponent } from './components/notifications-panel/notifications-panel.component';
+import { HomeModule } from '../home/home.module';
 
 @NgModule({
   declarations: [
@@ -90,6 +93,8 @@ import { AboutUsComponent } from  './components/about-us/about-us.component';
     PaymentConfirmationComponent,
     RecyclingSectionComponent,
     ClientOrderDetailsComponent,
+    ShopDetailsModalComponent,
+    ClientNotificationsPanelComponent,
   ],
 
   imports: [
@@ -104,6 +109,13 @@ import { AboutUsComponent } from  './components/about-us/about-us.component';
     MatButtonModule,
     MatDividerModule,
     MatDialogModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatDividerModule,
+    MatDialogModule,
+    HomeModule,
   ],
   providers: [
     provideHttpClient(
