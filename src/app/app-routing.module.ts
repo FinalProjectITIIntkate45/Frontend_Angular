@@ -8,11 +8,12 @@ import { ProviderLayoutComponent } from './modules/Providers/Components/provider
 
 const routes: Routes = [
   // { path: '', redirectTo: 'client/products', pathMatch: 'full' },
-  {
-    path: '',
-    redirectTo: 'account/login', // Start with login
-    pathMatch: 'full',
-  },
+ {
+  path: '',
+  redirectTo: 'home',
+  pathMatch: 'full',
+},
+
   {
     path: 'account',
     loadChildren: () =>
@@ -40,6 +41,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./modules/Recycling/recycling.module').then((m) => m.RecyclingModule),
   },
+  { path: 'home', loadChildren: () => import('./modules/home/home.module').then(m => m.HomeModule) },
   // { path: '', redirectTo: 'clients/follow-seller', pathMatch: 'full' },
   // {
   //   path: 'clients',

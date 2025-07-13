@@ -70,9 +70,26 @@ export interface RecyclingRequestEditViewModel {
   RequestImage?: string;
 }
 
+export interface RecyclingRequestAfterAuctionVm {
+  Id: number;
+  Address: string;
+  Quantity: number;
+  PendingmMoneyAfterAuction?: number;
+  ReturnType: ReturnType;
+  CreatedAt: Date;
+  MaterialId: number;
+  RecyclerName: string;
+}
+
 export enum RecyclingRequestStatus {
   Pending = 1,
   Accepted = 2,
   Rejected = 3,
   Completed = 4,
+}
+
+export enum ReturnType {
+  Waiting = 0,
+  Money = 1,
+  Point = 2,
 }

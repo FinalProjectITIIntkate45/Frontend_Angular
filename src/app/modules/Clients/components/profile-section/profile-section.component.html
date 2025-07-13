@@ -3,92 +3,26 @@
   <p>Welcome back to your profile! Here's your activity summary.</p>
 </div>
 
-<div class="profile-section-container">
+<div class="profile-section-container" *ngIf="profileData; else loadingOrError">
 
-  <!-- Personal Info Section -->
-  <div class="card profile-card">
-    <h2>Personal Info</h2>
-    <hr>
-    <form [formGroup]="personalInfoForm" (ngSubmit)="savePersonalInfo()">
-      <div class="profile-img-upload">
-        <img [src]="profileImgPreview" alt="Profile Image" class="profile-img-preview" />
-        <input *ngIf="editPersonalInfo" type="file" (change)="onProfileImgChange($event)" accept="image/*" />
-      </div>
-      <div class="form-field full-width">
-        <label>Full Name</label>
-        <input formControlName="fullName" [readonly]="!editPersonalInfo" />
-      </div>
-      <div class="button-row" *ngIf="editPersonalInfo">
-        <button class="btn btn-primary" type="submit">Save Changes</button>
-        <button class="btn" type="button" (click)="closePersonalInfo()">Close</button>
-      </div>
-      <div class="button-row" *ngIf="!editPersonalInfo">
-        <button class="btn btn-stroked" type="button" (click)="editPersonal()">Edit</button>
-      </div>
-    </form>
-  </div>
-
-  <!-- Contact Info Section -->
-  <div class="card profile-card">
-    <h2>Contact Info</h2>
-    <hr>
-    <form [formGroup]="contactInfoForm" (ngSubmit)="saveContactInfo()">
-      <div class="form-field full-width">
-        <label>Email</label>
-        <input formControlName="email" [readonly]="!editContactInfo" />
-      </div>
-      <div class="form-field full-width">
-        <label>Phone Number</label>
-        <input formControlName="phoneNumber" [readonly]="!editContactInfo" />
-      </div>
-      <div class="button-row" *ngIf="editContactInfo">
-        <button class="btn btn-primary" type="submit">Save Changes</button>
-        <button class="btn" type="button" (click)="closeContactInfo()">Close</button>
-      </div>
-      <div class="button-row" *ngIf="!editContactInfo">
-        <button class="btn btn-stroked" type="button" (click)="editContact()">Edit</button>
-      </div>
-    </form>
-  </div>
-
-  <!-- Change Password Section -->
-  <div class="card profile-card">
-    <h2>Change Password</h2>
-    <hr>
-    <form [formGroup]="passwordForm" (ngSubmit)="savePassword()">
-      <div class="form-field full-width">
-        <label>Current Password</label>
-        <input type="password" formControlName="currentPassword" [readonly]="!editPassword" />
-      </div>
-      <div class="form-field full-width">
-        <label>New Password</label>
-        <input type="password" formControlName="newPassword" [readonly]="!editPassword" />
-      </div>
-      <div class="button-row" *ngIf="editPassword">
-        <button class="btn btn-primary" type="submit">Save Changes</button>
-        <button class="btn" type="button" (click)="closePassword()">Close</button>
-      </div>
-      <div class="button-row" *ngIf="!editPassword">
-        <button class="btn btn-stroked" type="button" (click)="editPass()">Edit</button>
-      </div>
-    </form>
-  </div>
-
-  <!-- Delete Account Section -->
-  <div class="card profile-card delete-section">
-    <h2>Delete Account</h2>
-    <hr>
-    <div class="delete-warning">
-      When you delete your account, your public profile will be deactivated immediately. If you change your mind before 14 days, just sign in again and we’ll send you a reactivation link.
+  <div class="card profile-card text-center">
+    <div class="profile-img-upload mb-3">
+      <img [src]="profileImgPreview || 'https://via.placeholder.com/150'" alt="Profile Image" class="profile-img-preview rounded-circle" style="width:150px; height:150px; object-fit:cover;" />
     </div>
-    <button class="btn btn-warn" (click)="openDeleteDialog()">Delete Account</button>
-    <div class="dialog-content" *ngIf="isDeleting">
-      <div class="delete-dialog">
-        <p>Are you sure you want to delete your account? This action cannot be undone.</p>
-        <button class="btn btn-warn" (click)="confirmDeleteAccount()">Yes, Delete</button>
-        <button class="btn" (click)="closeDeleteDialog()">Cancel</button>
-      </div>
+    <h2>{{ profileData.userName }}</h2>
+    <hr />
+    <p><strong>Email:</strong> {{ profileData.email }}</p>
+    <p><strong>Phone Number:</strong> {{ profileData.phoneNumber }}</p>
+
+    <div class="wallet-info mt-4">
+      <p><strong>Points Balance:</strong> {{ profileData.BalancePoints }}</p>
+      <p><strong>Cash Balance:</strong> {{ profileData.BalanceCash | currency:'USD':'symbol' }}</p>
     </div>
   </div>
 
 </div>
+
+<ng-template #loadingOrError>
+  <p *ngIf="error" class="text-danger">{{ error }}</p>
+  <p *ngIf="!error">Loading profile...</p>
+</ng-template>
