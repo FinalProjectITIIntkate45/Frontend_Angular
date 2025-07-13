@@ -1,0 +1,247 @@
+
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: var( --primary-dark);
+      background-color: #fff;
+    }
+
+    a,
+    .btn-primary {
+      background-color: var(--accent-yellow);
+      border-color: var(--accent-yellow);
+      color: var(--primary-dark);
+      font-weight: 600;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+   
+
+    h2.section-title {
+      font-weight: 700;
+      margin-bottom: 2rem;
+      color: var(--primary-dark);
+      position: relative;
+      max-width: fit-content;
+      padding-bottom: 0.25rem;
+    }
+
+    h2.section-title::after {
+      content: '';
+      position: absolute;
+      height: 4px;
+      width: 50px;
+      background-color: var(--accent-yellow);
+      bottom: 0;
+      left: 0;
+      border-radius: 2px;
+    }
+
+    /* Section padding */
+    section {
+      padding: 10rem 6rem;
+    }
+
+    /* Soft background for odd sections */
+    section.bg-soft {
+      background-color: var(--surface-white);
+    }
+
+    /* How It Works Steps */
+    .how-steps {
+      counter-reset: step-counter;
+    }
+
+    .how-step {
+      position: relative;
+      padding-left: 4rem;
+      margin-bottom: 2rem;
+      transition: transform 0.3s ease;
+    }
+
+    .how-step:hover {
+      transform: translateY(-8px);
+    }
+
+    .how-step::before {
+      counter-increment: step-counter;
+      content: counter(step-counter);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 3rem;
+      height: 3rem;
+      background: var(--accent-yellow);
+      color: var( --primary-dark);
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: 1.5rem;
+      line-height: 3rem;
+      text-align: center;
+      box-shadow: 0 0 10px var(--accent-yellow);
+      user-select: none;
+    }
+
+    /* Benefit cards */
+    .benefit-card {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem 1.5rem;
+      box-shadow: 0 4px 12px rgb(0 0 0 / 0.1);
+      transition: transform 0.3s ease, box-shadow 0.4s ease;
+      text-align: center;
+    }
+
+    .benefit-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 20px rgb(0 0 0 / 0.15);
+    }
+
+    .benefit-icon {
+      font-size: 3rem;
+      color: var(--accent-yellow);
+      margin-bottom: 1rem;
+    }
+
+    /* Partner brands logos */
+    .partner-logo {
+      max-height: 60px;
+      max-width: 150px;
+      object-fit: contain;
+      filter: grayscale(1) brightness(0.6);
+      transition: filter 0.3s ease;
+      cursor: pointer;
+    }
+
+    .partner-logo:hover,
+    .partner-logo:focus {
+      filter: none;
+      transform: scale(1.1);
+      outline: none;
+    }
+
+    /* Testimonials */
+    .testimonial-card {
+      background: white;
+      border-radius: 12px;
+      padding: 2rem;
+      box-shadow: 0 0 12px rgb(0 0 0 / .1);
+      margin: 1rem auto;
+      max-width: 500px;
+      transition: transform 0.3s ease;
+      text-align: center;
+    }
+
+    .testimonial-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 0 20px rgb(0 0 0 / .15);
+    }
+
+    .testimonial-quote {
+      font-style: italic;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      color: var(--navy);
+    }
+
+    .testimonial-author {
+      font-weight: 700;
+      color: var(--accent-yellow);
+    }
+
+    /* FAQ Accordion custom */
+    .accordion-button {
+      color: var( --primary-dark);
+      font-weight: 600;
+    }
+
+    .accordion-item {
+      border: none;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .accordion-button:not(.collapsed) {
+      color: var(--accent-yellow);
+      background-color: #fef9f0;
+      box-shadow: inset 0 -1px 0 rgb(0 0 0 / 0.125);
+    }
+
+    /* CTA Section */
+    .cta-section {
+      text-align: center;
+      background: var(--primary-dark);
+      color: white;
+      padding: 5rem 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 12px 40px rgb(14 25 73 / 0.7);
+      margin: 3rem 0;
+    }
+
+    .cta-section h2 {
+      margin-bottom: 1rem;
+      font-weight: 700;
+      font-size: 2.5rem;
+    }
+
+    .cta-section p {
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+      font-weight: 500;
+      opacity: 0.85;
+    }
+
+ 
+    .btn-cta:hover,
+    .btn-cta:focus {
+      background-color: white;
+      color: var(--primary-dark);
+      box-shadow: 0 5px 25px rgb(2 48 89 / 0.9);
+      text-decoration: none;
+    }
+
+    /* Responsive alternating layouts for how it works and benefits */
+    @media (min-width: 768px) {
+      .how-step-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 2rem;
+      }
+      .how-step-image {
+        flex: 1 1 40%;
+      }
+      .how-step-text {
+        flex: 1 1 55%;
+      }
+
+      /* Alternate sides */
+      .how-step-row:nth-child(even) .how-step-image {
+        order: 2;
+      }
+
+      .benefits-row > div {
+        transition: transform 0.3s ease;
+      }
+      .benefits-row > div:hover {
+        transform: scale(1.05);
+      }
+    }
+
+    /* Smooth fadeIn animations */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      animation-fill-mode: forwards;
+      animation-name: fadeInUp;
+      animation-duration: 0.8s;
+      animation-timing-function: ease-out;
+      animation-delay: var(--delay, 0s);
+    }
+
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
