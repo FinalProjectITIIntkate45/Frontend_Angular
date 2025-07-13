@@ -1,0 +1,29 @@
+<app-RecyclerLayout>
+  <div class="auctions-winner-section">
+    <h2><i class="fas fa-trophy"></i> My Won Auctions</h2>
+    <div *ngIf="loading" class="loading">Loading...</div>
+    <div *ngIf="error" class="error">{{ error }}</div>
+    <div *ngIf="!loading && !error">
+      <div *ngIf="auctions.length === 0" class="empty-state">
+        <i class="fas fa-inbox"></i>
+        <p>No won auctions yet.</p>
+      </div>
+      <div class="auction-cards-grid" *ngIf="auctions.length > 0">
+        <div class="auction-card" *ngFor="let auction of auctions">
+          <div class="card-header">
+            <span class="material-name">{{ auction.Matrialname }}</span>
+            <span class="auction-status status-{{ auction.AuctionStatus.toLowerCase() }}">{{ auction.AuctionStatus }}</span>
+          </div>
+          <div class="card-body">
+            <div><strong>Governorate:</strong> {{ auction.GovernorateName }}</div>
+            <div><strong>Start:</strong> {{ auction.StartTime | date:'short' }}</div>
+            <div><strong>End:</strong> {{ auction.EndTime | date:'short' }}</div>
+            <div><strong>Insurance:</strong> {{ auction.InsuranceAmount | number:'1.2-2' }}</div>
+            <div><strong>Quantity:</strong> {{ auction.quantity }} {{ auction.UnitType }}</div>
+            <div><strong>Requests:</strong> {{ auction.RequestsCount }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-RecyclerLayout>

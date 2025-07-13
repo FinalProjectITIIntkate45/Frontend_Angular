@@ -29,6 +29,7 @@ import { NotificationService } from './Services/notification.service.service';
 import { ActiveAuctionsService } from './Services/active-auctions.service';
 import { AuctionBidService } from './Services/auction-bid.service';
 import { AuctionBidSignalrService } from './Services/auction-bid-signalr.service';
+import { AuctionsWinnerComponent } from './Components/auctions-winner/auctions-winner.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,7 @@ import { AuctionBidSignalrService } from './Services/auction-bid-signalr.service
     ActiveAuctionsComponent,
     RecyclerRequestsComponent,
     WalletDisplayComponent,
-    
+    AuctionsWinnerComponent,
     // Shared Components
     RecyclerNavbarComponent,
     RecyclerSideBarComponent,

@@ -34,6 +34,12 @@ export class RecyclerSideBarComponent implements OnInit {
       route: '/Recycler/active-auctions'
     },
     {
+      id: 'won-auctions',
+      label: 'Won Auctions',
+      icon: 'fas fa-trophy',
+      route: '/Recycler/win-auctions'
+    },
+    {
       id: 'requests',
       label: 'Recycler Requests',
       icon: 'fas fa-recycle',

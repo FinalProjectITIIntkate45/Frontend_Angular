@@ -10,6 +10,8 @@ import {
   RecyclingRequestListItemViewModel,
   RecyclingRequestStatus,
   Governorate,
+  RecyclingRequestAfterAuctionVm,
+  ReturnType,
 } from '../../Models/recycling-request.model';
 
 @Component({
@@ -21,10 +23,12 @@ import {
 export class RecyclingSectionComponent implements OnInit {
   materials: RecyclingMaterial[] = [];
   myRequests: RecyclingRequestListItemViewModel[] = [];
+  requestsAfterAuction: RecyclingRequestAfterAuctionVm[] = [];
   selectedMaterial: RecyclingMaterial | null = null;
   showRequestForm = false;
   showMaterialsList = true;
   showMyRequests = false;
+  showRequestsAfterAuction = false;
   isLoading = false;
   errorMessage = '';
   successMessage = '';
@@ -35,6 +39,7 @@ export class RecyclingSectionComponent implements OnInit {
   imageBase64: string | null = null;
   governorates = Object.values(Governorate).filter(v => typeof v === 'number');
   Governorate = Governorate;
+  ReturnType = ReturnType;
 
   pageNumber = 1;
   pageSize = 10;
@@ -237,9 +242,99 @@ export class RecyclingSectionComponent implements OnInit {
 
   showMaterials(): void {
     this.showMyRequests = false;
+    this.showRequestsAfterAuction = false;
     this.showMaterialsList = true;
     this.showRequestForm = false;
     this.clearMessages();
+  }
+
+  showRequestsAfterAuctionSection(): void {
+    this.showMyRequests = false;
+    this.showMaterialsList = false;
+    this.showRequestForm = false;
+    this.showRequestsAfterAuction = true;
+    this.clearMessages();
+    this.loadRequestsAfterAuction();
+  }
+
+  loadRequestsAfterAuction(): void {
+    this.isLoading = true;
+    this.errorMessage = '';
+    
+    this.recyclingService.getRequestAfterAuction().subscribe({
+      next: (requests) => {
+        console.log('Received requests after auction:', requests);
+        this.requestsAfterAuction = requests;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error('Error loading requests after auction:', error);
+        this.errorMessage = 'Error loading requests after auction';
+        this.isLoading = false;
+      },
+    });
+  }
+
+  getReturnTypeText(returnType: ReturnType): string {
+    switch (returnType) {
+      case ReturnType.Waiting:
+        return 'Waiting';
+      case ReturnType.Point:
+        return 'Points';
+      case ReturnType.Money:
+        return 'Money';
+      default:
+        return 'Unknown';
+    }
+  }
+
+  getReturnTypeBadgeClass(returnType: ReturnType): string {
+    switch (returnType) {
+      case ReturnType.Waiting:
+        return 'badge bg-warning';
+      case ReturnType.Point:
+        return 'badge bg-success';
+      case ReturnType.Money:
+        return 'badge bg-info';
+      default:
+        return 'badge bg-secondary';
+    }
+  }
+
+  chooseReturnType(returnType: ReturnType, requestId: number): void {
+    if (!confirm(`Are you sure you want to choose ${this.getReturnTypeText(returnType)} as your return type?`)) {
+      return;
+    }
+
+    this.isLoading = true;
+    this.errorMessage = '';
+    this.successMessage = '';
+
+    this.recyclingService.chooseReturnType(returnType, requestId).subscribe({
+      next: (response) => {
+        this.isLoading = false;
+        
+        if (response.IsSuccess) {
+          this.successMessage = response.Message || 'Return type updated successfully!';
+          // Reload the requests after auction to show updated data
+          this.loadRequestsAfterAuction();
+        } else {
+          this.errorMessage = response.Message || 'Failed to update return type';
+        }
+      },
+      error: (error) => {
+        console.error('Error choosing return type:', error);
+        this.isLoading = false;
+        
+        if (error.status === 404) {
+          this.errorMessage = 'Request not found or already processed.';
+        } else if (error.status === 401) {
+          this.errorMessage = 'You are not authorized to perform this action.';
+        } else {
+          this.errorMessage = 'Failed to update return type. Please try again.';
+        }
+      },
+    });
   }
 
   getStatusBadgeClass(status: RecyclingRequestStatus): string {
