@@ -1,5 +1,10 @@
-<app-user-nav></app-user-nav>
-
-<router-outlet></router-outlet>
-
-<app-user-footer></app-user-footer>
+<app-header></app-header>
+<div class="client-layout d-flex" style="min-height: 100vh;">
+    <aside class="sidebar-area">
+        <app-sidebar></app-sidebar>
+    </aside>
+    <main class="content-area flex-grow-1">
+        <router-outlet></router-outlet>
+    </main>
+</div>
+<app-footer></app-footer>

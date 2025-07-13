@@ -30,9 +30,9 @@ import { AboutUsComponent } from './components/about-us/about-us.component';
 const routes: Routes = [
   {
     path: '',
-    component: UserProfileComponent,
     children: [
       { path: '', redirectTo: 'profile', pathMatch: 'full' },
+      { path: 'user-profile', component: UserProfileComponent },
       { path: 'profile', component: ProfileSectionComponent },
       { path: 'wallet', component: WalletSectionComponent },
       { path: 'orders', component: OrdersSectionComponent },
@@ -45,7 +45,6 @@ const routes: Routes = [
       { path: 'checkout', component: CheckoutComponent },
       { path: 'payment-confirmation', component: PaymentConfirmationComponent },
       { path: 'recycling', component: RecyclingSectionComponent },
-      { path: 'orders', component: OrdersSectionComponent },
       { path: 'orders/:id', component: ClientOrderDetailsComponent },
       { path: 'wallet-recharge', component: WalletRechargeComponent },
       { path: 'wallet/success', component: WalletSuccessComponent },

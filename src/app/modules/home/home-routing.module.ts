@@ -10,6 +10,7 @@ import { ShopsSectionComponent } from '../Clients/components/Shop-section/shops-
 import { AboutComponent } from './components/About/About.component';
 import { ProductSearchComponent } from '../Clients/components/product-search/product-search.component';
 import { ProductDetailsComponent } from '../Clients/components/product-details/product-details.component';
+import { AboutUsComponent } from '../Clients/components/about-us/about-us.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -20,7 +21,7 @@ const routes: Routes = [
   { path: 'donate/:id', component: DonateComponent },
   { path: 'charities', component: CharityListComponent },
   { path: 'shop', component: ShopsSectionComponent },
-  { path: 'about-us', component: AboutComponent },
+  { path: 'about-us', component: AboutUsComponent },
   {
     path: 'products',
     children: [

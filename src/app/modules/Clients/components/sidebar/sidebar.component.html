@@ -2,7 +2,8 @@
   <div class="sidebar-main">
     <!-- Navigation Menu -->
     <ul class="nav-menu list-unstyled flex-grow-1 p-3">
-      <li class="nav-item mb-2" [class.active]="selectedSection === 'profile'" (click)="selectSection('profile')">
+      <li class="nav-item mb-2" [class.active]="selectedSection === 'profile'" (click)="selectSection('profile')"
+        routerLink="profile">
         <a class="d-flex align-items-center text-dark text-decoration-none p-2 rounded">
           <i class="fas fa-user me-2"></i>
           <span>Profile</span>
@@ -16,24 +17,10 @@
       </a>
     </li> -->
       <li class="nav-item mb-2" [class.active]="selectedSection === 'wallet-recharge'"
-        (click)="selectSection('wallet-recharge')">
+        (click)="selectSection('wallet-recharge')" routerLink="wallet-recharge">
         <a class="d-flex align-items-center text-dark text-decoration-none p-2 rounded">
           <i class="fas fa-credit-card me-2"></i>
           <span>My Wallet</span>
-        </a>
-      </li>
-      <li class="nav-item mb-2" [class.active]="selectedSection === 'orders'" (click)="selectSection('orders')"
-        routerLink="/client/orders">
-        <a class="d-flex align-items-center text-dark text-decoration-none p-2 rounded" routerLink="/client/orders">
-          <i class="fas fa-shopping-bag me-2"></i>
-          <span>Order History</span>
-        </a>
-      </li>
-      <li class="nav-item mb-2" [class.active]="selectedSection === 'products'" (click)="selectSection('products')"
-        routerLink="/client/products">
-        <a class="d-flex align-items-center text-dark text-decoration-none p-2 rounded" routerLink="/client/products">
-          <i class="fas fa-box me-2"></i>
-          <span>Products</span>
         </a>
       </li>
       <li class="nav-item mb-2" [class.active]="selectedSection === 'points'" (click)="selectSection('points')"
@@ -43,6 +30,14 @@
           <span>Points History</span>
         </a>
       </li>
+      <li class="nav-item mb-2" [class.active]="selectedSection === 'orders'" (click)="selectSection('orders')"
+        routerLink="/client/orders">
+        <a class="d-flex align-items-center text-dark text-decoration-none p-2 rounded" routerLink="/client/orders">
+          <i class="fas fa-shopping-bag me-2"></i>
+          <span>Order History</span>
+        </a>
+      </li>
+
 
       <!-- <li
       <!-- <li
@@ -63,24 +58,24 @@
         </a>
       </li>
 
+      <li class="nav-item mb-2">
+        <a class="d-flex align-items-center text-dark text-decoration-none p-2 rounded" routerLink="cart">
+          <i class="fas fa-store me-2"></i>
+          <span>Cart</span>
+        </a>
+      </li>
       <li class="nav-item mb-2" routerLink="/client/Wishlist">
         <a class="d-flex align-items-center text-dark text-decoration-none p-2 rounded" routerLink="/client/wishlist">
           <i class="fas fa-heart me-2"></i>
           <span>Wishlist</span>
         </a>
       </li>
-      <li class="nav-item mb-2">
+      <!-- <li class="nav-item mb-2">
         <a class="d-flex align-items-center text-dark text-decoration-none p-2 rounded" routerLink="Achievements">
           <i class="fas fa-trophy me-2"></i>
           <span>Achievements</span>
         </a>
-      </li>
-      <li class="nav-item mb-2">
-        <a class="d-flex align-items-center text-dark text-decoration-none p-2 rounded" routerLink="/client/Settings">
-          <i class="fas fa-cog me-2"></i>
-          <span>Settings</span>
-        </a>
-      </li>
+      </li> -->
       <li class="nav-item mb-2">
         <a class="d-flex align-items-center text-dark text-decoration-none p-2 rounded"
           routerLink="/client/follow-seller">
@@ -88,19 +83,8 @@
           <span>Follow Sellers</span>
         </a>
       </li>
-      <li class="nav-item mb-2">
-        <a class="d-flex align-items-center text-dark text-decoration-none p-2 rounded" routerLink="/client/shop">
-          <i class="fas fa-store me-2"></i>
-          <span>Shops</span>
-        </a>
-      </li>
 
-      <li class="nav-item mb-2">
-        <a class="d-flex align-items-center text-dark text-decoration-none p-2 rounded" routerLink="cart">
-          <i class="fas fa-store me-2"></i>
-          <span>Cart</span>
-        </a>
-      </li>
+
     </ul>
   </div>
   <!-- Sidebar Footer -->

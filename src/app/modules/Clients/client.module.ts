@@ -54,6 +54,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { AboutUsComponent } from './components/about-us/about-us.component';
 import { ShopDetailsModalComponent } from './components/shop-details-modal/shop-details-modal.component';
 import { ClientNotificationsPanelComponent } from './components/notifications-panel/notifications-panel.component';
+import { HomeModule } from '../home/home.module';
 
 @NgModule({
   declarations: [
@@ -114,6 +115,7 @@ import { ClientNotificationsPanelComponent } from './components/notifications-pa
     MatButtonModule,
     MatDividerModule,
     MatDialogModule,
+    HomeModule,
   ],
   providers: [
     provideHttpClient(
