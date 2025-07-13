@@ -7,7 +7,8 @@ interface Benefit {
 @Component({
   selector: 'app-call-to-action',
   templateUrl: './call-to-action.component.html',
-  styleUrls: ['./call-to-action.component.css']
+  styleUrls: ['./call-to-action.component.css'],
+  standalone : false
 })
 export class CallToActionComponent {
   benefits: Benefit[] = [

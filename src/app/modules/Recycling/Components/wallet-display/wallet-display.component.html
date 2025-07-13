@@ -1,117 +1,31 @@
-<app-RecyclerLayout (sectionChange)="onSectionChange($event)">
+<app-RecyclerLayout>
   <div class="wallet-content">
-    <!-- Wallet Page Header -->
     <div class="wallet-header-page">
       <h1>My Wallet</h1>
-      <p>View your wallet balance and points breakdown</p>
+      <p>View your wallet balance and recharge easily</p>
     </div>
-
-    <!-- Loading State -->
-    <div *ngIf="loading" class="loading-container content-card">
-      <div class="spinner"></div>
-      <p>Loading wallet information...</p>
-    </div>
-
-    <!-- Error State -->
-    <div *ngIf="error && !loading" class="error-container content-card">
-      <div class="error-icon">⚠️</div>
-      <h3>Could not load your wallet</h3>
-      <p>{{ error }}</p>
-      <div class="error-hint">
-        <ul>
-          <li>Check your internet connection.</li>
-          <li>Make sure you are logged in.</li>
-          <li>If the problem persists, contact support.</li>
-        </ul>
+    <div class="wallet-section-container">
+      <div *ngIf="loading" class="wallet-loading">
+        <span>Loading wallet...</span>
       </div>
-      <button class="retry-btn" (click)="refreshWallet()">
-        <i class="fas fa-sync-alt"></i> Try Again
-      </button>
-    </div>
-
-    <!-- Wallet Information -->
-    <div *ngIf="wallet && !loading && !error" class="wallet-info">
-      <div class="wallet-header content-card">
-        <div class="card-header">
-          <i class="fas fa-wallet"></i>
-          <h3>My Wallet</h3>
-        </div>
-        <div class="card-body">
-          <button class="refresh-btn" (click)="refreshWallet()" title="Refresh wallet">
-            <i class="fas fa-sync-alt"></i>
-            Refresh
-          </button>
-        </div>
+      <div *ngIf="error && !loading" class="wallet-error">
+        <span>{{ error }}</span>
+        <button (click)="loadWalletBalance()">Try Again</button>
       </div>
-
-      <div class="wallet-cards">
-        <!-- Points Balance Card -->
-        <div class="balance-card points-card content-card">
-          <div class="card-header">
-            <i class="fas fa-star"></i>
-            <h3>Points Balance</h3>
+      <div *ngIf="!loading && !error">
+        <div class="wallet-card">
+          <div class="wallet-card-header">
+            <span class="wallet-card-title">Current Balance</span>
           </div>
-          <div class="card-body">
-            <div class="balance-amount">{{ formatPoints(wallet.balancePoints) }}</div>
-            <p class="balance-label">Available Points</p>
+          <div class="wallet-card-content">
+            <span class="wallet-point-amount primary">${{ walletBalance | number:'1.2-2' }}</span>
+          </div>
+          <div class="wallet-card-actions" style="margin-top: 1.5rem; text-align: center;">
+            <a class="btn btn-primary" routerLink="/Recycler/wallet-recharge">
+              <i class="fas fa-plus-circle"></i> Recharge Wallet
+            </a>
           </div>
         </div>
-
-        <!-- Cash Balance Card -->
-        <div class="balance-card cash-card content-card">
-          <div class="card-header">
-            <i class="fas fa-money-bill-wave"></i>
-            <h3>Cash Balance</h3>
-          </div>
-          <div class="card-body">
-            <div class="balance-amount">{{ formatCurrency(wallet.balancecash) }}</div>
-            <p class="balance-label">Available Cash</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Additional Points Information -->
-      <div class="points-breakdown content-card">
-        <div class="card-header">
-          <i class="fas fa-chart-pie"></i>
-          <h3>Points Breakdown</h3>
-        </div>
-        <div class="card-body">
-          <div class="breakdown-grid">
-            <div class="breakdown-card">
-              <h4>Total Shop Points</h4>
-              <div class="breakdown-value">{{ formatPoints(wallet.totalShopPoints) }}</div>
-            </div>
-            <div class="breakdown-card">
-              <h4>Total Free Points</h4>
-              <div class="breakdown-value">{{ formatPoints(wallet.totalFreePoints) }}</div>
-            </div>
-            <div class="breakdown-card">
-              <h4>Pending Points</h4>
-              <div class="breakdown-value">{{ formatPoints(wallet.totalPendingPoints) }}</div>
-            </div>
-            <div class="breakdown-card">
-              <h4>Total All Points</h4>
-              <div class="breakdown-value">{{ formatPoints(wallet.totalAllPoints) }}</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Last Updated Information -->
-      <div class="last-updated content-card">
-        <div class="card-body">
-          <p><strong>Last Updated:</strong> {{ formatDate(wallet.lastUpdated) }}</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- No Wallet Found -->
-    <div *ngIf="!wallet && !loading && !error" class="no-wallet content-card">
-      <div class="card-body">
-        <div class="no-wallet-icon">💳</div>
-        <h3>No Wallet Found</h3>
-        <p>You don't have a wallet yet. Please contact support to create one.</p>
       </div>
     </div>
   </div>

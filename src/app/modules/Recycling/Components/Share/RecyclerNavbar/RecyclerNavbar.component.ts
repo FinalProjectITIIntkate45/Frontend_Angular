@@ -71,12 +71,12 @@ export class RecyclerNavbarComponent implements OnInit, OnDestroy {
   
   loadWallet() {
     this.walletLoading = true;
-    this.walletSub = this.walletService.getUserWallet().subscribe({
-      next: (wallet) => {
+    this.walletSub = this.walletService.getWalletSummary().subscribe({
+      next: (wallet: any) => {
         this.wallet = wallet;
         this.walletLoading = false;
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Error loading wallet:', error);
         this.walletLoading = false;
       }

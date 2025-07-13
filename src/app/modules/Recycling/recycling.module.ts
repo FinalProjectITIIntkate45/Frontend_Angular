@@ -13,6 +13,9 @@ import { AuctionRoomComponent } from './Components/auction-room/auction-room.com
 import { ActiveAuctionsComponent } from './Components/get-active-auctions/active-auctions.component';
 import { RecyclerRequestsComponent } from './Components/recycler-requests/recycler-requests.component';
 import { WalletDisplayComponent } from './Components/wallet-display/wallet-display.component';
+import { WalletRechargeComponent } from './Components/wallet-recharge/wallet-recharge.component';
+import { WalletSectionComponent } from './Components/wallet-section/wallet-section.component';
+import { WalletSuccessComponent } from './Components/wallet-success/wallet-success.component';
 
 // Shared Components
 import { RecyclerNavbarComponent } from './Components/Share/RecyclerNavbar/RecyclerNavbar.component';
@@ -42,6 +45,9 @@ import { AuctionsWinnerComponent } from './Components/auctions-winner/auctions-w
     ActiveAuctionsComponent,
     RecyclerRequestsComponent,
     WalletDisplayComponent,
+    WalletRechargeComponent,
+    WalletSectionComponent,
+    WalletSuccessComponent,
     AuctionsWinnerComponent,
     // Shared Components
     RecyclerNavbarComponent,
