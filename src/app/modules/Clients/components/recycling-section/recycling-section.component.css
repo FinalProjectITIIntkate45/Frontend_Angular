@@ -125,12 +125,63 @@
 
 /* My Requests Section */
 .my-requests-section {
-  background: white;
-  border-radius: 15px;
   padding: 30px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
 }
 
+/* Requests After Auction Section */
+.requests-after-auction-section {
+  padding: 30px;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+.requests-after-auction-section h4 {
+  color: #ffc107;
+  font-weight: 600;
+}
+
+.requests-after-auction-section .text-warning {
+  color: #ffc107 !important;
+}
+
+/* Action Buttons Styling */
+.btn-group .btn {
+  border-radius: 20px;
+  padding: 6px 12px;
+  font-size: 0.8em;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: none;
+}
+
+.btn-group .btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.btn-group .btn-success {
+  background: linear-gradient(135deg, #28a745, #20c997);
+}
+
+.btn-group .btn-success:hover {
+  background: linear-gradient(135deg, #218838, #1ea085);
+}
+
+.btn-group .btn-info {
+  background: linear-gradient(135deg, #17a2b8, #6f42c1);
+}
+
+.btn-group .btn-info:hover {
+  background: linear-gradient(135deg, #138496, #5a32a3);
+}
+
+/* Table Styles */
 .table {
   border-radius: 10px;
   overflow: hidden;
@@ -251,7 +302,8 @@
 
   .materials-section,
   .request-form-section,
-  .my-requests-section {
+  .my-requests-section,
+  .requests-after-auction-section {
     padding: 20px;
   }
 
@@ -267,6 +319,11 @@
 
   .table-responsive {
     font-size: 0.9em;
+  }
+
+  .btn-group .btn {
+    padding: 4px 8px;
+    font-size: 0.75em;
   }
 }
 

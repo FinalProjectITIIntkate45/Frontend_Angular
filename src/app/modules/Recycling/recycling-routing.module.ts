@@ -8,6 +8,7 @@ import { AuctionRoomComponent } from './Components/auction-room/auction-room.com
 import { ActiveAuctionsComponent } from './Components/get-active-auctions/active-auctions.component';
 import { RecyclerRequestsComponent } from './Components/recycler-requests/recycler-requests.component';
 import { WalletDisplayComponent } from './Components/wallet-display/wallet-display.component';
+import { AuctionsWinnerComponent } from './Components/auctions-winner/auctions-winner.component';
 
 const routes: Routes = [
   {
@@ -49,6 +50,10 @@ const routes: Routes = [
   {
     path: 'paginated-auctions',
     loadComponent: () => import('./paginated-auctions/paginated-auctions.component').then(m => m.PaginatedAuctionsComponent)
+  },
+  {
+    path : 'win-auctions',
+    component : AuctionsWinnerComponent
   }
 ];
 

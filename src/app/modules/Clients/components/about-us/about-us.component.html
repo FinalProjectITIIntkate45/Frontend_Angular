@@ -12,17 +12,19 @@
         }
 
         :root {
-            --dark-blue: #023059;
-            --warm-yellow: #EFB036;
-            --off-white: #F7F7F8;
-            --soft-gray-blue: #9197B3;
+            --primary-color: #0A2540;
+            --secondary-color: #F4A261;
+            --background-color: #F9FAFC;
+            --text-color: #1A202C;
+            --muted-color: #718096;
+            --highlight-color: #2A9D8F;
         }
 
         body {
             font-family: 'Arial', sans-serif;
             line-height: 1.6;
-            color: var(--dark-blue);
-            background-color: var(--off-white);
+            color: var(--text-color);
+            background-color: var(--background-color);
             overflow-x: hidden;
         }
 
@@ -32,30 +34,12 @@
             padding: 0 20px;
         }
 
-        /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, var(--dark-blue) 0%, #034a7a 100%);
+            background: linear-gradient(135deg, var(--primary-color) 0%, #143d5d 100%);
             color: white;
             padding: 80px 0;
             position: relative;
             overflow: hidden;
-        }
-
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(239,176,54,0.1)"/><circle cx="80" cy="30" r="1.5" fill="rgba(239,176,54,0.15)"/><circle cx="60" cy="70" r="1" fill="rgba(239,176,54,0.1)"/><circle cx="30" cy="80" r="2.5" fill="rgba(239,176,54,0.08)"/></svg>');
-            animation: float 20s infinite linear;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-            100% { transform: translateY(0px); }
         }
 
         .hero-content {
@@ -63,48 +47,33 @@
             grid-template-columns: 1fr 1fr;
             gap: 40px;
             align-items: center;
-            position: relative;
-            z-index: 2;
         }
 
         .hero-text h1 {
             font-size: 3.5rem;
             font-weight: bold;
             margin-bottom: 20px;
-            animation: slideInLeft 1s ease-out;
         }
 
         .hero-text .highlight {
-            color: var(--warm-yellow);
+            color: var(--secondary-color);
         }
 
         .hero-text p {
             font-size: 1.3rem;
             margin-bottom: 30px;
             color: rgba(255, 255, 255, 0.9);
-            animation: slideInLeft 1s ease-out 0.2s both;
-        }
-
-        .hero-illustration {
-            text-align: center;
-            animation: slideInRight 1s ease-out;
         }
 
         .hero-avatar {
             width: 300px;
             height: 300px;
-            background: var(--warm-yellow);
+            background: var(--secondary-color);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 0 auto;
-            position: relative;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
-
-        .hero-avatar::before {
-            content: '💰';
             font-size: 6rem;
             animation: bounce 2s infinite;
         }
@@ -115,19 +84,14 @@
             60% { transform: translateY(-5px); }
         }
 
-        @keyframes slideInLeft {
-            from { transform: translateX(-100px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        @keyframes slideInRight {
-            from { transform: translateX(100px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        /* Company Story Section */
-        .story-section {
+        .story-section,
+        .features-section,
+        .team-section,
+        .cta-section {
             padding: 80px 0;
+        }
+
+        .story-section {
             background: white;
         }
 
@@ -138,88 +102,37 @@
             align-items: center;
         }
 
-        .story-text h2 {
+        .story-text h2,
+        .features-header h2,
+        .team-header h2,
+        .cta-content h2 {
             font-size: 2.5rem;
-            color: var(--dark-blue);
-            margin-bottom: 30px;
-            position: relative;
-        }
-
-        .story-text h2::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 80px;
-            height: 4px;
-            background: var(--warm-yellow);
-            border-radius: 2px;
-        }
-
-        .story-text p {
-            font-size: 1.1rem;
-            color: var(--soft-gray-blue);
+            color: var(--primary-color);
             margin-bottom: 20px;
         }
 
-        .story-illustration {
-            text-align: center;
-        }
-
-        .story-card {
-            background: linear-gradient(135deg, var(--warm-yellow) 0%, #f4c04e 100%);
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 15px 30px rgba(239, 176, 54, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .story-card::before {
-            content: '🎯';
-            font-size: 4rem;
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            opacity: 0.7;
-        }
-
-        .story-card h3 {
-            color: white;
-            font-size: 1.5rem;
+        .story-text p,
+        .features-header p,
+        .feature-card p,
+        .team-member p,
+        .cta-content p {
+            color: var(--muted-color);
+            font-size: 1.1rem;
             margin-bottom: 15px;
         }
 
-        .story-card p {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 1rem;
+        .story-card {
+            background: linear-gradient(135deg, var(--highlight-color), #3cb4a3);
+            padding: 40px;
+            border-radius: 20px;
+            color: white;
+            box-shadow: 0 15px 30px rgba(42, 157, 143, 0.3);
         }
 
-        /* Features Section */
-        .features-section {
-            padding: 80px 0;
-            background: var(--off-white);
-        }
-
-        .features-header {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .features-header h2 {
-            font-size: 2.5rem;
-            color: var(--dark-blue);
-            margin-bottom: 20px;
-        }
-
-        .features-header p {
-            font-size: 1.2rem;
-            color: var(--soft-gray-blue);
-        }
-
-        .features-grid {
+        .features-grid,
+        .team-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 40px;
         }
 
@@ -227,243 +140,80 @@
             background: white;
             padding: 40px;
             border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
             text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
         }
 
         .feature-icon {
+            background: var(--secondary-color);
             width: 80px;
             height: 80px;
-            background: var(--warm-yellow);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 30px;
             font-size: 2rem;
-            box-shadow: 0 5px 15px rgba(239, 176, 54, 0.3);
-        }
-
-        .feature-card h3 {
-            font-size: 1.5rem;
-            color: var(--dark-blue);
-            margin-bottom: 15px;
-        }
-
-        .feature-card p {
-            color: var(--soft-gray-blue);
-            font-size: 1rem;
-        }
-
-        /* Team Section */
-        .team-section {
-            padding: 80px 0;
-            background: white;
-        }
-
-        .team-header {
-            text-align: center;
-            margin-bottom: 60px;
-        }
-
-        .team-header h2 {
-            font-size: 2.5rem;
-            color: var(--dark-blue);
-            margin-bottom: 20px;
-        }
-
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
+            margin: 0 auto 20px;
+            box-shadow: 0 5px 15px rgba(244, 162, 97, 0.4);
         }
 
         .team-member {
-            text-align: center;
-            padding: 30px;
+            background: white;
             border-radius: 20px;
-            transition: transform 0.3s ease;
-        }
-
-        .team-member:hover {
-            transform: translateY(-5px);
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
         }
 
         .team-avatar {
             width: 120px;
             height: 120px;
             border-radius: 50%;
-            margin: 0 auto 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            margin: 0 auto 15px;
+            font-size: 2.5rem;
         }
 
-        .team-member:nth-child(1) .team-avatar {
-            background: linear-gradient(135deg, var(--warm-yellow) 0%, #f4c04e 100%);
-        }
+        .team-member:nth-child(1) .team-avatar { background: var(--secondary-color); }
+        .team-member:nth-child(2) .team-avatar { background: var(--highlight-color); }
+        .team-member:nth-child(3) .team-avatar { background: #264653; }
+        .team-member:nth-child(4) .team-avatar { background: #e76f51; }
 
-        .team-member:nth-child(2) .team-avatar {
-            background: linear-gradient(135deg, var(--dark-blue) 0%, #034a7a 100%);
-        }
-
-        .team-member:nth-child(3) .team-avatar {
-            background: linear-gradient(135deg, var(--soft-gray-blue) 0%, #a3a9c4 100%);
-        }
-
-        .team-member:nth-child(4) .team-avatar {
-            background: linear-gradient(135deg, var(--warm-yellow) 0%, var(--dark-blue) 100%);
-        }
-
-        .team-member h3 {
-            font-size: 1.3rem;
-            color: var(--dark-blue);
-            margin-bottom: 5px;
-        }
-
-        .team-member p {
-            color: var(--soft-gray-blue);
-            font-size: 0.9rem;
-        }
-
-        /* CTA Section */
         .cta-section {
-            padding: 80px 0;
-            background: linear-gradient(135deg, var(--dark-blue) 0%, #034a7a 100%);
+            background: linear-gradient(135deg, var(--primary-color), #0f355a);
             color: white;
             text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cta-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M10,10 Q50,5 90,10 Q95,50 90,90 Q50,95 10,90 Q5,50 10,10 Z" fill="rgba(239,176,54,0.05)"/></svg>');
-            animation: rotate 30s infinite linear;
-        }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        .cta-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        .cta-content h2 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-        }
-
-        .cta-content p {
-            font-size: 1.3rem;
-            margin-bottom: 40px;
-            color: rgba(255, 255, 255, 0.9);
         }
 
         .cta-button {
             display: inline-block;
-            background: var(--warm-yellow);
-            color: var(--dark-blue);
-            padding: 20px 40px;
+            background: var(--secondary-color);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
             font-size: 1.2rem;
             font-weight: bold;
             text-decoration: none;
-            border-radius: 50px;
             transition: all 0.3s ease;
-            box-shadow: 0 10px 25px rgba(239, 176, 54, 0.3);
         }
 
         .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(239, 176, 54, 0.4);
+            background: #d78a47;
         }
 
-        /* Responsive Design */
         @media (max-width: 768px) {
             .hero-content,
             .story-content {
                 grid-template-columns: 1fr;
-                gap: 30px;
                 text-align: center;
             }
-
-            .hero-text h1 {
-                font-size: 2.5rem;
-            }
-
-            .hero-text p {
-                font-size: 1.1rem;
-            }
-
-            .hero-avatar {
-                width: 200px;
-                height: 200px;
-            }
-
-            .hero-avatar::before {
-                font-size: 4rem;
-            }
-
-            .story-text h2,
-            .features-header h2,
-            .team-header h2 {
-                font-size: 2rem;
-            }
-
-            .cta-content h2 {
-                font-size: 2.2rem;
-            }
-
-            .team-grid {
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            }
         }
-
-        /* Fade-in Animation */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(30px);
-            animation: fadeInUp 0.8s ease-out forwards;
-        }
-
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* Staggered animations */
-        .feature-card:nth-child(1) { animation-delay: 0.1s; }
-        .feature-card:nth-child(2) { animation-delay: 0.2s; }
-        .feature-card:nth-child(3) { animation-delay: 0.3s; }
-
-        .team-member:nth-child(1) { animation-delay: 0.1s; }
-        .team-member:nth-child(2) { animation-delay: 0.2s; }
-        .team-member:nth-child(3) { animation-delay: 0.3s; }
-        .team-member:nth-child(4) { animation-delay: 0.4s; }
     </style>
 </head>
 <body>
-    <!-- Hero Section -->
+    <!-- Hero -->
     <section class="hero">
         <div class="container">
             <div class="hero-content">
@@ -472,131 +222,99 @@
                     <p>Join thousands of savvy shoppers who turn every purchase into rewarding experiences with our innovative points and cashback system.</p>
                 </div>
                 <div class="hero-illustration">
-                    <div class="hero-avatar"></div>
+                    <div class="hero-avatar">💰</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Company Story Section -->
+    <!-- Company Story -->
     <section class="story-section">
         <div class="container">
             <div class="story-content">
                 <div class="story-text">
                     <h2>Our Story</h2>
-                    <p>Founded with a simple belief: shopping should be rewarding. We noticed that customers were spending money without getting the recognition they deserved for their loyalty.</p>
-                    <p>That's why we created a platform where every purchase matters, every click counts, and every customer gets rewarded for choosing us. Our mission is to transform the way people shop online by making rewards accessible, instant, and truly valuable.</p>
-                    <p>From our humble beginnings to serving thousands of customers today, we remain committed to putting our customers first and ensuring that loyalty is always rewarded.</p>
+                    <p>Founded with a simple belief: shopping should be rewarding...</p>
+                    <p>We created a platform where every purchase matters and loyalty is rewarded.</p>
                 </div>
                 <div class="story-illustration">
                     <div class="story-card">
                         <h3>Our Mission</h3>
-                        <p>To create a shopping experience where every customer feels valued, rewarded, and excited to return.</p>
+                        <p>To create a shopping experience where every customer feels valued and excited to return.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Features Section -->
+    <!-- Features -->
     <section class="features-section">
         <div class="container">
             <div class="features-header">
                 <h2>Why Choose RewardsHub?</h2>
-                <p>Experience the difference with our customer-first approach to rewards and cashback</p>
+                <p>Customer-first rewards and cashback platform</p>
             </div>
             <div class="features-grid">
-                <div class="feature-card fade-in">
+                <div class="feature-card">
                     <div class="feature-icon">⚡</div>
                     <h3>Easy Point Earning</h3>
-                    <p>Earn points with every purchase, review, and referral. No complicated requirements, just shop and earn automatically.</p>
+                    <p>Earn points automatically on purchases, reviews, and referrals.</p>
                 </div>
-                <div class="feature-card fade-in">
+                <div class="feature-card">
                     <div class="feature-icon">💳</div>
                     <h3>Instant Cashback</h3>
-                    <p>Get immediate cashback on qualifying purchases. No waiting periods, no minimum thresholds - just instant rewards.</p>
+                    <p>Enjoy immediate cashback without any thresholds.</p>
                 </div>
-                <div class="feature-card fade-in">
+                <div class="feature-card">
                     <div class="feature-icon">🎁</div>
                     <h3>Exclusive Benefits</h3>
-                    <p>Access member-only deals, early sale notifications, and special promotions designed just for our loyal customers.</p>
+                    <p>Access member-only deals and promotions.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Team Section -->
+    <!-- Team -->
     <section class="team-section">
         <div class="container">
             <div class="team-header">
                 <h2>Meet Our Team</h2>
-                <p>The passionate people behind your rewarding shopping experience</p>
+                <p>The people behind your rewarding experience</p>
             </div>
             <div class="team-grid">
-                <div class="team-member fade-in">
+                <div class="team-member">
                     <div class="team-avatar">👨‍💼</div>
                     <h3>Alex Johnson</h3>
                     <p>CEO & Founder</p>
                 </div>
-                <div class="team-member fade-in">
+                <div class="team-member">
                     <div class="team-avatar">👩‍💻</div>
                     <h3>Sarah Chen</h3>
-                    <p>Head of Technology</p>
+                    <p>Head of Tech</p>
                 </div>
-                <div class="team-member fade-in">
+                <div class="team-member">
                     <div class="team-avatar">👨‍🎨</div>
-                    <h3>Marcus Rodriguez</h3>
-                    <p>Customer Experience Director</p>
+                    <h3>Marcus R.</h3>
+                    <p>UX Director</p>
                 </div>
-                <div class="team-member fade-in">
+                <div class="team-member">
                     <div class="team-avatar">👩‍📊</div>
-                    <h3>Emma Thompson</h3>
-                    <p>Rewards Program Manager</p>
+                    <h3>Emma T.</h3>
+                    <p>Rewards Manager</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CTA Section -->
+    <!-- CTA -->
     <section class="cta-section">
         <div class="container">
             <div class="cta-content">
                 <h2>Ready to Start Earning?</h2>
-                <p>Join thousands of satisfied customers who are already earning points and cashback with every purchase.</p>
+                <p>Join satisfied users earning points and cashback daily.</p>
                 <a href="#" class="cta-button">Start Shopping & Earning</a>
             </div>
         </div>
     </section>
-
-    <script>
-        // Intersection Observer for fade-in animations
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('fade-in');
-                }
-            });
-        }, observerOptions);
-
-        // Observe all elements that should fade in
-        document.querySelectorAll('.feature-card, .team-member').forEach(el => {
-            observer.observe(el);
-        });
-
-        // Add smooth scrolling for better UX
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-    </script>
 </body>
 </html>
