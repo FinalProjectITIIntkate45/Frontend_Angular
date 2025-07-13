@@ -27,7 +27,7 @@ export class OfferListComponent implements OnInit {
     private router: Router,
     private toastr: ToastrService,
     private cartService: CartServicesService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.loadOffers();
@@ -47,12 +47,12 @@ export class OfferListComponent implements OnInit {
       error: (err: any) => {
         this.toastr.error('Failed to load offers.');
         this.loading = false;
-      }
+      },
     });
   }
 
   viewDetails(offerId: number): void {
-    this.router.navigate(['/client/offers', offerId]);
+    this.router.navigate(['/offers', offerId]);
   }
 
   // Pagination
@@ -92,10 +92,17 @@ export class OfferListComponent implements OnInit {
       return;
     }
     const product = offer.Products[0];
-    this.cartService.addOfferToCart(product.ProductId, product.ProductQuantity, offer.NewPrice, offer.NewPoints, offer.Id)
+    this.cartService
+      .addOfferToCart(
+        product.ProductId,
+        product.ProductQuantity,
+        offer.NewPrice,
+        offer.NewPoints,
+        offer.Id
+      )
       .subscribe({
         next: () => this.toastr.success('Offer added to cart!'),
-        error: () => this.toastr.error('Failed to add offer to cart.')
+        error: () => this.toastr.error('Failed to add offer to cart.'),
       });
   }
-} 
+}

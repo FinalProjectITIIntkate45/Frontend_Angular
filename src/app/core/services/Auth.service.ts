@@ -139,6 +139,9 @@ export class AuthService {
   }
 
   logout(): void {
+    // Stop SignalR connections
+    this.stopSignalRConnections();
+
     // Clear cookies
     this.cookieService.delete(this.TOKEN_KEY);
     this.cookieService.delete(this.ROLE_KEY);
@@ -182,6 +185,11 @@ export class AuthService {
 
     // Navigate to login
     this.router.navigate(['/account/login']);
+  }
+
+  private stopSignalRConnections(): void {
+    // Dispatch a custom event to notify other services to stop their connections
+    window.dispatchEvent(new CustomEvent('userLogout'));
   }
 
   private parseJwt(token: string) {

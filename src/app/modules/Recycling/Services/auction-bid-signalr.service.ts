@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuctionBidSignalrService {
   private hubConnection!: signalR.HubConnection;
@@ -22,7 +22,10 @@ export class AuctionBidSignalrService {
   constructor(private cookieService: CookieService) {}
 
   public connect(auctionId: number): void {
-    const token = this.cookieService.get('auth_token') || localStorage.getItem('token') || '';
+    const token =
+      this.cookieService.get('auth_token') ||
+      localStorage.getItem('token') ||
+      '';
     console.log('Token used for SignalR:', token);
     if (!token) {
       console.error('❌ No token found in cookies or localStorage');
@@ -31,7 +34,7 @@ export class AuctionBidSignalrService {
 
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl(this.hubUrl, {
-        accessTokenFactory: () => token
+        accessTokenFactory: () => token,
       })
       .withAutomaticReconnect()
       .build();
@@ -42,7 +45,7 @@ export class AuctionBidSignalrService {
         console.log('✅ SignalR connected to AuctionHub');
         this.joinAuctionGroup(auctionId); // انضمام تلقائي بعد الاتصال
       })
-      .catch(err => console.error('❌ SignalR connection failed:', err));
+      .catch((err) => console.error('❌ SignalR connection failed:', err));
 
     this.hubConnection.onclose((error) => {
       console.error('❌ SignalR connection closed!', error?.message || error);
@@ -72,15 +75,17 @@ export class AuctionBidSignalrService {
 
   public joinAuctionGroup(auctionId: number): void {
     if (this.hubConnection) {
-      this.hubConnection.invoke('JoinAuctionRoom', auctionId.toString())
-        .catch(err => console.error('❌ Failed to join group:', err));
+      this.hubConnection
+        .invoke('JoinAuctionRoom', auctionId.toString())
+        .catch((err) => console.error('❌ Failed to join group:', err));
     }
   }
 
   public leaveAuctionGroup(auctionId: number): void {
     if (this.hubConnection) {
-      this.hubConnection.invoke('LeaveAuctionRoom', auctionId.toString())
-        .catch(err => console.error('❌ Failed to leave group:', err));
+      this.hubConnection
+        .invoke('LeaveAuctionRoom', auctionId.toString())
+        .catch((err) => console.error('❌ Failed to leave group:', err));
     }
   }
 }

@@ -1,0 +1,54 @@
+.follower-avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: none;
+  border-radius: 12px;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+.card-title {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.card-text {
+  margin-bottom: 0.5rem;
+}
+
+.empty-state {
+  padding: 3rem 1rem;
+}
+
+.empty-state i {
+  opacity: 0.5;
+}
+
+.spinner-border {
+  color: #007bff;
+}
+
+.alert {
+  border-radius: 8px;
+  border: none;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .col-md-4 {
+    margin-bottom: 1rem;
+  }
+
+  .card {
+    margin-bottom: 1rem;
+  }
+}

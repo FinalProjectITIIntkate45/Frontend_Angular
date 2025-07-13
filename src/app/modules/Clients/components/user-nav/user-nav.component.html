@@ -8,6 +8,16 @@
       <li><a routerLink="/client/About us">About us</a></li>
       <li><a routerLink="/client/Shop">Shop</a></li>
       <li><a routerLink="/client/Contact">Contact</a></li>
+      <li class="notification-item">
+        <button class="notification-btn" (click)="toggleNotifications()" [class.active]="showNotifications"
+          title="Notifications">
+          <i class="fas fa-bell"></i>
+          <span *ngIf="notificationCount > 0" class="notification-badge">{{ notificationCount }}</span>
+        </button>
+        <div *ngIf="showNotifications" class="notification-dropdown">
+          <app-client-notifications-panel></app-client-notifications-panel>
+        </div>
+      </li>
     </ul>
   </div>
 </nav>

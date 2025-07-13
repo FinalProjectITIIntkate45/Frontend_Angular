@@ -5,11 +5,12 @@
   background: #ffffff;
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: #333;
 }
 
-h2, h3 {
+h2,
+h3 {
   color: #222;
   text-align: center;
   margin-bottom: 20px;
@@ -39,7 +40,7 @@ ul {
 
 .shop-name {
   font-weight: 600;
-  font-size: 16px;
+  font-size: 1.2rem;
 }
 
 .btn {
@@ -50,6 +51,7 @@ ul {
   cursor: pointer;
   transition: background-color 0.3s ease;
   user-select: none;
+  min-width: 90px;
 }
 
 .unfollow-btn {
@@ -97,4 +99,105 @@ ul {
   outline: none;
   border-color: #3498db;
   box-shadow: 0 0 6px #3498dbaa;
+}
+.shop-card {
+  transition: box-shadow 0.2s;
+  border-radius: 16px;
+  background: #fff;
+}
+.shop-card:hover {
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+}
+.shop-logo {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border: 2px solid #eee;
+  margin: 0 auto;
+  background: #f8f9fa;
+}
+.shop-name {
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.card-text {
+  font-size: 0.95rem;
+}
+.btn {
+  min-width: 90px;
+  transition: all 0.3s ease;
+}
+
+.btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.btn:not(:disabled):hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.spinner-border-sm {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+input.form-control {
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+/* Smooth transition for follow/unfollow toggle */
+.btn-success,
+.btn-outline-danger {
+  transition: all 0.3s ease;
+}
+
+/* Specific styling for follow button */
+.btn-success {
+  background-color: #28a745;
+  border-color: #28a745;
+  color: white;
+}
+
+.btn-success:hover:not(:disabled) {
+  background-color: #218838;
+  border-color: #1e7e34;
+  transform: translateY(-1px);
+}
+
+/* Specific styling for unfollow button */
+.btn-outline-danger {
+  color: #dc3545;
+  border-color: #dc3545;
+  background-color: transparent;
+}
+
+.btn-outline-danger:hover:not(:disabled) {
+  color: white;
+  background-color: #dc3545;
+  border-color: #dc3545;
+  transform: translateY(-1px);
+}
+
+/* Animation for button state changes */
+@keyframes buttonPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.btn:active {
+  animation: buttonPulse 0.2s ease;
 }
