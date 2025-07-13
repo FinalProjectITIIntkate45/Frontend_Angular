@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - RewardsHub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #0A2540;
+            --secondary-color: #F4A261;
+            --background-color: #F9FAFC;
+            --text-color: #1A202C;
+            --muted-color: #718096;
+            --highlight-color: #2A9D8F;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #143d5d 100%);
+            color: white;
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .hero-text .highlight {
+            color: var(--secondary-color);
+        }
+
+        .hero-text p {
+            font-size: 1.3rem;
+            margin-bottom: 30px;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .hero-avatar {
+            width: 300px;
+            height: 300px;
+            background: var(--secondary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            font-size: 6rem;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .story-section,
+        .features-section,
+        .team-section,
+        .cta-section {
+            padding: 80px 0;
+        }
+
+        .story-section {
+            background: white;
+        }
+
+        .story-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .story-text h2,
+        .features-header h2,
+        .team-header h2,
+        .cta-content h2 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .story-text p,
+        .features-header p,
+        .feature-card p,
+        .team-member p,
+        .cta-content p {
+            color: var(--muted-color);
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+        }
+
+        .story-card {
+            background: linear-gradient(135deg, var(--highlight-color), #3cb4a3);
+            padding: 40px;
+            border-radius: 20px;
+            color: white;
+            box-shadow: 0 15px 30px rgba(42, 157, 143, 0.3);
+        }
+
+        .features-grid,
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+
+        .feature-icon {
+            background: var(--secondary-color);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 20px;
+            box-shadow: 0 5px 15px rgba(244, 162, 97, 0.4);
+        }
+
+        .team-member {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        }
+
+        .team-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 2.5rem;
+        }
+
+        .team-member:nth-child(1) .team-avatar { background: var(--secondary-color); }
+        .team-member:nth-child(2) .team-avatar { background: var(--highlight-color); }
+        .team-member:nth-child(3) .team-avatar { background: #264653; }
+        .team-member:nth-child(4) .team-avatar { background: #e76f51; }
+
+        .cta-section {
+            background: linear-gradient(135deg, var(--primary-color), #0f355a);
+            color: white;
+            text-align: center;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: var(--secondary-color);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background: #d78a47;
+        }
+
+        @media (max-width: 768px) {
+            .hero-content,
+            .story-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Earn More, <span class="highlight">Spend Smart</span></h1>
+                    <p>Join thousands of savvy shoppers who turn every purchase into rewarding experiences with our innovative points and cashback system.</p>
+                </div>
+                <div class="hero-illustration">
+                    <div class="hero-avatar">💰</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Company Story -->
+    <section class="story-section">
+        <div class="container">
+            <div class="story-content">
+                <div class="story-text">
+                    <h2>Our Story</h2>
+                    <p>Founded with a simple belief: shopping should be rewarding...</p>
+                    <p>We created a platform where every purchase matters and loyalty is rewarded.</p>
+                </div>
+                <div class="story-illustration">
+                    <div class="story-card">
+                        <h3>Our Mission</h3>
+                        <p>To create a shopping experience where every customer feels valued and excited to return.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features-section">
+        <div class="container">
+            <div class="features-header">
+                <h2>Why Choose RewardsHub?</h2>
+                <p>Customer-first rewards and cashback platform</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Easy Point Earning</h3>
+                    <p>Earn points automatically on purchases, reviews, and referrals.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💳</div>
+                    <h3>Instant Cashback</h3>
+                    <p>Enjoy immediate cashback without any thresholds.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎁</div>
+                    <h3>Exclusive Benefits</h3>
+                    <p>Access member-only deals and promotions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team -->
+    <section class="team-section">
+        <div class="container">
+            <div class="team-header">
+                <h2>Meet Our Team</h2>
+                <p>The people behind your rewarding experience</p>
+            </div>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="team-avatar">👨‍💼</div>
+                    <h3>Alex Johnson</h3>
+                    <p>CEO & Founder</p>
+                </div>
+                <div class="team-member">
+                    <div class="team-avatar">👩‍💻</div>
+                    <h3>Sarah Chen</h3>
+                    <p>Head of Tech</p>
+                </div>
+                <div class="team-member">
+                    <div class="team-avatar">👨‍🎨</div>
+                    <h3>Marcus R.</h3>
+                    <p>UX Director</p>
+                </div>
+                <div class="team-member">
+                    <div class="team-avatar">👩‍📊</div>
+                    <h3>Emma T.</h3>
+                    <p>Rewards Manager</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Start Earning?</h2>
+                <p>Join satisfied users earning points and cashback daily.</p>
+                <a href="#" class="cta-button">Start Shopping & Earning</a>
+            </div>
+        </div>
+    </section>
+</body>
+</html>

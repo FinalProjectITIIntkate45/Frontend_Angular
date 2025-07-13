@@ -22,7 +22,7 @@ export class OrderHubService {
 
   constructor(private ngZone: NgZone) {}
 
-  public startConnection(): void {
+  public startConnection(groupName?: string): void {
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl(`${environment.apiUrl}/orderHub`, {
         withCredentials: true,
@@ -32,12 +32,29 @@ export class OrderHubService {
 
     this.hubConnection
       .start()
-      .then(() => console.log('✅ SignalR OrderHub connected'))
+      .then(() => {
+        console.log('✅ SignalR OrderHub connected');
+
+        // انضم للجروب بعد الاتصال
+        if (groupName) {
+          this.joinGroup(groupName);
+        }
+
+        // اعادة الانضمام عند reconnect
+        this.hubConnection.onreconnected(() => {
+          console.log('🔄 SignalR reconnected');
+          if (groupName) {
+            this.joinGroup(groupName);
+          }
+        });
+      })
       .catch((err) =>
         console.error('❌ Error while starting SignalR connection: ', err)
       );
 
+    // استقبال الرسائل
     this.hubConnection.on('ReceiveOrderUpdate', (data: OrderUpdate) => {
+      console.log('📡 Received update:', data);
       this.ngZone.run(() => {
         this.orderUpdatesSubject.next(data);
       });
