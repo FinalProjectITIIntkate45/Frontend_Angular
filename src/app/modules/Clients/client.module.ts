@@ -51,9 +51,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatDialogModule } from '@angular/material/dialog';
+import { AboutUsComponent } from  './components/about-us/about-us.component';
 
 @NgModule({
   declarations: [
+    AboutUsComponent,
     UserProfileComponent,
     TopNavigationComponent,
     SidebarComponent,

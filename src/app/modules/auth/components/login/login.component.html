@@ -1,51 +1,513 @@
-<div class="container d-flex justify-content-center align-items-center vh-100">
-    <div class="row w-100">
-        <div class="col-md-6 p-0">
-            <div class="d-flex justify-content-center align-items-center h-100 bg-warning">
-                <img src="assets/register-side.jpg" alt="Register" class="img-fluid h-100 w-100 object-fit-cover">
-            </div>
-        </div>
-        <div class="col-md-6 bg-primary text-white d-flex flex-column justify-content-center align-items-center p-5">
-            <h2 class="text-center text-warning mb-4">Login</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Login Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-navy: #023059;
+            --primary-gold: #efb036;
+            --light-gray: #f7f7f8;
+            --muted-blue: #9197b3;
+        }
 
-            <div *ngIf="errorMessage" class="alert alert-danger w-100 mb-3">
-                {{ errorMessage }}
-            </div>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-            <form (ngSubmit)="login()" #loginForm="ngForm" class="w-100">
-                <div class="mb-3">
-                    <label for="Method" class="form-label">E-Mail</label>
-                    <input type="Method" id="Method" class="form-control" [(ngModel)]="model.Method" name="Method"
-                        required Method #MethodInput="ngModel"
-                        [ngClass]="{'is-invalid': MethodInput.invalid && MethodInput.touched}"
-                        placeholder="Enter your Method">
-                    <div class="invalid-feedback" *ngIf="MethodInput.invalid && MethodInput.touched">
-                        Please enter a valid Method address
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--primary-navy) 0%, var(--muted-blue) 50%, var(--light-gray) 100%);
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated background particles */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(239, 176, 54, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(145, 151, 179, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 40% 80%, rgba(2, 48, 89, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .login-wrapper {
+            position: relative;
+            z-index: 2;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .login-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: 0 32px 64px rgba(2, 48, 89, 0.15), 0 8px 32px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            max-width: 1200px;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .image-section {
+            background: linear-gradient(135deg, var(--primary-navy) 0%, var(--muted-blue) 100%);
+            position: relative;
+            min-height: 700px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-image {
+            width: 85%;
+            height: 85%;
+            object-fit: contain;
+            border-radius: 20px;
+            transition: transform 0.6s ease;
+            filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.2));
+        }
+
+        .hero-image:hover {
+            transform: scale(1.05) rotate(2deg);
+        }
+
+        /* Floating elements animation */
+        .image-section::before {
+            content: '⭐';
+            position: absolute;
+            top: 15%;
+            left: 15%;
+            font-size: 2rem;
+            animation: float 3s ease-in-out infinite;
+            opacity: 0.7;
+        }
+
+        .image-section::after {
+            content: '🎯';
+            position: absolute;
+            bottom: 15%;
+            right: 15%;
+            font-size: 2rem;
+            animation: float 3s ease-in-out infinite 1.5s;
+            opacity: 0.7;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        .form-section {
+            background: var(--light-gray);
+            padding: 4rem 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            min-height: 700px;
+            position: relative;
+        }
+
+        .form-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, var(--primary-gold), transparent);
+            border-radius: 0 24px 0 100px;
+            opacity: 0.1;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInDown 1s ease-out 0.3s both;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-title {
+            color: var(--primary-navy);
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            letter-spacing: -2px;
+            background: linear-gradient(135deg, var(--primary-navy) 0%, var(--muted-blue) 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .login-subtitle {
+            color: var(--muted-blue);
+            font-size: 1.1rem;
+            font-weight: 500;
+            opacity: 0.8;
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease-out 0.6s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-label {
+            color: var(--primary-navy);
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: block;
+        }
+
+        .form-control {
+            border: 3px solid rgba(145, 151, 179, 0.2);
+            border-radius: 16px;
+            padding: 1.25rem 1.5rem;
+            font-size: 1.1rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.8);
+            color: var(--primary-navy);
+            backdrop-filter: blur(10px);
+            font-weight: 500;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 0 4px rgba(239, 176, 54, 0.2), 0 8px 32px rgba(239, 176, 54, 0.1);
+            background: rgba(255, 255, 255, 0.95);
+            transform: translateY(-2px);
+            outline: none;
+        }
+
+        .form-control::placeholder {
+            color: var(--muted-blue);
+            opacity: 0.6;
+            font-weight: 400;
+        }
+
+        .form-control.is-invalid {
+            border-color: #e74c3c;
+            box-shadow: 0 0 0 4px rgba(231, 76, 60, 0.2);
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .invalid-feedback {
+            color: #e74c3c;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        .password-toggle {
+            cursor: pointer;
+            color: var(--muted-blue);
+            transition: all 0.3s ease;
+            z-index: 10;
+            font-size: 1.1rem;
+        }
+
+        .password-toggle:hover {
+            color: var(--primary-gold);
+            transform: scale(1.1);
+        }
+
+        .btn-login {
+            background: linear-gradient(135deg, var(--primary-gold) 0%, #d4941f 100%);
+            border: none;
+            border-radius: 16px;
+            padding: 1.5rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-navy);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 24px rgba(2, 48, 89, 0.3);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 1s ease-out 0.9s both;
+        }
+
+        .btn-login::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn-login:hover::before {
+            left: 100%;
+        }
+
+        .btn-login:hover:not(:disabled) {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 36px rgba(2, 48, 89, 0.4);
+            background: linear-gradient(135deg, #d4941f 0%, var(--primary-gold) 100%);
+        }
+
+        .btn-login:active {
+            transform: translateY(-2px);
+        }
+
+        .btn-login:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .alert {
+            border: none;
+            border-radius: 16px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 2rem;
+            font-weight: 600;
+            animation: slideInRight 0.5s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .alert-danger {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            box-shadow: 0 8px 24px rgba(231, 76, 60, 0.3);
+        }
+
+        .login-links {
+            text-align: center;
+            margin-top: 2rem;
+            animation: fadeIn 1s ease-out 1.2s both;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .login-links a {
+            color: var(--muted-blue);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin: 0.5rem 0;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .login-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--primary-gold);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .login-links a:hover {
+            color: var(--primary-gold);
+            transform: translateY(-2px);
+        }
+
+        .login-links a:hover::after {
+            width: 100%;
+        }
+
+        .login-links a.text-primary {
+            color: var(--primary-gold) !important;
+            font-weight: 700;
+            background: rgba(239, 176, 54, 0.1);
+            border: 2px solid rgba(239, 176, 54, 0.2);
+        }
+
+        .login-links a.text-primary:hover {
+            color: var(--primary-navy) !important;
+            background: var(--primary-gold);
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(239, 176, 54, 0.3);
+        }
+
+        @media (max-width: 992px) {
+            .login-container {
+                margin: 1rem;
+                border-radius: 20px;
+            }
+            
+            .form-section {
+                padding: 3rem 2rem;
+                min-height: auto;
+            }
+            
+            .login-title {
+                font-size: 2.5rem;
+            }
+            
+            .image-section {
+                min-height: 400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .login-wrapper {
+                padding: 1rem;
+            }
+            
+            .form-section {
+                padding: 2rem 1.5rem;
+            }
+            
+            .login-title {
+                font-size: 2rem;
+            }
+            
+            .image-section {
+                min-height: 300px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .form-section {
+                padding: 1.5rem 1rem;
+            }
+            
+            .login-title {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-wrapper">
+        <div class="login-container">
+            <div class="row g-0 h-100">
+                <div class="col-lg-6 order-lg-1 order-2">
+                    <div class="image-section">
+                        <img src="https://cdni.iconscout.com/illustration/premium/thumb/businessman-achieving-target-2537382-2146478.png" 
+                             alt="Achievement and Success" 
+                             class="hero-image">
                     </div>
                 </div>
+                <div class="col-lg-6 order-lg-2 order-1">
+                    <div class="form-section">
+                        <div class="login-header">
+                            <h2 class="login-title">Welcome Back</h2>
+                            <p class="login-subtitle">Sign in to unlock your achievements</p>
+                        </div>
 
-                <div class="mb-3 position-relative">
-                    <label for="Password" class="form-label">Password</label>
-                    <input [type]="showPassword ? 'text' : 'Password'" id="Password" class="form-control"
-                        [(ngModel)]="model.Password" name="Password" required #PasswordInput="ngModel"
-                        [ngClass]="{'is-invalid': PasswordInput.invalid && PasswordInput.touched}"
-                        placeholder="Enter your Password">
-                    <span class="Password-toggle position-absolute top-50 end-0 translate-middle-y pe-3"
-                        (click)="togglePassword()">
-                        <i id="eye-icon" class="fas fa-eye"></i>
-                    </span>
+                        <div *ngIf="errorMessage" class="alert alert-danger">
+                            {{ errorMessage }}
+                        </div>
+
+                        <form (ngSubmit)="login()" #loginForm="ngForm">
+                            <div class="form-group">
+                                <label for="Method" class="form-label">📧 E-Mail</label>
+                                <input type="Method" id="Method" class="form-control" [(ngModel)]="model.Method" name="Method"
+                                    required Method #MethodInput="ngModel"
+                                    [ngClass]="{'is-invalid': MethodInput.invalid && MethodInput.touched}"
+                                    placeholder="Enter your email address">
+                                <div class="invalid-feedback" *ngIf="MethodInput.invalid && MethodInput.touched">
+                                    Please enter a valid Method address
+                                </div>
+                            </div>
+
+                            <div class="form-group position-relative">
+                                <label for="Password" class="form-label">🔐 Password</label>
+                                <input [type]="showPassword ? 'text' : 'Password'" id="Password" class="form-control"
+                                    [(ngModel)]="model.Password" name="Password" required #PasswordInput="ngModel"
+                                    [ngClass]="{'is-invalid': PasswordInput.invalid && PasswordInput.touched}"
+                                    placeholder="Enter your password">
+                                <span class="password-toggle position-absolute top-50 end-0 translate-middle-y pe-3"
+                                    (click)="togglePassword()">
+                                    <i id="eye-icon" class="fas fa-eye"></i>
+                                </span>
+                            </div>
+
+                            <button type="submit" class="btn btn-login w-100 mb-3" [disabled]="loginForm.invalid || loading">
+                                {{ loading ? '🔄 Logging in...' : '🚀 Login' }}
+                            </button>
+
+                            <div class="login-links">
+                                <a routerLink="/account/forgot-Password">🔑 Forgot Password?</a>
+                                <br>
+                                <a routerLink="/account/register" class="text-primary">✨ Create new account</a>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-
-                <button type="submit" class="btn btn-warning w-100 mb-3" [disabled]="loginForm.invalid || loading">
-                    {{ loading ? 'Logging in...' : 'Login' }}
-                </button>
-
-                <div class="text-center">
-                    <a routerLink="/account/forgot-Password" class="text-light">Forgot Password?</a>
-                    <br>
-                    <a routerLink="/account/register" class="text-warning">Create new account</a>
-                </div>
-            </form>
+            </div>
         </div>
     </div>
-</div>
+</body>
+</html>

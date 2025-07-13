@@ -3,15 +3,21 @@
 }
 
 .btn-check:checked + .btn-outline-primary {
-  background-color: #0d6efd;
+  background-color: var(--primary-blue); /* بدل #0d6efd */
   color: white;
+  border-color: var(--primary-blue);
 }
 
 .btn-group .btn {
   flex: 1;
-  padding: 10px;
+  padding: 10px 0; /* تخفيف padding أفقي */
+  font-weight: 600;
+  border-radius: 12px;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .btn-group .btn i {
   font-size: 1.1em;
+  margin-right: 6px;
+  vertical-align: middle;
 }
