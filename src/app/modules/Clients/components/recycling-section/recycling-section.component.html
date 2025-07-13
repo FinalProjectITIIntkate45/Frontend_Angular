@@ -23,6 +23,12 @@
                     My Requests
                 </button>
             </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" [class.active]="showRequestsAfterAuction" (click)="showRequestsAfterAuctionSection()" type="button">
+                    <i class="fas fa-gavel me-2"></i>
+                    Requests After Auction
+                </button>
+            </li>
         </ul>
     </div>
 
@@ -381,6 +387,115 @@
                   <button class="btn btn-outline-secondary me-2" (click)="prevPage()" [disabled]="pageNumber === 1">Previous</button>
                   <span>Page {{ pageNumber }}</span>
                   <button class="btn btn-outline-secondary ms-2" (click)="nextPage()">Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Requests After Auction Section -->
+    <div *ngIf="showRequestsAfterAuction && !isLoading" class="requests-after-auction-section">
+        <div class="row">
+            <div class="col-12">
+                <h4 class="mb-3">
+                    <i class="fas fa-gavel text-warning me-2"></i>
+                    Requests After Auction
+                </h4>
+                <p class="text-muted mb-4">View all your recycling requests that have been processed through auctions.</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <!-- Empty State -->
+                <div *ngIf="requestsAfterAuction.length === 0" class="text-center py-5">
+                    <i class="fas fa-gavel text-muted fa-3x mb-3"></i>
+                    <h5 class="text-muted">No requests after auction found</h5>
+                    <p class="text-muted mb-4">
+                        You don't have any recycling requests that have been processed through auctions yet.
+                    </p>
+                    <button class="btn btn-success" (click)="showMaterials()">
+                        <i class="fas fa-plus me-2"></i>
+                        Create New Request
+                    </button>
+                </div>
+
+                <!-- Requests Table -->
+                <div *ngIf="requestsAfterAuction.length > 0" class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Request ID</th>
+                                <th>Address</th>
+                                <th>Quantity</th>
+                                <th>Return Type</th>
+                                <th>Pending Money</th>
+                                <th>Recycler Name</th>
+                                <th>Created Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let request of requestsAfterAuction">
+                                <td>
+                                    <strong>#{{ request.Id }}</strong>
+                                </td>
+                                <td>
+                                    <span class="text-muted">{{ request.Address }}</span>
+                                </td>
+                                <td>
+                                    <span class="text-muted">{{ request.Quantity }}</span>
+                                </td>
+                                <td>
+                                    <span [class]="getReturnTypeBadgeClass(request.ReturnType)">
+                                        {{ getReturnTypeText(request.ReturnType) }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span *ngIf="request.PendingmMoneyAfterAuction" class="text-success fw-bold">
+                                        <i class="fas fa-money-bill-wave me-1"></i>
+                                        {{ request.PendingmMoneyAfterAuction | currency:'EGP':'symbol':'1.2-2' }}
+                                    </span>
+                                    <span *ngIf="!request.PendingmMoneyAfterAuction" class="text-muted">
+                                        -
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="text-primary fw-bold">
+                                        <i class="fas fa-user me-1"></i>
+                                        {{ request.RecyclerName }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <small class="text-muted">
+                                        {{ request.CreatedAt | date:'short' }}
+                                    </small>
+                                </td>
+                                <td>
+                                    <!-- Show action buttons only if return type is waiting -->
+                                    <div *ngIf="request.ReturnType === ReturnType.Waiting" class="btn-group" role="group">
+                                        <button class="btn btn-sm btn-success me-1" 
+                                                (click)="chooseReturnType(ReturnType.Point, request.Id)"
+                                                title="Choose Points">
+                                            <i class="fas fa-star me-1"></i>
+                                            Points
+                                        </button>
+                                        <button class="btn btn-sm btn-info" 
+                                                (click)="chooseReturnType(ReturnType.Money, request.Id)"
+                                                title="Choose Money">
+                                            <i class="fas fa-money-bill-wave me-1"></i>
+                                            Money
+                                        </button>
+                                    </div>
+                                    <!-- Show selected type if already chosen -->
+                                    <span *ngIf="request.ReturnType !== ReturnType.Waiting" 
+                                          [class]="getReturnTypeBadgeClass(request.ReturnType)">
+                                        <i class="fas fa-check me-1"></i>
+                                        {{ getReturnTypeText(request.ReturnType) }} Selected
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

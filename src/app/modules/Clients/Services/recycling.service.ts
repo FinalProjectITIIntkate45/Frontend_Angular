@@ -12,6 +12,8 @@ import {
   RecyclingRequestCreateViewModel,
   RecyclingRequestListItemViewModel,
   RecyclingRequestDetailsViewModel,
+  RecyclingRequestAfterAuctionVm,
+  ReturnType,
 } from '../Models/recycling-request.model';
 
 @Injectable({
@@ -195,6 +197,45 @@ export class RecyclingService {
         }),
         catchError((error) => {
           console.error('Error deleting request:', error);
+          throw error;
+        })
+      );
+  }
+
+  // Get requests after auction
+  getRequestAfterAuction(): Observable<RecyclingRequestAfterAuctionVm[]> {
+    return this.http
+      .get<APIResponse<RecyclingRequestAfterAuctionVm[]>>(
+        `${this.baseUrl}/RecyclingRequest/GetRequestAfterAuction`
+      )
+      .pipe(
+        map((response) => response.Data || []),
+        catchError((error) => {
+          console.error('Error fetching requests after auction:', error);
+          return of([]);
+        })
+      );
+  }
+
+  // Choose return type for money transaction
+  chooseReturnType(returnType: ReturnType, requestId: number): Observable<any> {
+    const payload = {
+      returnType: returnType,
+      requestid: requestId
+    };
+
+    return this.http
+      .post<APIResponse<any>>(
+        `${this.baseUrl}/RecyclingRequest/ChooseTypeForMoneyTransaction`,
+        payload
+      )
+      .pipe(
+        map((response) => {
+          console.log('Choose return type response:', response);
+          return response;
+        }),
+        catchError((error) => {
+          console.error('Error choosing return type:', error);
           throw error;
         })
       );
