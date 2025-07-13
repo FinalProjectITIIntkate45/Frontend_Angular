@@ -24,7 +24,7 @@ export class AuctionBidSignalrService {
   public connect(auctionId: number): void {
     const token =
       this.cookieService.get('auth_token') ||
-      localStorage.getItem('auth_token') ||
+      localStorage.getItem('token') ||
       '';
     console.log('Token used for SignalR:', token);
     if (!token) {

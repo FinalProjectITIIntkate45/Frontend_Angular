@@ -106,6 +106,12 @@ import { ClientNotificationsPanelComponent } from './components/notifications-pa
     MatButtonModule,
     MatDividerModule,
     MatDialogModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatDividerModule,
+    MatDialogModule,
   ],
   providers: [
     provideHttpClient(

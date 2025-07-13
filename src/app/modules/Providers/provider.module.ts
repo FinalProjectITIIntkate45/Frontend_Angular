@@ -51,6 +51,10 @@ import { ProviderOrderDetailsComponent } from './Components/provider-order-detai
 import { ShopInfoComponent } from './Components/shop-info/shop-info.component';
 import { ProviderOrdersSectionComponent } from './Components/provider-orders-section/provider-orders-section.component';
 import { OrderDetailsComponent } from './Components/provider-orders-section/order-details/order-details.component';
+import { NotificationComponent } from './Components/notification/notification.component';
+import { ShopInfoComponent } from './Components/shop-info/shop-info.component';
+import { ProviderOrdersSectionComponent } from './Components/provider-orders-section/provider-orders-section.component';
+import { OrderDetailsComponent } from './Components/provider-orders-section/order-details/order-details.component';
 
 @NgModule({
   declarations: [
@@ -84,10 +88,13 @@ import { OrderDetailsComponent } from './Components/provider-orders-section/orde
     FollowersComponent,
     ShopsComponent,
     ProviderOrderDetailsComponent,
-    AddShopComponent,
-    EditShopComponent,
-    ProviderOrdersComponent,
+
     ProviderDashboardComponent,
+
+    ShopInfoComponent,
+    ProviderOrdersSectionComponent,
+    OrderDetailsComponent,
+    NotificationComponent,
     SubScrptionComponent,
     ProductFormPageComponent,
     ProductDetailsPageComponent,
@@ -136,6 +143,8 @@ import { OrderDetailsComponent } from './Components/provider-orders-section/orde
     FollowersComponent,
     ShopsComponent,
     ShopInfoComponent,
+    NotificationComponent,
+    ShopInfoComponent,
   ],
   imports: [
     CommonModule,
@@ -145,10 +154,6 @@ import { OrderDetailsComponent } from './Components/provider-orders-section/orde
     SafeUrlPipe,
   ],
   providers: [
-    provideHttpClient(
-      withFetch(),
-      withInterceptors([AuthInterceptor, LoaderInterceptor])
-    ),
     provideHttpClient(
       withFetch(),
       withInterceptors([AuthInterceptor, LoaderInterceptor])

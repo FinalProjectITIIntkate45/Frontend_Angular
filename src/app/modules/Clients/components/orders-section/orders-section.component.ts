@@ -57,34 +57,27 @@ export class OrdersSectionComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // Get user ID and start OrderHub connection
-    this.authService.getUserID().subscribe({
-      next: (userId: string) => {
-        this.currentUserId = userId;
-        this.loadOrders();
+    this.authSubscription = this.authService
+      .getAuthState()
+      .subscribe((authState) => {
+        if (authState.isAuthenticated && authState.user) {
+          this.currentUserId = authState.user.userName || '';
 
-        // Start OrderHub connection
-        this.orderHubService
-          .startConnection(`user_${this.currentUserId}`)
-          .then(() => {
-            console.log('✅ OrderHub connection started successfully');
-          })
-          .catch((error) => {
-            console.error('❌ Failed to start OrderHub connection:', error);
-          });
-      },
-      error: (error) => {
-        console.error('❌ Failed to get user ID:', error);
-        this.loadOrders(); // Still load orders even if we can't get user ID
-      },
-    });
+          // ✅ Connect and join SignalR group
+          this.orderHubService.startConnection(`user_${this.currentUserId}`);
 
-    this.orderHubService.orderUpdates$.subscribe((update) => {
-      if (update) {
-        console.log('📡 Order update received:', update);
-        this.loadOrders(); // Reload orders when update received
-      }
-    });
+          // ✅ Subscribe to SignalR updates
+          this.orderUpdatesSubscription =
+            this.orderHubService.orderUpdates$.subscribe((update) => {
+              if (update) {
+                console.log('📥 update received in client component:', update);
+                this.handleOrderUpdate(update);
+              }
+            });
+        }
+      });
+
+    this.loadOrders();
     this.setupSearchListener();
   }
 
