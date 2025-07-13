@@ -1,4 +1,4 @@
-<div class="notifications-panel">
+<!-- <div class="notifications-panel">
   <div *ngIf="notifications.length === 0" class="notification-item text-center text-muted">
     No new product notifications yet.
   </div>
@@ -15,5 +15,47 @@
         Product ID: {{ notif.Data.ProductId }} | Price: {{ notif.Data.ProductPrice }}
       </small>
     </div>
+  </div>
+</div> -->
+<div class="notifications-panel">
+  <div class="notifications-header">
+    <h5 class="mb-0">
+      <i class="fas fa-bell me-2"></i>
+      New Product Notifications
+    </h5>
+    <button *ngIf="notifications.length > 0" class="btn btn-sm btn-outline-secondary" (click)="clearNotifications()"
+      title="Clear all notifications">
+      <i class="fas fa-trash"></i>
+    </button>
+  </div>
+
+  <div *ngIf="notifications.length === 0" class="notification-item text-center text-muted">
+    <i class="fas fa-bell-slash fa-2x mb-2"></i>
+    <p class="mb-0">No new product notifications yet.</p>
+    <small>You'll receive notifications when shops you follow add new products.</small>
+  </div>
+
+  <div *ngFor="let notif of notifications; let i = index" class="notification-item">
+    <div class="notification-icon notification-new">
+      <i class="fas fa-gift"></i>
+    </div>
+    <div class="notification-content">
+      <h6 class="mb-1">
+        New product from <span class="fw-bold text-primary">{{ notif.shopName }}</span>:
+        <span class="fw-bold">{{ notif.productName }}</span>
+      </h6>
+      <div class="notification-details">
+        <span class="badge bg-success me-2">
+          <i class="fas fa-tag me-1"></i>
+          ${{ notif.productPrice }}
+        </span>
+        <small class="text-muted">
+          Product ID: {{ notif.productId }}
+        </small>
+      </div>
+    </div>
+    <button class="btn btn-sm btn-link text-muted p-0" (click)="removeNotification(i)" title="Remove notification">
+      <i class="fas fa-times"></i>
+    </button>
   </div>
 </div>

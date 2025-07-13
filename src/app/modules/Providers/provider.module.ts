@@ -38,7 +38,7 @@ import { HeaderComponent } from './Components/header/header.component';
 import { SalesOverviewComponent } from './Components/sales-overview/sales-overview.component';
 import { WelcomeBannerComponent } from './Components/welcome-banner/welcome-banner.component';
 import { ChartContainerComponent } from './Components/chart-container/chart-container.component';
-import { NotificationsPanelComponent } from './Components/notifications-panel/notifications-panel.component';
+import { ClientNotificationsPanelComponent } from './Components/notifications-panel/notifications-panel.component';
 import { OrdersTableComponent } from './Components/orders-table/orders-table.component';
 import { StatsCardComponent } from './Components/stats-card/stats-card.component';
 import { EditVendorProfileComponent } from './Components/EditVendorProfile/EditVendorProfile.component';
@@ -52,9 +52,6 @@ import { ShopInfoComponent } from './Components/shop-info/shop-info.component';
 import { ProviderOrdersSectionComponent } from './Components/provider-orders-section/provider-orders-section.component';
 import { OrderDetailsComponent } from './Components/provider-orders-section/order-details/order-details.component';
 import { NotificationComponent } from './Components/notification/notification.component';
-import { ShopInfoComponent } from './Components/shop-info/shop-info.component';
-import { ProviderOrdersSectionComponent } from './Components/provider-orders-section/provider-orders-section.component';
-import { OrderDetailsComponent } from './Components/provider-orders-section/order-details/order-details.component';
 
 @NgModule({
   declarations: [
@@ -78,7 +75,7 @@ import { OrderDetailsComponent } from './Components/provider-orders-section/orde
     WelcomeBannerComponent,
     SalesOverviewComponent,
     OrdersTableComponent,
-    NotificationsPanelComponent,
+    ClientNotificationsPanelComponent,
     ChartContainerComponent,
     StatsCardComponent,
     EditVendorProfileComponent,
@@ -110,7 +107,7 @@ import { OrderDetailsComponent } from './Components/provider-orders-section/orde
     HeaderComponent,
     WelcomeBannerComponent,
     OrdersTableComponent,
-    NotificationsPanelComponent,
+    ClientNotificationsPanelComponent,
     ChartContainerComponent,
     StatsCardComponent,
     SubScrptionComponent,
@@ -128,7 +125,7 @@ import { OrderDetailsComponent } from './Components/provider-orders-section/orde
     WelcomeBannerComponent,
     SalesOverviewComponent,
     OrdersTableComponent,
-    NotificationsPanelComponent,
+    ClientNotificationsPanelComponent,
     ChartContainerComponent,
     StatsCardComponent,
     ProductFormPageComponent,
@@ -151,6 +148,7 @@ import { OrderDetailsComponent } from './Components/provider-orders-section/orde
     FormsModule,
     ReactiveFormsModule,
     ProviderRoutingModule,
+    RouterModule,
     SafeUrlPipe,
   ],
   providers: [
