@@ -7,7 +7,14 @@ export interface TopProduct {
   Count: number;
 }
 
-
+export interface BestSellers {
+  Id: number;
+  Name: string;
+  BasePrice: number;
+  ImageUrl?: string;
+  Rate:number;
+  Count: number;
+}
 
 export interface FeaturedShop {
   Id: number;
@@ -23,6 +30,25 @@ export interface FeaturedShop {
   IsDeleted: boolean;
   TypeId: number;
 }
+export interface Offers {
+  Id: number;
+  offerPricePoint: number;
+  OfferImgUrl?: string;
+  Status: number;
+  OldPrice: number;
+  NewPrice: number;
+  OldPoints: number;
+  NewPoints: number;
+  StartDate: string;
+  EndDate: string;
+  Products: {
+    Productname: string;
+    ProductId: number;
+    ProductQuantity: number;
+    Type: string;
+  }[];
+}
+
 
 export interface ShopType {
   Id: number;
@@ -34,6 +60,6 @@ export interface HomeDashboard {
   Offers: any[]; // لو في future structure اعملي لها موديل لوحدها
   FeaturedShops: FeaturedShop[];
   TopProducts: TopProduct[];
-  RecentReviews: any[]; // ممكن تعملي Review interface بعدين
+BestSellers: BestSellers[];
   ShopTypes: ShopType[];
 }

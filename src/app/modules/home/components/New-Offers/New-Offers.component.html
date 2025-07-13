@@ -1,4 +1,3 @@
-
 <section class="best-selling-section">
   <div class="container">
     <div class="section-header">
@@ -7,107 +6,29 @@
     </div>
 
     <div class="products-grid">
-      <div class="product-card">
+      <div class="product-card" *ngFor="let offer of offers">
         <div class="product-badge">New</div>
-        <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=300&h=200&fit=crop" class="product-image" alt="Roast Ground Coffee" />
-        <h6 class="product-title">Premium Roast Coffee</h6>
-        <div class="product-rating">
-          <div class="stars">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="far fa-star"></i>
-          </div>
-          <span class="rating-count">(4.5) • 2,847 reviews</span>
-        </div>
-        <div class="product-price">
-          <span class="price-current">$13.99</span>
-          <span class="price-old">$18.99</span>
-          <span class="discount-badge">26% OFF</span>
-        </div>
-        <button class="add-to-cart-btn">
-          <i class="fas fa-plus"></i> Add to Cart
-        </button>
-      </div>
+        <img [src]="offer.OfferImgUrl" class="product-image" alt="Offer Image" />
+        <h6 class="product-title">{{ offer.Products[0]?.Productname }}</h6>
 
-      <div class="product-card">
-        <div class="product-badge">New</div>
-        <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=300&h=200&fit=crop" class="product-image" alt="Crushed Tomatoes" />
-        <h6 class="product-title">Organic  Tomatoes</h6>
-        <div class="product-rating">
-          <div class="stars">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-          </div>
-          <span class="rating-count">(5.0) • 1,923 reviews</span>
-        </div>
         <div class="product-price">
-          <span class="price-current">$12.50</span>
-          <span class="price-old">$17.99</span>
-          <span class="discount-badge">31% OFF</span>
+          <span class="price-current">${{ offer.NewPrice }}</span>
+          <span class="price-old">${{ offer.OldPrice }}</span>
+          <span class="discount-badge">
+            {{
+              ((offer.OldPrice - offer.NewPrice) / offer.OldPrice * 100) | number:'1.0-0'
+            }}% OFF
+          </span>
         </div>
-        <button class="add-to-cart-btn">
-          <i class="fas fa-plus"></i> Add to Cart
-        </button>
-      </div>
 
-      <div class="product-card">
-        <div class="product-badge">New</div>
-        <img src="https://images.unsplash.com/photo-1490885578174-acda8905c2c6?w=300&h=200&fit=crop" class="product-image" alt="Golden Pineapple" />
-        <h6 class="product-title">Golden Pineapple</h6>
-        <div class="product-rating">
-          <div class="stars">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="far fa-star"></i>
-          </div>
-          <span class="rating-count">(4.3) • 856 reviews</span>
-        </div>
-        <div class="product-price">
-          <span class="price-current">$64.00</span>
-          <span class="price-old">$72.00</span>
-          <span class="discount-badge">11% OFF</span>
-        </div>
-        <button class="add-to-cart-btn">
-          <i class="fas fa-plus"></i> Add to Cart
-        </button>
-      </div>
-
-      <div class="product-card">
-        <div class="product-badge">New</div>
-        <img src="https://images.unsplash.com/photo-1490885578174-acda8905c2c6?w=300&h=200&fit=crop" class="product-image" alt="Golden Pineapple" />
-        <h6 class="product-title">Extra Virgin Olive Oil</h6>
-        <div class="product-rating">
-          <div class="stars">
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-            <i class="fas fa-star"></i>
-          </div>
-          <span class="rating-count">(4.9) • 3,245 reviews</span>
-        </div>
-        <div class="product-price">
-          <span class="price-current">$28.99</span>
-          <span class="price-old">$35.99</span>
-          <span class="discount-badge">19% OFF</span>
-        </div>
         <button class="add-to-cart-btn">
           <i class="fas fa-plus"></i> Add to Cart
         </button>
       </div>
     </div>
 
-   
-
     <div class="view-more-section">
-      <button class="view-more-btn" >
+      <button class="view-more-btn">
         <i class="fas fa-chevron-down"></i> View More Products
       </button>
     </div>
