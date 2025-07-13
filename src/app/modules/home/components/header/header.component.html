@@ -8,43 +8,40 @@
 
     <!-- Search bar centered -->
     <div class="search-wrapper mb-3 mb-md-0">
-      <input 
-        type="text" 
-        class="form-control search-bar" 
-        placeholder="Search for products, brands, or categories..." 
-        aria-label="Search"
-        (keypress)="onSearchKeyPress($event)">
+      <input type="text" class="form-control search-bar" placeholder="Search for products, brands, or categories..."
+        aria-label="Search" (keypress)="onSearchKeyPress($event)">
     </div>
 
-   <!-- Actions -->
-<div class="d-flex align-items-center gap-3">
-  <a href="#" class="btn btn-signup" aria-label="Login">Login</a>
-  <a href="#" class="btn btn-signup" aria-label="Sign Up">Sign Up</a>
-  
-  <button class="text-icon" aria-label="Wishlist">
-    <i class="fas fa-heart fs-5"></i>
-  </button>
-  
-  <button class="text-icon" aria-label="Shopping Cart">
-    <i class="fas fa-shopping-cart fs-5"></i>
-  </button>
+    <!-- Actions -->
+    <div class="d-flex align-items-center gap-3">
+      <a routerLink="/account/login" class="btn btn-signup" aria-label="Login">Login</a>
+      <a routerLink="/account/register" class="btn btn-signup" aria-label="Sign Up">Sign Up</a>
 
-  <button class="text-icon" aria-label="Notifications">
-    <i class="fas fa-bell fs-5"></i>
-  </button>
+      <button class="text-icon" aria-label="Wishlist">
+        <i class="fas fa-heart fs-5"></i>
+      </button>
 
-  <button class="text-icon" aria-label="Profile">
-    <i class="fas fa-user fs-5"></i>
-  </button>
-</div>
+      <button class="text-icon" aria-label="Shopping Cart">
+        <i class="fas fa-shopping-cart fs-5"></i>
+      </button>
+
+      <button class="text-icon" aria-label="Notifications">
+        <i class="fas fa-bell fs-5"></i>
+      </button>
+
+      <button class="text-icon" aria-label="Profile">
+        <i class="fas fa-user fs-5"></i>
+      </button>
     </div>
+  </div>
 
 </header>
 
 <!-- Navigation Bar -->
 <div class="top-bar">
-  <a href="#" aria-label="Home">Home</a>
-  <a href="#" aria-label="About">About</a>
-  <a href="#" aria-label="Features">Features</a>
-  <a href="#" aria-label="Contact">Contact</a>
+  <a routerLink="/home" aria-label="Home">Home</a>
+  <a routerLink="/about-us" aria-label="About">About</a>
+  <a routerLink="/shop" aria-label="Shops">Shops</a>
+  <a routerLink="/offers" aria-label="Offers">Offers</a>
+  <a routerLink="/offers" aria-label="Offers">Products</a>
 </div>

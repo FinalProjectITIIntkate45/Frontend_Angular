@@ -29,17 +29,9 @@ import { AboutUsComponent } from './components/about-us/about-us.component';
 
 const routes: Routes = [
   {
-    path: 'products',
-    children: [
-      { path: '', component: ProductSearchComponent },
-      { path: ':id', component: ProductDetailsComponent },
-    ],
-  },
-  {
     path: '',
     component: UserProfileComponent,
     children: [
-       { path: 'about-us', component: AboutUsComponent },
       { path: '', redirectTo: 'profile', pathMatch: 'full' },
       { path: 'profile', component: ProfileSectionComponent },
       { path: 'wallet', component: WalletSectionComponent },
@@ -50,20 +42,10 @@ const routes: Routes = [
       { path: 'settings', component: SettingsSectionComponent },
       { path: 'cart', component: CartComponent },
       { path: 'follow-seller', component: FollowSellerComponent },
-      { path: 'charity-details/:id', component: CharityDetailsComponent },
-      { path: 'donate/:id', component: DonateComponent },
-      { path: 'charities', component: CharityListComponent },
-
-      { path: 'shop', component: ShopsSectionComponent },
       { path: 'checkout', component: CheckoutComponent },
-
-      { path: 'offers', component: OfferListComponent },
-      { path: 'offers/:id', component: OfferDetailsComponent },
       { path: 'payment-confirmation', component: PaymentConfirmationComponent },
-
       { path: 'recycling', component: RecyclingSectionComponent },
       { path: 'orders', component: OrdersSectionComponent },
-
       { path: 'orders/:id', component: ClientOrderDetailsComponent },
       { path: 'wallet-recharge', component: WalletRechargeComponent },
       { path: 'wallet/success', component: WalletSuccessComponent },
