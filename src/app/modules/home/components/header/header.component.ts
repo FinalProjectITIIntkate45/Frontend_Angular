@@ -3,10 +3,9 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-header',
-  standalone: true,
-  imports: [CommonModule],
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.css'],
+  standalone: false,
 })
 export class HeaderComponent {
   onSearchKeyPress(event: KeyboardEvent) {
