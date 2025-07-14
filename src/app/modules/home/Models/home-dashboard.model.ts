@@ -49,6 +49,29 @@ export interface Offers {
   }[];
 }
 
+export interface FeaturedShop {
+  Id: number;
+  Name: string;
+  Description: string;
+  Address: string;
+  City: string;
+  Street: string;
+  PostalCode: string;
+  Latitude: number;
+  Longitude: number;
+  BusinessPhone: string;
+  BusinessEmail: string;
+  Logo: string;
+  CreatedAt: string;
+  ModificationDate: string;
+  Status: number;
+  IsDeleted: boolean;
+  ProviderId: string;
+  TypeId: number; 
+  ShopImages: any[];
+}
+
+
 
 export interface ShopType {
   Id: number;
@@ -57,7 +80,7 @@ export interface ShopType {
 }
 
 export interface HomeDashboard {
-  Offers: any[]; // لو في future structure اعملي لها موديل لوحدها
+  Offers: any[]; 
   FeaturedShops: FeaturedShop[];
   TopProducts: TopProduct[];
 BestSellers: BestSellers[];
