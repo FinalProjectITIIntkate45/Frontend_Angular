@@ -23,7 +23,6 @@ import { PaginatedResponse } from '../../../../core/models/PaginatedResponse';
 })
 export class OrdersSectionComponent implements OnInit, OnDestroy {
   orders: OrderResponseViewModel[] = [];
-  filteredOrders: OrderResponseViewModel[] = [];
   loading = true;
   errorMessage = '';
 
@@ -34,7 +33,7 @@ export class OrdersSectionComponent implements OnInit, OnDestroy {
 
   // Pagination
   currentPage = 1;
-  pageSize = 10;
+  pageSize = 4;
   totalItems = 0;
 
   availableStatuses = [
@@ -119,33 +118,57 @@ export class OrdersSectionComponent implements OnInit, OnDestroy {
   private setupSearchListener(): void {
     this.searchControl.valueChanges
       .pipe(debounceTime(300), distinctUntilChanged())
-      .subscribe(() => this.applyFilters());
+      .subscribe(() => {
+        this.currentPage = 1;
+        this.applyFilters();
+      });
   }
 
-  loadOrders(): void {
+  loadOrders(status?: string): void {
     this.loading = true;
     this.errorMessage = '';
 
-    this.orderService
-      .getClientOrders(this.currentPage, this.pageSize)
-      .subscribe({
-        next: (
-          res: APIResponse<PaginatedResponse<OrderResponseViewModel[]>>
-        ) => {
-          if (res.IsSuccess) {
-            this.orders = res.Data.data;
-            this.totalItems = res.Data.totalCount;
-            this.applyFilters();
-          } else {
-            this.errorMessage = res.Message || 'Failed to load orders';
-          }
-          this.loading = false;
-        },
-        error: () => {
-          this.errorMessage = 'حدث خطأ أثناء تحميل الطلبات';
-          this.loading = false;
-        },
-      });
+    if (status) {
+      this.orderService
+        .getOrdersByStatus(status, this.currentPage, this.pageSize)
+        .subscribe({
+          next: (
+            res: APIResponse<PaginatedResponse<OrderResponseViewModel[]>>
+          ) => {
+            if (res.IsSuccess) {
+              this.orders = res.Data.data;
+              this.totalItems = res.Data.totalCount;
+            } else {
+              this.errorMessage = res.Message || 'Failed to load orders';
+            }
+            this.loading = false;
+          },
+          error: () => {
+            this.errorMessage = 'حدث خطأ أثناء تحميل الطلبات';
+            this.loading = false;
+          },
+        });
+    } else {
+      this.orderService
+        .getClientOrders(this.currentPage, this.pageSize)
+        .subscribe({
+          next: (
+            res: APIResponse<PaginatedResponse<OrderResponseViewModel[]>>
+          ) => {
+            if (res.IsSuccess) {
+              this.orders = res.Data.data;
+              this.totalItems = res.Data.totalCount;
+            } else {
+              this.errorMessage = res.Message || 'Failed to load orders';
+            }
+            this.loading = false;
+          },
+          error: () => {
+            this.errorMessage = 'حدث خطأ أثناء تحميل الطلبات';
+            this.loading = false;
+          },
+        });
+    }
   }
 
   applyFilters(): void {
@@ -172,14 +195,17 @@ export class OrdersSectionComponent implements OnInit, OnDestroy {
       );
     }
 
-    this.filteredOrders = filtered;
-    this.totalItems = filtered.length;
-    this.currentPage = 1;
+    this.orders = filtered; // Update orders with filtered results
+    this.totalItems = filtered.length; // Set totalItems to the number of filtered results
   }
 
   onStatusFilterChange(event: any): void {
-    this.selectedStatus = event.target.value;
-    this.applyFilters();
+    this.currentPage = 1;
+    if (this.selectedStatus) {
+      this.loadOrders(this.selectedStatus);
+    } else {
+      this.loadOrders();
+    }
   }
 
   getStatusClass(status: OrderStatus): string {
@@ -235,11 +261,6 @@ export class OrdersSectionComponent implements OnInit, OnDestroy {
   }
 
   // Pagination
-  get paginatedOrders(): OrderResponseViewModel[] {
-    const startIndex = (this.currentPage - 1) * this.pageSize;
-    return this.filteredOrders.slice(startIndex, startIndex + this.pageSize);
-  }
-
   get totalPages(): number {
     return Math.ceil(this.totalItems / this.pageSize);
   }
@@ -251,15 +272,22 @@ export class OrdersSectionComponent implements OnInit, OnDestroy {
   goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;
+      this.loadOrders();
     }
   }
 
   previousPage(): void {
-    if (this.currentPage > 1) this.currentPage--;
+    if (this.currentPage > 1) {
+      this.currentPage--;
+      this.loadOrders();
+    }
   }
 
   nextPage(): void {
-    if (this.currentPage < this.totalPages) this.currentPage++;
+    if (this.currentPage < this.totalPages) {
+      this.currentPage++;
+      this.loadOrders();
+    }
   }
 
   refreshOrders(): void {
@@ -270,7 +298,8 @@ export class OrdersSectionComponent implements OnInit, OnDestroy {
     this.searchControl.setValue('');
     this.selectedStatus = '';
     this.statusFilter.setValue('');
-    this.applyFilters();
+    this.currentPage = 1;
+    this.loadOrders();
   }
 
   getEndIndex(): number {
@@ -365,5 +394,10 @@ export class OrdersSectionComponent implements OnInit, OnDestroy {
       default:
         return paymentType?.toString() || 'Unknown';
     }
+  }
+
+  // Add this getter for use in the template
+  get totalEarnedPoints(): number {
+    return this.orders.reduce((sum, o) => sum + (o.EarnedPoints || 0), 0);
   }
 }

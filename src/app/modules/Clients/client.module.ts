@@ -23,7 +23,6 @@ import { FollowSellerComponent } from './components/follow-seller/follow-seller.
 import { OrdersSectionComponent } from './components/orders-section/orders-section.component';
 import { PointsSectionComponent } from './components/points-section/points-section.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
-import { ProductSearchComponent } from './components/product-search/product-search.component';
 import { ProfileSectionComponent } from './components/profile-section/profile-section.component';
 import { RecyclingSectionComponent } from './components/recycling-section/recycling-section.component';
 import { SettingsSectionComponent } from './components/settings-section/settings-section.component';
@@ -72,8 +71,6 @@ import { HomeModule } from '../home/home.module';
     SettingsSectionComponent,
     ClientLayoutComponent,
     UserNavComponent,
-    ProductSearchComponent,
-    ProductDetailsComponent,
     UserFooterComponent,
     WishlistSectionComponent,
     FollowSellerComponent,
