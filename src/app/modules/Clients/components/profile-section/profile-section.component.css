@@ -104,7 +104,7 @@
     .profile-header {
       background-color: #023059;
       border-radius: 0;
-      padding: 3rem 1rem;
+padding: 4rem 5rem;
       text-align: center;
       color: #ffffff;
       box-shadow: none;
@@ -113,6 +113,7 @@
       margin-left: calc(-50vw + 50%);
       position: relative;
       overflow: hidden;
+      margin-top: 0px;
     }
 
     .profile-header h1 {
