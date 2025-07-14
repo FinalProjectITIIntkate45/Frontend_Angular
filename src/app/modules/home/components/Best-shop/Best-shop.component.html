@@ -1,5 +1,36 @@
 <section class="shops-section" *ngIf="FeaturedShops.length">
   <div class="container">
+    <!-- Loader -->
+    <div class="loader-container" *ngIf="isLoading">
+      <div class="loader">
+        <div class="pulse-dot"></div>
+        <div class="floating-elements">
+          <div class="floating-element"></div>
+          <div class="floating-element"></div>
+          <div class="floating-element"></div>
+          <div class="floating-element"></div>
+        </div>
+      </div>
+      <div class="loading-text">
+        <span style="animation-delay: 0s;">L</span>
+        <span style="animation-delay: 0.1s;">o</span>
+        <span style="animation-delay: 0.2s;">a</span>
+        <span style="animation-delay: 0.3s;">d</span>
+        <span style="animation-delay: 0.4s;">i</span>
+        <span style="animation-delay: 0.5s;">n</span>
+        <span style="animation-delay: 0.6s;">g</span>
+        <span class="dot dot1" style="animation-delay: 0.7s;">.</span>
+        <span class="dot dot2" style="animation-delay: 0.8s;">.</span>
+        <span class="dot dot3" style="animation-delay: 0.9s;">.</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill">
+          <div class="wave-effect"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Original Component Content -->
     <div class="section-header">
       <h2 class="section-title">Featured Shops</h2>
       <p class="section-subtitle">Discover amazing stores and explore their unique collections</p>
@@ -8,21 +39,16 @@
     <div class="shops-grid">
       <div class="shop-card" *ngFor="let shop of FeaturedShops">
         <div class="shop-badge">Featured</div>
-        <!-- صورة رئيسية للمتجر -->
         <img [src]="shop.Logo || 'https://via.placeholder.com/400x200'" class="shop-image" [alt]="shop.Name" />
-
         <div class="shop-info">
-
           <h3 class="shop-name">{{ shop.Name }}</h3>
           <p class="shop-category">{{ shop.Description || 'General Store' }}</p>
-
           <div class="shop-rating">
             <div class="stars">
               <i class="fas fa-star" *ngFor="let i of [1,2,3,4,5]"></i>
             </div>
-            <span class="rating-count">4.9 (2,847 reviews)</span> <!-- يمكنك تعديل هذا لاحقًا من الـ backend -->
+            <span class="rating-count">4.9 (2,847 reviews)</span>
           </div>
-
           <div class="shop-stats">
             <div class="stat-item">
               <span class="stat-number">--</span>
@@ -37,13 +63,11 @@
               <span class="stat-label">Experience</span>
             </div>
           </div>
-
           <div class="shop-features">
             <span class="feature-tag">Fast Delivery</span>
             <span class="feature-tag">Verified</span>
             <span class="feature-tag">Top Rated</span>
           </div>
-
           <a [routerLink]="['/shop', shop.Id]" class="visit-shop-btn">
             <i class="fas fa-store"></i> Visit Shop
           </a>

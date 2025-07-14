@@ -1,4 +1,3 @@
-
 import { Component, OnInit } from '@angular/core';
 import { HomeService } from '../../Services/home.service';
 import { TopProduct } from '../../Models/home-dashboard.model';
@@ -12,6 +11,7 @@ import { TopProduct } from '../../Models/home-dashboard.model';
 export class TopRatedComponent implements OnInit {
   topRatedProducts: TopProduct[] = [];
   showMore = false;
+  isLoading = true; // Added loading state
 
   constructor(private homeService: HomeService) {}
 
@@ -20,14 +20,20 @@ export class TopRatedComponent implements OnInit {
   }
 
   getTopRatedProducts() {
-  this.homeService.getDashboardData().subscribe((data) => {
-
-    console.log('Dashboard Data:', data);
-    
-    this.topRatedProducts = data?.TopProducts || [];
-    console.log('Top Rated:', this.topRatedProducts);
-  });
-}
+    this.isLoading = true; // Show loader before fetching data
+    this.homeService.getDashboardData().subscribe({
+      next: (data) => {
+        console.log('Dashboard Data:', data);
+        this.topRatedProducts = data?.TopProducts || [];
+        console.log('Top Rated:', this.topRatedProducts);
+        this.isLoading = false; // Hide loader after data is fetched
+      },
+      error: (error) => {
+        console.error('Error fetching top rated products:', error);
+        this.isLoading = false; // Hide loader on error
+      }
+    });
+  }
 
   toggleShowMore() {
     this.showMore = !this.showMore;

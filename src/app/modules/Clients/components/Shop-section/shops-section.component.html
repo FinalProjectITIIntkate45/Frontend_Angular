@@ -1,19 +1,46 @@
 <div class="container-fluid p-4">
-  <h2>Vendors</h2>
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-      <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-      <li class="breadcrumb-item active" aria-current="page">Sellers</li>
+      <!-- Breadcrumb items can be added here if needed -->
     </ol>
   </nav>
-  <div *ngIf="loading" class="text-center">
-    <div class="spinner-border" role="status">
-      <span class="visually-hidden">Loading...</span>
+
+  <!-- Loader -->
+  <div *ngIf="loading" class="loader-container">
+    <div class="loader">
+      <div class="pulse-dot"></div>
+      <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+      </div>
+    </div>
+    <div class="loading-text">
+      <span style="animation-delay: 0s;">L</span>
+      <span style="animation-delay: 0.1s;">o</span>
+      <span style="animation-delay: 0.2s;">a</span>
+      <span style="animation-delay: 0.3s;">d</span>
+      <span style="animation-delay: 0.4s;">i</span>
+      <span style="animation-delay: 0.5s;">n</span>
+      <span style="animation-delay: 0.6s;">g</span>
+      <span class="dot dot1" style="animation-delay: 0.7s;">.</span>
+      <span class="dot dot2" style="animation-delay: 0.8s;">.</span>
+      <span class="dot dot3" style="animation-delay: 0.9s;">.</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill">
+        <div class="wave-effect"></div>
+      </div>
     </div>
   </div>
+
+  <!-- Error Message -->
   <div *ngIf="error" class="alert alert-danger" role="alert">
     {{ error }}
   </div>
+
+  <!-- Shops Content -->
   <div *ngIf="!loading && !error" class="row row-cols-1 row-cols-md-3 g-4">
     @for (shop of shops; track $index) {
     <div class="col">
@@ -39,6 +66,8 @@
     </div>
     }
   </div>
+
+  <!-- No Shops Message -->
   <div *ngIf="!loading && !error && !shops.length" class="alert alert-info">
     No shops available at the moment.
   </div>

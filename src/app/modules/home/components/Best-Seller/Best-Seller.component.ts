@@ -11,6 +11,7 @@ import { BestSellers } from '../../Models/home-dashboard.model';
 export class BestSellerComponent implements OnInit {
   bestSellerProducts: BestSellers[] = [];
   showMore = false;
+  isLoading = true; // Added loading state
 
   constructor(private homeService: HomeService) {}
 
@@ -19,9 +20,17 @@ export class BestSellerComponent implements OnInit {
   }
 
   getBestSellers() {
-    this.homeService.getDashboardData().subscribe((data) => {
-      console.log('Dashboard Data (Best Sellers):', data);
-      this.bestSellerProducts = data?.BestSellers || [];
+    this.isLoading = true; // Show loader before fetching data
+    this.homeService.getDashboardData().subscribe({
+      next: (data) => {
+        console.log('Dashboard Data (Best Sellers):', data);
+        this.bestSellerProducts = data?.BestSellers || [];
+        this.isLoading = false; // Hide loader after data is fetched
+      },
+      error: (err) => {
+        console.error('Error loading best sellers:', err);
+        this.isLoading = false; // Hide loader on error
+      }
     });
   }
 
