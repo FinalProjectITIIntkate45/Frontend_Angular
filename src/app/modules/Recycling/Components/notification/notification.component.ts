@@ -9,9 +9,14 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./notification.component.css'],
   standalone: false
 })
-export class NotificationComponent implements OnInit, OnDestroy {
+export class NotificationComponent implements OnInit {
   notifications: NotificationModel[] = [];
   private sub!: Subscription;
+
+  // ترتيب الإشعارات بالأحدث في الأعلى
+  get notificationsSorted() {
+    return [...this.notifications].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
 
   constructor(
     private notificationService: NotificationService,
@@ -19,11 +24,12 @@ export class NotificationComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.sub = this.notificationService.notifications$.subscribe(
-      notis => {
-        this.notifications = notis;
-      }
-    );
+    this.notificationService.fetchInitialNotifications();
+    this.notificationService.connect();
+    this.notificationService.getNotifications().subscribe((notifications) => {
+      console.log('Notifications from backend:', notifications); // طباعة الداتا القادمة من الباك اند
+      this.notifications = notifications;
+    });
   }
 
   ngOnDestroy() {
@@ -40,6 +46,26 @@ export class NotificationComponent implements OnInit, OnDestroy {
     if (confirm('هل تريد مسح جميع الإشعارات؟')) {
       this.notifications = [];
     }
+  }
+
+  getStatusText(status: number): string {
+    switch (status) {
+      case 1: return 'Unread';
+      case 2: return 'Read';
+      case 3: return 'Archived';
+      default: return 'Unknown';
+    }
+  }
+
+  markNotificationAsRead(notification: NotificationModel) {
+    this.notificationService.markAsRead(notification.id).subscribe({
+      next: () => {
+        notification.status = 2; // Marked as read
+      },
+      error: () => {
+        alert('An error occurred while marking the notification as read');
+      }
+    });
   }
 }
 

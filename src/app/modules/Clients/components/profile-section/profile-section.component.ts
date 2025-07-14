@@ -93,7 +93,9 @@ export class ProfileSectionComponent implements OnInit {
             //   phoneNumber: this.profileData.PhoneNumber
         // });
         
-        this.profileData.ProfileImg = this.profileData.ProfileImg ==""? 'https://via.placeholder.com/150':this.profileData.ProfileImg ;
+if (!this.profileData.ProfileImg) {
+  this.profileData.ProfileImg = 'https://via.placeholder.com/150';
+}
       },
       error: (err) => {
         this.error = 'Failed to load profile.';

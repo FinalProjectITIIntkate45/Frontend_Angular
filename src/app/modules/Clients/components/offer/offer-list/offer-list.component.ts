@@ -37,7 +37,7 @@ export class OfferListComponent implements OnInit {
     this.loading = true;
     this.offerService.getAllOffers(this.pageSize, this.pageNumber).subscribe({
       next: (response: PaginationResponse<OfferViewModel>) => {
-        this.offers = response.data;
+        this.offers = response.data || [];
         this.pageNumber = response.pageNumber;
         this.pageSize = response.pageSize;
         this.totalPages = response.totalPages;
@@ -55,7 +55,6 @@ export class OfferListComponent implements OnInit {
     this.router.navigate(['/offers', offerId]);
   }
 
-  // Pagination
   goToPage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
       this.pageNumber = page;

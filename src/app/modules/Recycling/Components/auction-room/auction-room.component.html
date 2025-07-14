@@ -2,11 +2,11 @@
   <div class="auction-room-container">
     <!-- معلومات المزاد -->
     <div class="auction-info-section" *ngIf="auction">
-      <h2>مزاد إعادة التدوير</h2>
+      <h2>Auction</h2>
       <div class="auction-stats">
         <span class="stat-item">
           <i class="fas fa-users"></i>
-          {{ bidHistory.length }} مزايدة
+          {{ bidHistory.length }} Bids
         </span>
         <span class="stat-item">
           <i class="fas fa-clock"></i>
@@ -14,24 +14,24 @@
         </span>
         <span class="stat-item" *ngIf="userRank > 0">
           <i class="fas fa-trophy"></i>
-          ترتيبك: {{ userRank }}
+          Your Rank: {{ userRank }}
         </span>
       </div>
     </div>
 
     <!-- أعلى مزايدة -->
     <div class="max-bid-section" [class.bid-flash]="bidFlash">
-      <h3>أعلى مزايدة حالية</h3>
-      <div class="max-bid-value">{{ highestBid | number }} جنيه</div>
+      <h3>Highest Bid</h3>
+      <div class="max-bid-value">{{ highestBid | number }} EGP</div>
       <div class="bid-count" *ngIf="bidHistory.length > 0">
-        إجمالي المزايدات: {{ bidHistory.length }}
+        Total Bids: {{ bidHistory.length }}
       </div>
     </div>
 
     <!-- فورم تقديم مزايدة جديدة -->
     <div class="place-bid-section">
       <form (ngSubmit)="placeBid()" #bidForm="ngForm" autocomplete="off">
-        <label for="bidAmount" class="form-label">أدخل قيمة المزايدة الجديدة:</label>
+        <label for="bidAmount" class="form-label">Enter the new bid amount:</label>
         <input
           type="number"
           id="bidAmount"
@@ -41,17 +41,17 @@
           [min]="highestBid + 1"
           required
           [disabled]="isPlacingBid"
-          placeholder="مثال: {{ highestBid + 10 }}"
+          placeholder="Example: {{ highestBid + 10 }}"
         />
         <button
           type="submit"
           class="btn btn-primary"
           [disabled]="isPlacingBid || !bidForm.form.valid"
         >
-          <span *ngIf="!isPlacingBid">تقديم المزايدة</span>
+          <span *ngIf="!isPlacingBid">Place Bid</span>
           <span *ngIf="isPlacingBid">
             <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-            جاري التقديم...
+            Placing bid...
           </span>
         </button>
       </form>
@@ -65,7 +65,7 @@
     <div class="live-feedback-section" *ngIf="liveFeedback.length > 0">
       <h4>
         <i class="fas fa-broadcast-tower"></i>
-        النشاط المباشر
+        Live Feedback
       </h4>
       <div class="live-feedback-list">
         <div class="feedback-item" *ngFor="let feedback of liveFeedback; trackBy: trackByFeedback">
@@ -80,7 +80,7 @@
       <div class="top3-bids-section">
         <h4>
           <i class="fas fa-medal"></i>
-          أعلى 3 مزايدات
+          Top 3 Bids
         </h4>
         <table class="bids-table">
           <thead>
@@ -103,7 +103,7 @@
               <td>{{ getTimeAgo(bid.timestamp) }}</td>
             </tr>
             <tr *ngIf="top3Bids.length === 0">
-              <td colspan="4" class="no-data">لا توجد مزايدات بعد</td>
+              <td colspan="4" class="no-data">No bids yet</td>
             </tr>
           </tbody>
         </table>
@@ -113,15 +113,15 @@
       <div class="all-bids-section">
         <h4>
           <i class="fas fa-history"></i>
-          كل المزايدات السابقة
+          All Previous Bids
         </h4>
         <div style="max-height: 300px; overflow-y: auto;">
           <table class="bids-table">
             <thead>
               <tr>
-                <th>المزايد</th>
-                <th>القيمة</th>
-                <th>الوقت</th>
+                <th>Bid</th>
+                <th>Value</th>
+                <th>Time</th>
               </tr>
             </thead>
             <tbody>
@@ -131,7 +131,7 @@
                 <td>{{ getTimeAgo(bid.createdAt) }}</td>
               </tr>
               <tr *ngIf="bidHistory.length === 0">
-                <td colspan="3" class="no-data">لا توجد مزايدات بعد</td>
+                <td colspan="3" class="no-data">No bids yet</td>
               </tr>
             </tbody>
           </table>
@@ -142,14 +142,14 @@
       <div class="my-bids-section">
         <h4>
           <i class="fas fa-user"></i>
-          مزايداتي
+          My Bids
         </h4>
         <div style="max-height: 300px; overflow-y: auto;">
           <table class="bids-table">
             <thead>
               <tr>
-                <th>القيمة</th>
-                <th>الوقت</th>
+                <th>Value</th>
+                <th>Time</th>
               </tr>
             </thead>
             <tbody>
@@ -158,7 +158,7 @@
                 <td>{{ getTimeAgo(bid.createdAt) }}</td>
               </tr>
               <tr *ngIf="myBids.length === 0">
-                <td colspan="2" class="no-data">لم تضع أي مزايدة بعد</td>
+                <td colspan="2" class="no-data">No bids yet</td>
               </tr>
             </tbody>
           </table>
@@ -168,10 +168,10 @@
 
     <!-- ترتيب المستخدم -->
     <div class="user-rank-section" *ngIf="userRank > 0">
-      <h4>ترتيبك الحالي</h4>
+      <h4>Your Current Rank</h4>
       <div class="user-rank-display">
         <span class="rank-number">{{ userRank }}</span>
-        <span class="rank-text">في قائمة أعلى المزايدين</span>
+        <span class="rank-text">In the top 3 bidders list</span>
       </div>
     </div>
 
@@ -180,11 +180,11 @@
       <div class="info-grid">
         <div class="info-item">
           <i class="fas fa-calendar"></i>
-          <span>تاريخ البداية: {{ auction.StartTime | date:'short' }}</span>
+          <span>Start Date: {{ auction.StartTime | date:'short' }}</span>
         </div>
         <div class="info-item">
           <i class="fas fa-calendar-check"></i>
-          <span>تاريخ النهاية: {{ auction.EndTime | date:'short' }}</span>
+          <span>End Date: {{ auction.EndTime | date:'short' }}</span>
         </div>
       </div>
     </div>

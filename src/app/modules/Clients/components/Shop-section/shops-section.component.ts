@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-
 import { ShopViewModel } from '../../Models/shop-view-model';
 import { ShopService } from '../../Services/shop.service';
 
@@ -12,8 +11,7 @@ import { ShopService } from '../../Services/shop.service';
 export class ShopsSectionComponent implements OnInit {
   loading: boolean = true;
   error: string | null = null;
-  shops!: ShopViewModel[];
-  Math: any;
+  shops: ShopViewModel[] = []; // Initialized to avoid undefined issues
 
   constructor(private shopService: ShopService) {}
 
@@ -21,21 +19,6 @@ export class ShopsSectionComponent implements OnInit {
     this.loadAllShops();
   }
 
-  // loadShops(): void {
-  //   this.shopService.getAllShops().subscribe({
-  //     next: (shops) => {
-  //       console.log(shops);
-
-  //       this.shops = shops.Data;
-  //       this.loading = false;
-  //     },
-  //     error: (err) => {
-  //       this.error = 'Failed to load shops. Please try again later.';
-  //       this.loading = false;
-  //       console.error('Error fetching shops:', err);
-  //     },
-  //   });
-  // }
   loadAllShops() {
     this.loading = true;
     this.error = null;
@@ -44,7 +27,7 @@ export class ShopsSectionComponent implements OnInit {
       next: (res) => {
         this.loading = false;
         if (res.IsSuccess) {
-          this.shops = res.Data;
+          this.shops = res.Data || [];
         } else {
           this.shops = [];
           this.error = res.Message || 'Failed to load shops';

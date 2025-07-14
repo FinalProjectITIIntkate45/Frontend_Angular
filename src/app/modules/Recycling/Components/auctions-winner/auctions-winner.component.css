@@ -1,0 +1,125 @@
+/* Section Title */
+.section-title {
+  font-size: 2rem;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.auctions-winner-section {
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+}
+
+.auction-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 24px;
+}
+
+.content-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(44, 62, 80, 0.08);
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+}
+.content-card:hover {
+  box-shadow: 0 8px 32px rgba(44, 62, 80, 0.15);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  padding: 18px 22px;
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  justify-content: space-between;
+}
+.stat-icon {
+  background: rgba(255,255,255,0.18);
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+}
+.material-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #fff;
+}
+.auction-status {
+  padding: 6px 14px;
+  border-radius: 16px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.status-active {
+  background: rgba(46, 204, 113, 0.18);
+  color: #2ecc71;
+}
+.status-completed {
+  background: rgba(52, 152, 219, 0.18);
+  color: #3498db;
+}
+.status-canceled {
+  background: rgba(231, 76, 60, 0.18);
+  color: #e74c3c;
+}
+
+.card-body {
+  padding: 22px 22px 18px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.auction-details-row {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  font-size: 1rem;
+  color: #555;
+  align-items: center;
+}
+.auction-details-row i {
+  color: #667eea;
+  margin-right: 5px;
+}
+
+.empty-state {
+  text-align: center;
+  color: #aaa;
+  margin: 2rem 0;
+}
+.empty-state i {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.loading {
+  text-align: center;
+  color: #888;
+  font-size: 1.1rem;
+  margin: 1.5rem 0;
+}
+
+.error {
+  color: #e74c3c;
+  text-align: center;
+  margin: 1.5rem 0;
+  font-weight: 600;
+}

@@ -17,13 +17,7 @@
         <div class="stat-value">{{activeAuctions}}</div>
         <div class="stat-label">Active Auctions</div>
       </div>
-      <div class="stat-card">
-        <div class="stat-icon success">
-          <i class="fas fa-trophy"></i>
-        </div>
-        <div class="stat-value">{{wonAuctions}}</div>
-        <div class="stat-label">Won Auctions</div>
-      </div>
+     
       <div class="stat-card">
         <div class="stat-icon success">
           <i class="fas fa-trophy"></i>
@@ -44,7 +38,7 @@
 
 
     <!-- Auction List Table -->
-    <div class="auction-list-table content-card mt-4">
+    <div class="auction-list-table content-card mt-4" style="max-height: 350px; overflow-y: auto;">
       <div class="card-header">
         <i class="fas fa-gavel"></i>
         <h3>Active Auctions</h3>
@@ -59,25 +53,27 @@
               <th>Start Time</th>
               <th>End Time</th>
               <th>Status</th>
+              <th>Insurance</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let auction of auctions">
+            <tr *ngFor="let auction of activeAuctionsList">
               <td>{{auction.id}}</td>
               <td>{{auction.matrialname}}</td>
               <td>{{auction.governorateName}}</td>
               <td>{{auction.startTime | date:'short'}}</td>
               <td>{{auction.endTime | date:'short'}}</td>
               <td>{{auction.auctionStatus}}</td>
+              <td>{{auction.insuranceAmount | currency:'EGP':'symbol':'1.0-0'}}</td>
               <td>
                 <button class="btn btn-primary btn-sm" (click)="joinAuction(auction.id)">
                   Join Auction
                 </button>
               </td>
             </tr>
-            <tr *ngIf="auctions.length === 0">
-              <td colspan="7" class="text-center">No active auctions available.</td>
+            <tr *ngIf="activeAuctionsList.length === 0">
+              <td colspan="8" class="text-center">No active auctions available.</td>
             </tr>
           </tbody>
         </table>
@@ -86,21 +82,7 @@
 
     <!-- Main Content -->
     <div class="main-content">
-      <!-- Recent Activity -->
-      <div class="content-card">
-        <div class="card-header">
-          <i class="fas fa-history"></i>
-          <h3>Recent Activity</h3>
-        </div>
-        <div class="card-body">
-          <div class="activity-list">
-            <div class="empty-state">
-              <i class="fas fa-clock"></i>
-              <p>No recent activity</p>
-            </div>
-          </div>
-        </div>
-      </div> 
+
     </div>
   </div>
 </app-RecyclerLayout>
