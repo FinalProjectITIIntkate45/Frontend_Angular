@@ -6,8 +6,13 @@
   </div>
   <nav class="nav flex-column">
     <div class="nav-item">
-      <a class="nav-link active" href="#" [routerLink]="['/provider/sales-overview']">
+      <a class="nav-link active" [routerLink]="['/provider/dashboard']">
         <i class="fas fa-tachometer-alt"></i> Dashboard
+      </a>
+    </div>
+    <div class="nav-item">
+      <a class="nav-link " [routerLink]="['/provider/sales-overview']">
+        <i class="fas fa-tachometer-alt"></i> Sales Overview
       </a>
     </div>
 
