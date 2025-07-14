@@ -5,4 +5,5 @@ export interface ReviewView {
   modificationDateTime: string;
   clientName?: string;
   orderId: number;
+  productId: number; // ✅ أضفناها هنا
 }
