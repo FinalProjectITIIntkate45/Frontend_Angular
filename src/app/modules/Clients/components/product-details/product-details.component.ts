@@ -16,6 +16,7 @@ interface EnhancedProduct extends Product {
   isNew: boolean;
   formattedPrice?: string;
   formattedOriginalPrice?: string;
+  IsBestSeller?: boolean; // Add this property
 }
 // When a product loads, all 4 suggestion types are fetched simultaneously
 // Related Products: Same category, sorted by price similarity
@@ -48,6 +49,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   // UI state
   isAddingToCart: boolean = false;
   isAddingToWishlist: boolean = false;
+  isInWishlist: boolean = false; // Track wishlist state
 
   private routeSubscription?: Subscription;
 
@@ -89,7 +91,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
         this.product = this.enhanceProduct(product);
         this.selectedImage = this.product.Images?.[0] || null;
         this.loading = false;
-
+        this.checkIfInWishlist();
         // Load all types of product suggestions
         this.loadRelatedProducts();
         this.loadSimilarProducts();
@@ -117,6 +119,20 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     this.isAddingToWishlist = false;
   }
 
+  private checkIfInWishlist() {
+    if (!this.product) return;
+    this.WishlistService.getWishlist(1, 100).subscribe({
+      next: (items) => {
+        this.isInWishlist = items.some(
+          (item) => item.ProductId === this.product!.Id
+        );
+      },
+      error: () => {
+        this.isInWishlist = false;
+      },
+    });
+  }
+
   private enhanceProduct(product: Product): EnhancedProduct {
     const enhanced: EnhancedProduct = {
       ...product,
@@ -124,6 +140,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
       ratingCount: this.generateRandomRatingCount(),
       discountPercentage: this.calculateDiscountPercentage(product),
       isNew: this.isNewProduct(product),
+      IsBestSeller: (product as any).IsBestSeller ?? false, // Defensive, in case not present
     };
 
     // Pre-format prices for better performance
@@ -144,6 +161,10 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     this.productService
       .searchProducts({
         category: this.product.CategoryName,
+        minPrice: null,
+        maxPrice: null,
+        minPoints: null,
+        maxPoints: null,
         pageNumber: 1,
         pageSize: 8, // Get more options for better filtering
       })
@@ -190,6 +211,8 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
       .searchProducts({
         minPrice: Math.max(0, minPrice),
         maxPrice: maxPrice,
+        minPoints: null,
+        maxPoints: null,
         pageNumber: 1,
         pageSize: 12, // Get more options for better filtering
       })
@@ -234,7 +257,10 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     // Search for popular products (high points, good ratings)
     this.productService
       .searchProducts({
+        minPrice: null,
+        maxPrice: null,
         minPoints: 50, // Products with good points
+        maxPoints: null,
         pageNumber: 1,
         pageSize: 12,
       })
@@ -269,6 +295,10 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     // Search for new arrivals (recently created products)
     this.productService
       .searchProducts({
+        minPrice: null,
+        maxPrice: null,
+        minPoints: null,
+        maxPoints: null,
         pageNumber: 1,
         pageSize: 12,
       })
@@ -364,79 +394,188 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   }
 
   // Enhanced action methods with loading states
-  async addToCart() {
+  // Helper to add or update product in cart
+  private addOrUpdateCartItem(redirectToCheckout: boolean = false) {
     if (!this.product || this.product.Stock === 0 || this.isAddingToCart) {
       return;
     }
-
     this.isAddingToCart = true;
-
-    try {
-      console.log('[AddToCart] Sending:', {
-        productId: this.product.Id,
-        quantity: this.quantity,
-        price:
-          this.product.DisplayedPriceAfterDiscount ||
-          this.product.DisplayedPrice,
-        points: this.product.Points,
-      });
-      // TODO: Implement actual cart service logic here
-      // await this.cartService.addToCart(this.product, this.quantity);
-      //productId: number, quantity: number, price: number, points: number
-      this.cardsercive
-        .addToCart(
-          this.product.Id,
-          this.quantity,
-          this.product.DisplayedPriceAfterDiscount ||
-            this.product.DisplayedPrice,
-          this.product.Points
-        )
-        .subscribe(
-          (response) => {
-            this.cardsercive.refreshCartItemsCount(); // Ensure cart count is updated
-            this.showSuccessMessage(
-              `Added ${this.quantity} ${this.product?.Name}(s) to cart!`
-            );
-          },
-          (error) => {
-            console.error('Error adding product to cart:', error);
-          }
+    this.cardsercive.getCartItems().subscribe({
+      next: (cart) => {
+        // Ensure all IDs are numbers for comparison
+        const productId = Number(this.product!.Id);
+        const existingItem = cart.Items?.find(
+          (item) => Number(item.productVM?.Id) === productId
         );
-
-      // Show success message
-
-      // Reset quantity after successful add
-      this.quantity = 1;
-    } catch (error) {
-      console.error('Error adding to cart:', error);
-      this.showErrorMessage('Failed to add item to cart. Please try again.');
-    } finally {
-      this.isAddingToCart = false;
-    }
+        if (existingItem && existingItem.cartItemId != null) {
+          // Update quantity (try update first)
+          const newQty = (existingItem.qty ?? 1) + this.quantity;
+          this.cardsercive
+            .updateCartItemQuantity(existingItem.cartItemId as number, newQty)
+            .subscribe(
+              () => {
+                this.cardsercive.refreshCartItemsCount();
+                this.showSuccessMessage(
+                  `Updated quantity for ${this.product!.Name} in cart!` +
+                    (redirectToCheckout ? ' Redirecting to checkout...' : '')
+                );
+                this.quantity = 1;
+                if (redirectToCheckout) {
+                  this.router.navigate(['/client/checkout']);
+                }
+                this.isAddingToCart = false;
+              },
+              (error) => {
+                // If update fails (e.g., backend does not merge), remove and add
+                if (existingItem.cartItemId != null) {
+                  this.cardsercive
+                    .removeFromCart(existingItem.cartItemId as number)
+                    .subscribe({
+                      next: () => {
+                        this.cardsercive
+                          .addToCart(
+                            this.product!.Id,
+                            newQty,
+                            this.product!.DisplayedPriceAfterDiscount ||
+                              this.product!.DisplayedPrice,
+                            this.product!.Points
+                          )
+                          .subscribe(
+                            () => {
+                              this.cardsercive.refreshCartItemsCount();
+                              this.showSuccessMessage(
+                                `Added ${newQty} ${
+                                  this.product!.Name
+                                }(s) to cart!` +
+                                  (redirectToCheckout
+                                    ? ' Redirecting to checkout...'
+                                    : '')
+                              );
+                              this.quantity = 1;
+                              if (redirectToCheckout) {
+                                this.router.navigate(['/client/checkout']);
+                              }
+                              this.isAddingToCart = false;
+                            },
+                            (addError) => {
+                              this.showErrorMessage(
+                                'Failed to add item to cart.'
+                              );
+                              this.isAddingToCart = false;
+                            }
+                          );
+                      },
+                      error: () => {
+                        this.showErrorMessage(
+                          'Failed to update or replace cart item.'
+                        );
+                        this.isAddingToCart = false;
+                      },
+                    });
+                } else {
+                  this.showErrorMessage(
+                    'Cart item ID is missing. Cannot update or remove cart item.'
+                  );
+                  this.isAddingToCart = false;
+                }
+              }
+            );
+        } else if (!existingItem) {
+          // Add new item
+          this.cardsercive
+            .addToCart(
+              this.product!.Id,
+              this.quantity,
+              this.product!.DisplayedPriceAfterDiscount ||
+                this.product!.DisplayedPrice,
+              this.product!.Points
+            )
+            .subscribe(
+              () => {
+                this.cardsercive.refreshCartItemsCount();
+                this.showSuccessMessage(
+                  `Added ${this.quantity} ${this.product!.Name}(s) to cart!` +
+                    (redirectToCheckout ? ' Redirecting to checkout...' : '')
+                );
+                this.quantity = 1;
+                if (redirectToCheckout) {
+                  this.router.navigate(['/client/checkout']);
+                }
+                this.isAddingToCart = false;
+              },
+              (error) => {
+                this.showErrorMessage('Failed to add item to cart.');
+                this.isAddingToCart = false;
+              }
+            );
+        } else {
+          // Defensive: if cartItemId is undefined, show error
+          this.showErrorMessage('Cart item ID is missing. Cannot update cart.');
+          this.isAddingToCart = false;
+        }
+      },
+      error: () => {
+        this.showErrorMessage('Failed to fetch cart items.');
+        this.isAddingToCart = false;
+      },
+    });
   }
 
-  addToWishlist() {
+  addToCart() {
+    this.addOrUpdateCartItem(false);
+  }
+
+  buyNow() {
+    this.addOrUpdateCartItem(true);
+  }
+
+  toggleWishlist() {
     if (!this.product || this.isAddingToWishlist) return;
-
     this.isAddingToWishlist = true;
-
-    try {
-      // TODO: Implement actual wishlist service logic here
+    if (this.isInWishlist) {
+      this.WishlistService.deleteProduct(this.product.Id).subscribe({
+        next: () => {
+          this.isInWishlist = false;
+          this.WishlistService.refreshWishlistCount();
+          this.showSuccessMessage(
+            `${this.product?.Name} removed from wishlist!`
+          );
+        },
+        error: () => {
+          this.showErrorMessage(
+            'Failed to remove item from wishlist. Please try again.'
+          );
+        },
+        complete: () => {
+          this.isAddingToWishlist = false;
+        },
+      });
+    } else {
       this.WishlistService.addToWishlist(this.product.Id).subscribe({
         next: (value) => {
-          console.log(value);
+          this.isInWishlist = true;
+          this.WishlistService.refreshWishlistCount();
           this.showSuccessMessage(`${this.product?.Name} added to wishlist!`);
         },
         error: (err) => {
-          console.error('Error adding to wishlist:', err);
-          this.showErrorMessage(
-            'Failed to add item to wishlist. Please try again.'
-          );
+          const msg = err?.error;
+          if (
+            typeof msg === 'string' &&
+            msg.toLowerCase().includes('already exist')
+          ) {
+            this.isInWishlist = true;
+            this.WishlistService.refreshWishlistCount();
+            this.showSuccessMessage('Already in wishlist!');
+          } else {
+            this.showErrorMessage(
+              'Failed to add item to wishlist. Please try again.'
+            );
+          }
+        },
+        complete: () => {
+          this.isAddingToWishlist = false;
         },
       });
-    } catch (error) {
-    } finally {
-      this.isAddingToWishlist = false;
     }
   }
 

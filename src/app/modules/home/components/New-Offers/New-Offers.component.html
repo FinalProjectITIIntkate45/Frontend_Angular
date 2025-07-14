@@ -10,12 +10,9 @@
     <div class="products-grid">
       <div class="product-card" *ngFor="let offer of offers">
         <div class="product-badge">New</div>
-        <img
-          [src]="offer.OfferImgUrl"
-          class="product-image"
-          alt="Offer Image"
-        />
-        <h6 class="product-title">{{ offer.Products[0].Productname }}</h6>
+        <img [src]="offer.OfferImgUrl" class="product-image" alt="Offer Image" />
+    
+     <h6 class="product-title">{{ offer.Products[0].Productname }}</h6>
 
         <div class="product-price">
           <span class="price-current">${{ offer.NewPrice }}</span>

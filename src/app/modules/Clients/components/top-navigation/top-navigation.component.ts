@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AuthService } from '../../../../core/services/Auth.service';
 import { CartServicesService } from '../../Services/CardServices.service';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-top-navigation',
@@ -17,7 +18,8 @@ export class TopNavigationComponent implements OnInit, OnDestroy {
 
   constructor(
     private authService: AuthService,
-    private cartService: CartServicesService
+    private cartService: CartServicesService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -29,6 +31,10 @@ export class TopNavigationComponent implements OnInit, OnDestroy {
       this.cartItemsCount = count;
     });
     this.cartService.refreshCartItemsCount(); // Ensure count is up to date on load
+  }
+
+  navigateToCart() {
+    this.router.navigate(['/client/cart']);
   }
 
   ngOnDestroy() {

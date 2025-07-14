@@ -1,5 +1,4 @@
-
-<section class="shops-section">
+<section class="shops-section" *ngIf="FeaturedShops.length">
   <div class="container">
     <div class="section-header">
       <h2 class="section-title">Featured Shops</h2>
@@ -7,169 +6,45 @@
     </div>
 
     <div class="shops-grid">
-      <div class="shop-card">
-        <div class="shop-badge">Verified</div>
-        <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=200&fit=crop" class="shop-image" alt="Coffee Corner Store" />
+      <div class="shop-card" *ngFor="let shop of FeaturedShops">
+        <div class="shop-badge">Featured</div>
+        <!-- صورة رئيسية للمتجر -->
+        <img [src]="shop.Logo || 'https://via.placeholder.com/400x200'" class="shop-image" [alt]="shop.Name" />
+
         <div class="shop-info">
-          <img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=60&h=60&fit=crop" class="shop-logo" alt="Coffee Corner Logo" />
-          <h3 class="shop-name">Coffee Corner</h3>
-          <p class="shop-category">Specialty Coffee & Beverages</p>
+
+          <h3 class="shop-name">{{ shop.Name }}</h3>
+          <p class="shop-category">{{ shop.Description || 'General Store' }}</p>
+
           <div class="shop-rating">
             <div class="stars">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
+              <i class="fas fa-star" *ngFor="let i of [1,2,3,4,5]"></i>
             </div>
-            <span class="rating-count">4.9 (2,847 reviews)</span>
+            <span class="rating-count">4.9 (2,847 reviews)</span> <!-- يمكنك تعديل هذا لاحقًا من الـ backend -->
           </div>
+
           <div class="shop-stats">
             <div class="stat-item">
-              <span class="stat-number">150+</span>
+              <span class="stat-number">--</span>
               <span class="stat-label">Products</span>
             </div>
             <div class="stat-item">
-              <span class="stat-number">8.5K</span>
+              <span class="stat-number">--</span>
               <span class="stat-label">Followers</span>
             </div>
             <div class="stat-item">
-              <span class="stat-number">3 yrs</span>
+              <span class="stat-number">--</span>
               <span class="stat-label">Experience</span>
             </div>
           </div>
+
           <div class="shop-features">
             <span class="feature-tag">Fast Delivery</span>
-            <span class="feature-tag">Organic</span>
-            <span class="feature-tag">Premium</span>
+            <span class="feature-tag">Verified</span>
+            <span class="feature-tag">Top Rated</span>
           </div>
-          <a href="#" class="visit-shop-btn">
-            <i class="fas fa-store"></i> Visit Shop
-          </a>
-        </div>
-      </div>
 
-      <div class="shop-card">
-        <div class="shop-badge">Top Rated</div>
-        <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=400&h=200&fit=crop" class="shop-image" alt="Fresh Farm Market" />
-        <div class="shop-info">
-          <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=60&h=60&fit=crop" class="shop-logo" alt="Fresh Farm Logo" />
-          <h3 class="shop-name">Fresh Farm Market</h3>
-          <p class="shop-category">Organic Produce & Groceries</p>
-          <div class="shop-rating">
-            <div class="stars">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-            </div>
-            <span class="rating-count">5.0 (1,923 reviews)</span>
-          </div>
-          <div class="shop-stats">
-            <div class="stat-item">
-              <span class="stat-number">300+</span>
-              <span class="stat-label">Products</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-number">12K</span>
-              <span class="stat-label">Followers</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-number">5 yrs</span>
-              <span class="stat-label">Experience</span>
-            </div>
-          </div>
-          <div class="shop-features">
-            <span class="feature-tag">Farm Fresh</span>
-            <span class="feature-tag">Organic</span>
-            <span class="feature-tag">Local</span>
-          </div>
-          <a href="#" class="visit-shop-btn">
-            <i class="fas fa-store"></i> Visit Shop
-          </a>
-        </div>
-      </div>
-
-      <div class="shop-card">
-        <div class="shop-badge">Featured</div>
-        <img src="https://images.unsplash.com/photo-1563636619-e9143da7973b?w=400&h=200&fit=crop" class="shop-image" alt="Tropical Paradise" />
-        <div class="shop-info">
-          <img src="https://images.unsplash.com/photo-1490885578174-acda8905c2c6?w=60&h=60&fit=crop" class="shop-logo" alt="Tropical Paradise Logo" />
-          <h3 class="shop-name">Tropical Paradise</h3>
-          <p class="shop-category">Exotic Fruits & Imports</p>
-          <div class="shop-rating">
-            <div class="stars">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="far fa-star"></i>
-            </div>
-            <span class="rating-count">4.3 (856 reviews)</span>
-          </div>
-          <div class="shop-stats">
-            <div class="stat-item">
-              <span class="stat-number">85+</span>
-              <span class="stat-label">Products</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-number">4.2K</span>
-              <span class="stat-label">Followers</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-number">2 yrs</span>
-              <span class="stat-label">Experience</span>
-            </div>
-          </div>
-          <div class="shop-features">
-            <span class="feature-tag">Exotic</span>
-            <span class="feature-tag">Imported</span>
-            <span class="feature-tag">Seasonal</span>
-          </div>
-          <a href="#" class="visit-shop-btn">
-            <i class="fas fa-store"></i> Visit Shop
-          </a>
-        </div>
-      </div>
-
-      <div class="shop-card">
-        <div class="shop-badge">Premium</div>
-        <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=400&h=200&fit=crop" class="shop-image" alt="Olive Grove Delicatessen" />
-        <div class="shop-info">
-          <img src="https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=60&h=60&fit=crop" class="shop-logo" alt="Olive Grove Logo" />
-          <h3 class="shop-name">Olive Grove Deli</h3>
-          <p class="shop-category">Gourmet Foods & Oils</p>
-          <div class="shop-rating">
-            <div class="stars">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-            </div>
-            <span class="rating-count">4.9 (3,245 reviews)</span>
-          </div>
-          <div class="shop-stats">
-            <div class="stat-item">
-              <span class="stat-number">200+</span>
-              <span class="stat-label">Products</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-number">15K</span>
-              <span class="stat-label">Followers</span>
-            </div>
-            <div class="stat-item">
-              <span class="stat-number">7 yrs</span>
-              <span class="stat-label">Experience</span>
-            </div>
-          </div>
-          <div class="shop-features">
-            <span class="feature-tag">Gourmet</span>
-            <span class="feature-tag">Artisan</span>
-            <span class="feature-tag">Premium</span>
-          </div>
-          <a href="#" class="visit-shop-btn">
+          <a [routerLink]="['/shop', shop.Id]" class="visit-shop-btn">
             <i class="fas fa-store"></i> Visit Shop
           </a>
         </div>
@@ -183,4 +58,3 @@
     </div>
   </div>
 </section>
-

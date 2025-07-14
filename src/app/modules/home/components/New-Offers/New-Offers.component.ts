@@ -4,7 +4,7 @@ import { Offers } from '../../Models/home-dashboard.model';
 
 @Component({
   selector: 'app-New-Offers',
-  templateUrl: './New-Offers.component.html',
+  templateUrl:'./New-Offers.component.html',
   styleUrls: ['./New-Offers.component.css'],
   standalone: false,
 })

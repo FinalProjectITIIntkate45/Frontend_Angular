@@ -1,0 +1,50 @@
+.order-details-container {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.order-status-badges .badge {
+  font-size: 0.95rem;
+  margin-right: 0.4rem;
+  padding: 0.5em 0.9em;
+}
+.order-summary {
+  min-width: 220px;
+}
+.points-summary .badge {
+  font-size: 0.95rem;
+  margin-right: 0.3rem;
+}
+.order-product-card {
+  border-radius: 0.8rem;
+  background: #f9fafb;
+  transition: box-shadow 0.2s;
+  margin-bottom: 1rem;
+}
+.order-product-card:hover {
+  box-shadow: 0 4px 18px rgba(0, 123, 255, 0.08);
+}
+.order-product-img {
+  border-radius: 0.6rem;
+  border: 1px solid #e3e6ea;
+  background: #f8f9fa;
+}
+.order-product-pricing {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+@media (max-width: 768px) {
+  .order-details-container {
+    padding: 1.2rem;
+  }
+  .order-summary {
+    text-align: left;
+    margin-top: 1rem;
+  }
+}
+.order-details-loading .spinner-border {
+  width: 2.5rem;
+  height: 2.5rem;
+}

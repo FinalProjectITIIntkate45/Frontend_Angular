@@ -1,6 +1,6 @@
-<div class="product-details-page">
-  <!-- Breadcrumb -->
-  <nav class="breadcrumb-nav">
+<!-- <div class="product-details-page"> -->
+<!-- Breadcrumb -->
+<!-- <nav class="breadcrumb-nav">
     <div class="container">
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
@@ -17,10 +17,10 @@
         </li>
       </ol>
     </div>
-  </nav>
+  </nav> -->
 
-  <!-- Loading State -->
-  <div class="loading-wrapper" *ngIf="loading">
+<!-- Loading State -->
+<!-- <div class="loading-wrapper" *ngIf="loading">
     <div class="container">
       <div class="loading-content">
         <div class="loading-spinner">
@@ -29,10 +29,10 @@
         <p class="loading-text">Loading product details...</p>
       </div>
     </div>
-  </div>
+  </div> -->
 
-  <!-- Error State -->
-  <div class="error-wrapper" *ngIf="error && !loading">
+<!-- Error State -->
+<!-- <div class="error-wrapper" *ngIf="error && !loading">
     <div class="container">
       <div class="error-content">
         <div class="error-illustration">
@@ -49,44 +49,44 @@
         </button>
       </div>
     </div>
-  </div>
+  </div> -->
 
-  <!-- Product Details Content -->
-  <div class="product-wrapper" *ngIf="product && !loading && !error">
-    <div class="container">
+<!-- Product Details Content -->
+<!-- <div class="product-wrapper" *ngIf="product && !loading && !error">
+    <div class="container"> -->
 
-      <!-- Main Product Section -->
-      <div class="product-main">
-        <div class="row">
+<!-- Main Product Section -->
+<!-- <div class="product-main">
+        <div class="row"> -->
 
-          <!-- Product Gallery -->
-          <div class="col-lg-6">
-            <div class="product-gallery">
+<!-- Product Gallery -->
+<!-- <div class="col-lg-6">
+            <div class="product-gallery"> -->
 
-              <!-- Product Badges -->
-              <div class="product-badges">
+<!-- Product Badges -->
+<!-- <div class="product-badges">
                 <span class="badge badge-sale" *ngIf="product.discountPercentage > 0">
                   {{product.discountPercentage}}% OFF
                 </span>
                 <span class="badge badge-new" *ngIf="product.isNew">New</span>
-              </div>
+              </div> -->
 
-              <!-- Main Image -->
-              <div class="gallery-main">
+<!-- Main Image -->
+<!-- <div class="gallery-main">
                 <div class="main-image-wrapper">
                   <img
                     [src]="selectedImage || (product.Images && product.Images[0]) || '/assets/images/placeholder-product.jpg'"
                     [alt]="product.Name" class="main-image" loading="lazy">
 
                   <!-- Zoom Icon -->
-                  <button class="zoom-btn" title="Zoom image">
+<!-- <button class="zoom-btn" title="Zoom image">
                     <i class="zoom-icon">🔍</i>
                   </button>
                 </div>
-              </div>
+              </div> -->
 
-              <!-- Thumbnail Gallery -->
-              <div class="gallery-thumbs" *ngIf="product.Images && product.Images.length > 1">
+<!-- Thumbnail Gallery -->
+<!-- <div class="gallery-thumbs" *ngIf="product.Images && product.Images.length > 1">
                 <div class="thumbs-container">
                   <button *ngFor="let image of product.Images; let i = index" class="thumb-item"
                     [class.active]="selectedImage === image || (!selectedImage && i === 0)"
@@ -96,14 +96,14 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
 
-          <!-- Product Information -->
-          <div class="col-lg-6">
-            <div class="product-info">
+<!-- Product Information -->
+<!-- <div class="col-lg-6">
+            <div class="product-info"> -->
 
-              <!-- Product Header -->
-              <div class="product-header">
+<!-- Product Header -->
+<!-- <div class="product-header">
                 <div class="header-top">
                   <h1 class="product-title">{{product.Name}}</h1>
                   <div class="product-actions">
@@ -114,10 +114,10 @@
                       <i class="action-icon">🤍</i>
                     </button>
                   </div>
-                </div>
+                </div> -->
 
-                <!-- Meta Information -->
-                <div class="product-meta">
+<!-- Meta Information -->
+<!-- <div class="product-meta">
                   <div class="meta-item" *ngIf="product.ShopName">
                     <span class="meta-label">Brand:</span>
                     <button (click)="goToShop(product.ShopName)" class="meta-link">
@@ -130,10 +130,10 @@
                       {{product.CategoryName}}
                     </button>
                   </div>
-                </div>
+                </div> -->
 
-                <!-- Rating -->
-                <div class="product-rating">
+<!-- Rating -->
+<!-- <div class="product-rating">
                   <div class="rating-stars">
                     <span class="star" *ngFor="let filled of getRatingStars(product.rating)"
                       [class.filled]="filled">★</span>
@@ -141,11 +141,11 @@
                   <span class="rating-value">{{product.rating | number:'1.1-1'}}</span>
                   <span class="rating-count">({{product.ratingCount}} reviews)</span>
                   <button class="rating-link">Read all reviews</button>
-                </div>
-              </div>
+                </div> -->
+<!-- </div> -->
 
-              <!-- Price Section -->
-              <div class="price-section">
+<!-- Price Section -->
+<!-- <div class="price-section">
                 <div class="price-main">
                   <span class="price-current">
                     ${{formatPrice(product.DisplayedPriceAfterDiscount || product.DisplayedPrice)}}
@@ -164,10 +164,10 @@
                   <i class="points-icon">⭐</i>
                   <span class="points-text">Earn {{product.EarnedPoints}} reward points</span>
                 </div>
-              </div>
+              </div> -->
 
-              <!-- Stock & Availability -->
-              <div class="availability-section">
+<!-- Stock & Availability -->
+<!-- <div class="availability-section">
                 <div class="stock-info" [class.out-of-stock]="product.Stock === 0">
                   <div class="stock-indicator">
                     <span class="stock-dot" [class.available]="product.Stock > 0"></span>
@@ -179,13 +179,13 @@
                     </span>
                   </div>
                 </div>
-              </div>
+              </div> -->
 
-              <!-- Purchase Options -->
-              <div class="purchase-options" *ngIf="product.Stock > 0">
+<!-- Purchase Options -->
+<!-- <div class="purchase-options" *ngIf="product.Stock > 0"> -->
 
-                <!-- Quantity Selector -->
-                <div class="quantity-section">
+<!-- Quantity Selector -->
+<!-- <div class="quantity-section">
                   <label class="quantity-label">Qty:</label>
                   <div class="quantity-input">
                     <button (click)="decreaseQuantity()" [disabled]="quantity <= 1" class="qty-btn qty-decrease">
@@ -197,10 +197,10 @@
                       <i class="qty-icon">+</i>
                     </button>
                   </div>
-                </div>
+                </div> -->
 
-                <!-- Action Buttons -->
-                <div class="action-buttons">
+<!-- Action Buttons -->
+<!-- <div class="action-buttons">
                   <button (click)="addToCart()" class="btn btn-primary btn-lg add-to-cart">
                     <i class="btn-icon">🛒</i>
                     <span>Add to Cart</span>
@@ -210,10 +210,10 @@
                     <span>Buy Now</span>
                   </button>
                 </div>
-              </div>
+              </div> -->
 
-              <!-- Out of Stock Message -->
-              <div class="out-of-stock-notice" *ngIf="product.Stock === 0">
+<!-- Out of Stock Message -->
+<!-- <div class="out-of-stock-notice" *ngIf="product.Stock === 0">
                 <div class="notice-content">
                   <h4 class="notice-title">Currently Unavailable</h4>
                   <p class="notice-text">This item is temporarily out of stock. Get notified when it's back!</p>
@@ -224,10 +224,10 @@
                     </button>
                   </div>
                 </div>
-              </div>
+              </div> -->
 
-              <!-- Additional Info -->
-              <div class="additional-info">
+<!-- Additional Info -->
+<!-- <div class="additional-info">
                 <div class="info-tabs">
                   <button class="info-tab active" data-tab="shipping">
                     <i class="tab-icon">🚚</i>
@@ -270,14 +270,10 @@
                     </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+              </div> -->
 
-      <!-- Product Details Tabs -->
-      <div class="product-details-tabs">
+<!-- Product Details Tabs -->
+<!-- <div class="product-details-tabs">
         <div class="tabs-nav">
           <button class="tab-btn active" data-target="description">Description</button>
           <button class="tab-btn" data-target="specifications">Specifications</button>
@@ -323,13 +319,13 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
-      <!-- Product Suggestions -->
-      <div class="product-suggestions">
+<!-- Product Suggestions -->
+<!-- <div class="product-suggestions"> -->
 
-        <!-- Related Products -->
-        <div class="suggestion-section" *ngIf="relatedProducts.length > 0">
+<!-- Related Products -->
+<!-- <div class="suggestion-section" *ngIf="relatedProducts.length > 0">
           <div class="section-header">
             <h3 class="section-title">Related Products</h3>
             <p class="section-subtitle">More items from the same category</p>
@@ -391,10 +387,10 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
-        <!-- Similar Products -->
-        <div class="suggestion-section" *ngIf="similarProducts.length > 0">
+<!-- Similar Products -->
+<!-- <div class="suggestion-section" *ngIf="similarProducts.length > 0">
           <div class="section-header">
             <h3 class="section-title">You May Also Like</h3>
             <p class="section-subtitle">Products similar to what you're viewing</p>
@@ -456,10 +452,10 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
-        <!-- Popular Products -->
-        <div class="suggestion-section" *ngIf="popularProducts.length > 0">
+<!-- Popular Products -->
+<!-- <div class="suggestion-section" *ngIf="popularProducts.length > 0">
           <div class="section-header">
             <h3 class="section-title">Trending Now</h3>
             <p class="section-subtitle">Popular products with high ratings</p>
@@ -521,12 +517,697 @@
               </div>
             </div>
           </div>
+        </div> -->
+
+<!-- New Arrivals -->
+<!-- <div class="suggestion-section" *ngIf="newArrivals.length > 0">
+
+                <div class="section-header">
+                  <h3 class="section-title">New Arrivals</h3>
+                  <p class="section-subtitle">Fresh products just added to our catalog</p>
+                </div>
+
+                <div class="products-carousel">
+                  <div class="carousel-container">
+                    <div class="product-card" *ngFor="let newProduct of newArrivals"
+                      (click)="viewNewArrivalProduct(newProduct.Id)">
+
+                      <div class="card-image">
+                        <img
+                          [src]="(newProduct.Images && newProduct.Images[0]) || '/assets/images/placeholder-product.jpg'"
+                          [alt]="newProduct.Name" loading="lazy">
+
+                        <div class="card-badges" *ngIf="newProduct.discountPercentage > 0 || newProduct.isNew">
+                          <span class="badge badge-sale" *ngIf="newProduct.discountPercentage > 0">
+                            -{{newProduct.discountPercentage}}%
+                          </span>
+                          <span class="badge badge-new" *ngIf="newProduct.isNew">New</span>
+                        </div>
+
+                        <div class="card-overlay">
+                          <button class="overlay-btn" title="Quick View">
+                            <i class="btn-icon">👁️</i>
+                          </button>
+                          <button class="overlay-btn" title="Add to Wishlist">
+                            <i class="btn-icon">🤍</i>
+                          </button>
+                        </div>
+                      </div>
+
+                      <div class="card-content">
+                        <div class="card-rating">
+                          <div class="rating-stars">
+                            <span class="star" *ngFor="let filled of getRatingStars(newProduct.rating)"
+                              [class.filled]="filled">★</span>
+                          </div>
+                          <span class="rating-count">({{newProduct.ratingCount}})</span>
+                        </div>
+
+                        <h4 class="card-title">{{newProduct.Name}}</h4>
+
+                        <div class="card-price">
+                          <span class="price-current">
+                            ${{formatPrice(newProduct.DisplayedPriceAfterDiscount || newProduct.DisplayedPrice)}}
+                          </span>
+                          <span class="price-original"
+                            *ngIf="newProduct.DisplayedPriceAfterDiscount < newProduct.DisplayedPrice">
+                            ${{formatPrice(newProduct.DisplayedPrice)}}
+                          </span>
+                        </div>
+
+                        <div class="card-points" *ngIf="newProduct.EarnedPoints > 0">
+                          <i class="points-icon">⭐</i>
+                          <span>{{newProduct.EarnedPoints}} pts</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
+
+<div class="product-details-page">
+  <!-- Breadcrumb -->
+  <nav class="breadcrumb-nav">
+    <div class="container">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="/client/home" class="breadcrumb-link">
+            <i class="fas fa-home me-2"></i>
+            Home
+          </a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="/products" class="breadcrumb-link">Products</a>
+        </li>
+        <li class="breadcrumb-item active" *ngIf="product">
+          <span>{{product.Name}}</span>
+        </li>
+      </ol>
+    </div>
+  </nav>
+
+  <!-- Loading State -->
+  <div class="loading-wrapper" *ngIf="loading">
+    <div class="container">
+      <div class="loading-content">
+        <div class="loading-spinner">
+          <div class="spinner-ring"></div>
+          <div class="spinner-ring"></div>
+          <div class="spinner-ring"></div>
+        </div>
+        <p class="loading-text">Loading product details...</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error State -->
+  <div class="error-wrapper" *ngIf="error && !loading">
+    <div class="container">
+      <div class="error-content">
+        <div class="error-illustration">
+          <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <h3 class="error-title">Something went wrong</h3>
+        <p class="error-message">{{error}}</p>
+        <button (click)="loadProduct(+route.snapshot.params['id'])" class="btn btn-primary">
+          <i class="fas fa-redo me-2"></i>
+          Try Again
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Details Content -->
+  <div class="product-wrapper" *ngIf="product && !loading && !error">
+    <div class="container">
+
+      <!-- Main Product Section -->
+      <div class="product-main">
+        <div class="row">
+
+          <!-- Product Gallery -->
+          <div class="col-lg-6">
+            <div class="product-gallery">
+
+              <!-- Product Badges -->
+              <div class="product-badges">
+                <span class="badge badge-sale" *ngIf="product.discountPercentage > 0">
+                  <i class="fas fa-percent me-1"></i>
+                  {{product.discountPercentage}}% OFF
+                </span>
+                <span class="badge badge-new" *ngIf="product.isNew">
+                  <i class="fas fa-star me-1"></i>
+                  NEW
+                </span>
+                <span class="badge badge-bestseller" *ngIf="product.IsBestSeller">
+                  <i class="fas fa-fire me-1"></i>
+                  BEST SELLER
+                </span>
+              </div>
+
+              <!-- Main Image -->
+              <div class="gallery-main">
+                <div class="main-image-wrapper">
+                  <img
+                    [src]="selectedImage || (product.Images && product.Images[0]) || '/assets/images/placeholder-product.jpg'"
+                    [alt]="product.Name" class="main-image" loading="lazy">
+
+                  <!-- Zoom Icon -->
+                  <button class="zoom-btn" title="Zoom image">
+                    <i class="fas fa-search-plus"></i>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Thumbnail Gallery -->
+              <div class="gallery-thumbs" *ngIf="product.Images && product.Images.length > 1">
+                <div class="thumbs-container">
+                  <button *ngFor="let image of product.Images; let i = index" class="thumb-item"
+                    [class.active]="selectedImage === image || (!selectedImage && i === 0)"
+                    (click)="selectImage(image)">
+                    <img [src]="image" [alt]="product.Name + ' - Image ' + (i + 1)" class="thumb-image">
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Information -->
+          <div class="col-lg-6">
+            <div class="product-info">
+
+              <!-- Product Header -->
+              <div class="product-header">
+                <div class="header-top">
+                  <h1 class="product-title">{{product.Name}}</h1>
+                  <div class="product-actions">
+                    <button (click)="shareProduct()" class="action-btn" title="Share Product">
+                      <i class="fas fa-share-alt"></i>
+                    </button>
+                    <button (click)="toggleWishlist()" class="action-btn wishlist-btn" [disabled]="isAddingToWishlist"
+                      [title]="isInWishlist ? 'Remove from Wishlist' : 'Add to Wishlist'">
+                      <i class="fas" [ngClass]="isInWishlist ? 'fa-heart text-danger' : 'fa-heart'"
+                        [style.opacity]="isInWishlist ? 1 : 0.5"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Meta Information -->
+                <div class="product-meta">
+                  <div class="meta-item" *ngIf="product.ShopName">
+                    <span class="meta-label">Brand:</span>
+                    <button (click)="goToShop(product.ShopName)" class="meta-link">
+                      {{product.ShopName}}
+                    </button>
+                  </div>
+                  <div class="meta-item" *ngIf="product.CategoryName">
+                    <span class="meta-label">Category:</span>
+                    <button (click)="goToCategory(product.CategoryName)" class="meta-link">
+                      {{product.CategoryName}}
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Rating -->
+                <div class="product-rating">
+                  <div class="rating-stars">
+                    <span class="star" *ngFor="let filled of getRatingStars(product.rating)" [class.filled]="filled">
+                      <i class="fas fa-star"></i>
+                    </span>
+                  </div>
+                  <span class="rating-value">{{product.rating | number:'1.1-1'}}</span>
+                  <span class="rating-count">({{product.ratingCount}} reviews)</span>
+                  <button class="rating-link">Read all reviews</button>
+                </div>
+              </div>
+
+              <!-- Price Section -->
+              <div class="price-section">
+                <div class="price-main">
+                  <span class="price-current">
+                    ${{formatPrice(product.DisplayedPriceAfterDiscount || product.DisplayedPrice)}}
+                  </span>
+                  <span class="price-original" *ngIf="product.DisplayedPriceAfterDiscount < product.DisplayedPrice">
+                    ${{formatPrice(product.DisplayedPrice)}}
+                  </span>
+                </div>
+                <div class="price-savings" *ngIf="product.discountPercentage > 0">
+                  <span class="savings-text">
+                    <i class="fas fa-tag me-1"></i>
+                    You save ${{formatPrice(product.DisplayedPrice - product.DisplayedPriceAfterDiscount)}}
+                    ({{product.discountPercentage}}%)
+                  </span>
+                </div>
+                <div class="price-points" *ngIf="product.EarnedPoints > 0">
+                  <i class="fas fa-star points-icon"></i>
+                  <span class="points-text">Earn {{product.EarnedPoints}} reward points</span>
+                </div>
+              </div>
+
+              <!-- Stock & Availability -->
+              <div class="availability-section">
+                <div class="stock-info" [class.out-of-stock]="product.Stock === 0">
+                  <div class="stock-indicator">
+                    <span class="stock-dot" [class.available]="product.Stock > 0"></span>
+                    <span class="stock-text" *ngIf="product.Stock > 0">
+                      <i class="fas fa-check-circle me-1"></i>
+                      In Stock ({{product.Stock}} items available)
+                    </span>
+                    <span class="stock-text" *ngIf="product.Stock === 0">
+                      <i class="fas fa-times-circle me-1"></i>
+                      Out of Stock
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Purchase Options -->
+              <div class="purchase-options" *ngIf="product.Stock > 0">
+
+                <!-- Quantity Selector -->
+                <div class="quantity-section">
+                  <label class="quantity-label">Quantity:</label>
+                  <div class="quantity-input">
+                    <button (click)="decreaseQuantity()" [disabled]="quantity <= 1" class="qty-btn qty-decrease">
+                      <i class="fas fa-minus"></i>
+                    </button>
+                    <input type="number" [(ngModel)]="quantity" [min]="1" [max]="product.Stock" class="qty-value">
+                    <button (click)="increaseQuantity()" [disabled]="quantity >= product.Stock"
+                      class="qty-btn qty-increase">
+                      <i class="fas fa-plus"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-buttons">
+                  <button (click)="addToCart()" class="btn btn-primary btn-lg add-to-cart">
+                    <i class="fas fa-shopping-cart me-2"></i>
+                    <span>Add to Cart</span>
+                  </button>
+                  <button class="btn btn-secondary btn-lg buy-now" (click)="buyNow()">
+                    <i class="fas fa-bolt me-2"></i>
+                    <span>Buy Now</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Out of Stock Message -->
+              <div class="out-of-stock-notice" *ngIf="product.Stock === 0">
+                <div class="notice-content">
+                  <div class="notice-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                  </div>
+                  <div class="notice-info">
+                    <h4 class="notice-title">Currently Unavailable</h4>
+                    <p class="notice-text">This item is temporarily out of stock. Get notified when it's back!</p>
+                  </div>
+                </div>
+                <div class="notice-actions">
+                  <button (click)="toggleWishlist()" class="btn btn-outline-primary">
+                    <i class="fas fa-bell me-2"></i>
+                    Notify When Available
+                  </button>
+                </div>
+              </div>
+
+              <!-- Additional Info -->
+              <div class="additional-info">
+                <div class="info-tabs">
+                  <button class="info-tab active" data-tab="shipping">
+                    <i class="fas fa-shipping-fast tab-icon"></i>
+                    Shipping
+                  </button>
+                  <button class="info-tab" data-tab="returns">
+                    <i class="fas fa-undo tab-icon"></i>
+                    Returns
+                  </button>
+                  <button class="info-tab" data-tab="warranty">
+                    <i class="fas fa-shield-alt tab-icon"></i>
+                    Warranty
+                  </button>
+                </div>
+
+                <div class="info-content">
+                  <div class="tab-panel active" id="shipping">
+                    <div class="shipping-options">
+                      <div class="shipping-option">
+                        <div class="option-icon">
+                          <i class="fas fa-truck"></i>
+                        </div>
+                        <div class="option-info">
+                          <strong>Standard Delivery</strong>
+                          <span>3-5 business days</span>
+                        </div>
+                        <span class="option-price">$5.99</span>
+                      </div>
+                      <div class="shipping-option">
+                        <div class="option-icon">
+                          <i class="fas fa-rocket"></i>
+                        </div>
+                        <div class="option-info">
+                          <strong>Express Delivery</strong>
+                          <span>1-2 business days</span>
+                        </div>
+                        <span class="option-price">$12.99</span>
+                      </div>
+                      <div class="shipping-option">
+                        <div class="option-icon">
+                          <i class="fas fa-store"></i>
+                        </div>
+                        <div class="option-info">
+                          <strong>Store Pickup</strong>
+                          <span>Available today</span>
+                        </div>
+                        <span class="option-price free">Free</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Details Tabs -->
+      <div class="product-details-tabs">
+        <div class="tabs-nav">
+          <button class="tab-btn active" data-target="description">
+            <i class="fas fa-align-left me-2"></i>
+            Description
+          </button>
+          <button class="tab-btn" data-target="specifications">
+            <i class="fas fa-list me-2"></i>
+            Specifications
+          </button>
+          <button class="tab-btn" data-target="reviews">
+            <i class="fas fa-star me-2"></i>
+            Reviews ({{product.ratingCount}})
+          </button>
+        </div>
+
+        <div class="tabs-content">
+          <div class="tab-pane active" id="description">
+            <div class="description-content">
+              <p>{{product.Description}}</p>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="specifications">
+            <div class="specs-content">
+              <div class="specs-grid">
+                <div class="spec-item">
+                  <span class="spec-label">
+                    <i class="fas fa-crown me-2"></i>
+                    Brand
+                  </span>
+                  <span class="spec-value">{{product.ShopName}}</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-label">
+                    <i class="fas fa-tags me-2"></i>
+                    Category
+                  </span>
+                  <span class="spec-value">{{product.CategoryName}}</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-label">
+                    <i class="fas fa-star me-2"></i>
+                    Points
+                  </span>
+                  <span class="spec-value">{{product.EarnedPoints}} points</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-label">
+                    <i class="fas fa-boxes me-2"></i>
+                    Stock
+                  </span>
+                  <span class="spec-value">{{product.Stock}} available</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="tab-pane" id="reviews">
+            <div class="reviews-content">
+              <div class="reviews-summary">
+                <div class="rating-overview">
+                  <div class="rating-score">
+                    <span class="score-value">{{product.rating | number:'1.1-1'}}</span>
+                    <div class="score-stars">
+                      <span class="star" *ngFor="let filled of getRatingStars(product.rating)" [class.filled]="filled">
+                        <i class="fas fa-star"></i>
+                      </span>
+                    </div>
+                    <span class="score-text">Based on {{product.ratingCount}} reviews</span>
+                  </div>
+                </div>
+                <div class="reviews-placeholder">
+                  <p>Customer reviews will be displayed here once available.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Suggestions -->
+      <div class="product-suggestions">
+
+        <!-- Related Products -->
+        <div class="suggestion-section" *ngIf="relatedProducts.length > 0">
+          <div class="section-header">
+            <h3 class="section-title">
+              <i class="fas fa-link me-2"></i>
+              Related Products
+            </h3>
+            <p class="section-subtitle">More items from the same category</p>
+          </div>
+
+          <div class="products-carousel">
+            <div class="carousel-container">
+              <div class="product-card" *ngFor="let relatedProduct of relatedProducts"
+                (click)="viewRelatedProduct(relatedProduct.Id)">
+
+                <div class="card-image">
+                  <img
+                    [src]="(relatedProduct.Images && relatedProduct.Images[0]) || '/assets/images/placeholder-product.jpg'"
+                    [alt]="relatedProduct.Name" loading="lazy">
+
+                  <div class="card-badges" *ngIf="relatedProduct.discountPercentage > 0 || relatedProduct.isNew">
+                    <span class="badge badge-sale" *ngIf="relatedProduct.discountPercentage > 0">
+                      <i class="fas fa-percent me-1"></i>
+                      {{relatedProduct.discountPercentage}}%
+                    </span>
+                    <span class="badge badge-new" *ngIf="relatedProduct.isNew">
+                      <i class="fas fa-star me-1"></i>
+                      NEW
+                    </span>
+                  </div>
+
+                  <div class="card-overlay">
+                    <button class="overlay-btn" title="Quick View">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                    <button class="overlay-btn" title="Add to Wishlist">
+                      <i class="fas fa-heart"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="card-content">
+                  <div class="card-rating">
+                    <div class="rating-stars">
+                      <span class="star" *ngFor="let filled of getRatingStars(relatedProduct.rating)"
+                        [class.filled]="filled">
+                        <i class="fas fa-star"></i>
+                      </span>
+                    </div>
+                    <span class="rating-count">({{relatedProduct.ratingCount}})</span>
+                  </div>
+
+                  <h4 class="card-title">{{relatedProduct.Name}}</h4>
+
+                  <div class="card-price">
+                    <span class="price-current">
+                      ${{formatPrice(relatedProduct.DisplayedPriceAfterDiscount || relatedProduct.DisplayedPrice)}}
+                    </span>
+                    <span class="price-original"
+                      *ngIf="relatedProduct.DisplayedPriceAfterDiscount < relatedProduct.DisplayedPrice">
+                      ${{formatPrice(relatedProduct.DisplayedPrice)}}
+                    </span>
+                  </div>
+
+                  <div class="card-points" *ngIf="relatedProduct.EarnedPoints > 0">
+                    <i class="fas fa-star points-icon"></i>
+                    <span>{{relatedProduct.EarnedPoints}} pts</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Similar Products -->
+        <div class="suggestion-section" *ngIf="similarProducts.length > 0">
+          <div class="section-header">
+            <h3 class="section-title">
+              <i class="fas fa-thumbs-up me-2"></i>
+              You May Also Like
+            </h3>
+            <p class="section-subtitle">Products similar to what you're viewing</p>
+          </div>
+
+          <div class="products-carousel">
+            <div class="carousel-container">
+              <div class="product-card" *ngFor="let similarProduct of similarProducts"
+                (click)="viewSimilarProduct(similarProduct.Id)">
+
+                <div class="card-image">
+                  <img
+                    [src]="(similarProduct.Images && similarProduct.Images[0]) || '/assets/images/placeholder-product.jpg'"
+                    [alt]="similarProduct.Name" loading="lazy">
+
+                  <div class="card-badges" *ngIf="similarProduct.discountPercentage > 0 || similarProduct.isNew">
+                    <span class="badge badge-sale" *ngIf="similarProduct.discountPercentage > 0">
+                      <i class="fas fa-percent me-1"></i>
+                      {{similarProduct.discountPercentage}}%
+                    </span>
+                    <span class="badge badge-new" *ngIf="similarProduct.isNew">
+                      <i class="fas fa-star me-1"></i>
+                      NEW
+                    </span>
+                  </div>
+
+                  <div class="card-overlay">
+                    <button class="overlay-btn" title="Quick View">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                    <button class="overlay-btn" title="Add to Wishlist">
+                      <i class="fas fa-heart"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="card-content">
+                  <div class="card-rating">
+                    <div class="rating-stars">
+                      <span class="star" *ngFor="let filled of getRatingStars(similarProduct.rating)"
+                        [class.filled]="filled">
+                        <i class="fas fa-star"></i>
+                      </span>
+                    </div>
+                    <span class="rating-count">({{similarProduct.ratingCount}})</span>
+                  </div>
+
+                  <h4 class="card-title">{{similarProduct.Name}}</h4>
+
+                  <div class="card-price">
+                    <span class="price-current">
+                      ${{formatPrice(similarProduct.DisplayedPriceAfterDiscount || similarProduct.DisplayedPrice)}}
+                    </span>
+                    <span class="price-original"
+                      *ngIf="similarProduct.DisplayedPriceAfterDiscount < similarProduct.DisplayedPrice">
+                      ${{formatPrice(similarProduct.DisplayedPrice)}}
+                    </span>
+                  </div>
+
+                  <div class="card-points" *ngIf="similarProduct.EarnedPoints > 0">
+                    <i class="fas fa-star points-icon"></i>
+                    <span>{{similarProduct.EarnedPoints}} pts</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Popular Products -->
+        <div class="suggestion-section" *ngIf="popularProducts.length > 0">
+          <div class="section-header">
+            <h3 class="section-title">
+              <i class="fas fa-fire me-2"></i>
+              Trending Now
+            </h3>
+            <p class="section-subtitle">Popular products with high ratings</p>
+          </div>
+
+          <div class="products-carousel">
+            <div class="carousel-container">
+              <div class="product-card" *ngFor="let popularProduct of popularProducts"
+                (click)="viewPopularProduct(popularProduct.Id)">
+
+                <div class="card-image">
+                  <img
+                    [src]="(popularProduct.Images && popularProduct.Images[0]) || '/assets/images/placeholder-product.jpg'"
+                    [alt]="popularProduct.Name" loading="lazy">
+
+                  <div class="card-badges" *ngIf="popularProduct.discountPercentage > 0 || popularProduct.isNew">
+                    <span class="badge badge-sale" *ngIf="popularProduct.discountPercentage > 0">
+                      <i class="fas fa-percent me-1"></i>
+                      {{popularProduct.discountPercentage}}%
+                    </span>
+                    <span class="badge badge-new" *ngIf="popularProduct.isNew">
+                      <i class="fas fa-star me-1"></i>
+                      NEW
+                    </span>
+                  </div>
+
+                  <div class="card-overlay">
+                    <button class="overlay-btn" title="Quick View">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                    <button class="overlay-btn" title="Add to Wishlist">
+                      <i class="fas fa-heart"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <div class="card-content">
+                  <div class="card-rating">
+                    <div class="rating-stars">
+                      <span class="star" *ngFor="let filled of getRatingStars(popularProduct.rating)"
+                        [class.filled]="filled">
+                        <i class="fas fa-star"></i>
+                      </span>
+                    </div>
+                    <span class="rating-count">({{popularProduct.ratingCount}})</span>
+                  </div>
+
+                  <h4 class="card-title">{{popularProduct.Name}}</h4>
+
+                  <div class="card-price">
+                    <span class="price-current">
+                      ${{formatPrice(popularProduct.DisplayedPriceAfterDiscount || popularProduct.DisplayedPrice)}}
+                    </span>
+                    <span class="price-original"
+                      *ngIf="popularProduct.DisplayedPriceAfterDiscount < popularProduct.DisplayedPrice">
+                      ${{formatPrice(popularProduct.DisplayedPrice)}}
+                    </span>
+                  </div>
+
+                  <div class="card-points" *ngIf="popularProduct.EarnedPoints > 0">
+                    <i class="fas fa-star points-icon"></i>
+                    <span>{{popularProduct.EarnedPoints}} pts</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- New Arrivals -->
         <div class="suggestion-section" *ngIf="newArrivals.length > 0">
           <div class="section-header">
-            <h3 class="section-title">New Arrivals</h3>
+            <h3 class="section-title">
+              <i class="fas fa-sparkles me-2"></i>
+              New Arrivals
+            </h3>
             <p class="section-subtitle">Fresh products just added to our catalog</p>
           </div>
 
@@ -541,17 +1222,21 @@
 
                   <div class="card-badges" *ngIf="newProduct.discountPercentage > 0 || newProduct.isNew">
                     <span class="badge badge-sale" *ngIf="newProduct.discountPercentage > 0">
-                      -{{newProduct.discountPercentage}}%
+                      <i class="fas fa-percent me-1"></i>
+                      {{newProduct.discountPercentage}}%
                     </span>
-                    <span class="badge badge-new" *ngIf="newProduct.isNew">New</span>
+                    <span class="badge badge-new" *ngIf="newProduct.isNew">
+                      <i class="fas fa-star me-1"></i>
+                      NEW
+                    </span>
                   </div>
 
                   <div class="card-overlay">
                     <button class="overlay-btn" title="Quick View">
-                      <i class="btn-icon">👁️</i>
+                      <i class="fas fa-eye"></i>
                     </button>
                     <button class="overlay-btn" title="Add to Wishlist">
-                      <i class="btn-icon">🤍</i>
+                      <i class="fas fa-heart"></i>
                     </button>
                   </div>
                 </div>
@@ -560,7 +1245,9 @@
                   <div class="card-rating">
                     <div class="rating-stars">
                       <span class="star" *ngFor="let filled of getRatingStars(newProduct.rating)"
-                        [class.filled]="filled">★</span>
+                        [class.filled]="filled">
+                        <i class="fas fa-star"></i>
+                      </span>
                     </div>
                     <span class="rating-count">({{newProduct.ratingCount}})</span>
                   </div>
@@ -578,7 +1265,7 @@
                   </div>
 
                   <div class="card-points" *ngIf="newProduct.EarnedPoints > 0">
-                    <i class="points-icon">⭐</i>
+                    <i class="fas fa-star points-icon"></i>
                     <span>{{newProduct.EarnedPoints}} pts</span>
                   </div>
                 </div>

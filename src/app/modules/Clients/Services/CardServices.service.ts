@@ -77,4 +77,15 @@ export class CartServicesService {
       .delete(`${this.baseUrl}/clear`)
       .pipe(tap(() => this.refreshCartItemsCount()));
   }
+
+  // Update cart item quantity
+  updateCartItemQuantity(
+    cartItemId: number,
+    quantity: number
+  ): Observable<any> {
+    return this.http.put(`${this.baseUrl}/update-quantity`, {
+      cartItemId,
+      quantity,
+    });
+  }
 }
