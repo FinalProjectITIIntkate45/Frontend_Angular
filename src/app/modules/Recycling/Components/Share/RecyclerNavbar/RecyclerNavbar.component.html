@@ -43,14 +43,11 @@
     <!-- Wallet Display -->
     <div class="wallet-display" *ngIf="wallet && !walletLoading">
       <div class="wallet-item">
-        <i class="fas fa-coins"></i>
-        <span class="wallet-value">{{ formatPoints(wallet.balancePoints) }}</span>
-        <span class="wallet-label">Points</span>
-      </div>
-      <div class="wallet-item">
-        <i class="fas fa-dollar-sign"></i>
-        <span class="wallet-value">{{ formatCurrency(wallet.balancecash) }}</span>
-        <span class="wallet-label">Cash</span>
+        <i class="fas fa-wallet"></i>
+        <span class="wallet-value">
+          ${{ displayBalanceCash | number:'1.2-2' }}
+        </span>
+        <span class="wallet-label">WALLET BALANCE</span>
       </div>
       <button class="refresh-wallet-btn" (click)="refreshWallet()" title="Refresh wallet">
         <i class="fas fa-sync-alt"></i>
