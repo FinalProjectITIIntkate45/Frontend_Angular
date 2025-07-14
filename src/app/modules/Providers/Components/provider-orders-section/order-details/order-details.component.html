@@ -27,15 +27,12 @@
         <h5>Order Summary</h5>
         <p>
           <strong>Status:</strong>
-          <span [class]="getStatusClass(order.Status)">{{ order.Status }}</span>
+          <span [class]="getStatusClass(order.Status || '')">{{ order.Status }}</span>
         </p>
         <p>
           <strong>Paid:</strong>
-          <span
-            [ngClass]="order.IsPaid ? 'text-success fw-bold' : 'text-danger'"
-          >
-            {{ order.IsPaid ? "Paid" : "Unpaid" }}</span
-          >
+          <span [ngClass]="order.IsPaid ? 'text-success fw-bold' : 'text-danger'">
+            {{ order.IsPaid ? "Paid" : "Unpaid" }}</span>
         </p>
         <p>
           <strong>Payment Method:</strong>
@@ -44,7 +41,7 @@
         <p>
           <strong>Total Amount:</strong>
           {{
-            order.TotalAmount | currency : "USD" : "symbol" : "1.2-2" : "en-US"
+          order.TotalAmount | currency : "USD" : "symbol" : "1.2-2" : "en-US"
           }}
         </p>
         <p><strong>Used Points:</strong> {{ order.UsedPaidPoints || 0 }}</p>
@@ -77,12 +74,8 @@
           <tr *ngFor="let item of order.OrderItems">
             <td>
               <div class="d-flex align-items-center gap-2">
-                <img
-                  *ngIf="item.Image"
-                  [src]="item.Image"
-                  class="img-thumbnail"
-                  style="width: 50px; height: 50px; object-fit: cover"
-                />
+                <img *ngIf="item.Image" [src]="item.Image" class="img-thumbnail"
+                  style="width: 50px; height: 50px; object-fit: cover" />
                 <span>{{ item.ProductName }}</span>
               </div>
             </td>
@@ -92,8 +85,8 @@
             <td>{{ item.PriceAfterDiscount || item.Price | currency }}</td>
             <td>
               {{
-                (item.PriceAfterDiscount || item.Price) * item.Quantity
-                  | currency
+              (item.PriceAfterDiscount || item.Price) * item.Quantity
+              | currency
               }}
             </td>
           </tr>

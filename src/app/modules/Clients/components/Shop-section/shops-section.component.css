@@ -32,3 +32,21 @@
 .breadcrumb-item.active {
   color: #6c757d;
 }
+
+.shop-logo {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  display: block;
+  border: 2px solid #eee;
+}
+
+.card-body {
+  text-align: center;
+}
+
+.icon {
+  margin-bottom: 1rem;
+}

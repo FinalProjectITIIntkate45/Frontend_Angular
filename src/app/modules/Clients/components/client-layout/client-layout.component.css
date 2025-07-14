@@ -1,0 +1,22 @@
+.client-layout {
+  background: #f8f9fa;
+  min-height: 100vh;
+}
+
+.sidebar-area {
+  min-width: 220px;
+  max-width: 260px;
+  background: #fff;
+  border-right: 1px solid #e5e7eb;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
+}
+
+.content-area {
+  padding: 2rem 2.5rem;
+  background: #f8f9fa;
+  min-height: calc(100vh - 120px); /* header + footer height */
+  width: 100%;
+  overflow-x: auto;
+}

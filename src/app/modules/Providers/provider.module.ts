@@ -38,7 +38,7 @@ import { HeaderComponent } from './Components/header/header.component';
 import { SalesOverviewComponent } from './Components/sales-overview/sales-overview.component';
 import { WelcomeBannerComponent } from './Components/welcome-banner/welcome-banner.component';
 import { ChartContainerComponent } from './Components/chart-container/chart-container.component';
-import { NotificationsPanelComponent } from './Components/notifications-panel/notifications-panel.component';
+import { ClientNotificationsPanelComponent } from './Components/notifications-panel/notifications-panel.component';
 import { OrdersTableComponent } from './Components/orders-table/orders-table.component';
 import { StatsCardComponent } from './Components/stats-card/stats-card.component';
 import { EditVendorProfileComponent } from './Components/EditVendorProfile/EditVendorProfile.component';
@@ -75,7 +75,7 @@ import { NotificationComponent } from './Components/notification/notification.co
     WelcomeBannerComponent,
     SalesOverviewComponent,
     OrdersTableComponent,
-    NotificationsPanelComponent,
+    ClientNotificationsPanelComponent,
     ChartContainerComponent,
     StatsCardComponent,
     EditVendorProfileComponent,
@@ -92,6 +92,28 @@ import { NotificationComponent } from './Components/notification/notification.co
     ProviderOrdersSectionComponent,
     OrderDetailsComponent,
     NotificationComponent,
+    SubScrptionComponent,
+    ProductFormPageComponent,
+    ProductDetailsPageComponent,
+    ProductListPageComponent,
+    EditDetailsComponent,
+    EditOfferComponent,
+    ShopProductsComponent,
+    ShopOffersComponent,
+    OfferDetailesComponent,
+    MakeOfferComponent,
+    OfferProductManagerComponent,
+    SidebarComponent,
+    HeaderComponent,
+    WelcomeBannerComponent,
+    OrdersTableComponent,
+    ClientNotificationsPanelComponent,
+    ChartContainerComponent,
+    StatsCardComponent,
+    SubScrptionComponent,
+    ShopInfoComponent,
+    ProviderOrdersSectionComponent,
+    OrderDetailsComponent,
   ],
   exports: [
     ProviderLayoutComponent,
@@ -103,7 +125,7 @@ import { NotificationComponent } from './Components/notification/notification.co
     WelcomeBannerComponent,
     SalesOverviewComponent,
     OrdersTableComponent,
-    NotificationsPanelComponent,
+    ClientNotificationsPanelComponent,
     ChartContainerComponent,
     StatsCardComponent,
     ProductFormPageComponent,
@@ -119,12 +141,14 @@ import { NotificationComponent } from './Components/notification/notification.co
     ShopsComponent,
     ShopInfoComponent,
     NotificationComponent,
+    ShopInfoComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
     ProviderRoutingModule,
+    RouterModule,
     SafeUrlPipe,
   ],
   providers: [

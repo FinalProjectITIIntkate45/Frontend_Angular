@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CallToActionComponent } from './call-to-action.component';
+import { ReviewCardComponent } from './review-card.component';
 
-describe('CallToActionComponent', () => {
-  let component: CallToActionComponent;
-  let fixture: ComponentFixture<CallToActionComponent>;
+describe('ReviewCardComponent', () => {
+  let component: ReviewCardComponent;
+  let fixture: ComponentFixture<ReviewCardComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [CallToActionComponent]
+      imports: [ReviewCardComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CallToActionComponent);
+    fixture = TestBed.createComponent(ReviewCardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

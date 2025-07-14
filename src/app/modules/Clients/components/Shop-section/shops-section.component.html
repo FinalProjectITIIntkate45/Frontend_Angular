@@ -22,7 +22,7 @@
           <div class="icon mb-3">
             <i class="fas fa-shopping-basket fa-2x"></i>
           </div>
-          <img [src]="shop.Logo" alt="" />
+          <img [src]="shop.Logo || 'assets/default-shop.png'" alt="{{ shop.Name }}" class="shop-logo" />
           <h5 class="card-title">{{ shop.Name }}</h5>
           <p class="card-text">Seller ID: #{{ shop.Id }}</p>
           <p class="card-text">{{ shop.BusinessEmail }}</p>
