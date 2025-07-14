@@ -55,6 +55,25 @@ export class ClientOrderDetailsComponent implements OnInit {
     }
   }
 
+  getReviewForProduct(productId: number): ReviewView | undefined {
+    return this.reviews.find(
+      (r) => r.productId === productId && r.orderId === this.order?.Id
+    );
+  }
+  onReviewSubmitted(newOrUpdatedReview: ReviewView) {
+    const index = this.reviews.findIndex(
+      (r) =>
+        r.productId === newOrUpdatedReview.productId &&
+        r.orderId === newOrUpdatedReview.orderId
+    );
+
+    if (index !== -1) {
+      this.reviews[index] = newOrUpdatedReview; // update existing
+    } else {
+      this.reviews.push(newOrUpdatedReview); // add new
+    }
+  }
+
   // دالة لتحويل حالة الطلب من رقم إلى نص
   getStatusText(status: number): string {
     switch (status) {

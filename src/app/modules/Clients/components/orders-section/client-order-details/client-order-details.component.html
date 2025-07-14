@@ -1,82 +1,90 @@
-<div *ngIf="loading" class="order-details-loading text-center p-4">
-  <div class="spinner-border text-primary" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-  <p class="mt-2">Loading order details...</p>
-</div>
-
-<div *ngIf="errorMessage" class="alert alert-danger my-4">
-  {{ errorMessage }}
-</div>
-
-<div *ngIf="order" class="order-details-container card shadow-lg p-4 mb-4">
-  <div class="d-flex flex-wrap align-items-center justify-content-between mb-3">
-    <div>
-      <h4 class="mb-1">Order <span class="text-primary">#{{ order.Id }}</span></h4>
-      <div class="order-status-badges mb-2">
-        <span class="badge me-2" [ngClass]="{
-          'bg-warning text-dark': order.Status === 0,
-          'bg-info text-dark': order.Status === 1,
-          'bg-primary': order.Status === 2,
-          'bg-success': order.Status === 3,
-          'bg-danger': order.Status === 4
-        }">
-          {{ getStatusText(order.Status) }}
-        </span>
-        <span class="badge bg-light text-dark border me-2">
-          <i class="bi bi-credit-card"></i> {{ getPaymentTypeText(order.PaymentType) }}
-        </span>
-        <span class="badge" [ngClass]="order.IsPaid ? 'bg-success' : 'bg-secondary'">
-          {{ order.IsPaid ? 'Paid' : 'Not Paid' }}
-        </span>
-      </div>
-      <div class="order-meta text-muted small">
-        <span><i class="bi bi-calendar-event"></i> {{ order.DateCreated | date : 'medium' }}</span>
-      </div>
-    </div>
-    <div class="order-summary text-end">
-      <div class="fs-5 fw-bold mb-1">
-        <span>Total: </span>
-        <span class="text-success">{{ order.TotalPrice | currency }}</span>
-      </div>
-      <div class="points-summary">
-        <span class="badge bg-primary me-1">Points Used: {{ order.UsedPaidPoints + order.UsedFreePoints }}</span>
-        <span class="badge bg-success">Points Earned: {{ order.EarnedPoints }}</span>
-      </div>
-    </div>
-  </div>
-  <hr />
-  <h5 class="mb-3">Products in this order</h5>
-  <div class="row g-3">
-    <div *ngFor="let item of order.Items" class="col-12 col-md-6 col-lg-4">
-      <div class="order-product-card card h-100 shadow-sm border-0">
-        <div class="d-flex align-items-center p-2">
-          <img [src]="item.Image" alt="{{ item.ProductName }}" class="order-product-img me-3 rounded"
-            style="width: 70px; height: 70px; object-fit: cover; background: #f8f9fa;" />
-          <div class="flex-grow-1">
-            <div class="fw-bold mb-1">{{ item.ProductName }}</div>
-            <div class="text-muted small mb-1">{{ item.Description }}</div>
-            <div class="text-muted small mb-1">Shop: <span class="fw-semibold">{{ item.ShopName }}</span></div>
-            <div class="d-flex flex-wrap align-items-center gap-2">
-              <span class="badge bg-light text-dark border">Qty: {{ item.Quantity }}</span>
-              <span class="badge bg-info text-dark">Points: {{ item.Points }}</span>
-            </div>
-          </div>
+<!-- ✅ لكل منتج في الأوردر -->
+<div *ngFor="let item of order?.Items" class="col-12 col-md-6 col-lg-4">
+  <div class="order-product-card card h-100 shadow-sm border-0">
+    <!-- بيانات المنتج -->
+    <div class="d-flex align-items-center p-2">
+      <img
+        [src]="item.Image"
+        alt="{{ item.ProductName }}"
+        class="order-product-img me-3 rounded"
+        style="
+          width: 70px;
+          height: 70px;
+          object-fit: cover;
+          background: #f8f9fa;
+        "
+      />
+      <div class="flex-grow-1">
+        <div class="fw-bold mb-1">{{ item.ProductName }}</div>
+        <div class="text-muted small mb-1">{{ item.Description }}</div>
+        <div class="text-muted small mb-1">
+          Shop: <span class="fw-semibold">{{ item.ShopName }}</span>
         </div>
-        <div class="order-product-pricing px-3 pb-2">
-          <span *ngIf="item.PriceAfterDiscount && item.PriceAfterDiscount < (item.Price || 0)"
-            class="text-success fw-bold me-2">
-            {{ item.PriceAfterDiscount | currency }}
-          </span>
-          <span *ngIf="item.PriceAfterDiscount && item.PriceAfterDiscount < (item.Price || 0)"
-            class="text-muted text-decoration-line-through small">
-            {{ item.Price | currency }}
-          </span>
-          <span *ngIf="!item.PriceAfterDiscount || item.PriceAfterDiscount >= (item.Price || 0)" class="fw-bold">
-            {{ item.Price | currency }}
-          </span>
+        <div class="d-flex flex-wrap align-items-center gap-2">
+          <span class="badge bg-light text-dark border"
+            >Qty: {{ item.Quantity }}</span
+          >
+          <span class="badge bg-info text-dark">Points: {{ item.Points }}</span>
         </div>
       </div>
+    </div>
+
+    <!-- السعر -->
+    <div class="order-product-pricing px-3 pb-2">
+      <span
+        *ngIf="
+          item.PriceAfterDiscount && item.PriceAfterDiscount < (item.Price || 0)
+        "
+        class="text-success fw-bold me-2"
+      >
+        {{ item.PriceAfterDiscount | currency }}
+      </span>
+      <span
+        *ngIf="
+          item.PriceAfterDiscount && item.PriceAfterDiscount < (item.Price || 0)
+        "
+        class="text-muted text-decoration-line-through small"
+      >
+        {{ item.Price | currency }}
+      </span>
+      <span
+        *ngIf="
+          !item.PriceAfterDiscount ||
+          item.PriceAfterDiscount >= (item.Price || 0)
+        "
+        class="fw-bold"
+      >
+        {{ item.PriceAfterDiscount | currency }}
+      </span>
+    </div>
+    <!-- ✅ تقييم المنتج لو الأوردر تم توصيله -->
+    <div *ngIf="order?.Status === 3" class="...">
+      <ng-container
+        *ngIf="
+          getReviewForProduct(item.ProductId) as existingReview;
+          else noReview
+        "
+      >
+        <p class="text-success small mb-1">
+          ✅ You've already reviewed this product.
+        </p>
+        <app-review-form
+          [orderId]="order?.Id!"
+          [productId]="item.ProductId"
+          [isEdit]="true"
+          [existingReview]="existingReview"
+          (reviewSubmitted)="onReviewSubmitted($event)"
+        ></app-review-form>
+      </ng-container>
+
+      <ng-template #noReview>
+        <app-review-form
+          [orderId]="order?.Id!"
+          [productId]="item.ProductId"
+          [isEdit]="false"
+          (reviewSubmitted)="onReviewSubmitted($event)"
+        ></app-review-form>
+      </ng-template>
     </div>
   </div>
 </div>
