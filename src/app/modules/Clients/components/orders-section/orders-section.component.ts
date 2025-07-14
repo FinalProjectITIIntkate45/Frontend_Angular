@@ -1,3 +1,4 @@
+import { DeliveryInfoComponent } from './../checkout/delivery-info/delivery-info.component';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
@@ -294,6 +295,23 @@ export class OrdersSectionComponent implements OnInit, OnDestroy {
         },
       });
   }
+  DeliveryOrder(order: OrderResponseViewModel): void {
+    if (
+      order.Status !== OrderStatus.Confirmed &&
+      order.Status !== OrderStatus.Shipped
+    )
+      return;
+
+    this.orderService
+      .updateOrderStatus(order.Id, { status: OrderStatus.Delivered }) // ✅ الحالة الصح
+      .subscribe({
+        next: () => this.loadOrders(),
+        error: (err) => {
+          console.error('Failed to mark order as delivered:', err);
+        },
+      });
+  }
+
   getPaymentMethodClass(paymentType: any): string {
     const type = paymentType?.toString()?.toLowerCase();
     switch (type) {
