@@ -17,22 +17,14 @@
             <p>ستظهر هنا الإشعارات الجديدة عند وصولها</p>
           </div>
           
-          <div *ngFor="let notification of notifications; let i = index" 
-               class="notification-item" 
-               [class.recent]="i === 0">
-            <div class="notification-icon">
-              <i class="fas fa-info-circle"></i>
-            </div>
-            <div class="notification-content">
-              <div class="notification-title">{{ notification.notificationType }}</div>
-              <div class="notification-text">
-                {{ notification.message }}
-              </div>
-              <div class="notification-time">
-                <i class="fas fa-flag"></i>
-                <span>{{ notification.status }}</span>
-              </div>
-            </div>
+          <div *ngFor="let notification of notifications" class="notification-item">
+            <div><strong>Message:</strong> {{ notification.message }}</div>
+            <div><strong>Status:</strong> {{ getStatusText(notification.status) }}</div>
+            <div><strong>Date:</strong> {{ notification.createdAt | date:'short' }}</div>
+            <button *ngIf="notification.status === 1" (click)="markNotificationAsRead(notification)">
+              تعليم كمقروء
+            </button>
+            <hr />
           </div>
         </div>
       </div>

@@ -165,6 +165,31 @@
   box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
 }
 
+.mark-read-btn {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 16px;
+  font-size: 1em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  margin-left: 5px;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 4px #0001;
+  outline: none;
+}
+.mark-read-btn:hover, .mark-read-btn:focus {
+  background: #0056b3;
+  color: #fff;
+  box-shadow: 0 2px 8px #007bff33;
+}
+.mark-read-btn i {
+  font-size: 1.1em;
+  margin-left: 4px;
+}
 
 
 /* Responsive Design */

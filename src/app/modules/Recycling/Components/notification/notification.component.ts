@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./notification.component.css'],
   standalone: false
 })
-export class NotificationComponent implements OnInit, OnDestroy {
+export class NotificationComponent implements OnInit {
   notifications: NotificationModel[] = [];
   private sub!: Subscription;
 
@@ -19,11 +19,12 @@ export class NotificationComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.sub = this.notificationService.notifications$.subscribe(
-      notis => {
-        this.notifications = notis;
-      }
-    );
+    this.notificationService.fetchInitialNotifications();
+    this.notificationService.connect();
+    this.notificationService.getNotifications().subscribe((notifications) => {
+      console.log('Notifications from backend:', notifications); // طباعة الداتا القادمة من الباك اند
+      this.notifications = notifications;
+    });
   }
 
   ngOnDestroy() {
@@ -40,6 +41,26 @@ export class NotificationComponent implements OnInit, OnDestroy {
     if (confirm('هل تريد مسح جميع الإشعارات؟')) {
       this.notifications = [];
     }
+  }
+
+  getStatusText(status: number): string {
+    switch (status) {
+      case 1: return 'غير مقروءة';
+      case 2: return 'مقروءة';
+      case 3: return 'مؤرشفة';
+      default: return 'غير معروف';
+    }
+  }
+
+  markNotificationAsRead(notification: NotificationModel) {
+    this.notificationService.markAsRead(notification.id).subscribe({
+      next: () => {
+        notification.status = 2; // مقروءة
+      },
+      error: () => {
+        alert('حدث خطأ أثناء تعليم الإشعار كمقروء');
+      }
+    });
   }
 }
 
