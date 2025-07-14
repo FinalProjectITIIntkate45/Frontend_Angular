@@ -80,6 +80,7 @@ export class ProductSearchComponent implements OnInit {
     this.productService
       .searchProducts(searchRequest)
       .subscribe((result: ProductSearchResult) => {
+        console.log('product result:', result);
         this.products = result.Products;
         this.totalItems = result.TotalItems;
         this.totalPages = result.TotalPages;

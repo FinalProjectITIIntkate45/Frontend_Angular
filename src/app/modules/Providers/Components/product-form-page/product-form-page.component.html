@@ -53,15 +53,27 @@
       </select>
     </div>
 
-    <!-- ✅ VIP-only fields -->
+    <!-- Only show for VIP subscription -->
     <div *ngIf="subscriptionType === 'VIP'" class="mb-3">
       <label>Increase Rate (%)</label>
-      <input type="number" formControlName="increaseRate" class="General-custom-input" />
+      <input type="number" formControlName="increaseRate" class="General-custom-input" min="0" max="1" step="0.01" />
+      <small class="text-muted">Enter a decimal between 0 and 1 (e.g., 0.01 for 1%)</small>
+      <div
+        *ngIf="form.get('increaseRate')?.invalid && (form.get('increaseRate')?.dirty || form.get('increaseRate')?.touched)"
+        class="text-danger">
+        Increase rate must be between 0 and 1 (e.g., 0.01 for 1%).
+      </div>
     </div>
 
+    <!-- Only show for VIP subscription -->
     <div *ngIf="subscriptionType === 'VIP'" class="mb-3">
-      <label>Discount Percentage (%)</label>
-      <input type="number" formControlName="discountPercentage" class="General-custom-input" />
+      <label>Reward Points</label>
+      <input type="number" formControlName="points" class="General-custom-input" min="0" />
+      <small class="text-muted">Set the reward points for this product.</small>
+      <div *ngIf="form.get('points')?.invalid && (form.get('points')?.dirty || form.get('points')?.touched)"
+        class="text-danger">
+        Please enter a valid number of points.
+      </div>
     </div>
 
     <div class="form-check mb-3">
