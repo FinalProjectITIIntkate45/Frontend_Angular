@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { HomeService } from '../../Services/home.service';
+import { BestSellers } from '../../Models/home-dashboard.model';
 
 @Component({
   selector: 'app-Best-Seller',
@@ -7,10 +9,23 @@ import { Component, OnInit } from '@angular/core';
   standalone: false,
 })
 export class BestSellerComponent implements OnInit {
+  bestSellerProducts: BestSellers[] = [];
+  showMore = false;
 
-  constructor() { }
+  constructor(private homeService: HomeService) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.getBestSellers();
   }
 
+  getBestSellers() {
+    this.homeService.getDashboardData().subscribe((data) => {
+      console.log('Dashboard Data (Best Sellers):', data);
+      this.bestSellerProducts = data?.BestSellers || [];
+    });
+  }
+
+  toggleShowMore() {
+    this.showMore = !this.showMore;
+  }
 }

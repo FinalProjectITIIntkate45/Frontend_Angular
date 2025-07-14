@@ -22,7 +22,8 @@
       <!-- Products Section -->
       <div class="products-container">
         <div class="products-grid">
-          <div class="product-card" *ngFor="let product of topRatedProducts | slice:0:(showMore ? topRatedProducts.length : 3)">
+          <div class="product-card" *ngFor="let product of topRatedProducts | slice:0:(showMore ? topRatedProducts.length : 3)"
+>
             <!-- <div class="product-badge">{{ product.badge }}</div> -->
             <img [src]="product.ImageUrl" class="product-image" [alt]="product.Name" />
             <h6 class="product-title">{{ product.Name }}</h6>
