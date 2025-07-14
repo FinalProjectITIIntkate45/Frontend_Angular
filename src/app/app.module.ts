@@ -13,6 +13,7 @@ import { LoaderComponent } from './core/components/loader/loader.component';
 import { ProviderModule } from './modules/Providers/provider.module';
 import { HomeModule } from './modules/home/home.module';
 
+
 @NgModule({
   declarations: [
     AppComponent,
