@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
@@ -14,6 +15,8 @@ import { BestSellerComponent } from './components/Best-Seller/Best-Seller.compon
 import { NewOffersComponent } from './components/New-Offers/New-Offers.component';
 import { BestShopComponent } from './components/Best-shop/Best-shop.component';
 import { HomeLayoutComponent } from './components/home-layout/home-layout.component';
+import { ProductSearchComponent } from '../Clients/components/product-search/product-search.component';
+import { ProductDetailsComponent } from '../Clients/components/product-details/product-details.component';
 
 @NgModule({
   declarations: [
@@ -29,8 +32,10 @@ import { HomeLayoutComponent } from './components/home-layout/home-layout.compon
     TopRatedComponent,
     FaqComponent,
     HomeLayoutComponent,
+    ProductSearchComponent,
+    ProductDetailsComponent,
   ],
-  imports: [CommonModule, HomeRoutingModule],
+  imports: [CommonModule, HomeRoutingModule, FormsModule],
   exports: [
     HomeComponent,
     HeaderComponent,

@@ -12,9 +12,10 @@
       <span class="badge bg-danger rounded-circle position-absolute top-0 start-100 translate-middle">{{
         notificationsCount }}</span>
     </div>
-    <div class="cart position-relative me-4">
+    <div class="cart position-relative me-4" (click)="navigateToCart()">
       <i class="fas fa-shopping-cart fs-5"></i>
-      <span class="badge bg-danger rounded-circle position-absolute top-0 start-100 translate-middle">{{ cartItemsCount
+      <span *ngIf="cartItemsCount > 0"
+        class="badge bg-danger rounded-circle position-absolute top-0 start-100 translate-middle">{{ cartItemsCount
         }}</span>
     </div>
     <div class="user-dropdown dropdown">

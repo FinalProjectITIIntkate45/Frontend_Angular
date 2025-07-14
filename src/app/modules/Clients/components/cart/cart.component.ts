@@ -33,15 +33,9 @@ export class CartComponent implements OnInit {
 
     this.cartService.getCartItems().subscribe({
       next: (data: CartInterface) => {
-        // Use new backend fields if present
-        if (
-          typeof data.price1 === 'number' &&
-          typeof data.price2 === 'number'
-        ) {
-          data.CartTotalPrice = data.price1 + data.price2;
-        }
         this.cartData = data;
         this.isLoading = false;
+        this.recalculateTotals(); // Always recalculate totals after loading
       },
       error: (error) => {
         this.error = 'Failed to load cart items';
@@ -67,43 +61,48 @@ export class CartComponent implements OnInit {
 
   clearCart(): void {
     if (confirm('Are you sure you want to clear your cart?')) {
-      this.cartData = { Items: [], CartTotalPrice: 0, CartTotalPoints: 0 };
+      this.cartService.clearCart().subscribe({
+        next: () => {
+          this.toster.success('Cart cleared successfully.');
+          this.loadCartItems();
+        },
+        error: (error) => {
+          this.toster.error('Failed to clear cart.');
+          console.error('Error clearing cart:', error);
+        },
+      });
     }
   }
 
   recalculateTotals(): void {
-    if (!this.cartData) return;
-    // Use new backend fields if present
-    if (
-      typeof this.cartData.price1 === 'number' &&
-      typeof this.cartData.price2 === 'number'
-    ) {
-      this.cartData.CartTotalPrice =
-        this.cartData.price1 + this.cartData.price2;
-    } else {
-      let total = 0;
-      let points = 0;
-      this.cartData.Items.forEach((item) => {
-        total += item.offer
-          ? item.offer.NewPrice
-          : item.productVM?.DisplayedPrice ?? 0;
-        points += item.offer
-          ? item.offer.NewPoints
-          : item.productVM?.Points ?? 0;
-      });
-      this.cartData.CartTotalPrice = total;
-      this.cartData.CartTotalPoints = points;
-    }
+    if (!this.cartData || !this.cartData.Items) return;
+    let total = 0;
+    let points = 0;
+    this.cartData.Items.forEach((item) => {
+      const qty = item.qty ?? 1;
+      const price = item.productVM?.DisplayedPrice ?? 0;
+      const pts = item.productVM?.Points ?? 0;
+      total += price * qty;
+      points += pts * qty;
+    });
+    this.cartData.CartTotalPrice = total;
+    this.cartData.CartTotalPoints = points;
   }
 
   changeQuantity(item: any, delta: number): void {
     if (!item || typeof item.qty !== 'number') return;
     const newQty = item.qty + delta;
     if (newQty < 1) return;
-    // TODO: Call backend to update quantity, then reload cart
-    item.qty = newQty;
-    this.recalculateTotals();
-    // In production, replace above with service call and reload
+    this.cartService.updateCartItemQuantity(item.cartItemId, newQty).subscribe({
+      next: () => {
+        this.toster.success('Quantity updated.');
+        this.loadCartItems();
+      },
+      error: (error) => {
+        this.toster.error('Failed to update quantity.');
+        console.error('Error updating quantity:', error);
+      },
+    });
   }
 
   // proceedToCheckout to  navigate to checkout
@@ -118,5 +117,10 @@ export class CartComponent implements OnInit {
         'Error'
       );
     }
+  }
+
+  get totalItemsCount(): number {
+    if (!this.cartData || !this.cartData.Items) return 0;
+    return this.cartData.Items.reduce((sum, item) => sum + (item.qty ?? 1), 0);
   }
 }

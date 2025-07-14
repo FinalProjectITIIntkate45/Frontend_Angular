@@ -10,7 +10,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   standalone: false,
 })
 export class WishlistSectionComponent implements OnInit {
-[x: string]: any;
+  [x: string]: any;
   wishlistItems: WishlistItem[] = [];
   errorMessage: string = '';
   specialRequestForm: FormGroup;
@@ -34,17 +34,19 @@ export class WishlistSectionComponent implements OnInit {
   }
 
   loadWishlist() {
-    this.wishlistService.getWishlist(this.currentPage, this.pageSize).subscribe({
-      next: (data) => {
-        console.log('Wishlist data:', data);
-        this.wishlistItems = data;
-        // افتراض أن API يعيد إجمالي العناصر في رأس الاستجابة أو البيانات
-        this.totalItems = data.length; // يجب تحديث هذا بناءً على استجابة API
-      },
-      error: (err) => {
-        this.errorMessage = 'فشل تحميل قائمة الرغبات';
-      },
-    });
+    this.wishlistService
+      .getWishlist(this.currentPage, this.pageSize)
+      .subscribe({
+        next: (data) => {
+          console.log('Wishlist data:', data);
+          this.wishlistItems = data;
+          // افتراض أن API يعيد إجمالي العناصر في رأس الاستجابة أو البيانات
+          this.totalItems = data.length; // يجب تحديث هذا بناءً على استجابة API
+        },
+        error: (err) => {
+          this.errorMessage = 'فشل تحميل قائمة الرغبات';
+        },
+      });
   }
 
   deleteProduct(productId: number) {
@@ -52,6 +54,7 @@ export class WishlistSectionComponent implements OnInit {
       next: (msg) => {
         this.errorMessage = msg;
         this.loadWishlist();
+        this.wishlistService.refreshWishlistCount();
       },
       error: (err) => (this.errorMessage = 'فشل حذف المنتج من قائمة الرغبات'),
     });
@@ -62,12 +65,11 @@ export class WishlistSectionComponent implements OnInit {
       next: (msg) => {
         this.errorMessage = msg;
         this.loadWishlist();
+        this.wishlistService.refreshWishlistCount();
       },
       error: (err) => (this.errorMessage = 'فشل مسح قائمة الرغبات'),
     });
   }
-
-
 
   submitSpecialRequest() {
     if (this.specialRequestForm.valid) {

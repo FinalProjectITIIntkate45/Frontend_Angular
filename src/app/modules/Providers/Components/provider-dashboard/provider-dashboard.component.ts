@@ -33,8 +33,23 @@ export class ProviderDashboardComponent implements OnInit {
       next: (response: any) => {
         console.log('Orders response:', response);
 
-        if (response && response.IsSuccess && response.Data) {
-          const orders = response.Data;
+        // Ensure orders is always an array, regardless of API response structure
+        let orders: any[] = [];
+        if (Array.isArray(response?.Data)) {
+          orders = response.Data;
+        } else if (response?.Data && Array.isArray(response.Data.orders)) {
+          orders = response.Data.orders;
+        } else if (response?.Data && typeof response.Data === 'object') {
+          // If Data is an object, try to extract values if they are arrays
+          const possibleArray = Object.values(response.Data).find((v) =>
+            Array.isArray(v)
+          );
+          if (possibleArray) {
+            orders = possibleArray as any[];
+          }
+        }
+
+        if (response && response.IsSuccess && orders.length > 0) {
           this.calculateStats(orders);
         } else {
           this.orderStats = {
@@ -73,6 +88,10 @@ export class ProviderDashboardComponent implements OnInit {
   }
 
   calculateStats(orders: any[]): void {
+    // Defensive: ensure orders is always an array
+    if (!Array.isArray(orders)) {
+      orders = [];
+    }
     this.orderStats = {
       total: orders.length,
       pending: orders.filter((o) => o.status?.toLowerCase() === 'pending')
