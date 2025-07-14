@@ -1,11 +1,14 @@
+<!-- لو جاري التحميل -->
 <div *ngIf="loading" class="text-center p-4">
   <p>Loading order details...</p>
 </div>
 
+<!-- لو في خطأ -->
 <div *ngIf="errorMessage" class="alert alert-danger">
   {{ errorMessage }}
 </div>
 
+<!-- تفاصيل الأوردر -->
 <div *ngIf="order" class="card shadow-sm p-4">
   <h4>Order #{{ order.Id }}</h4>
   <p>
@@ -22,7 +25,9 @@
 
   <hr />
   <h5>Products:</h5>
-  <div *ngFor="let item of order.Items" class="border rounded p-2 mb-2">
+
+  <!-- المنتجات -->
+  <div *ngFor="let item of order.Items" class="border rounded p-2 mb-3">
     <div class="d-flex align-items-center">
       <img
         [src]="item.Image"
@@ -44,6 +49,21 @@
         ><br />
         <span>Points: {{ item.Points }}</span>
       </div>
+    </div>
+
+    <!-- ✅ تقييم المنتج لو الأوردر تم توصيله -->
+    <!-- ✅ تقييم الأوردر (مرة واحدة) -->
+    <div *ngIf="order.Status === 3" class="mt-3">
+      <div *ngIf="reviews.length > 0; else addReview">
+        <p class="text-success">✅ You've already reviewed this order.</p>
+      </div>
+
+      <ng-template #addReview>
+        <app-review-form
+          [orderId]="order.Id"
+          [isEdit]="false"
+        ></app-review-form>
+      </ng-template>
     </div>
   </div>
 </div>

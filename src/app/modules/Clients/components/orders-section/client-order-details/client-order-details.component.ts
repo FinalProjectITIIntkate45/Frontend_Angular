@@ -4,6 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { OrderResponseViewModel } from '../../../Models/OrderResponseViewModel';
 import { APIResponse } from '../../../../../core/models/APIResponse';
 import { OrderService } from '../../../../../core/services/order.service';
+import { GeneralreviewsService } from '../../../../../core/services/generalreviews.service';
+import { ReviewView } from '../../../../../core/models/ReviewView.Models';
 
 @Component({
   selector: 'app-client-order-details',
@@ -15,19 +17,31 @@ export class ClientOrderDetailsComponent implements OnInit {
   order: OrderResponseViewModel | null = null;
   loading = true;
   errorMessage = '';
+  reviews: ReviewView[] = [];
 
   constructor(
     private route: ActivatedRoute,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private reviewService: GeneralreviewsService
   ) {}
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     if (id) {
       this.orderService.getOrderById(id).subscribe({
-        next: (res: APIResponse<OrderResponseViewModel>) => {
+        next: (res) => {
           if (res.IsSuccess) {
             this.order = res.Data;
+
+            // ✅ استدعاء الريفيوهات الخاصة بالأوردر
+            this.reviewService.getReviewsByOrder(id).subscribe({
+              next: (data) => {
+                this.reviews = data;
+              },
+              error: () => {
+                console.warn('Could not load reviews for this order.');
+              },
+            });
           } else {
             this.errorMessage = res.Message ?? 'Failed to load order details';
           }
@@ -40,6 +54,7 @@ export class ClientOrderDetailsComponent implements OnInit {
       });
     }
   }
+
   // دالة لتحويل حالة الطلب من رقم إلى نص
   getStatusText(status: number): string {
     switch (status) {
