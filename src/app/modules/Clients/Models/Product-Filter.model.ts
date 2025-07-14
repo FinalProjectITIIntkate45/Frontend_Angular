@@ -20,10 +20,10 @@ export interface ProductFilter {
 export interface ProductSearchRequest {
   search?: string;
   category?: string;
-  minPrice?: number;
-  maxPrice?: number;
-  minPoints?: number;
-  maxPoints?: number;
+  minPrice: number | null;
+  maxPrice: number | null;
+  minPoints: number | null;
+  maxPoints: number | null;
   sortBy?: string;
   saleOnly?: boolean;
   availableToOrder?: boolean;

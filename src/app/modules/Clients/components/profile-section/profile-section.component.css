@@ -122,7 +122,9 @@
       margin-bottom: 1rem;
       letter-spacing: normal;
       background: none;
-      -webkit-background-clip: unset;
+      -webkit-background-clip: text;
+background-clip: text;
+
       -webkit-text-fill-color: unset;
       text-shadow: none;
     }

@@ -156,6 +156,25 @@
   box-shadow: var(--shadow-lg);
 }
 
+.cart-badge-header {
+  position: absolute;
+  top: 0px;
+  right: -6px;
+  background: var(--accent-yellow);
+  color: var(--primary-dark);
+  font-size: 13px;
+  font-weight: 700;
+  border-radius: 50%;
+  min-width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(239, 176, 54, 0.15);
+  border: 2px solid var(--surface-white);
+  z-index: 2;
+}
+
 @media (max-width: 768px) {
   .top-bar a {
     margin: 0 12px;

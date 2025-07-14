@@ -17,12 +17,14 @@
       <a routerLink="/account/login" class="btn btn-signup" aria-label="Login">Login</a>
       <a routerLink="/account/register" class="btn btn-signup" aria-label="Sign Up">Sign Up</a>
 
-      <button class="text-icon" aria-label="Wishlist">
+      <a routerLink="/client/wishlist" class="text-icon position-relative" aria-label="Wishlist">
         <i class="fas fa-heart fs-5"></i>
-      </button>
+        <span *ngIf="wishlistCount > 0" class="cart-badge-header wishlist-badge">{{ wishlistCount }}</span>
+      </a>
 
-      <button routerLink="/client/cart" class="text-icon" aria-label="Shopping Cart">
+      <button routerLink="/client/cart" class="text-icon position-relative" aria-label="Shopping Cart">
         <i class="fas fa-shopping-cart fs-5"></i>
+        <span *ngIf="cartItemsCount > 0" class="cart-badge-header">{{ cartItemsCount }}</span>
       </button>
 
       <button class="text-icon" aria-label="Notifications">
@@ -43,5 +45,5 @@
   <a routerLink="/about-us" aria-label="About">About</a>
   <a routerLink="/shop" aria-label="Shops">Shops</a>
   <a routerLink="/offers" aria-label="Offers">Offers</a>
-  <a routerLink="/offers" aria-label="Offers">Products</a>
+  <a routerLink="/products" aria-label="Offers">Products</a>
 </div>
