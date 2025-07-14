@@ -1,0 +1,85 @@
+<div class="wallet-recharge-container">
+    <div class="recharge-header">
+        <h2>Recharge Your Wallet</h2>
+        <div class="current-balance">
+            <span class="balance-label">Current Balance:</span>
+            <span class="balance-amount">${{ walletBalance | number:'1.2-2' }}</span>
+        </div>
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="error" class="error-message">
+        <p>{{ error }}</p>
+        <button (click)="error = null" class="close-btn">×</button>
+    </div>
+
+    <!-- Success Message -->
+    <div *ngIf="success" class="success-message">
+        <p>{{ success }}</p>
+        <button (click)="success = null" class="close-btn">×</button>
+    </div>
+
+    <!-- Recharge Form -->
+    <form [formGroup]="rechargeForm" (ngSubmit)="rechargeWithCheckoutSession()" class="recharge-form">
+
+        <!-- Predefined Amounts -->
+        <div class="amount-selection">
+            <label class="form-label">Quick Select Amount:</label>
+            <div class="amount-buttons">
+                <button type="button" *ngFor="let amount of predefinedAmounts" (click)="selectAmount(amount)"
+                    [class.selected]="rechargeForm.value.amount === amount" class="amount-btn">
+                    ${{ amount }}
+                </button>
+            </div>
+        </div>
+
+        <!-- Custom Amount -->
+        <div class="form-group">
+            <label for="amount" class="form-label">Amount (USD)</label>
+            <input type="number" id="amount" formControlName="amount" class="form-control"
+                placeholder="Enter amount (1-10,000)" min="1" max="10000" step="0.01">
+            <div *ngIf="amount?.invalid && amount?.touched" class="error-text">
+                <span *ngIf="amount?.errors?.['required']">Amount is required</span>
+                <span *ngIf="amount?.errors?.['min']">Amount must be at least $1</span>
+                <span *ngIf="amount?.errors?.['max']">Amount cannot exceed $10,000</span>
+            </div>
+        </div>
+
+        <!-- Payment Method -->
+        <div class="form-group">
+            <label for="paymentMethod" class="form-label">Payment Method</label>
+            <select id="paymentMethod" formControlName="paymentMethod" class="form-control">
+                <option value="card">Credit/Debit Card</option>
+            </select>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button type="submit" [disabled]="rechargeForm.invalid || loading" class="btn btn-primary recharge-btn">
+                <span *ngIf="loading" class="spinner"></span>
+                {{ loading ? 'Processing...' : 'Recharge with Stripe Checkout' }}
+            </button>
+
+            <button type="button" (click)="rechargeWithPaymentIntent()" [disabled]="rechargeForm.invalid || loading"
+                class="btn btn-secondary payment-intent-btn">
+                {{ loading ? 'Processing...' : 'Recharge with Payment Intent' }}
+            </button>
+
+            <button type="button" (click)="resetForm()" class="btn btn-outline reset-btn">
+                Reset
+            </button>
+        </div>
+    </form>
+
+    <!-- Payment Information -->
+    <div class="payment-info">
+        <h3>Payment Information</h3>
+        <ul>
+            <li>✅ Secure payment processing with Stripe</li>
+            <li>✅ Instant wallet balance update</li>
+            <li>✅ Transaction history tracking</li>
+            <li>✅ Support for all major credit/debit cards</li>
+            <li>✅ No additional fees</li>
+        </ul>
+    </div>
+</div> 

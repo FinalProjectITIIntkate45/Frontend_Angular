@@ -9,6 +9,9 @@ import { ActiveAuctionsComponent } from './Components/get-active-auctions/active
 import { RecyclerRequestsComponent } from './Components/recycler-requests/recycler-requests.component';
 import { WalletDisplayComponent } from './Components/wallet-display/wallet-display.component';
 import { AuctionsWinnerComponent } from './Components/auctions-winner/auctions-winner.component';
+import { WalletRechargeComponent } from './Components/wallet-recharge/wallet-recharge.component';
+import { WalletSectionComponent } from './Components/wallet-section/wallet-section.component';
+import { WalletSuccessComponent } from './Components/wallet-success/wallet-success.component';
 
 const routes: Routes = [
   {
@@ -46,6 +49,18 @@ const routes: Routes = [
   {
     path: 'wallet',
     component: WalletDisplayComponent,
+  },
+  {
+    path: 'wallet-recharge',
+    component: WalletRechargeComponent,
+  },
+  {
+    path: 'wallet-section',
+    component: WalletSectionComponent,
+  },
+  {
+    path: 'wallet-success',
+    component: WalletSuccessComponent,
   },
   {
     path: 'paginated-auctions',
