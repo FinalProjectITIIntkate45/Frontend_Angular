@@ -109,10 +109,10 @@ export class ShopOffersComponent implements OnInit {
 
   getStatusText(status: number): string {
     switch(status) {
-      case 0: return 'قيد الانتظار';
-      case 1: return 'نشط';
-      case 2: return 'منتهي';
-      default: return 'غير معروف';
+      case 0: return 'Pending';
+      case 1: return 'Active';
+      case 2: return 'Expired';
+      default: return 'Unknown';
     }
   }
 
