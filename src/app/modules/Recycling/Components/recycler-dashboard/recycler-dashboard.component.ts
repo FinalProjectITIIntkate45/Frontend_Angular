@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 import { AuctionService } from '../../Services/auction.service';
 import { AuctionVM } from '../../Models/AuctionVM';
 import { APIResponse } from '../../../../core/models/APIResponse';
+import { ActiveAuctionsService } from '../../Services/active-auctions.service';
+import { AuctionsWinnerService } from '../../Services/auctions-winner.service';
 
 @Component({
   selector: 'app-recycler-dashboard',
@@ -25,6 +27,8 @@ export class RecyclerDashboardComponent implements OnInit, OnDestroy {
 
   // Data
   auctions: AuctionVM[] = [];
+  // قائمة المزادات النشطة للجدول فقط
+  activeAuctionsList: AuctionVM[] = [];
 
   // Subscriptions
   private auctionSub!: Subscription;
@@ -32,7 +36,9 @@ export class RecyclerDashboardComponent implements OnInit, OnDestroy {
 
   constructor(
     private router: Router,
-    private auctionService: AuctionService
+    private activeAuctionsService: ActiveAuctionsService,
+    private auctionService: AuctionService,
+    private auctionsWinnerService: AuctionsWinnerService
   ) {}
 
   ngOnInit() {
@@ -63,7 +69,7 @@ export class RecyclerDashboardComponent implements OnInit, OnDestroy {
           this.allAuctionCount = response.Data;
         }
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Error loading total auction count:', error);
       }
     });
@@ -76,21 +82,21 @@ export class RecyclerDashboardComponent implements OnInit, OnDestroy {
             this.allActiveAuctionCount = response.Data;
           }
         },
-        error: (error) => {
+        error: (error: any) => {
           console.error('Error loading active auction count:', error);
         }
       })
     );
 
     this.countSub.add(
-      this.auctionService.getWonAuctionCount().subscribe({
-        next: (response: APIResponse<number>) => {
+      this.auctionsWinnerService.getAllAuctionsForWinner().subscribe({
+        next: (response: APIResponse<any[]>) => {
           if (response.IsSuccess) {
-            this.wonAuctions = response.Data;
+            this.wonAuctions = response.Data.length;
             this.calculateSuccessRate();
           }
         },
-        error: (error) => {
+        error: (error: any) => {
           console.error('Error loading won auction count:', error);
         },
         complete: () => {
@@ -99,14 +105,29 @@ export class RecyclerDashboardComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.auctionSub = this.auctionService.getActiveAuctions().subscribe({
-      next: (response: APIResponse<AuctionVM[]>) => {
+    // جلب بيانات جدول المزادات النشطة فقط من API /api/Auction/GetActiveAuction
+    this.activeAuctionsService.getActiveAuctions().subscribe({
+      next: (response: APIResponse<any[]>) => {
         if (response.IsSuccess) {
-          this.auctions = response.Data;
+          this.activeAuctionsList = response.Data.map(a => ({
+            id: a.Id,
+            materialId: a.MaterialId,
+            matrialname: a.Matrialname,
+            governorate: a.governorate,
+            governorateName: a.GovernorateName,
+            startTime: a.StartTime,
+            endTime: a.EndTime,
+            status: a.Status,
+            auctionStatus: a.AuctionStatus,
+            createdAt: a.CreatedAt,
+            insuranceAmount: a.InsuranceAmount
+          })) as AuctionVM[];
+          // تحديث عدد المزادات النشطة بناءً على القائمة
+          this.activeAuctions = this.activeAuctionsList.length;
         }
       },
       error: (error) => {
-        console.error('Error loading active auctions:', error);
+        console.error('Error loading active auctions for table:', error);
       }
     });
   }
@@ -141,7 +162,7 @@ export class RecyclerDashboardComponent implements OnInit, OnDestroy {
   }
 
   joinAuction(auctionId: number) {
-    this.router.navigate(['/Recycler/auctionlist']);
+    this.router.navigate([`/Recycler/room/${auctionId}`]);
   }
 
   onSectionChange(event: any) {

@@ -13,6 +13,11 @@ export class NotificationComponent implements OnInit {
   notifications: NotificationModel[] = [];
   private sub!: Subscription;
 
+  // ترتيب الإشعارات بالأحدث في الأعلى
+  get notificationsSorted() {
+    return [...this.notifications].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }
+
   constructor(
     private notificationService: NotificationService,
     private router: Router
@@ -45,20 +50,20 @@ export class NotificationComponent implements OnInit {
 
   getStatusText(status: number): string {
     switch (status) {
-      case 1: return 'غير مقروءة';
-      case 2: return 'مقروءة';
-      case 3: return 'مؤرشفة';
-      default: return 'غير معروف';
+      case 1: return 'Unread';
+      case 2: return 'Read';
+      case 3: return 'Archived';
+      default: return 'Unknown';
     }
   }
 
   markNotificationAsRead(notification: NotificationModel) {
     this.notificationService.markAsRead(notification.id).subscribe({
       next: () => {
-        notification.status = 2; // مقروءة
+        notification.status = 2; // Marked as read
       },
       error: () => {
-        alert('حدث خطأ أثناء تعليم الإشعار كمقروء');
+        alert('An error occurred while marking the notification as read');
       }
     });
   }

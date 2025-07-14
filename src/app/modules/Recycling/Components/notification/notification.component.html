@@ -5,26 +5,35 @@
       <!-- All Notifications -->
       <div class="notifications-list content-card">
         <div class="card-header">
-          <h3><i class="fas fa-bell"></i> جميع الإشعارات</h3>
-          <span class="notification-count">{{ notifications.length }} إشعار</span>
+          <h3><i class="fas fa-bell"></i> All Notifications</h3>
+          <span class="notification-count">{{ notifications.length }} Notification</span>
         </div>
-        <div class="card-body">
+        <div class="card-body notifications-scroll">
           <div *ngIf="notifications.length === 0" class="empty-notifications">
             <div class="empty-icon">
               <i class="fas fa-bell-slash"></i>
             </div>
-            <h4>لا توجد إشعارات</h4>
-            <p>ستظهر هنا الإشعارات الجديدة عند وصولها</p>
+            <h4>No Notifications</h4>
+            <p>New notifications will appear here when they arrive</p>
           </div>
-          
-          <div *ngFor="let notification of notifications" class="notification-item">
-            <div><strong>Message:</strong> {{ notification.message }}</div>
-            <div><strong>Status:</strong> {{ getStatusText(notification.status) }}</div>
-            <div><strong>Date:</strong> {{ notification.createdAt | date:'short' }}</div>
-            <button *ngIf="notification.status === 1" (click)="markNotificationAsRead(notification)">
-              تعليم كمقروء
-            </button>
-            <hr />
+          <!-- ترتيب الأحدث في الأعلى -->
+          <div *ngFor="let notification of notificationsSorted; let i = index" 
+               class="notification-item" 
+               [ngClass]="{'unread': notification.status === 1}">
+            <div class="notification-header-row">
+              <span class="notification-date">{{ notification.createdAt | date:'short' }}</span>
+              <span class="notification-status" [ngClass]="{'status-unread': notification.status === 1, 'status-read': notification.status !== 1}">
+                <i class="fas" [ngClass]="notification.status === 1 ? 'fa-circle' : 'fa-check-circle'"></i>
+                {{ getStatusText(notification.status) }}
+              </span>
+            </div>
+            <div class="notification-message">{{ notification.message }}</div>
+            <div class="notification-actions">
+              <button *ngIf="notification.status === 1" class="mark-read-btn" (click)="markNotificationAsRead(notification)">
+                <i class="fas fa-check"></i> Mark as Read
+              </button>
+            </div>
+            <hr *ngIf="i < notifications.length - 1" />
           </div>
         </div>
       </div>
@@ -32,21 +41,21 @@
       <!-- Quick Actions -->
       <div class="quick-actions content-card">
         <div class="card-header">
-          <h3><i class="fas fa-bolt"></i> إجراءات سريعة</h3>
+          <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
         </div>
         <div class="card-body">
           <div class="actions-grid">
             <button class="action-btn" [routerLink]="['../auction-list']">
               <i class="fas fa-search"></i>
-              تصفح المزادات
+              Browse Auctions
             </button>
             <button class="action-btn" [routerLink]="['../']">
               <i class="fas fa-home"></i>
-              العودة للداشبورد
+              Return to Dashboard
             </button>
             <button class="action-btn" (click)="clearNotifications()">
               <i class="fas fa-trash"></i>
-              مسح الإشعارات
+              Clear Notifications
             </button>
           </div>
         </div>

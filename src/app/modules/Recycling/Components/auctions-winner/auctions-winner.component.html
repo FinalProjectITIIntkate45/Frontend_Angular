@@ -1,6 +1,6 @@
 <app-RecyclerLayout>
   <div class="auctions-winner-section">
-    <h2><i class="fas fa-trophy"></i> My Won Auctions</h2>
+    <h2 class="section-title"><i class="fas fa-trophy"></i> My Won Auctions</h2>
     <div *ngIf="loading" class="loading">Loading...</div>
     <div *ngIf="error" class="error">{{ error }}</div>
     <div *ngIf="!loading && !error">
@@ -9,18 +9,25 @@
         <p>No won auctions yet.</p>
       </div>
       <div class="auction-cards-grid" *ngIf="auctions.length > 0">
-        <div class="auction-card" *ngFor="let auction of auctions">
+        <div class="auction-card content-card" *ngFor="let auction of auctions">
           <div class="card-header">
+            <div class="stat-icon"><i class="fas fa-gavel"></i></div>
             <span class="material-name">{{ auction.Matrialname }}</span>
-            <span class="auction-status status-{{ auction.AuctionStatus.toLowerCase() }}">{{ auction.AuctionStatus }}</span>
+            <span class="auction-status status-{{ auction.AuctionStatus.toLowerCase() }}">
+              <i class="fas fa-circle"></i> {{ auction.AuctionStatus }}
+            </span>
           </div>
           <div class="card-body">
-            <div><strong>Governorate:</strong> {{ auction.GovernorateName }}</div>
-            <div><strong>Start:</strong> {{ auction.StartTime | date:'short' }}</div>
-            <div><strong>End:</strong> {{ auction.EndTime | date:'short' }}</div>
-            <div><strong>Insurance:</strong> {{ auction.InsuranceAmount | number:'1.2-2' }}</div>
-            <div><strong>Quantity:</strong> {{ auction.quantity }} {{ auction.UnitType }}</div>
-            <div><strong>Requests:</strong> {{ auction.RequestsCount }}</div>
+            <div class="auction-details-row">
+              <span><i class="fas fa-map-marker-alt"></i> {{ auction.GovernorateName }}</span>
+              <span><i class="fas fa-calendar-alt"></i> {{ auction.StartTime | date:'short' }}</span>
+              <span><i class="fas fa-calendar-check"></i> {{ auction.EndTime | date:'short' }}</span>
+            </div>
+            <div class="auction-details-row">
+              <span><i class="fas fa-money-bill-wave"></i> {{ auction.InsuranceAmount | currency:'EGP':'symbol':'1.0-0' }}</span>
+              <span><i class="fas fa-weight-hanging"></i> {{ auction.quantity }} {{ auction.UnitType }}</span>
+              <span><i class="fas fa-users"></i> {{ auction.RequestsCount }} Requests</span>
+            </div>
           </div>
         </div>
       </div>

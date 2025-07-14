@@ -145,7 +145,7 @@ export class AuctionRoomComponent implements OnInit, OnDestroy {
     // إضافة المزايدة الجديدة للتاريخ
     const newBid: AuctionBidViewModel = {
       bidAmount: payload.bidAmount || 0,
-      recyclerName: payload.recyclerName || 'مستخدم مجهول',
+      recyclerName: payload.recyclerName || 'Unknown User',
       createdAt: new Date().toISOString(),
       status: payload.status || 1
     };
@@ -168,9 +168,9 @@ export class AuctionRoomComponent implements OnInit, OnDestroy {
   }
 
   addLiveFeedback(bid: AuctionBidViewModel): void {
-    const name = bid.recyclerName ?? 'مستخدم مجهول';
+    const name = bid.recyclerName ?? 'Unknown User';
     const amount = bid.bidAmount ?? 0;
-    const message = `${name}  وضع مزايدة بقيمة ${amount} جنيه`;
+    const message = `${name} placed a bid of ${amount} EGP`;
     this.liveFeedback.unshift(message);
     if (this.liveFeedback.length > 5) {
       this.liveFeedback.pop();
@@ -265,7 +265,7 @@ export class AuctionRoomComponent implements OnInit, OnDestroy {
 
   placeBid(): void {
     if (!this.bidAmount || this.bidAmount <= this.highestBid) {
-      this.bidError = 'يجب أن تكون المزايدة أعلى من الحالية';
+      this.bidError = 'The bid must be higher than the current bid';
       this.bidSuccess = '';
       return;
     }
@@ -284,14 +284,14 @@ export class AuctionRoomComponent implements OnInit, OnDestroy {
     this.bidService.placeBid(bidData).subscribe({
       next: (response) => {
         this.isPlacingBid = false;
-        this.bidSuccess = 'تمت المزايدة بنجاح!';
+        this.bidSuccess = 'Bid placed successfully!';
         this.bidAmount = 0;
         console.log('✅ Bid placed successfully:', response);
         // لا تعيد تحميل الداتا من الكنترولر هنا، فقط انتظر SignalR
       },
       error: (err) => {
         this.isPlacingBid = false;
-        this.bidError = err?.error?.message || 'حدث خطأ أثناء تقديم المزايدة';
+        this.bidError = err?.error?.message || 'An error occurred while placing the bid';
         console.error('❌ Bid error:', err);
       }
     });
@@ -302,7 +302,7 @@ export class AuctionRoomComponent implements OnInit, OnDestroy {
     this.top3Bids = sortedBids.slice(0, 3).map((bid, index) => ({
       position: index + 1,
       bid: bid.bidAmount,
-      recyclingName: bid.recyclerName || 'مستخدم مجهول', // اجعلها string دائمًا
+      recyclingName: bid.recyclerName || 'Unknown User', // اجعلها string دائمًا
       timestamp: new Date(bid.createdAt)
     }));
   }
@@ -319,38 +319,38 @@ export class AuctionRoomComponent implements OnInit, OnDestroy {
 
   getUnitTypeDisplayName(unitType: number): string {
     switch (unitType) {
-      case 1: return 'كيلوجرام';
-      case 2: return 'جرام';
-      case 3: return 'لتر';
-      case 4: return 'مليلتر';
-      case 5: return 'قطعة';
-      case 6: return 'متر';
-      case 7: return 'سنتيمتر';
-      default: return 'وحدة غير معروفة';
+      case 1: return 'Kilogram';
+      case 2: return 'Gram';
+      case 3: return 'Liter';
+      case 4: return 'Milliliter';
+      case 5: return 'Piece';
+      case 6: return 'Meter';
+      case 7: return 'Centimeter';
+      default: return 'Unknown Unit';
     }
   }
 
   getTimeAgo(date: Date | string | undefined): string {
-    if (!date) return 'غير محدد';
+    if (!date) return 'Not specified';
     
     try {
       const now = new Date();
       const targetDate = typeof date === 'string' ? new Date(date) : date;
       
       if (isNaN(targetDate.getTime())) {
-        return 'تاريخ غير صحيح';
+        return 'Invalid date';
       }
       
       const diff = Math.floor((now.getTime() - targetDate.getTime()) / 1000);
       
-      if (diff < 0) return 'في المستقبل';
-      if (diff < 60) return 'الآن';
-      if (diff < 3600) return `${Math.floor(diff / 60)} دقيقة`;
-      if (diff < 86400) return `${Math.floor(diff / 3600)} ساعة`;
-      return `${Math.floor(diff / 86400)} يوم`;
+      if (diff < 0) return 'In the future';
+      if (diff < 60) return 'Now';
+      if (diff < 3600) return `${Math.floor(diff / 60)} minutes`;
+      if (diff < 86400) return `${Math.floor(diff / 3600)} hours`;
+      return `${Math.floor(diff / 86400)} days`;
     } catch (error) {
       console.error('Error parsing date:', error);
-      return 'تاريخ غير صحيح';
+      return 'Invalid date';
     }
   }
 
@@ -359,7 +359,7 @@ export class AuctionRoomComponent implements OnInit, OnDestroy {
   }
 
   logout(): void {
-    if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
+    if (confirm('Are you sure you want to logout?')) {
       localStorage.removeItem('userId');
       localStorage.removeItem('userToken');
       this.notificationService.disconnect();
@@ -384,7 +384,7 @@ export class AuctionRoomComponent implements OnInit, OnDestroy {
     const end = new Date(endTime).getTime();
     const now = new Date().getTime();
     let diff = Math.max(0, end - now);
-    if (diff <= 0) return 'انتهى المزاد';
+    if (diff <= 0) return 'Auction ended';
     const hours = Math.floor(diff / (1000 * 60 * 60));
     diff -= hours * 1000 * 60 * 60;
     const minutes = Math.floor(diff / (1000 * 60));
@@ -410,9 +410,9 @@ export class AuctionRoomComponent implements OnInit, OnDestroy {
             this.countdownPercent = total ? Math.max(0, Math.min(100, (diff / total) * 100)) : 0;
           }
           
-          // إذا انتهى المزاد
+          // If the auction has ended
           if (diff <= 0 && this.auction.AuctionStatus !== 'Completed') {
-            this.loadAuctionDetails(); // إعادة تحميل تفاصيل المزاد للتحقق من الحالة
+            this.loadAuctionDetails(); // Reload the auction details to check the status
           }
         } catch (error) {
           console.error('Error in countdown:', error);
@@ -443,7 +443,7 @@ export class AuctionRoomComponent implements OnInit, OnDestroy {
     }
   }
 
-  // دوال trackBy لتحسين الأداء
+  // trackBy functions to improve performance
   trackByBid(index: number, bid: any): string {
     return bid.recyclerName + bid.bidAmount + bid.createdAt;
   }
