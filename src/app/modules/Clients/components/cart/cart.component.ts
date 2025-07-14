@@ -61,7 +61,16 @@ export class CartComponent implements OnInit {
 
   clearCart(): void {
     if (confirm('Are you sure you want to clear your cart?')) {
-      this.cartData = { Items: [], CartTotalPrice: 0, CartTotalPoints: 0 };
+      this.cartService.clearCart().subscribe({
+        next: () => {
+          this.toster.success('Cart cleared successfully.');
+          this.loadCartItems();
+        },
+        error: (error) => {
+          this.toster.error('Failed to clear cart.');
+          console.error('Error clearing cart:', error);
+        },
+      });
     }
   }
 
