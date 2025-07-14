@@ -1,13 +1,52 @@
 .not-found-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 80vh; /* نص ارتفاع الشاشة تقريباً */
   text-align: center;
-  padding: 5rem 2rem;
+  padding: 2rem;
   color: #023059;
+  background: #f7f7f8; /* خلفية ناعمة */
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
 .not-found-container h1 {
-  font-size: 6rem;
+  font-size: 9rem; /* كبير جداً */
+  font-weight: 900;
   margin-bottom: 1rem;
+  letter-spacing: -0.05em;
+  user-select: none;
 }
+
 .not-found-container p {
-  font-size: 1.5rem;
-  margin-bottom: 2rem;
+  font-size: 1.8rem;
+  margin-bottom: 3rem;
+  color: #374151; /* لون رمادي هادي */
+  max-width: 600px;
+  line-height: 1.4;
+}
+
+.not-found-container button {
+  background-color: #efb036;
+  border: none;
+  padding: 1rem 3rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #023059;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 8px 15px rgba(239, 176, 54, 0.3);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.not-found-container button:hover {
+  background-color: #d89e28;
+  box-shadow: 0 12px 20px rgba(216, 158, 40, 0.5);
+  transform: translateY(-3px);
+}
+
+.not-found-container button:active {
+  transform: translateY(0);
+  box-shadow: 0 6px 10px rgba(239, 176, 54, 0.2);
 }
