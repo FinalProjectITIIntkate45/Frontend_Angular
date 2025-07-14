@@ -171,6 +171,14 @@
                       </button>
                     </div>
                   </td>
+                  <td *ngIf="order.Status === 1 || order.Status === 2">
+                    <button
+                      class="btn btn-sm btn-outline-success"
+                      (click)="DeliveryOrder(order)"
+                    >
+                      <i class="fas fa-check me-1"></i> Mark as Delivered
+                    </button>
+                  </td>
                 </tr>
               </tbody>
             </table>
