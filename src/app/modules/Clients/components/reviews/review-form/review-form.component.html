@@ -1,1 +1,67 @@
-<p>review-form works!</p>
+<div class="card shadow-sm p-3">
+  <form [formGroup]="reviewForm" (ngSubmit)="onSubmit()">
+    <h5 class="mb-3">{{ isEdit ? "Edit Review" : "Add Review" }}</h5>
+
+    <!-- ✅ Rating Stars -->
+    <div class="mb-3">
+      <label class="form-label fw-bold">Rating:</label>
+
+      <div class="d-flex align-items-center gap-1">
+        <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
+          <i
+            class="fa"
+            [ngClass]="{
+              'fa-star text-warning': star <= reviewForm.get('rating')?.value,
+              'fa-star-o text-muted': star > reviewForm.get('rating')?.value
+            }"
+            (click)="setRating(star)"
+            (keydown.enter)="setRating(star)"
+            tabindex="0"
+            [attr.aria-label]="'Rate ' + star + ' star'"
+            role="button"
+            style="cursor: pointer; font-size: 1.7rem"
+          ></i>
+        </ng-container>
+      </div>
+
+      <div
+        class="text-danger small mt-1"
+        *ngIf="
+          reviewForm.get('rating')?.invalid && reviewForm.get('rating')?.touched
+        "
+      >
+        Rating is required (1-5).
+      </div>
+    </div>
+
+    <!-- Comments -->
+    <div class="mb-3">
+      <label for="comments" class="form-label fw-bold">Comments:</label>
+      <textarea
+        id="comments"
+        class="form-control"
+        formControlName="comments"
+        rows="3"
+        placeholder="Write your feedback here..."
+      ></textarea>
+      <div
+        class="text-danger small mt-1"
+        *ngIf="
+          reviewForm.get('comments')?.invalid &&
+          reviewForm.get('comments')?.touched
+        "
+      >
+        Comments must be less than 500 characters.
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="reviewForm.invalid"
+    >
+      {{ isEdit ? "Update Review" : "Submit Review" }}
+    </button>
+  </form>
+</div>

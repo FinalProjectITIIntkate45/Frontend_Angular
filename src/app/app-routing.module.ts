@@ -7,6 +7,7 @@ import { ClientLayoutComponent } from './modules/Clients/components/client-layou
 import { ProviderLayoutComponent } from './modules/Providers/Components/provider-layout/provider-layout.component';
 import { HomeLayoutComponent } from './modules/home/components/home-layout/home-layout.component';
 
+
 const routes: Routes = [
   // { path: '', redirectTo: 'client/products', pathMatch: 'full' },
   {
@@ -14,6 +15,7 @@ const routes: Routes = [
     loadChildren: () =>
       import('./modules/auth/auth.module').then((m) => m.AuthModule),
   },
+
   {
     path: 'provider',
     canActivate: [authGuard],
@@ -51,6 +53,11 @@ const routes: Routes = [
   //   loadChildren: () =>
   //     import('./modules/Clients/client.module').then((m) => m.ClientModule),
   // },
+
+  {
+    path: '**',
+    loadComponent: () => import('./shared/not-found/not-found.component').then(m => m.NotFoundComponent)
+  }
 ];
 
 @NgModule({
