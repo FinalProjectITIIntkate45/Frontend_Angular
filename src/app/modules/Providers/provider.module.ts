@@ -52,6 +52,8 @@ import { ShopInfoComponent } from './Components/shop-info/shop-info.component';
 import { ProviderOrdersSectionComponent } from './Components/provider-orders-section/provider-orders-section.component';
 import { OrderDetailsComponent } from './Components/provider-orders-section/order-details/order-details.component';
 import { NotificationComponent } from './Components/notification/notification.component';
+import { ReviewListComponent } from './Components/reviews/review-list/review-list.component';
+import { ReviewCardComponent } from './Components/reviews/review-card/review-card.component';
 
 @NgModule({
   declarations: [
@@ -114,6 +116,8 @@ import { NotificationComponent } from './Components/notification/notification.co
     ShopInfoComponent,
     ProviderOrdersSectionComponent,
     OrderDetailsComponent,
+    ReviewListComponent,
+    ReviewCardComponent,
   ],
   exports: [
     ProviderLayoutComponent,
