@@ -4,6 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AccountService } from '../../../../modules/auth/services/account.service';
 import { ProfileViewModel } from '../../../../modules/Clients/Models/profile-view.model';
+import { ProfileView } from '../../../auth/models/profile-view.model';
 
 @Component({
   selector: 'app-profile-section',
@@ -27,7 +28,7 @@ export class ProfileSectionComponent implements OnInit {
   originalPersonalInfo: any;
   originalContactInfo: any;
 
-  profileData: ProfileViewModel | null = null;
+  profileData: ProfileView | null = null;
   error: string | null = null;
   ordersCount: number = 3;
   recyclingPoints: number = 320;
@@ -76,18 +77,23 @@ export class ProfileSectionComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.accountService.getProfile().subscribe({
+    this.accountService.getUserProfile().subscribe({
       next: (data) => {
-        this.profileData = data;
+        console.log("+++++++++++++++++++++++++++++++++");
+        
+        
+        this.profileData = data.Data;
         this.error = null;
-        this.personalInfoForm.patchValue({
-          fullName: data.userName
-        });
-        this.contactInfoForm.patchValue({
-          email: data.email,
-          phoneNumber: data.phoneNumber
-        });
-        this.profileImgPreview = data.profileImg || 'https://via.placeholder.com/150';
+        console.log(this.profileData);
+        // this.personalInfoForm.patchValue({
+          //   fullName: this.profileData.UserName
+          // });
+          // this.contactInfoForm.patchValue({
+            //   email: this.profileData.Email,
+            //   phoneNumber: this.profileData.PhoneNumber
+        // });
+        
+        this.profileData.ProfileImg = this.profileData.ProfileImg ==""? 'https://via.placeholder.com/150':this.profileData.ProfileImg ;
       },
       error: (err) => {
         this.error = 'Failed to load profile.';

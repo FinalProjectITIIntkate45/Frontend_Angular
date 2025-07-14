@@ -28,8 +28,9 @@
 
         .registration-card {
             background: var(--white);
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(2, 48, 89, 0.1);
+            border: none !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
             overflow: hidden;
             max-width: 1200px;
             margin: 0 auto;
@@ -40,18 +41,17 @@
             z-index: 2;
         }
 
-        /* شيلت المسافات عند اللوجو واللي تحته */
         .logo-placeholder {
             margin-bottom: 0;
+            padding: 0;
+            border: none;
         }
 
         .logo-box {
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px dashed rgba(255, 255, 255, 0.3);
-            border-radius: 15px;
-            padding: 1rem 1.5rem;
-            display: inline-block;
-            min-width: 200px;
+            border: none !important;
+            padding: 0 !important;
+            margin-bottom: 1rem;
+            background: transparent !important;
         }
 
         .logo-text {
@@ -63,14 +63,17 @@
         }
 
         .benefits-section {
-            background: linear-gradient(135deg, var(--primary-blue) 0%, #034a73 100%);
+
+            background: none !important;
             color: var(--white);
             padding: 3rem 2rem;
             position: relative;
             overflow: hidden;
+            border: none;
         }
 
         .benefits-section::before {
+             display: none !important;
             content: '';
             position: absolute;
             top: -50%;
@@ -107,7 +110,7 @@
         .benefit-card {
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: none;
             border-radius: 15px;
             padding: 1.5rem;
             margin-bottom: 1.5rem;
@@ -194,12 +197,12 @@
 
         .form-control.is-invalid {
             border-color: #dc3545;
-            background: #fff5f5;
+            background: none;
         }
 
         .input-group-text {
             background: var(--light-bg);
-            border: 2px solid #e1e5e9;
+            border: none;
             border-left: none;
             border-radius: 0 12px 12px 0;
             cursor: pointer;
@@ -250,8 +253,8 @@
         }
 
         .alert-danger {
-            background: #fff5f5;
-            border: 1px solid #fecaca;
+            background:none;
+            border: none;
             color: #dc2626;
             border-radius: 12px;
             padding: 1rem;
@@ -620,3 +623,8 @@
     </div>
 </body>
 </html>
+
+
+
+
+

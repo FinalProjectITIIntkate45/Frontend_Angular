@@ -71,12 +71,17 @@ export class RecyclerNavbarComponent implements OnInit, OnDestroy {
   
   loadWallet() {
     this.walletLoading = true;
-    this.walletSub = this.walletService.getUserWallet().subscribe({
-      next: (wallet) => {
+    this.walletSub = this.walletService.getWalletSummary().subscribe({
+      next: (wallet: any) => {
+        console.log('Navbar wallet:', wallet);
+        // معالجة الرصيد ليكون رقمًا فقط
+        if (wallet && typeof wallet.balancecash !== 'number') {
+          wallet.balancecash = Number(wallet.balancecash) || 0;
+        }
         this.wallet = wallet;
         this.walletLoading = false;
       },
-      error: (error) => {
+      error: (error: any) => {
         console.error('Error loading wallet:', error);
         this.walletLoading = false;
       }
@@ -155,5 +160,15 @@ export class RecyclerNavbarComponent implements OnInit, OnDestroy {
     if (this.recycler.isdeleted) return 'Deleted';
     if (!this.recycler.ispaid) return 'Unpaid';
     return 'Active';
+  }
+
+  get displayBalanceCash(): number {
+    if (this.wallet) {
+      if (typeof (this.wallet as any).balanceCash === 'number') return (this.wallet as any).balanceCash;
+      if (typeof (this.wallet as any).balancecash === 'number') return (this.wallet as any).balancecash;
+      if (typeof (this.wallet as any).balanceCash === 'string') return Number((this.wallet as any).balanceCash) || 0;
+      if (typeof (this.wallet as any).balancecash === 'string') return Number((this.wallet as any).balancecash) || 0;
+    }
+    return 0;
   }
 }

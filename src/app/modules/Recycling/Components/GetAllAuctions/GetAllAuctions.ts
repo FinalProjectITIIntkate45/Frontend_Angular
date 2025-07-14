@@ -202,16 +202,16 @@ export class AuctionListComponent implements OnInit {
     
     this.auctionRequestService.joinAuction(formData).subscribe({
       next: (response) => {
-        if (response.success) {
-          alert('تم إرسال طلب الانضمام بنجاح!');
+        if (response.success || response.statusCode === 200) {
+          alert(response.data || response.message || 'تم إرسال طلب الانضمام بنجاح!');
           this.loadAuctions(); // Refresh the list
         } else {
-          alert('فشل في إرسال طلب الانضمام: ' + response.message);
+          alert(response.message || 'فشل في إرسال طلب الانضمام');
         }
       },
       error: (error) => {
         console.error('Error joining auction:', error);
-        alert('حدث خطأ أثناء إرسال طلب الانضمام');
+        alert(error?.error?.message || error?.message || 'حدث خطأ أثناء إرسال طلب الانضمام');
       }
     });
   }

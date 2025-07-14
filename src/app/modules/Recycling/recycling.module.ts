@@ -13,6 +13,9 @@ import { AuctionRoomComponent } from './Components/auction-room/auction-room.com
 import { ActiveAuctionsComponent } from './Components/get-active-auctions/active-auctions.component';
 import { RecyclerRequestsComponent } from './Components/recycler-requests/recycler-requests.component';
 import { WalletDisplayComponent } from './Components/wallet-display/wallet-display.component';
+import { WalletRechargeComponent } from './Components/wallet-recharge/wallet-recharge.component';
+import { WalletSectionComponent } from './Components/wallet-section/wallet-section.component';
+import { WalletSuccessComponent } from './Components/wallet-success/wallet-success.component';
 
 // Shared Components
 import { RecyclerNavbarComponent } from './Components/Share/RecyclerNavbar/RecyclerNavbar.component';
@@ -26,6 +29,7 @@ import { AuctionService } from './Services/auction.service';
 import { AuctionRequestService } from './Services/auction-request.service';
 import { RecyclerRequestService } from './Services/RecyclerRequest.service';
 import { NotificationService } from './Services/notification.service.service';
+import { ApiNotificationService } from './Services/api-notification.service';
 import { ActiveAuctionsService } from './Services/active-auctions.service';
 import { AuctionBidService } from './Services/auction-bid.service';
 import { AuctionBidSignalrService } from './Services/auction-bid-signalr.service';
@@ -42,6 +46,9 @@ import { AuctionsWinnerComponent } from './Components/auctions-winner/auctions-w
     ActiveAuctionsComponent,
     RecyclerRequestsComponent,
     WalletDisplayComponent,
+    WalletRechargeComponent,
+    WalletSectionComponent,
+    WalletSuccessComponent,
     AuctionsWinnerComponent,
     // Shared Components
     RecyclerNavbarComponent,
@@ -63,6 +70,7 @@ import { AuctionsWinnerComponent } from './Components/auctions-winner/auctions-w
     AuctionRequestService,
     RecyclerRequestService,
     NotificationService,
+    ApiNotificationService,
     ActiveAuctionsService,
     AuctionBidService,
     AuctionBidSignalrService

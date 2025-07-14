@@ -1,28 +1,78 @@
-<div class="profile-header">
-  <h1>PROFILE</h1>
-  <p>Welcome back to your profile! Here's your activity summary.</p>
-</div>
+  <div class="coins-container"></div>
 
-<div class="profile-section-container" *ngIf="profileData; else loadingOrError">
+  <div class="dashboard-wrapper">
+    <div class="dashboard-container">
+      <!-- Header -->
+      <div class="profile-header">
+        <h1>PROFILE</h1>
+        <p class="subtitle">Manage your account settings and view your financial overview</p>
+      </div>
 
-  <div class="card profile-card text-center">
-    <div class="profile-img-upload mb-3">
-      <img [src]="profileImgPreview || 'https://via.placeholder.com/150'" alt="Profile Image" class="profile-img-preview rounded-circle" style="width:150px; height:150px; object-fit:cover;" />
-    </div>
-    <h2>{{ profileData.userName }}</h2>
-    <hr />
-    <p><strong>Email:</strong> {{ profileData.email }}</p>
-    <p><strong>Phone Number:</strong> {{ profileData.phoneNumber }}</p>
+      <!-- Main Content -->
+      <div class="profile-main">
+        <!-- Profile Card -->
+        <div class="profile-card">
+          <div class="user-section">
+            <div class="avatar-container">
+              <img
+                [src]="profileData?.ProfileImg"
+                alt="Profile Avatar"
+                class="avatar"
+              />
+              <div class="status-indicator"></div>
+            </div>
+            <div class="user-info">
+              <h2>{{profileData?.UserName}}</h2>
+              <div class="title">{{profileData?.Email}}</div>
+              <div class="phone">{{profileData?.PhoneNumber}}</div>
+            </div>
+          </div>
+          
+          <div class="action-buttons">
+            <button class="btn btn-primary">Edit Profile</button>
+            <button class="btn btn-secondary">Logout</button>
+          </div>
+        </div>
 
-    <div class="wallet-info mt-4">
-      <p><strong>Points Balance:</strong> {{ profileData.BalancePoints }}</p>
-      <p><strong>Cash Balance:</strong> {{ profileData.BalanceCash | currency:'USD':'symbol' }}</p>
+        <!-- Wallet Card -->
+        <div class="wallet-card">
+          <div class="wallet-header">
+            <h3>Wallet Overview</h3>
+            <p>Keep track of your balance and recent changes</p>
+          </div>
+          <div class="wallet-items">
+            <div class="wallet-item">
+              <div class="wallet-item-header">
+                <div class="wallet-label">Total Balance</div>
+                <div class="wallet-icon">₿</div>
+              </div>
+              <div class="wallet-value">
+                <span class="currency">$</span>5,230.75
+              </div>
+              <div class="wallet-change">+2.4%</div>
+            </div>
+            <div class="wallet-item">
+              <div class="wallet-item-header">
+                <div class="wallet-label">Monthly Deposit</div>
+                <div class="wallet-icon">💰</div>
+              </div>
+              <div class="wallet-value">
+                <span class="currency">$</span>1,200.00
+              </div>
+              <div class="wallet-change negative">-0.6%</div>
+            </div>
+            <div class="wallet-item">
+              <div class="wallet-item-header">
+                <div class="wallet-label">Available Credit</div>
+                <div class="wallet-icon">💳</div>
+              </div>
+              <div class="wallet-value">
+                <span class="currency">$</span>3,000.00
+              </div>
+              <div class="wallet-change">+5.2%</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-
-</div>
-
-<ng-template #loadingOrError>
-  <p *ngIf="error" class="text-danger">{{ error }}</p>
-  <p *ngIf="!error">Loading profile...</p>
-</ng-template>
