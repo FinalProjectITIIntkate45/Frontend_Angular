@@ -71,53 +71,56 @@ export class AuctionListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.loadAuctions();
+    this.onGovernorateChange(this.selectedGovernorate || 'All Cities');
+  }
+
+  onGovernorateChange(governorate: string) {
+    this.selectedGovernorate = governorate;
+    this.currentPage = 1;
+    if (
+      governorate === 'جميع المحافظات' ||
+      governorate === 'All Cities' ||
+      governorate === 'All Governorates'
+    ) {
+      this.getAllAuctionsFromApi();
+    } else {
+      this.loadAuctionsWithFilter();
+    }
+  }
+
+  getAllAuctionsFromApi() {
+    this.isLoading = true;
+    this.auctionService.getAllAuctions().subscribe({
+      next: (response: APIResponse<AuctionVM[]>) => {
+        this.handleAuctionsResponse(response);
+      },
+      error: (err: any) => {
+        console.error('Error loading auctions:', err);
+        this.isLoading = false;
+      }
+    });
+  }
+
+  loadAuctionsWithFilter() {
+    this.isLoading = true;
+    this.auctionService.getAuctionsWithFilters(
+      this.selectedGovernorate,
+      this.pageSize,
+      this.currentPage
+    ).subscribe({
+      next: (response: APIResponse<AuctionVM[]>) => {
+        this.handleAuctionsResponse(response);
+      },
+      error: (err: any) => {
+        console.error('Error loading auctions:', err);
+        this.isLoading = false;
+      }
+    });
   }
 
   onSectionChange(section: string) {
     console.log('Section changed to:', section);
     // Handle section changes if needed
-  }
-
-  loadAuctions(): void {
-    this.isLoading = true;
-    if (this.selectedGovernorate === 'جميع المحافظات') {
-      this.auctionService.getAllAuctions().subscribe({
-        next: (response: APIResponse<AuctionVM[]>) => {
-          this.handleAuctionsResponse(response);
-        },
-        error: (err: any) => {
-          console.error('Error loading auctions:', err);
-          this.isLoading = false;
-        }
-      });
-    } else {
-      this.auctionService.getAuctionsWithFilters(
-        this.selectedGovernorate,
-        this.pageSize,
-        this.currentPage
-      ).subscribe({
-        next: (response: APIResponse<AuctionVM[]>) => {
-          this.handleAuctionsResponse(response);
-        },
-        error: (err: any) => {
-          console.error('Error loading auctions:', err);
-          this.isLoading = false;
-        }
-      });
-    }
-  }
-
-  filterByGovernorate(governorate: string) {
-    this.selectedGovernorate = governorate;
-    this.currentPage = 1;
-    this.loadAuctions();
-  }
-
-  clearFilters() {
-    this.selectedGovernorate = '';
-    this.currentPage = 1;
-    this.loadAuctions();
   }
 
   private handleAuctionsResponse(response: APIResponse<AuctionVM[]>): void {
@@ -174,13 +177,13 @@ export class AuctionListComponent implements OnInit {
   // Pagination methods
   onPageChange(page: number) {
     this.currentPage = page;
-    this.loadAuctions();
+    this.onGovernorateChange(this.selectedGovernorate);
   }
 
   onPageSizeChange(size: number) {
     this.pageSize = size;
     this.currentPage = 1;
-    this.loadAuctions();
+    this.onGovernorateChange(this.selectedGovernorate);
   }
 
   // Function to check if user can join auction room (has accepted request)
@@ -203,15 +206,15 @@ export class AuctionListComponent implements OnInit {
     this.auctionRequestService.joinAuction(formData).subscribe({
       next: (response) => {
         if (response.success || response.statusCode === 200) {
-          alert(response.data || response.message || 'تم إرسال طلب الانضمام بنجاح!');
-          this.loadAuctions(); // Refresh the list
+          alert(response.data || response.message || 'Request sent successfully!');
+          this.onGovernorateChange(this.selectedGovernorate); // تحديث القائمة
         } else {
-          alert(response.message || 'فشل في إرسال طلب الانضمام');
+          alert(response.message || 'Failed to send request');
         }
       },
       error: (error) => {
         console.error('Error joining auction:', error);
-        alert(error?.error?.message || error?.message || 'حدث خطأ أثناء إرسال طلب الانضمام');
+        alert(error?.error?.message || error?.message || 'An error occurred while sending the request');
       }
     });
   }
@@ -223,7 +226,7 @@ export class AuctionListComponent implements OnInit {
 
   // Refresh auctions
   refreshAuctions(): void {
-    this.loadAuctions();
+    this.onGovernorateChange(this.selectedGovernorate);
   }
 
   // Alternative method to request joining auction
@@ -240,9 +243,9 @@ export class AuctionListComponent implements OnInit {
         console.log('Request response:', res);
   
         // نتأكد إن الاستجابة موجودة وفيها statusCode
-        if (res && res.statusCode === 200) {
+        if (res && res.statusCode == 200) {
           alert(res.message || 'تم إرسال طلب الانضمام بنجاح!');
-          this.loadAuctions();
+          this.onGovernorateChange(this.selectedGovernorate);
         } else {
           alert('فشل في إرسال الطلب: ' + (res?.message || 'خطأ غير معروف'));
         }
@@ -269,7 +272,7 @@ export class AuctionListComponent implements OnInit {
         console.log('AuctionRequestService response:', response);
         if (response.success) {
           alert('تم إرسال طلب الانضمام بنجاح! (طريقة 1)');
-          this.loadAuctions();
+          this.onGovernorateChange(this.selectedGovernorate);
         } else {
           alert('فشل في إرسال طلب الانضمام: ' + response.message);
         }

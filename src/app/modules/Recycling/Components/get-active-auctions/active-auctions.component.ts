@@ -57,19 +57,31 @@ export class ActiveAuctionsComponent implements OnInit, OnDestroy {
 
     this.subscription.add(
       this.activeAuctionsService.getActiveAuctions().subscribe({
-        next: (response: APIResponse<AuctionVM[]>) => {
+        next: (response: APIResponse<any[]>) => {
           if (response.IsSuccess) {
-            this.activeAuctions = response.Data;
+            this.activeAuctions = response.Data.map(a => ({
+              id: a.Id,
+              materialId: a.MaterialId,
+              matrialname: a.Matrialname,
+              governorate: a.governorate,
+              governorateName: a.GovernorateName,
+              startTime: a.StartTime,
+              endTime: a.EndTime,
+              status: a.Status,
+              auctionStatus: a.AuctionStatus,
+              createdAt: a.CreatedAt,
+              insuranceAmount: a.InsuranceAmount
+            }));
             this.filteredAuctions = [...this.activeAuctions];
             console.log(`Loaded ${this.activeAuctions.length} active auctions`);
           } else {
-            this.errorMessage = response.Message || 'فشل في تحميل المزادات النشطة';
+            this.errorMessage = response.Message || 'Failed to load active auctions';
             console.error('API Error:', response.Message);
           }
           this.isLoading = false;
         },
         error: (error: any) => {
-          this.errorMessage = 'حدث خطأ في الاتصال بالخادم';
+          this.errorMessage = 'An error occurred while connecting to the server';
           console.error('Network Error:', error);
           this.isLoading = false;
         }
@@ -100,7 +112,7 @@ export class ActiveAuctionsComponent implements OnInit, OnDestroy {
   }
 
   formatDate(date: string | Date): string {
-    if (!date) return 'غير محدد';
+    if (!date) return 'Not specified';
     return new Date(date).toLocaleDateString('ar-EG', {
       year: 'numeric',
       month: 'short',

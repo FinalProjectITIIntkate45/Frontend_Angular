@@ -107,16 +107,15 @@ export class AuctionDetailComponent implements OnInit {
     this.recyclerRequestService.createRequestToJoin(request).subscribe({
       next: (response) => {
         if (response.success) {
-          alert('تم إنشاء طلب الانضمام بنجاح');
+          alert('Request to join auction created successfully');
           this.checkIfJoined();
         } else {
-          alert(response.message || 'حدث خطأ أثناء إنشاء الطلب');
+          alert('Request to join auction created successfully');
         }
-        this.creatingRequest = false;
       },
       error: (error) => {
         console.error('Error creating request:', error);
-        alert('حدث خطأ أثناء إنشاء الطلب');
+        alert('An error occurred while creating the request');
         this.creatingRequest = false;
       }
     });
@@ -125,7 +124,7 @@ export class AuctionDetailComponent implements OnInit {
   withdrawRequest() {
     if (!this.currentRequest) return;
 
-    if (!confirm('هل أنت متأكد من الانسحاب من المزاد؟')) return;
+    if (!confirm('Are you sure you want to withdraw from the auction?')) return;
 
     this.withdrawingRequest = true;
     const model: JoinAuctionViewModel = {
@@ -136,16 +135,16 @@ export class AuctionDetailComponent implements OnInit {
     this.recyclerRequestService.withdrawRequest(model).subscribe({
       next: (response) => {
         if (response.success) {
-          alert('تم الانسحاب من المزاد بنجاح');
+          alert('Withdraw from auction successful');
           this.checkIfJoined();
         } else {
-          alert(response.message || 'حدث خطأ أثناء الانسحاب');
+          alert(response.message || 'An error occurred while withdrawing from the auction');
         }
         this.withdrawingRequest = false;
       },
       error: (error) => {
         console.error('Error withdrawing request:', error);
-        alert('حدث خطأ أثناء الانسحاب');
+        alert('An error occurred while withdrawing from the auction');
         this.withdrawingRequest = false;
       }
     });
@@ -169,36 +168,34 @@ export class AuctionDetailComponent implements OnInit {
   getStatusText(status: number): string {
     switch (status) {
       case AuctionRecyclingStatus.Pending:
-        return 'في انتظار الموافقة';
+        return 'Waiting for approval';
       case AuctionRecyclingStatus.Accepted:
-        return 'تمت الموافقة';
+        return 'Approved';
       case AuctionRecyclingStatus.Rejected:
-        return 'مرفوض';
-      case AuctionRecyclingStatus.Completed:
-        return 'مكتمل';
+        return 'Rejected';
       default:
-        return 'غير معروف';
+        return 'Unknown';
     }
   }
 
   getUnitTypeDisplayName(unitType: number): string {
     switch (unitType) {
       case 1:
-        return 'كيلوجرام';
+        return 'Kilogram';
       case 2:
-        return 'جرام';
+        return 'Gram';
       case 3:
-        return 'لتر';
+        return 'Liter';
       case 4:
-        return 'مليلتر';
+        return 'Milliliter';
       case 5:
-        return 'قطعة';
+        return 'Piece';
       case 6:
-        return 'متر';
+        return 'Meter';
       case 7:
-        return 'سنتيمتر';
+        return 'Centimeter';
       default:
-        return 'وحدة غير معروفة';
+        return 'Unknown Unit';
     }
   }
 
@@ -218,7 +215,7 @@ export class AuctionDetailComponent implements OnInit {
 
   placeBid() {
     if (this.bidAmount == null || this.bidAmount <= 0) {
-      this.message = 'يرجى إدخال قيمة مزايدة صحيحة';
+      this.message = 'Please enter a valid bid amount';
       return;
     }
     const bid: BidViewModel = {
@@ -228,15 +225,15 @@ export class AuctionDetailComponent implements OnInit {
     this.auctionBidService.placeBid(bid).subscribe({
       next: (res) => {
         if (res && res.isSuccess) {
-          this.message = 'تمت المزايدة بنجاح';
+          this.message = 'Bid placed successfully';
           this.loadBids();
           this.loadMaxBid();
         } else {
-          this.message = res?.message || 'حدث خطأ أثناء المزايدة';
+          this.message = res?.message || 'An error occurred while placing the bid';
         }
       },
       error: (err) => {
-        this.message = err?.error?.message || 'حدث خطأ أثناء المزايدة';
+        this.message = err?.error?.message || 'An error occurred while placing the bid';
       }
     });
   }
