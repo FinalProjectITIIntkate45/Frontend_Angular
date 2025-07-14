@@ -55,6 +55,9 @@ import { AboutUsComponent } from './components/about-us/about-us.component';
 import { ShopDetailsModalComponent } from './components/shop-details-modal/shop-details-modal.component';
 import { ClientNotificationsPanelComponent } from './components/notifications-panel/notifications-panel.component';
 import { HomeModule } from '../home/home.module';
+import { ReviewCardComponent } from './components/reviews/review-card/review-card.component';
+import { ReviewListComponent } from './components/reviews/review-list/review-list.component';
+import { ReviewFormComponent } from './components/reviews/review-form/review-form.component';
 
 @NgModule({
   declarations: [
@@ -95,6 +98,9 @@ import { HomeModule } from '../home/home.module';
     ClientOrderDetailsComponent,
     ShopDetailsModalComponent,
     ClientNotificationsPanelComponent,
+    ReviewCardComponent,
+    ReviewListComponent,
+    ReviewFormComponent,
   ],
 
   imports: [

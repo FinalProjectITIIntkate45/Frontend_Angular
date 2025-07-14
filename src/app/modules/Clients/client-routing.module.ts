@@ -48,6 +48,7 @@ const routes: Routes = [
       { path: 'orders/:id', component: ClientOrderDetailsComponent },
       { path: 'wallet-recharge', component: WalletRechargeComponent },
       { path: 'wallet/success', component: WalletSuccessComponent },
+      // review
     ],
   },
 ];
