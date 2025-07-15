@@ -5,7 +5,7 @@
 }
 
 .section-header {
-  background: linear-gradient(135deg, #28a745, #20c997);
+  background: linear-gradient(135deg, #efb036, #2c3e50);
   color: white;
   padding: 30px;
   border-radius: 15px;
@@ -38,7 +38,7 @@
 }
 
 .nav-pills .nav-link.active {
-  background-color: #28a745;
+  background-color: #2c3e50;
   color: white;
   box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
 }
@@ -71,7 +71,7 @@
 .material-icon {
   width: 60px;
   height: 60px;
-  background: linear-gradient(135deg, #28a745, #20c997);
+  background: linear-gradient(135deg, #efb036, #2c3e50);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -97,7 +97,7 @@
 }
 
 .selected-material-info {
-  border-left: 4px solid #28a745;
+  border-left: 4px solid #2c3e50;
   background: linear-gradient(135deg, #f8f9fa, #e9ecef);
 }
 
@@ -110,7 +110,7 @@
 }
 
 .upload-area:hover {
-  border-color: #28a745;
+  border-color: #2c3e50;
   background-color: #f8f9fa;
 }
 
@@ -166,11 +166,11 @@
 }
 
 .btn-group .btn-success {
-  background: linear-gradient(135deg, #28a745, #20c997);
+  background: linear-gradient(135deg, #efb036, #2c3e50);
 }
 
 .btn-group .btn-success:hover {
-  background: linear-gradient(135deg, #218838, #1ea085);
+  background: linear-gradient(135deg, #2c3e50, #efb036);
 }
 
 .btn-group .btn-info {
@@ -189,7 +189,7 @@
 }
 
 .table thead th {
-  background: linear-gradient(135deg, #28a745, #20c997);
+  background: linear-gradient(135deg, #efb036, #2c3e50);
   color: white;
   border: none;
   padding: 15px;
@@ -224,7 +224,7 @@
 }
 
 .badge.bg-success {
-  background-color: #28a745 !important;
+  background-color: #2c3e50 !important;
 }
 
 .badge.bg-danger {
@@ -250,7 +250,7 @@
 }
 
 .btn-success {
-  background: linear-gradient(135deg, #28a745, #20c997);
+  background: linear-gradient(135deg, #efb036, #2c3e50);
 }
 
 .btn-success:hover {
@@ -355,7 +355,7 @@
 
 /* Form Validation Styles */
 .form-control:focus {
-  border-color: #28a745;
+  border-color: #2c3e50;
   box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
 }
 
@@ -390,7 +390,7 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #28a745;
+  background: #2c3e50;
   border-radius: 10px;
 }
 
