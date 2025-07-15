@@ -103,29 +103,43 @@ export class PointsSectionComponent implements OnInit {
   // Helper methods for template
   getTotalFreePoints(): number {
     if (!this.freePointsSummary) return 0;
-    return this.freePointsSummary.reduce(
-      (total: number, point: any) =>
-        total + (point.points || point.Points || 0),
-      0
+    // Sum and return integer part only
+    return Math.floor(
+      this.freePointsSummary.reduce(
+        (total: number, point: any) =>
+          total + parseFloat(point.points || point.Points || 0),
+        0
+      )
     );
   }
 
   getTotalShopPoints(): number {
     if (!this.shopPointsSummary) return 0;
-    return this.shopPointsSummary.reduce(
-      (total: number, point: any) =>
-        total + (point.points || point.Points || 0),
-      0
+    // Sum and return integer part only
+    return Math.floor(
+      this.shopPointsSummary.reduce(
+        (total: number, point: any) =>
+          total + parseFloat(point.points || point.Points || 0),
+        0
+      )
     );
   }
 
   getTotalPendingPoints(): number {
     if (!this.pendingPointsSummary) return 0;
-    return this.pendingPointsSummary.reduce(
-      (total: number, point: any) =>
-        total + (point.points || point.Points || 0),
-      0
+    // Sum and return integer part only
+    return Math.floor(
+      this.pendingPointsSummary.reduce(
+        (total: number, point: any) =>
+          total + parseFloat(point.points || point.Points || 0),
+        0
+      )
     );
+  }
+
+  // New: Total points = free + shop (integer part only)
+  getTotalPoints(): number {
+    return this.getTotalFreePoints() + this.getTotalShopPoints();
   }
 
   getRecentFreePoints(): any[] {
@@ -148,5 +162,11 @@ export class PointsSectionComponent implements OnInit {
     this.shopPointsSummary = null;
     this.pendingPointsSummary = null;
     this.loadWalletData();
+  }
+
+  // Helper to get integer part of a point value for display
+  getIntPointValue(point: any): number {
+    const value = point.points ?? point.Points ?? 0;
+    return Math.floor(parseFloat(value));
   }
 }

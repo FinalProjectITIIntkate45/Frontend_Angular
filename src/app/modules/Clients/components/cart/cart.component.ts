@@ -85,7 +85,7 @@ export class CartComponent implements OnInit {
       total += price * qty;
       points += pts * qty;
     });
-    this.cartData.CartTotalPrice = total;
+    this.cartData.price = total;
     this.cartData.CartTotalPoints = points;
   }
 

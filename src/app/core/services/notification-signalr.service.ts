@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { Subject, BehaviorSubject } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { map } from 'rxjs';
 
 export interface NewProductNotification {
   providerId: string;
@@ -73,10 +74,8 @@ export class NotificationSignalRService {
   private addNotification(notification: NewProductNotification): void {
     const currentNotifications = this.notificationsSubject.value;
     const updatedNotifications = [notification, ...currentNotifications];
-
     // Keep only the last 50 notifications to prevent storage bloat
     const trimmedNotifications = updatedNotifications.slice(0, 50);
-
     this.notificationsSubject.next(trimmedNotifications);
     this.saveNotificationsToStorage(trimmedNotifications);
   }

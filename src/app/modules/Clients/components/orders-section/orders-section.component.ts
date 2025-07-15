@@ -418,4 +418,11 @@ export class OrdersSectionComponent implements OnInit, OnDestroy {
   get totalEarnedPoints(): number {
     return this.orders.reduce((sum, o) => sum + (o.EarnedPoints || 0), 0);
   }
+
+  get sortedOrders() {
+    return [...this.orders].sort(
+      (a, b) =>
+        new Date(b.DateCreated).getTime() - new Date(a.DateCreated).getTime()
+    );
+  }
 }

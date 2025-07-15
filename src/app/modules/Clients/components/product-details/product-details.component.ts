@@ -582,31 +582,31 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   // Navigation methods with error handling
   viewRelatedProduct(productId: number) {
     if (productId) {
-      this.router.navigate(['/client/products', productId]);
+      this.router.navigate(['/products', productId]);
     }
   }
 
   viewSimilarProduct(productId: number) {
     if (productId) {
-      this.router.navigate(['/client/products', productId]);
+      this.router.navigate(['/products', productId]);
     }
   }
 
   viewPopularProduct(productId: number) {
     if (productId) {
-      this.router.navigate(['/client/products', productId]);
+      this.router.navigate(['/products', productId]);
     }
   }
 
   viewNewArrivalProduct(productId: number) {
     if (productId) {
-      this.router.navigate(['/client/products', productId]);
+      this.router.navigate(['/products', productId]);
     }
   }
 
   goToCategory(categoryName: string) {
     if (categoryName) {
-      this.router.navigate(['/client/products'], {
+      this.router.navigate(['/products'], {
         queryParams: { category: categoryName },
       });
     }
@@ -614,7 +614,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
 
   goToShop(shopName: string) {
     if (shopName) {
-      this.router.navigate(['/client/products'], {
+      this.router.navigate(['/products'], {
         queryParams: { shop: shopName },
       });
     }

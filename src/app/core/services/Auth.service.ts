@@ -139,6 +139,15 @@ export class AuthService {
   }
 
   logout(): void {
+    console.log('[AuthService] logout() called');
+    console.log(
+      '[AuthService] Before logout, token in cookie:',
+      this.cookieService.get(this.TOKEN_KEY)
+    );
+    console.log(
+      '[AuthService] Before logout, token in localStorage:',
+      localStorage.getItem(this.TOKEN_KEY)
+    );
     // Stop SignalR connections
     this.stopSignalRConnections();
 
@@ -176,6 +185,16 @@ export class AuthService {
         this.cookieService.delete(cookieName);
       }
     });
+
+    // Debug after clearing
+    console.log(
+      '[AuthService] After logout, token in cookie:',
+      this.cookieService.get(this.TOKEN_KEY)
+    );
+    console.log(
+      '[AuthService] After logout, token in localStorage:',
+      localStorage.getItem(this.TOKEN_KEY)
+    );
 
     // Reset auth state
     this.authState.next({

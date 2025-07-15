@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 import { CheckoutResultVM } from '../Models/CheckoutResultVM';
 import { ConfirmPaymentVM } from '../Models/ConfirmPaymentVM';
@@ -22,9 +23,10 @@ export class CheckoutService {
   validateProducts(
     model: OrderCreateViewModel
   ): Observable<APIResponse<boolean>> {
+    const backendModel = this.mapToBackendModel(model);
     return this.http.post<APIResponse<boolean>>(
       `${this.baseUrl}/validate-products`,
-      model
+      backendModel
     );
   }
 
@@ -32,9 +34,10 @@ export class CheckoutService {
   validateCoupon(
     model: OrderCreateViewModel
   ): Observable<APIResponse<CouponCode>> {
+    const backendModel = this.mapToBackendModel(model);
     return this.http.post<APIResponse<CouponCode>>(
       `${this.baseUrl}/validate-coupon`,
-      model
+      backendModel
     );
   }
 
@@ -42,9 +45,10 @@ export class CheckoutService {
   validatePoints(
     model: OrderCreateViewModel
   ): Observable<APIResponse<boolean>> {
+    const backendModel = this.mapToBackendModel(model);
     return this.http.post<APIResponse<boolean>>(
       `${this.baseUrl}/validate-points`,
-      model
+      backendModel
     );
   }
 
@@ -52,9 +56,10 @@ export class CheckoutService {
   executePayment(
     model: OrderCreateViewModel
   ): Observable<APIResponse<CheckoutResultVM>> {
+    const backendModel = this.mapToBackendModel(model);
     return this.http.post<APIResponse<CheckoutResultVM>>(
       `${this.baseUrl}/execute-payment`,
-      model
+      backendModel
     );
   }
 
@@ -62,18 +67,20 @@ export class CheckoutService {
   calculateFinalPriceAndPoints(
     model: OrderCreateViewModel
   ): Observable<APIResponse<{ FinalPrice: number; EarnedPoints: number }>> {
+    const backendModel = this.mapToBackendModel(model);
     return this.http.post<
       APIResponse<{ FinalPrice: number; EarnedPoints: number }>
-    >(`${this.baseUrl}/calculate-price`, model);
+    >(`${this.baseUrl}/calculate-price`, backendModel);
   }
 
   // Endpoint 6: Deduct Points
   deductPoints(
     model: OrderCreateViewModel
   ): Observable<APIResponse<{ Message: string }>> {
+    const backendModel = this.mapToBackendModel(model);
     return this.http.post<APIResponse<{ Message: string }>>(
       `${this.baseUrl}/deduct-points`,
-      model
+      backendModel
     );
   }
 
@@ -81,9 +88,10 @@ export class CheckoutService {
   createOrder(
     model: OrderCreateViewModel
   ): Observable<APIResponse<{ Order: any }>> {
+    const backendModel = this.mapToBackendModel(model);
     return this.http.post<APIResponse<{ Order: any }>>(
       `${this.baseUrl}/create-order`,
-      model
+      backendModel
     );
   }
 
@@ -91,15 +99,20 @@ export class CheckoutService {
   finalizeCheckout(
     model: OrderCreateViewModel
   ): Observable<APIResponse<CheckoutResultVM>> {
+    const backendModel = this.mapToBackendModel(model);
     return this.http.post<APIResponse<CheckoutResultVM>>(
       `${this.baseUrl}/finalize-checkout`,
-      model
+      backendModel
     );
   }
   completeOrder(data: { order: OrderCreateViewModel; saveOrder: boolean }) {
+    const backendData = {
+      order: this.mapToBackendModel(data.order),
+      saveOrder: data.saveOrder,
+    };
     return this.http.post<APIResponse<CheckoutResultVM>>(
       `${this.baseUrl}/complete-order`,
-      data
+      backendData
     );
   }
   confirmPayment(data: ConfirmPaymentVM): Observable<ConfirmPaymentVM> {
@@ -107,5 +120,35 @@ export class CheckoutService {
       `${this.baseUrl}/ConfirmPayment`,
       data
     );
+  }
+
+  private mapToBackendModel(model: OrderCreateViewModel): any {
+    return {
+      ClientId: model.clientId,
+      OrderItems: model.orderItems,
+      TotalPrice: model.totalPrice,
+      TotalPoints: model.totalPoints,
+      UsedPaidPoints: model.usedPaidPoints,
+      UsedFreePoints: model.usedFreePoints,
+      CouponCode: model.couponCode,
+      PaymentType: model.paymentType,
+      BillingData: model.billingData
+        ? {
+            FirstName: model.billingData.firstName,
+            LastName: model.billingData.lastName,
+            Email: model.billingData.email,
+            PhoneNumber: model.billingData.phoneNumber,
+            City: model.billingData.city,
+            Country: model.billingData.country,
+            State: model.billingData.state,
+            Apartment: model.billingData.apartment,
+            Floor: model.billingData.floor,
+            Street: model.billingData.street,
+            Building: model.billingData.building,
+            ShippingMethod: model.billingData.shippingMethod,
+          }
+        : null,
+      Status: model.status,
+    };
   }
 }

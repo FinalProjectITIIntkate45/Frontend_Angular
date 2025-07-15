@@ -3,7 +3,7 @@
   <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
     <!-- Logo -->
     <div class="logo mb-3 mb-md-0">
-     <a routerLink="/home"> <img src="../../../../../assets/pointpay2-05.png" alt="PointPay Logo"></a>
+      <a routerLink="/home"> <img src="../../../../../assets/pointpay2-05.png" alt="PointPay Logo"></a>
     </div>
 
     <!-- Search bar centered -->
@@ -14,25 +14,35 @@
 
     <!-- Actions -->
     <div class="d-flex align-items-center gap-3">
-      <a routerLink="/account/login" class="btn btn-signup" aria-label="Login">Login</a>
-      <a routerLink="/account/register" class="btn btn-signup" aria-label="Sign Up">Sign Up</a>
+      <a *ngIf="!isAuthenticated" routerLink="/account/login" class="btn btn-signup" aria-label="Login">Login</a>
+      <a *ngIf="!isAuthenticated" routerLink="/account/register" class="btn btn-signup" aria-label="Sign Up">Sign Up</a>
 
-     <a routerLink="/client/wishlist" class="text-icon" aria-label="Wishlist">
-  <i class="fas fa-heart fs-5"></i>
-</a>
+      <a routerLink="/client/wishlist" class="text-icon" aria-label="Wishlist">
+        <i class="fas fa-heart fs-5"></i>
+      </a>
 
       <button routerLink="/client/cart" class="text-icon position-relative" aria-label="Shopping Cart">
         <i class="fas fa-shopping-cart fs-5"></i>
         <span *ngIf="cartItemsCount > 0" class="cart-badge-header">{{ cartItemsCount }}</span>
       </button>
 
-      <button class="text-icon" aria-label="Notifications">
-        <i class="fas fa-bell fs-5"></i>
-      </button>
+      <div style="position: relative; display: inline-block;">
+        <button id="notifications-bell-icon" class="text-icon position-relative" aria-label="Notifications"
+          (click)="toggleNotificationsPanel($event)">
+          <i class="fas fa-bell fs-5"></i>
+          <span *ngIf="hasNotifications"
+            class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"
+            style="width: 10px; height: 10px;"></span>
+        </button>
+        <div *ngIf="showNotificationsPanel" id="notifications-dropdown-panel"
+          style="position: absolute; right: 0; top: 120%; z-index: 1000; min-width: 320px; max-width: 400px; background: #fff; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.12);">
+          <app-client-notifications-panel></app-client-notifications-panel>
+        </div>
+      </div>
 
       <a routerLink="/client/profile" class="text-icon" aria-label="Profile">
-  <i class="fas fa-user fs-5"></i>
-</a>
+        <i class="fas fa-user fs-5"></i>
+      </a>
 
     </div>
   </div>

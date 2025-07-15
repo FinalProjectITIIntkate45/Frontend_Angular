@@ -26,6 +26,7 @@ import { ClientOrderDetailsComponent } from './components/orders-section/client-
 import { WalletRechargeComponent } from './components/wallet-recharge/wallet-recharge.component';
 import { WalletSuccessComponent } from './components/wallet-success/wallet-success.component';
 import { AboutUsComponent } from './components/about-us/about-us.component';
+import { NotificationComponent } from './components/notification/notification.component';
 
 const routes: Routes = [
   {
@@ -48,6 +49,7 @@ const routes: Routes = [
       { path: 'orders/:id', component: ClientOrderDetailsComponent },
       { path: 'wallet-recharge', component: WalletRechargeComponent },
       { path: 'wallet/success', component: WalletSuccessComponent },
+      { path: 'notifi', component: NotificationComponent },
       // review
     ],
   },

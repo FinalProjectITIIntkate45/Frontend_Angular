@@ -28,6 +28,60 @@
               <span><i class="fas fa-weight-hanging"></i> {{ auction.quantity }} {{ auction.UnitType }}</span>
               <span><i class="fas fa-users"></i> {{ auction.RequestsCount }} Requests</span>
             </div>
+            <div class="card-actions">
+              <button 
+                class="btn-view-requests" 
+                (click)="loadAuctionRequests(auction.Id)"
+                [disabled]="loadingRequests[auction.Id]">
+                <i class="fas fa-eye"></i>
+                {{ hasRequestsLoaded(auction.Id) ? 'Hide Requests' : 'Show Requests' }}
+                <span *ngIf="loadingRequests[auction.Id]" class="loading-spinner">
+                  <i class="fas fa-spinner fa-spin"></i>
+                </span>
+              </button>
+            </div>
+          </div>
+          <!-- Requests Section -->
+          <div class="requests-section" *ngIf="hasRequestsLoaded(auction.Id)">
+            <div class="requests-header">
+              <h4><i class="fas fa-list"></i> Requests related to this auction</h4>
+              <span class="requests-count">{{ getAuctionRequests(auction.Id).length }} Request{{ getAuctionRequests(auction.Id).length === 1 ? '' : 's' }}</span>
+            </div>
+            <div class="requests-list" *ngIf="getAuctionRequests(auction.Id).length > 0">
+              <div class="request-item" *ngFor="let request of getAuctionRequests(auction.Id)">
+                <div class="request-info">
+                  <div class="request-details">
+                    <span class="request-id">#{{ request.id || 'N/A' }}</span>
+                    <span class="material-name">Unit: {{ request.unitType !== undefined ? request.unitType : 'N/A' }}</span>
+                    <span class="city"><i class="fas fa-map-marker-alt"></i> City: {{ request.city || 'N/A' }}</span>
+                    <span class="address"><i class="fas fa-home"></i> Address: {{ request.address || 'N/A' }}</span>
+                    <span class="quantity"><i class="fas fa-weight-hanging"></i> Quantity: {{ request.quantity !== undefined ? request.quantity : 'N/A' }}</span>
+                    <span class="governorate"><i class="fas fa-flag"></i> Governorate: {{ request.governorate !== undefined ? request.governorate : 'N/A' }}</span>
+                    <span class="return-type"><i class="fas fa-undo"></i> Return Type: {{ request.returnType !== undefined ? request.returnType : 'N/A' }}</span>
+                  </div>
+                  <div class="request-status">
+                    <span class="status-badge status-{{ request.status }}">
+                      {{ getStatusText(request.status) }}
+                    </span>
+                    <span class="insurance-amount">
+                      <i class="fas fa-money-bill-wave"></i>
+                      {{ request.pendingmMoneyAfterAuction !== undefined && request.pendingmMoneyAfterAuction !== null ? (request.pendingmMoneyAfterAuction | currency:'EGP':'symbol':'1.0-0') : 'N/A' }}
+                    </span>
+                  </div>
+                </div>
+                <div class="request-time" *ngIf="request.createdAt">
+                  <i class="fas fa-clock"></i>
+                  {{ request.createdAt | date:'short' }}
+                </div>
+                <button class="btn-approve" (click)="approveTransaction(request.id, auction.Id)">
+                  Approve Money Transaction
+                </button>
+              </div>
+            </div>
+            <div class="no-requests" *ngIf="getAuctionRequests(auction.Id).length === 0">
+              <i class="fas fa-inbox"></i>
+              <p>No requests related to this auction</p>
+            </div>
           </div>
         </div>
       </div>

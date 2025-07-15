@@ -23,8 +23,7 @@
         <div class="summary-card">
             <div class="summary-item">
                 <span class="summary-label">Total Points:</span>
-                <span class="summary-value">{{ walletSummary?.balancePoints || walletSummary?.BalancePoints || 0
-                    }}</span>
+                <span class="summary-value">{{ getTotalPoints() }}</span>
             </div>
             <div class="summary-item">
                 <span class="summary-label">Cash Balance:</span>
@@ -48,7 +47,7 @@
                 <div *ngIf="freePointsSummary && freePointsSummary.length > 0" class="recent-points">
                     <h4>Recent Activity:</h4>
                     <div *ngFor="let point of getRecentFreePoints()" class="point-item">
-                        <span class="point-amount">+{{ point.points || point.Points }}</span>
+                        <span class="point-amount">+{{ getIntPointValue(point) }}</span>
                         <span class="point-source">{{ point.sourceType || point.SourceType }}</span>
                         <span class="point-date">{{ (point.earnedAt || point.EarnedAt) | date:'short' }}</span>
                     </div>
@@ -71,7 +70,7 @@
                 <div *ngIf="shopPointsSummary && shopPointsSummary.length > 0" class="recent-points">
                     <h4>Recent Activity:</h4>
                     <div *ngFor="let point of getRecentShopPoints()" class="point-item">
-                        <span class="point-amount">+{{ point.points || point.Points }}</span>
+                        <span class="point-amount">+{{ getIntPointValue(point) }}</span>
                         <span class="point-source">{{ (point.shop?.name || point.Shop?.Name) || 'Unknown Shop' }}</span>
                         <span class="point-date">{{ (point.earnedAt || point.EarnedAt) | date:'short' }}</span>
                     </div>
@@ -94,7 +93,7 @@
                 <div *ngIf="pendingPointsSummary && pendingPointsSummary.length > 0" class="recent-points">
                     <h4>Recent Activity:</h4>
                     <div *ngFor="let point of getRecentPendingPoints()" class="point-item">
-                        <span class="point-amount">+{{ point.points || point.Points }}</span>
+                        <span class="point-amount">+{{ getIntPointValue(point) }}</span>
                         <span class="point-source">{{ (point.shop?.name || point.Shop?.Name) || 'Unknown Shop' }}</span>
                         <span class="point-status">{{ point.status || point.Status }}</span>
                     </div>

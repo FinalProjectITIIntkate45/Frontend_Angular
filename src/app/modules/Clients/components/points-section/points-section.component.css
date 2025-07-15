@@ -1,3 +1,16 @@
+/* Theme Variables (add if missing) */
+:root {
+  --accent-yellow: #efb036;
+  --primary-dark: #2c3e50;
+  --primary-blue: #3498db;
+  --accent-orange: #f39c12;
+  --surface-white: #fff;
+  --surface-light: #f8f9fa;
+  --error-red: #e53e3e;
+  --error-bg: #fff5f5;
+  --shadow-lg: rgba(60, 72, 88, 0.08);
+}
+
 .wallet-section-container {
   max-width: 900px;
   margin: 2rem auto;
@@ -41,7 +54,7 @@
 }
 
 .wallet-summary-card {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #efb036 0%, #2c3e50 100%);
   border-radius: 1rem;
   padding: 1.5rem;
   color: white;
@@ -419,13 +432,15 @@
   justify-content: center;
   padding: 4rem 2rem;
   text-align: center;
+  background: var(--surface-light);
+  border-radius: 12px;
 }
 
 .spinner {
   width: 50px;
   height: 50px;
   border: 4px solid #f3f3f3;
-  border-top: 4px solid #3498db;
+  border-top: 4px solid var(--accent-yellow);
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 1rem;
@@ -454,21 +469,21 @@
   justify-content: center;
   padding: 4rem 2rem;
   text-align: center;
-  background: #fff5f5;
-  border: 1px solid #fed7d7;
+  background: var(--error-bg);
+  border: 1px solid var(--error-red);
   border-radius: 12px;
   margin: 2rem 0;
 }
 
 .error-state p {
-  color: #e53e3e;
+  color: var(--error-red);
   font-size: 1.1rem;
   margin-bottom: 1rem;
 }
 
 .error-state button {
   padding: 0.75rem 1.5rem;
-  background: #e53e3e;
+  background: var(--error-red);
   color: white;
   border: none;
   border-radius: 8px;
@@ -487,7 +502,7 @@
 }
 
 .summary-card {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2c3e50 0%, #efb036 100%);
   border-radius: 16px;
   padding: 2rem;
   color: white;
@@ -525,10 +540,10 @@
 }
 
 .point-card {
-  background: white;
+  background: var(--surface-white);
   border-radius: 16px;
   padding: 1.5rem;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px var(--shadow-lg);
   cursor: pointer;
   transition: all 0.3s ease;
   border: 2px solid transparent;
@@ -540,15 +555,15 @@
 }
 
 .point-card.free-points {
-  border-left: 4px solid #e74c3c;
+  border-left: 4px solid var(--accent-yellow);
 }
 
 .point-card.shop-points {
-  border-left: 4px solid #3498db;
+  border-left: 4px solid var(--primary-blue);
 }
 
 .point-card.pending-points {
-  border-left: 4px solid #f39c12;
+  border-left: 4px solid var(--accent-orange);
 }
 
 .card-header {
@@ -570,18 +585,18 @@
 }
 
 .free-points .card-icon {
-  background: #fdf2f2;
-  color: #e74c3c;
+  background: #fffbe6;
+  color: var(--accent-yellow);
 }
 
 .shop-points .card-icon {
-  background: #f0f8ff;
-  color: #3498db;
+  background: #eaf6ff;
+  color: var(--primary-blue);
 }
 
 .pending-points .card-icon {
-  background: #fffbf0;
-  color: #f39c12;
+  background: #fff6e6;
+  color: var(--accent-orange);
 }
 
 .card-title {
@@ -665,20 +680,20 @@
   justify-content: center;
   padding: 4rem 2rem;
   text-align: center;
-  background: #f8f9fa;
+  background: var(--surface-light);
   border-radius: 12px;
   margin: 2rem 0;
 }
 
 .empty-state p {
-  color: #7f8c8d;
+  color: var(--primary-dark);
   font-size: 1.1rem;
   margin-bottom: 1rem;
 }
 
 .empty-state button {
   padding: 0.75rem 1.5rem;
-  background: #3498db;
+  background: var(--primary-blue);
   color: white;
   border: none;
   border-radius: 8px;
