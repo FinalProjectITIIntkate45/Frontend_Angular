@@ -219,15 +219,11 @@ export class RecyclingService {
 
   // Choose return type for money transaction
   chooseReturnType(returnType: ReturnType, requestId: number): Observable<any> {
-    const payload = {
-      returnType: returnType,
-      requestid: requestId
-    };
-
+    // إرسال البراميترز في ال query string وليس في body
     return this.http
       .post<APIResponse<any>>(
-        `${this.baseUrl}/RecyclingRequest/ChooseTypeForMoneyTransaction`,
-        payload
+        `${this.baseUrl}/RecyclingRequest/ChooseTypeForMoneyTransaction?returnType=${returnType}&requestid=${requestId}`,
+        {} // body فاضي
       )
       .pipe(
         map((response) => {
