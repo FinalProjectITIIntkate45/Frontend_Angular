@@ -16,7 +16,7 @@ export class PaymentInfoComponent {
   @Output() nextStep: EventEmitter<void> = new EventEmitter<void>();
   @Output() previousStep: EventEmitter<void> = new EventEmitter<void>();
 
-  couponCode:  { code: 'DISCOUNT50' }  = { code: 'DISCOUNT50' };
+  couponCode: { code: 'DISCOUNT50' } = { code: 'DISCOUNT50' };
   couponMessage: string | null = null;
   couponValid: boolean = false;
 
@@ -25,8 +25,37 @@ export class PaymentInfoComponent {
 
   constructor(private checkoutService: CheckoutService) {}
 
+  // Method to handle payment type selection
+  onPaymentTypeChange(paymentType: PaymentType): void {
+    this.checkoutModel.paymentType = paymentType;
+  }
+
   isPaymentValid(): boolean {
-    return !!this.checkoutModel.paymentType;
+    // Check if payment type is selected
+    if (
+      this.checkoutModel.paymentType === undefined ||
+      this.checkoutModel.paymentType === null
+    ) {
+      return false;
+    }
+
+    // Convert to number if it's a string (radio buttons sometimes return strings)
+    const paymentTypeValue = Number(this.checkoutModel.paymentType);
+
+    // Validate payment type using switch case
+    switch (paymentTypeValue) {
+      case PaymentType.PointsOnly:
+      case PaymentType.CashCollection:
+      case PaymentType.AcceptKiosk:
+      case PaymentType.MobileWallet:
+      case PaymentType.PayPal:
+      case PaymentType.OnlineCard:
+      case PaymentType.Paymob:
+      case PaymentType.CashOnDelivery:
+        return true;
+      default:
+        return false;
+    }
   }
 
   onNextStep(): void {
@@ -62,7 +91,7 @@ export class PaymentInfoComponent {
       error: () => {
         this.couponMessage = '⚠️ Error validating coupon.';
         this.couponValid = false;
-      }
+      },
     });
   }
 

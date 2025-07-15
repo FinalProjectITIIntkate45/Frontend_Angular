@@ -17,6 +17,7 @@ import { BestShopComponent } from './components/Best-shop/Best-shop.component';
 import { HomeLayoutComponent } from './components/home-layout/home-layout.component';
 import { ProductSearchComponent } from '../Clients/components/product-search/product-search.component';
 import { ProductDetailsComponent } from '../Clients/components/product-details/product-details.component';
+import { SharedModule } from '../../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,7 @@ import { ProductDetailsComponent } from '../Clients/components/product-details/p
     ProductSearchComponent,
     ProductDetailsComponent,
   ],
-  imports: [CommonModule, HomeRoutingModule, FormsModule],
+  imports: [CommonModule, HomeRoutingModule, FormsModule, SharedModule],
   exports: [
     HomeComponent,
     HeaderComponent,

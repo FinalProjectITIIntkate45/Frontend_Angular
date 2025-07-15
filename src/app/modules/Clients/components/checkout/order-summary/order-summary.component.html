@@ -1,7 +1,4 @@
-<div
-  class="General-card p-4 shadow-sm rounded bg-white"
-  *ngIf="!isLoading && cartData"
->
+<div class="General-card p-4 shadow-sm rounded bg-white" *ngIf="!isLoading && cartData">
   <h5 class="fw-bold text-center text-primary mb-4">🧾 Order Summary</h5>
 
   <!-- Optional: Show shop name -->
@@ -15,13 +12,9 @@
       <div class="d-flex justify-content-between align-items-center">
         <div class="text-truncate">
           <span class="fw-medium">{{ item.productVM?.Name }}</span>
-          <small class="text-muted d-block"
-            >Earned Points : {{ item.productVM?.EarnedPoints }}</small
-          >
+          <small class="text-muted d-block">Earned Points : {{ item.productVM?.EarnedPoints }}</small>
         </div>
-        <span class="fw-semibold"
-          >{{ item.productVM?.DisplayedPrice }} EGP</span
-        >
+        <span class="fw-semibold">{{ item.productVM?.DisplayedPrice }} EGP</span>
       </div>
     </div>
   </div>
@@ -30,8 +23,8 @@
   <div class="d-flex justify-content-between align-items-center mb-3">
     <span class="fw-semibold">Subtotal:</span>
     <span class="fw-bold">{{
-      cartData.CartTotalPrice | currency : "EGP" : "symbol"
-    }}</span>
+      cartData.price | currency : "EGP" : "symbol"
+      }}</span>
   </div>
 
   <!-- Points Summary -->
@@ -42,7 +35,7 @@
       <span>Total Points:</span>
       <span class="fw-semibold text-success">{{
         totalPoints | number : "1.2-2"
-      }}</span>
+        }}</span>
     </div>
 
     <div class="d-flex justify-content-between text-muted small mb-1">

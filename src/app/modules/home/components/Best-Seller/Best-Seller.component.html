@@ -1,34 +1,7 @@
 <section class="best-selling-section">
   <div class="container">
     <!-- Loader -->
-    <div class="loader-container" *ngIf="isLoading">
-      <div class="loader">
-        <div class="pulse-dot"></div>
-        <div class="floating-elements">
-          <div class="floating-element"></div>
-          <div class="floating-element"></div>
-          <div class="floating-element"></div>
-          <div class="floating-element"></div>
-        </div>
-      </div>
-      <div class="loading-text">
-        <span style="animation-delay: 0s;">L</span>
-        <span style="animation-delay: 0.1s;">o</span>
-        <span style="animation-delay: 0.2s;">a</span>
-        <span style="animation-delay: 0.3s;">d</span>
-        <span style="animation-delay: 0.4s;">i</span>
-        <span style="animation-delay: 0.5s;">n</span>
-        <span style="animation-delay: 0.6s;">g</span>
-        <span class="dot dot1" style="animation-delay: 0.7s;">.</span>
-        <span class="dot dot2" style="animation-delay: 0.8s;">.</span>
-        <span class="dot dot3" style="animation-delay: 0.9s;">.</span>
-      </div>
-      <div class="progress-bar">
-        <div class="progress-fill">
-          <div class="wave-effect"></div>
-        </div>
-      </div>
-    </div>
+    <app-loader [isLoading]="isLoading"></app-loader>
 
     <!-- Original Component Content -->
     <div class="section-header">
@@ -38,12 +11,14 @@
 
     <div class="products-container">
       <div class="products-grid">
-        <div class="product-card" *ngFor="let product of bestSellerProducts | slice:0:(showMore ? bestSellerProducts.length : 3)">
+        <div class="product-card"
+          *ngFor="let product of bestSellerProducts | slice:0:(showMore ? bestSellerProducts.length : 3)">
           <img [src]="product.ImageUrl" class="product-image" [alt]="product.Name" />
           <h6 class="product-title">{{ product.Name }}</h6>
           <div class="product-rating">
             <div class="stars">
-              <i class="fas fa-star" *ngFor="let star of [1,2,3,4,5]; let i = index" [class.far]="i >= product.Rate"></i>
+              <i class="fas fa-star" *ngFor="let star of [1,2,3,4,5]; let i = index"
+                [class.far]="i >= product.Rate"></i>
             </div>
             <span class="rating-count">({{ product.Rate }}) • {{ product.Count }} reviews</span>
           </div>
@@ -51,7 +26,7 @@
             <span class="price-current">${{ product.BasePrice }}</span>
             <span class="price-old">${{ product.BasePrice *1.2 }}</span>
           </div>
-          <button class="add-to-cart-btn">
+          <button class="add-to-cart-btn" routerLink="/account/register">
             <i class="fas fa-plus"></i> Add to Cart
           </button>
         </div>

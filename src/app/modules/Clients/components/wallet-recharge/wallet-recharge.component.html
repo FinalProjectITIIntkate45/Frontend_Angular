@@ -60,10 +60,10 @@
                 {{ loading ? 'Processing...' : 'Recharge with Stripe Checkout' }}
             </button>
 
-            <button type="button" (click)="rechargeWithPaymentIntent()" [disabled]="rechargeForm.invalid || loading"
+            <!-- <button type="button" (click)="rechargeWithPaymentIntent()" [disabled]="rechargeForm.invalid || loading"
                 class="btn btn-secondary payment-intent-btn">
                 {{ loading ? 'Processing...' : 'Recharge with Payment Intent' }}
-            </button>
+            </button> -->
 
             <button type="button" (click)="resetForm()" class="btn btn-outline reset-btn">
                 Reset

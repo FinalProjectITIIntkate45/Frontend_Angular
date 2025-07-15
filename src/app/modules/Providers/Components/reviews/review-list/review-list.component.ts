@@ -1,10 +1,10 @@
 import { Component, Input } from '@angular/core';
-import { ReviewView } from '../../../models/ReviewView.Models';
-import { GeneralreviewsService } from '../../../services/generalreviews.service';
+import { ReviewView } from '../../../../../core/models/ReviewView.Models';
+import { GeneralreviewsService } from '../../../../../core/services/generalreviews.service';
 
 @Component({
   selector: 'app-review-list',
-  imports: [],
+  standalone:false,
   templateUrl: './review-list.component.html',
   styleUrl: './review-list.component.css',
 })

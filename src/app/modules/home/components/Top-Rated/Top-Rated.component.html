@@ -40,13 +40,13 @@
       <!-- Featured Deal -->
       <div class="featured-deal">
         <div class="deal-badge">
-          <i class="fas fa-fire"></i> Featured Deal
+          <i class="fas fa-fire"></i> Top Ordered
         </div>
-        <h3>100% Organic Coffee Beans</h3>
-        <p>Premium single-origin beans sourced directly from sustainable farms. Limited time offer with exclusive pricing.</p>
-        <a href="#" class="cta-button" (click)="toggleShowMore()">
+        <h3>Our Top Rated Products</h3>
+        <p>To be the best, you must order the best. There are our products thats are highly rated by our customers.</p>
+        <a routerLink="/products" class="cta-button" >
           <i class="fas fa-shopping-cart"></i>
-          {{ showMore ? 'Show Less' : 'Show more Products' }}
+          Show more Products
         </a>
       </div>
 
@@ -66,7 +66,7 @@
               <span class="price-current">${{ product.BasePrice }}</span>
               <span class="price-old">${{ product.BasePrice *1.2 }}</span>
             </div>
-            <button class="add-to-cart-btn">
+            <button class="add-to-cart-btn" routerLink="/account/register">
               <i class="fas fa-plus"></i> Add to Cart
             </button>
           </div>

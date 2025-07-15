@@ -59,17 +59,32 @@ export class ProductFormPageComponent implements OnInit {
       description: ['', Validators.required],
       stock: [1, Validators.required],
       basePrice: [1, Validators.required],
-      points: [1, Validators.required],
+      points: [1], // initially not required, will set dynamically
       categoryId: [null, Validators.required],
       isSpecialOffer: [false],
-      increaseRate: [],
-      discountPercentage: [],
+      increaseRate: [null, [Validators.min(0), Validators.max(1)]],
+      discountPercentage: [null, [Validators.min(0), Validators.max(1)]],
       attachments: [null],
     });
+
+    // Control field visibility and values based on subscription type
     this.subscriptionService.getSubscriptionType().subscribe({
       next: (type) => {
         this.subscriptionType = type;
-        console.log('🔁 User subscription type:', this.subscriptionType);
+        if (this.subscriptionType === 'Basic') {
+          this.form.get('increaseRate')?.setValue(0);
+          this.form.get('increaseRate')?.disable();
+          this.form.get('points')?.disable();
+          // Remove required validator for points
+          this.form.get('points')?.clearValidators();
+          this.form.get('points')?.updateValueAndValidity();
+        } else {
+          this.form.get('increaseRate')?.enable();
+          this.form.get('points')?.enable();
+          // Add required validator for points
+          this.form.get('points')?.setValidators([Validators.required]);
+          this.form.get('points')?.updateValueAndValidity();
+        }
       },
       error: (err) => {
         console.error(' Failed to load subscription type', err);
@@ -268,7 +283,9 @@ export class ProductFormPageComponent implements OnInit {
         !!this.form.get('description')?.valid &&
         !!this.form.get('stock')?.valid &&
         !!this.form.get('basePrice')?.valid &&
-        !!this.form.get('points')?.valid
+        (this.subscriptionType === 'VIP'
+          ? !!this.form.get('points')?.valid
+          : true)
       );
     }
     if (step === 1) {
@@ -280,6 +297,14 @@ export class ProductFormPageComponent implements OnInit {
   onSubmit(): void {
     if (this.form.invalid) return;
     this.isLoading = true;
+
+    // For Basic, set points to 10% of displayed price and increaseRate to 0
+    if (this.subscriptionType === 'Basic') {
+      const basePrice = this.form.get('basePrice')?.value;
+      const displayedPrice = basePrice; // No increase rate for Basic
+      this.form.get('increaseRate')?.setValue(0);
+      this.form.get('points')?.setValue(Math.floor(displayedPrice * 0.1));
+    }
 
     const formData = new FormData();
     formData.append('name', this.form.get('name')?.value);

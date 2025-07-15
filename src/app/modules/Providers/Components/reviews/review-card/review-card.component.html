@@ -1,1 +1,20 @@
-<p>review-card works!</p>
+<div class="card mb-3">
+  <div class="card-body">
+    <h6 class="card-title fw-bold">{{ review.clientName || "Anonymous" }}</h6>
+    <p class="card-text">{{ review.comments }}</p>
+    <div class="mb-2">
+      <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
+        <i
+          class="fa"
+          [ngClass]="{
+            'fa-star': star <= review.rating,
+            'fa-star-o': star > review.rating
+          }"
+        ></i>
+      </ng-container>
+    </div>
+    <small class="text-muted">{{
+      review.modificationDateTime | date : "medium"
+    }}</small>
+  </div>
+</div>
