@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { ProductService } from '../../Services/product.service';
 import { Product } from '../../Models/Product.model';
 import {
@@ -21,7 +21,7 @@ interface ProductWithBadges extends Product {
   styleUrls: ['./product-search.component.css'],
   standalone: false,
 })
-export class ProductSearchComponent implements OnInit {
+export class ProductSearchComponent implements OnInit, AfterViewInit {
   products: ProductWithBadges[] = [];
   categories: string[] = [];
   brands: string[] = [];
@@ -38,6 +38,7 @@ export class ProductSearchComponent implements OnInit {
     availableToOrder: false,
     selectedBrands: [],
   };
+  isLoading = true;
 
   // Pagination properties
   currentPage: number = 1;
@@ -53,39 +54,120 @@ export class ProductSearchComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    console.log('🚀 ProductSearchComponent: ngOnInit() called');
+    console.log(
+      '🚀 ProductSearchComponent: Initial products length:',
+      this.products.length
+    );
+    console.log(
+      '🚀 ProductSearchComponent: Initial isLoading state:',
+      this.isLoading
+    );
+
     this.loadCategories();
     this.loadBrands();
     this.applyFilters();
+
+    console.log('🚀 ProductSearchComponent: ngOnInit() completed');
+  }
+
+  ngAfterViewInit(): void {
+    console.log('🔄 ProductSearchComponent: ngAfterViewInit() called');
+    console.log(
+      '🔄 ProductSearchComponent: Template state - isLoading:',
+      this.isLoading,
+      'products.length:',
+      this.products.length
+    );
+  }
+
+  // Getter to track when "No products found" condition is met
+  get shouldShowNoResults(): boolean {
+    const shouldShow = !this.isLoading && this.products.length === 0;
+    if (shouldShow) {
+      console.log(
+        '🚨 ProductSearchComponent: No products found condition met - isLoading:',
+        this.isLoading,
+        'products.length:',
+        this.products.length
+      );
+    }
+    return shouldShow;
   }
 
   loadCategories(): void {
+    console.log('📂 ProductSearchComponent: loadCategories() called');
     this.productService.getCategories().subscribe((categories) => {
+      console.log('📂 ProductSearchComponent: Categories loaded:', categories);
+      this.isLoading = true;
       this.categories = categories;
+      this.isLoading = false;
+      console.log('📂 ProductSearchComponent: Categories loading completed');
     });
   }
 
   loadBrands(): void {
+    console.log('🏷️ ProductSearchComponent: loadBrands() called');
     this.productService.getBrands().subscribe((brands) => {
+      console.log('🏷️ ProductSearchComponent: Brands loaded:', brands);
       this.brands = brands;
+      console.log('🏷️ ProductSearchComponent: Brands loading completed');
     });
   }
 
   applyFilters(): void {
+    console.log('🔄 ProductSearchComponent: applyFilters() called');
+    console.log(
+      '🔄 ProductSearchComponent: Current products length before API call:',
+      this.products.length
+    );
+    console.log('🔄 ProductSearchComponent: Setting isLoading = true');
+
+    this.isLoading = true; // Show loader before API call
     const searchRequest: ProductSearchRequest = {
       ...this.productFilter,
       pageNumber: this.currentPage,
       pageSize: this.pageSize,
     };
 
-    this.productService
-      .searchProducts(searchRequest)
-      .subscribe((result: ProductSearchResult) => {
-        console.log('product result:', result);
+    console.log('🔄 ProductSearchComponent: Search request:', searchRequest);
+
+    this.productService.searchProducts(searchRequest).subscribe({
+      next: (result: ProductSearchResult) => {
+        console.log(
+          '🔄 ProductSearchComponent: API response received:',
+          result
+        );
+        console.log(
+          '🔄 ProductSearchComponent: Products in result:',
+          result.Products
+        );
+        console.log(
+          '🔄 ProductSearchComponent: Products length in result:',
+          result.Products?.length
+        );
+
         this.products = result.Products;
         this.totalItems = result.TotalItems;
         this.totalPages = result.TotalPages;
         this.updatePagination();
-      });
+
+        console.log(
+          '🔄 ProductSearchComponent: Updated products length:',
+          this.products.length
+        );
+        console.log('🔄 ProductSearchComponent: Setting isLoading = false');
+        this.isLoading = false; // Hide loader on success
+      },
+      error: (err) => {
+        console.error('🔄 ProductSearchComponent: API error:', err);
+        console.log(
+          '🔄 ProductSearchComponent: Setting isLoading = false on error'
+        );
+        this.isLoading = false; // Hide loader on error
+        // Optionally, handle error (e.g., show a message)
+      },
+    });
   }
 
   resetFilters(): void {

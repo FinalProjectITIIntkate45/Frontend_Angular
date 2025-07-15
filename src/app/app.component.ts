@@ -19,11 +19,6 @@ export class AppComponent implements OnInit {
   ) {
     this.loaderService.isloading.subscribe((loading: boolean) => {
       this.isLoading = loading;
-      if (loading) {
-        console.log('Loading started');
-      } else {
-        console.log('Loading finished');
-      }
     });
     // You can initialize userType based on some logic or service if needed
   }

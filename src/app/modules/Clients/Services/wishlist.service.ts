@@ -41,10 +41,14 @@ export class WishlistService {
   }
 
   deleteProduct(productId: number): Observable<string> {
-    return this.http.delete<string>(`${this.baseUrl}/Delete/${productId}`);
+    return this.http.delete(`${this.baseUrl}/Delete/${productId}`, {
+      responseType: 'text' as 'json',
+    }) as Observable<string>;
   }
 
   clearWishlist(): Observable<string> {
-    return this.http.delete<string>(`${this.baseUrl}/Clear`, {});
+    return this.http.delete(`${this.baseUrl}/Clear`, {
+      responseType: 'text' as 'json',
+    }) as Observable<string>;
   }
 }

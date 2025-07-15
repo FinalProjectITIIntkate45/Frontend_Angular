@@ -26,7 +26,7 @@
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #efb036 0%, #2c3e50 100%);
   color: white;
   padding: 1rem 2rem;
   border-radius: 8px;
@@ -106,7 +106,7 @@
 
 .form-control:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: #efb036;
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
@@ -139,13 +139,13 @@
 }
 
 .amount-btn:hover {
-  border-color: #667eea;
+  border-color: #efb036;
   background: #f8fafc;
 }
 
 .amount-btn.selected {
-  border-color: #667eea;
-  background: #667eea;
+  border-color: #efb036;
+  background: #efb036;
   color: white;
 }
 
@@ -177,7 +177,7 @@
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #2c3e50 0%, #efb036 100%);
   color: white;
 }
 
@@ -230,7 +230,7 @@
   background: #f8fafc;
   padding: 1.5rem;
   border-radius: 8px;
-  border-left: 4px solid #667eea;
+  border-left: 4px solid #efb036;
 }
 
 .payment-info h3 {

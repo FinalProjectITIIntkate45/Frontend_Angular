@@ -77,7 +77,7 @@ export class PointService {
 
   // Get shop points summary
   getShopPointsSummary(): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/GetShopPoints`).pipe(
+    return this.http.get<any>(`${this.apiUrl}/ShopPoints`).pipe(
       map((response: any) => {
         console.log('Shop points raw response:', response);
 

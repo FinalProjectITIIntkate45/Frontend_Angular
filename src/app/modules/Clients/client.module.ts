@@ -94,7 +94,6 @@ import { ReviewFormComponent } from './components/reviews/review-form/review-for
     RecyclingSectionComponent,
     ClientOrderDetailsComponent,
     ShopDetailsModalComponent,
-    ClientNotificationsPanelComponent,
     ReviewCardComponent,
     ReviewListComponent,
     ReviewFormComponent,
@@ -126,5 +125,6 @@ import { ReviewFormComponent } from './components/reviews/review-form/review-for
       withInterceptors([AuthInterceptor, LoaderInterceptor])
     ),
   ],
+  exports: [],
 })
 export class ClientModule {}

@@ -9,7 +9,8 @@
               <i class="fas fa-filter me-2"></i>
               Filters
             </h4>
-            <button class="btn btn-link btn-sm text-white" (click)="resetFilters()" *ngIf="hasActiveFilters()">
+            <button class="btn btn-link btn-sm text-white" (click)="resetFilters()"
+              *ngIf="hasActiveFilters() && !isLoading">
               <i class="fas fa-times"></i> Clear All
             </button>
           </div>
@@ -124,7 +125,38 @@
       </div>
 
       <!-- Products Section -->
-      <div class="col-lg-9 col-md-8">
+      <div class="col-lg-9 col-md-8 position-relative" style="min-height: 400px;">
+        <!-- Loader Overlay: show only when loading, overlay the grid -->
+        <div class="loader-overlay" *ngIf="isLoading">
+          <div class="loader-container">
+            <div class="loader">
+              <div class="pulse-dot"></div>
+              <div class="floating-elements">
+                <div class="floating-element"></div>
+                <div class="floating-element"></div>
+                <div class="floating-element"></div>
+                <div class="floating-element"></div>
+              </div>
+            </div>
+            <div class="loading-text">
+              <span style="animation-delay: 0s;">L</span>
+              <span style="animation-delay: 0.1s;">o</span>
+              <span style="animation-delay: 0.2s;">a</span>
+              <span style="animation-delay: 0.3s;">d</span>
+              <span style="animation-delay: 0.4s;">i</span>
+              <span style="animation-delay: 0.5s;">n</span>
+              <span style="animation-delay: 0.6s;">g</span>
+              <span class="dot dot1" style="animation-delay: 0.7s;">.</span>
+              <span class="dot dot2" style="animation-delay: 0.8s;">.</span>
+              <span class="dot dot3" style="animation-delay: 0.9s;">.</span>
+            </div>
+            <div class="progress-bar">
+              <div class="progress-fill">
+                <div class="wave-effect"></div>
+              </div>
+            </div>
+          </div>
+        </div>
         <!-- Results Header -->
         <div class="results-header">
           <div class="results-info">
@@ -137,9 +169,8 @@
             </p>
           </div>
         </div>
-
-        <!-- Products Grid -->
-        <div class="products-grid" *ngIf="products.length > 0">
+        <!-- Products Grid (always rendered) -->
+        <div class="products-grid">
           <div class="product-card" *ngFor="let product of products" (click)="viewProductDetails(product.Id)">
             <!-- Product Badges -->
             <div class="product-badges">
@@ -153,19 +184,16 @@
                 <i class="fas fa-percent me-1"></i>SALE
               </span>
             </div>
-
             <!-- Product Image -->
             <div class="product-image-container">
               <img
                 [src]="product.Images && product.Images.length > 0 ? product.Images[0] : 'assets/images/default-product.png'"
                 [alt]="product.Name" class="product-image">
             </div>
-
             <!-- Product Info -->
             <div class="product-info">
               <h5 class="product-name">{{ product.Name }}</h5>
               <p class="product-description" *ngIf="product.Description">{{ product.Description }}</p>
-
               <!-- Price Section -->
               <div class="price-section">
                 <span class="current-price">${{ product.DisplayedPriceAfterDiscount }}</span>
@@ -173,13 +201,11 @@
                   ${{ product.DisplayedPrice }}
                 </span>
               </div>
-
               <!-- Points Info -->
               <div class="points-info" *ngIf="product.EarnedPoints > 0">
                 <i class="fas fa-star text-warning me-1"></i>
                 <span>Earn {{ product.EarnedPoints }} points</span>
               </div>
-
               <!-- Stock Status -->
               <div class="stock-status">
                 <span class="stock-indicator" [class]="getStockStatusClass(product.Stock)">
@@ -187,7 +213,6 @@
                   {{ getStockText(product.Stock) }}
                 </span>
               </div>
-
               <!-- Add to Cart Button -->
               <button class="btn btn-add-to-cart" [disabled]="product.Stock === 0" (click)="addToCart(product, $event)">
                 <i class="fas fa-shopping-cart me-2"></i>
@@ -197,19 +222,17 @@
             </div>
           </div>
         </div>
-
-        <!-- No Results State -->
-        <div class="no-results" *ngIf="products.length === 0">
+        <!-- No Results State: show only when not loading and no products -->
+        <div class="no-results" *ngIf="shouldShowNoResults">
           <div class="no-results-icon">
             <i class="fas fa-search"></i>
           </div>
           <h4>No products found</h4>
           <p>Try adjusting your search criteria or clear some filters</p>
-          <button class="btn btn-primary" (click)="resetFilters()">
+          <button class="btn btn-primary" (click)="resetFilters()" *ngIf="hasActiveFilters()">
             <i class="fas fa-refresh me-2"></i>Clear All Filters
           </button>
         </div>
-
         <!-- Pagination -->
         <nav class="pagination-nav" *ngIf="totalPages > 1">
           <ul class="pagination">

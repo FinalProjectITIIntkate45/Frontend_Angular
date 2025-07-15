@@ -7,11 +7,11 @@ import { Charity } from '../../../Models/Charity.model';
   selector: 'app-charity-list',
   templateUrl: './charity-list.component.html',
   styleUrls: ['./charity-list.component.css'],
-  standalone:false,
+  standalone: false,
 })
 export class CharityListComponent implements OnInit {
-
   charities: Charity[] = [];
+  isLoading = true;
 
   constructor(
     private charityService: CharityService,
@@ -19,17 +19,21 @@ export class CharityListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.charityService.getAllCharities().subscribe({
       next: (responce) => {
-        console.log(responce)
+        console.log(responce);
         this.charities = responce.Data.map((charity: Charity) => ({
           ...charity,
-          images: charity.CharityImages?.map(img => ({ url: img.ImageUrl })) || []
+          images:
+            charity.CharityImages?.map((img) => ({ url: img.ImageUrl })) || [],
         }));
+        this.isLoading = false;
       },
       error: (err) => {
         console.error('Error fetching charities:', err);
-      }
+        this.isLoading = false;
+      },
     });
   }
 
@@ -40,5 +44,4 @@ export class CharityListComponent implements OnInit {
   donate(charityId: number): void {
     this.router.navigate(['/client/donate', charityId]);
   }
-
 }

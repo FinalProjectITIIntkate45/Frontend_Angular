@@ -7,6 +7,7 @@ import { OrderCreateViewModel } from '../../Models/OrderCreateViewModel';
 import { CartServicesService } from '../../Services/CardServices.service';
 import { CheckoutService } from '../../Services/checkout.service';
 import { AuthService } from '../../../../core/services/Auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-checkout',
@@ -28,7 +29,8 @@ export class CheckoutComponent implements OnInit {
     private checkoutService: CheckoutService,
     private cartService: CartServicesService,
     private toastr: ToastrService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {
     this.checkoutModel = {
       clientId: '',
@@ -58,30 +60,24 @@ export class CheckoutComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.checkoutModel.clientId = this.authService.getUserId();
-
+    this.authService.getUserID().subscribe((userId) => {
+      this.checkoutModel.clientId = userId;
+    });
     this.loadCartData();
-
-    console.log('✅ Step:', this.currentStep);
-    console.log('🚚 Delivery Method:', this.deliveryMethod);
-    console.log('📦 BillingData:', this.checkoutModel.billingData);
   }
 
   loadCartData(): void {
     this.isLoading = true;
     this.error = null;
-
     this.cartService.getCartItems().subscribe(
       (cartItems) => {
-        console.log('cartItemssssssssssssssssssssssssss', cartItems);
         this.checkoutModel.orderItems = cartItems.Items.filter(
           (item: CartItemInterface) =>
             item.productVM !== undefined && item.qty !== undefined
         ).map((item: CartItemInterface) => ({
           ProductId: item.productVM!.Id,
           Quantity: item.qty as number,
-
-          ProductName: item.productVM!.Name, // << هنا غير 'name' إلى 'productName'
+          ProductName: item.productVM!.Name,
           ShopName: item.productVM!.ShopName,
           Description: item.productVM!.Description,
           Price: item.productVM!.DisplayedPrice,
@@ -89,14 +85,11 @@ export class CheckoutComponent implements OnInit {
           Image: item.productVM!.Images[0] || '',
           Points: item.productVM!.Points,
         }));
-
-        this.checkoutModel.totalPrice = cartItems.CartTotalPrice;
+        this.checkoutModel.totalPrice = cartItems.price;
         this.checkoutModel.totalPoints = cartItems.CartTotalPoints;
-
         this.isLoading = false;
       },
       (error) => {
-        console.error('Error loading cart data:', error);
         this.isLoading = false;
         this.toastr.error('Error loading cart data', 'Error');
       }
@@ -124,63 +117,49 @@ export class CheckoutComponent implements OnInit {
   }
 
   onPlaceOrder(): void {
-    console.log('📦 Submitting order:', this.checkoutModel);
-
     if (this.checkoutModel.orderItems.length === 0) {
       this.toastr.error('Your cart is empty!', 'Error');
       return;
     }
-
     if (
       this.checkoutModel.billingData?.shippingMethod?.toLowerCase() === 'pickup'
     ) {
       this.checkoutModel.billingData = null;
     }
-
-    if (!this.checkoutModel.paymentType) {
+    if (
+      this.checkoutModel.paymentType === undefined ||
+      this.checkoutModel.paymentType === null
+    ) {
       this.toastr.error('Please select a payment method', 'Error');
       return;
     }
-
     this.isLoading = true;
-
     this.checkoutService.finalizeCheckout(this.checkoutModel).subscribe({
       next: (res) => {
         this.isLoading = false;
-
         if (res.IsSuccess && res.Data) {
           const result = res.Data;
-
           const confirmed = confirm(
-            `✅ Final Amount: ${result.FinalAmount} EGP\n
-            🎯 Earned Points: ${result.EarnedPoints} \n
-            🎯 Used Points: ${result.UsedFreePoints} \n
-            🎯 Used Paid Points: ${result.UsedPaidPoints}
-            \n\n
-
-            Do you want to confirm the order?`
+            `✅ Final Amount: ${result.FinalAmount} EGP\n\n🎯 Earned Points: ${result.EarnedPoints} \n🎯 Used Points: ${result.UsedFreePoints} \n🎯 Used Paid Points: ${result.UsedPaidPoints}\n\nDo you want to confirm the order?`
           );
-
           if (!confirmed) return;
-
           if (result.PaymentUrl) {
             window.location.href = result.PaymentUrl;
             return;
           }
-
           this.toastr.success('Order placed successfully!', 'Success');
-
           this.cartService.clearCart().subscribe(
             () => {
               this.toastr.success('Cart cleared after order');
               this.resetCheckout();
+              this.router.navigate(['/client/orders']);
             },
             (error) => {
-              console.error('Error clearing cart:', error);
               this.toastr.warning(
                 'Order placed but cart not cleared',
                 'Warning'
               );
+              this.router.navigate(['/client/orders']);
             }
           );
         } else {
@@ -189,7 +168,6 @@ export class CheckoutComponent implements OnInit {
       },
       error: (error) => {
         this.isLoading = false;
-        console.error('❌ Error finalizing checkout:', error);
         this.toastr.error('⚠️ Error finalizing checkout');
       },
     });
