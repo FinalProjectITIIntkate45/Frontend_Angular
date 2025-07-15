@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { APIResult } from '../Models/api-result';
 import { AuctionRecyclingRequestVM, JoinAuctionViewModel } from '../Models/auction-recycling-request';
 import { AuctionRecyclingRequestDisplyVM } from '../Models/auction-request-display';
+import { RecyclingRequestAfterAuctionModel } from '../Models/recycling-request-after-auction';
 
 @Injectable({
   providedIn: 'root'
@@ -37,5 +38,17 @@ export class RecyclerRequestService {
   // Check if user has joined an auction
   hasJoinedAuction(auctionId: number): Observable<boolean> {
     return this.http.get<boolean>(`${this.api}/GetRequestswithauction?auctionid=${auctionId}`);
+  }
+
+  // Get requests for a specific auction (for winners to see who will pay)
+  getRequestsForAuction(auctionId: number): Observable<RecyclingRequestAfterAuctionModel[]> {
+    return this.http.get<RecyclingRequestAfterAuctionModel[]>(`http://localhost:5037/api/Auction/GetRequestesByAuctionID?auctionId=${auctionId}`);
+  }
+
+  approveMoneyTransaction(requestId: number): Observable<any> {
+    return this.http.post<any>(
+      `http://localhost:5037/api/RecyclingRequest/ApproveMoneyTransaction%20${requestId}`,
+      {}
+    );
   }
 }
