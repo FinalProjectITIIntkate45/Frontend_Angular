@@ -1,7 +1,7 @@
 /* auction-list.component.css */
 .auctions-content {
   padding: 20px;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: linear-gradient(135deg, #F7F7F8 0%, #9197B3 100%); /* Light Gray to Light Purple */
   min-height: 100vh;
 }
 
@@ -35,13 +35,13 @@
   display: block;
   margin-bottom: 8px;
   font-weight: 600;
-  color: #333;
+  color: #023059; /* Dark Blue */
 }
 
 .filter-select {
   width: 100%;
   padding: 12px 16px;
-  border: 2px solid #e1e8ed;
+  border: 2px solid #F7F7F8; /* Light Gray */
   border-radius: 12px;
   background: white;
   font-size: 1rem;
@@ -50,14 +50,14 @@
 }
 
 .filter-select:focus {
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #EFB036; /* Yellow */
+  box-shadow: 0 0 0 3px rgba(239, 176, 54, 0.1);
 }
 
 .filter-input {
   width: 100%;
   padding: 12px 16px;
-  border: 2px solid #e1e8ed;
+  border: 2px solid #F7F7F8; /* Light Gray */
   border-radius: 12px;
   background: white;
   font-size: 1rem;
@@ -66,8 +66,8 @@
 }
 
 .filter-input:focus {
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #EFB036; /* Yellow */
+  box-shadow: 0 0 0 3px rgba(239, 176, 54, 0.1);
 }
 
 .filter-actions {
@@ -77,8 +77,8 @@
 
 .clear-filters-btn,
 .refresh-btn {
-  background: linear-gradient(135deg, #ff4757, #ff3742);
-  color: white;
+  background: linear-gradient(135deg, #EFB036, #d49a2e); /* Yellow to darker Yellow */
+  color: #023059; /* Dark Blue */
   border: none;
   padding: 12px 20px;
   border-radius: 12px;
@@ -91,17 +91,17 @@
 }
 
 .refresh-btn {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #023059, #9197B3); /* Dark Blue to Light Purple */
 }
 
 .clear-filters-btn:hover,
 .refresh-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
+  box-shadow: 0 5px 15px rgba(239, 176, 54, 0.4); /* Yellow shadow */
 }
 
 .refresh-btn:hover {
-  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 5px 15px rgba(2, 48, 89, 0.4); /* Dark Blue shadow */
 }
 
 /* Content Cards */
@@ -116,7 +116,7 @@
 
 .card-header {
   padding: 25px 30px;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #023059, #9197B3); /* Dark Blue to Light Purple */
   color: white;
   display: flex;
   align-items: center;
@@ -165,7 +165,7 @@
 .auction-title {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #333;
+  color: #023059; /* Dark Blue */
   margin: 0;
 }
 
@@ -178,18 +178,18 @@
 }
 
 .auction-status.active {
-  background: rgba(46, 213, 115, 0.1);
-  color: #2ed573;
+  background: rgba(239, 176, 54, 0.1); /* Yellow with opacity */
+  color: #EFB036; /* Yellow */
 }
 
 .auction-status.pending {
-  background: rgba(255, 165, 2, 0.1);
-  color: #ffa502;
+  background: rgba(145, 151, 179, 0.1); /* Light Purple with opacity */
+  color: #9197B3; /* Light Purple */
 }
 
 .auction-status.closed {
-  background: rgba(255, 71, 87, 0.1);
-  color: #ff4757;
+  background: rgba(2, 48, 89, 0.1); /* Dark Blue with opacity */
+  color: #023059; /* Dark Blue */
 }
 
 .auction-details {
@@ -201,7 +201,7 @@
   align-items: center;
   gap: 10px;
   margin-bottom: 12px;
-  color: #666;
+  color: #9197B3; /* Light Purple */
 }
 
 .detail-item:last-child {
@@ -210,7 +210,7 @@
 
 .detail-item i {
   width: 16px;
-  color: #667eea;
+  color: #EFB036; /* Yellow */
 }
 
 .auction-actions {
@@ -245,35 +245,35 @@
 }
 
 .view-details-btn {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #023059, #9197B3); /* Dark Blue to Light Purple */
   color: white;
 }
 
 .view-details-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 5px 15px rgba(2, 48, 89, 0.4); /* Dark Blue shadow */
 }
 
 .join-room-btn {
-  background: linear-gradient(135deg, #2ed573, #2ed573);
-  color: white;
+  background: linear-gradient(135deg, #EFB036, #d49a2e); /* Yellow to darker Yellow */
+  color: #023059; /* Dark Blue */
 }
 
 .join-room-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(46, 213, 115, 0.4);
+  box-shadow: 0 5px 15px rgba(239, 176, 54, 0.4); /* Yellow shadow */
 }
 
 .join-room-btn:disabled {
-  background: #ccc;
+  background: #F7F7F8; /* Light Gray */
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
 }
 
 .join-auction-btn {
-  background: linear-gradient(135deg, #28a745, #20c997);
-  color: white;
+  background: linear-gradient(135deg, #EFB036, #d49a2e); /* Yellow to darker Yellow */
+  color: #023059; /* Dark Blue */
   border: none;
   padding: 12px 20px;
   border-radius: 8px;
@@ -288,19 +288,19 @@
 
 .join-auction-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(40, 167, 69, 0.4);
+  box-shadow: 0 5px 15px rgba(239, 176, 54, 0.4); /* Yellow shadow */
 }
 
 .join-auction-btn:disabled {
-  background: #ccc;
+  background: #F7F7F8; /* Light Gray */
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
 }
 
 .requested-message {
-  background: linear-gradient(135deg, #ffc107, #ffb74d);
-  color: #856404;
+  background: linear-gradient(135deg, #9197B3, #7a8099); /* Light Purple to darker Light Purple */
+  color: white;
   padding: 12px 20px;
   border-radius: 8px;
   display: flex;
@@ -311,11 +311,11 @@
 }
 
 .requested-message i {
-  color: #856404;
+  color: white;
 }
 
 .request-join-btn {
-  background: linear-gradient(135deg, #3498db, #2980b9);
+  background: linear-gradient(135deg, #023059, #9197B3); /* Dark Blue to Light Purple */
   color: white;
   border: none;
   padding: 12px 20px;
@@ -333,7 +333,7 @@
 
 .request-join-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+  box-shadow: 0 5px 15px rgba(2, 48, 89, 0.4); /* Dark Blue shadow */
 }
 
 .auction-inactive-message {
@@ -341,7 +341,7 @@
   align-items: center;
   gap: 8px;
   padding: 12px 16px;
-  background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+  background: linear-gradient(135deg, #9197B3, #7a8099); /* Light Purple to darker Light Purple */
   color: white;
   border-radius: 8px;
   font-weight: 600;
@@ -355,10 +355,9 @@
 .warning-message {
   margin-top: 15px;
   padding: 12px;
-  background: rgba(255, 165, 2, 0.1);
-  border: 1px solid rgba(255, 165, 2, 0.3);
-  border-radius: 8px;
-  color: #ffa502;
+  background: rgba(239, 176, 54, 0.1); /* Yellow with opacity */
+  border: 1px solid rgba(239, 176, 54, 0.3);
+  color: #EFB036; /* Yellow */
   display: flex;
   align-items: center;
   gap: 8px;
@@ -380,12 +379,12 @@
 
 .loading-spinner i {
   font-size: 3rem;
-  color: #667eea;
+  color: #EFB036; /* Yellow */
 }
 
 .loading-spinner p {
   font-size: 1.1rem;
-  color: #666;
+  color: #9197B3; /* Light Purple */
   margin: 0;
 }
 
@@ -404,24 +403,24 @@
 
 .empty-content i {
   font-size: 4rem;
-  color: #ccc;
+  color: #9197B3; /* Light Purple */
 }
 
 .empty-content h3 {
   font-size: 1.5rem;
-  color: #333;
+  color: #023059; /* Dark Blue */
   margin: 0;
 }
 
 .empty-content p {
   font-size: 1.1rem;
-  color: #666;
+  color: #9197B3; /* Light Purple */
   margin: 0;
   max-width: 400px;
 }
 
 .reset-btn {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #023059, #9197B3); /* Dark Blue to Light Purple */
   color: white;
   border: none;
   padding: 15px 30px;
@@ -436,7 +435,7 @@
 
 .reset-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 5px 15px rgba(2, 48, 89, 0.4); /* Dark Blue shadow */
 }
 
 /* Pagination Styles */
@@ -456,7 +455,7 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
-  color: #666;
+  color: #9197B3; /* Light Purple */
   font-size: 0.9rem;
 }
 
@@ -466,7 +465,7 @@
 }
 
 .pagination-btn {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #023059, #9197B3); /* Dark Blue to Light Purple */
   color: white;
   border: none;
   padding: 10px 16px;
@@ -481,11 +480,11 @@
 
 .pagination-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 5px 15px rgba(2, 48, 89, 0.4); /* Dark Blue shadow */
 }
 
 .pagination-btn:disabled {
-  background: #ccc;
+  background: #F7F7F8; /* Light Gray */
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
@@ -499,13 +498,13 @@
 
 .page-size-control label {
   font-weight: 600;
-  color: #333;
+  color: #023059; /* Dark Blue */
   margin: 0;
 }
 
 .page-size-control select {
   padding: 8px 12px;
-  border: 2px solid #e1e8ed;
+  border: 2px solid #F7F7F8; /* Light Gray */
   border-radius: 8px;
   background: white;
   font-size: 0.9rem;
@@ -514,8 +513,8 @@
 }
 
 .page-size-control select:focus {
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #EFB036; /* Yellow */
+  box-shadow: 0 0 0 3px rgba(239, 176, 54, 0.1);
 }
 
 /* Request Status Display */
@@ -535,27 +534,27 @@
 }
 
 .status-badge.status-pending {
-  background: linear-gradient(135deg, #ffc107, #ffb74d);
-  color: #856404;
-  border-color: #ffb74d;
+  background: linear-gradient(135deg, #9197B3, #7a8099); /* Light Purple to darker Light Purple */
+  color: white;
+  border-color: #7a8099;
 }
 
 .status-badge.status-accepted {
-  background: linear-gradient(135deg, #28a745, #20c997);
-  color: white;
-  border-color: #20c997;
+  background: linear-gradient(135deg, #EFB036, #d49a2e); /* Yellow to darker Yellow */
+  color: #023059; /* Dark Blue */
+  border-color: #d49a2e;
 }
 
 .status-badge.status-rejected {
-  background: linear-gradient(135deg, #dc3545, #c82333);
+  background: linear-gradient(135deg, #023059, #9197B3); /* Dark Blue to Light Purple */
   color: white;
-  border-color: #c82333;
+  border-color: #9197B3;
 }
 
 .status-badge.status-default {
-  background: linear-gradient(135deg, #6c757d, #5a6268);
-  color: white;
-  border-color: #5a6268;
+  background: linear-gradient(135deg, #F7F7F8, #9197B3); /* Light Gray to Light Purple */
+  color: #023059; /* Dark Blue */
+  border-color: #9197B3;
 }
 
 .status-badge i {
@@ -568,8 +567,8 @@
   align-items: center;
   gap: 8px;
   padding: 10px 16px;
-  background: linear-gradient(135deg, #17a2b8, #138496);
-  color: white;
+  background: linear-gradient(135deg, #EFB036, #d49a2e); /* Yellow to darker Yellow */
+  color: #023059; /* Dark Blue */
   border-radius: 8px;
   font-weight: 600;
   font-size: 0.9rem;

@@ -2,7 +2,7 @@
 .sidebar {
   width: 280px;
   height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #023059 0%, #9197B3 100%); /* Dark Blue to Light Purple */
   color: white;
   display: flex;
   flex-direction: column;
@@ -29,7 +29,7 @@
 
 .logo i {
   font-size: 2rem;
-  color: #4ade80;
+  color: #EFB036; /* Yellow */
 }
 
 /* Navigation */
@@ -70,7 +70,7 @@
 .nav-link.active {
   background: rgba(255,255,255,0.15);
   color: white;
-  border-left-color: #4ade80;
+  border-left-color: #EFB036; /* Yellow */
   font-weight: 600;
 }
 
@@ -113,13 +113,13 @@
 }
 
 .logout-link {
-  color: #ff6b6b;
-  background: rgba(255,107,107,0.1);
+  color: #EFB036; /* Yellow */
+  background: rgba(239, 176, 54, 0.1); /* Yellow with opacity */
 }
 
 .logout-link:hover {
-  background: rgba(255,107,107,0.2);
-  color: #ff5252;
+  background: rgba(239, 176, 54, 0.2); /* Darker Yellow with opacity */
+  color: #d49a2e; /* Darker Yellow */
   transform: translateX(5px);
 }
 

@@ -1,6 +1,6 @@
 .recycler-requests-content {
   padding: 20px;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: linear-gradient(135deg, #F7F7F8 0%, #9197B3 100%); /* Light Gray to Light Purple */
   min-height: 100vh;
 }
 
@@ -16,7 +16,7 @@
 
 .card-header {
   padding: 25px 30px;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #023059, #9197B3); /* Dark Blue to Light Purple */
   color: white;
   display: flex;
   align-items: center;
@@ -47,14 +47,14 @@
 
 .filter-label {
   font-weight: 600;
-  color: #333;
+  color: #023059; /* Dark Blue */
   margin-bottom: 8px;
   display: block;
 }
 
 .status-filter {
   padding: 12px 16px;
-  border: 2px solid #e1e8ed;
+  border: 2px solid #F7F7F8; /* Light Gray */
   border-radius: 12px;
   background: white;
   font-size: 1rem;
@@ -64,12 +64,12 @@
 }
 
 .status-filter:focus {
-  border-color: #667eea;
-  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  border-color: #EFB036; /* Yellow */
+  box-shadow: 0 0 0 3px rgba(239, 176, 54, 0.1);
 }
 
 .refresh-btn {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #023059, #9197B3); /* Dark Blue to Light Purple */
   color: white;
   border: none;
   padding: 12px 20px;
@@ -84,7 +84,7 @@
 
 .refresh-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 5px 15px rgba(2, 48, 89, 0.4); /* Dark Blue shadow */
 }
 
 .refresh-btn:disabled {
@@ -108,12 +108,12 @@
 
 .loading-spinner i {
   font-size: 3rem;
-  color: #667eea;
+  color: #EFB036; /* Yellow */
 }
 
 .loading-spinner p {
   font-size: 1.1rem;
-  color: #666;
+  color: #9197B3; /* Light Purple */
   margin: 0;
 }
 
@@ -132,18 +132,18 @@
 
 .error-message i {
   font-size: 3rem;
-  color: #ff4757;
+  color: #EFB036; /* Yellow */
 }
 
 .error-message p {
   font-size: 1.1rem;
-  color: #666;
+  color: #9197B3; /* Light Purple */
   margin: 0;
 }
 
 .retry-btn {
-  background: linear-gradient(135deg, #ff4757, #ff3742);
-  color: white;
+  background: linear-gradient(135deg, #EFB036, #d49a2e); /* Yellow to darker Yellow */
+  color: #023059; /* Dark Blue */
   border: none;
   padding: 12px 24px;
   border-radius: 12px;
@@ -157,7 +157,7 @@
 
 .retry-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(255, 71, 87, 0.4);
+  box-shadow: 0 5px 15px rgba(239, 176, 54, 0.4); /* Yellow shadow */
 }
 
 /* Empty State */
@@ -175,24 +175,24 @@
 
 .empty-message i {
   font-size: 4rem;
-  color: #ccc;
+  color: #9197B3; /* Light Purple */
 }
 
 .empty-message h3 {
   font-size: 1.5rem;
-  color: #333;
+  color: #023059; /* Dark Blue */
   margin: 0;
 }
 
 .empty-message p {
   font-size: 1.1rem;
-  color: #666;
+  color: #9197B3; /* Light Purple */
   margin: 0;
   max-width: 400px;
 }
 
 .empty-message a {
-  color: #667eea;
+  color: #EFB036; /* Yellow */
   text-decoration: none;
   font-weight: 600;
 }
@@ -216,7 +216,7 @@
 }
 
 .requests-table th {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #023059, #9197B3); /* Dark Blue to Light Purple */
   color: white;
   padding: 15px 12px;
   text-align: left;
@@ -226,12 +226,12 @@
 
 .requests-table td {
   padding: 12px;
-  border-bottom: 1px solid #f1f3f4;
+  border-bottom: 1px solid #F7F7F8; /* Light Gray */
   font-size: 0.9rem;
 }
 
 .requests-table tr:hover {
-  background: #f8f9fa;
+  background: #F7F7F8; /* Light Gray */
 }
 
 .requests-table tr:last-child td {
@@ -240,7 +240,7 @@
 
 .insurance-amount {
   font-weight: 600;
-  color: #2ed573;
+  color: #EFB036; /* Yellow */
 }
 
 .status-badge {
@@ -252,28 +252,28 @@
 }
 
 .status-pending {
-  background: rgba(255, 165, 2, 0.1);
-  color: #ffa502;
+  background: rgba(145, 151, 179, 0.1); /* Light Purple with opacity */
+  color: #9197B3; /* Light Purple */
 }
 
 .status-accepted {
-  background: rgba(46, 213, 115, 0.1);
-  color: #2ed573;
+  background: rgba(239, 176, 54, 0.1); /* Yellow with opacity */
+  color: #EFB036; /* Yellow */
 }
 
 .status-rejected {
-  background: rgba(255, 71, 87, 0.1);
-  color: #ff4757;
+  background: rgba(2, 48, 89, 0.1); /* Dark Blue with opacity */
+  color: #023059; /* Dark Blue */
 }
 
 .status-completed {
-  background: rgba(102, 126, 234, 0.1);
-  color: #667eea;
+  background: rgba(239, 176, 54, 0.1); /* Yellow with opacity */
+  color: #EFB036; /* Yellow */
 }
 
 .status-default {
-  background: rgba(108, 117, 125, 0.1);
-  color: #6c757d;
+  background: rgba(145, 151, 179, 0.1); /* Light Purple with opacity */
+  color: #9197B3; /* Light Purple */
 }
 
 .action-btn {
@@ -291,23 +291,23 @@
 }
 
 .withdraw-btn {
-  background: linear-gradient(135deg, #ff4757, #ff3742);
-  color: white;
+  background: linear-gradient(135deg, #EFB036, #d49a2e); /* Yellow to darker Yellow */
+  color: #023059; /* Dark Blue */
 }
 
 .withdraw-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 71, 87, 0.4);
+  box-shadow: 0 4px 12px rgba(239, 176, 54, 0.4); /* Yellow shadow */
 }
 
 .view-btn {
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #023059, #9197B3); /* Dark Blue to Light Purple */
   color: white;
 }
 
 .view-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  box-shadow: 0 4px 12px rgba(2, 48, 89, 0.4); /* Dark Blue shadow */
 }
 
 /* Summary Section */
@@ -324,10 +324,10 @@
 .stat-item {
   text-align: center;
   padding: 20px;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #023059, #9197B3); /* Dark Blue to Light Purple */
   border-radius: 15px;
   color: white;
-  box-shadow: 0 8px 32px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 8px 32px rgba(2, 48, 89, 0.3); /* Dark Blue shadow */
 }
 
 .stat-number {
@@ -410,4 +410,4 @@
   .stat-item {
     padding: 15px;
   }
-} 
+}
