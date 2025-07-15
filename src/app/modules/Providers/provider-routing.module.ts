@@ -35,6 +35,7 @@ import { ProviderWalletSuccessComponent } from './Components/provider-wallet-suc
 import { ShopInfoComponent } from './Components/shop-info/shop-info.component';
 import { ProviderOrdersSectionComponent } from './Components/provider-orders-section/provider-orders-section.component';
 import { OrderDetailsComponent } from './Components/provider-orders-section/order-details/order-details.component';
+import { ReviewListComponent } from './Components/reviews/review-list/review-list.component';
 
 const routes: Routes = [
   {
@@ -74,6 +75,7 @@ const routes: Routes = [
       { path: 'shop-info', component: ShopInfoComponent },
       { path: 'orders', component: ProviderOrdersSectionComponent },
       { path: 'orders/:id', component: OrderDetailsComponent },
+      { path: 'reviews', component: ReviewListComponent },
     ],
   },
 ];
